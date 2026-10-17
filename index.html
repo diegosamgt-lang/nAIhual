@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es-GT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183d33">
+  <meta name="description" content="nAIhual: ubicaciones, conversación y recorridos a pie en un mismo lugar.">
+  <title>nAIhual · Tu territorio, más cerca</title>
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#principal">Ir al contenido</a>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="nAIhual, inicio">nAIhual<span aria-hidden="true">✳</span></a>
+    <nav aria-label="Navegación principal">
+      <a href="#inicio" data-nav="inicio">Inicio</a>
+      <a href="#explorar" data-nav="explorar">Explorar</a>
+      <a href="#proposito" data-nav="proposito">Propósito</a>
+    </nav>
+    <span class="badge">BASE · MAPA + CONVERSACIÓN</span>
+  </header>
+  <main id="principal" tabindex="-1">
+    <article id="page-inicio" class="page" aria-labelledby="title-inicio">
+      <section class="hero">
+        <div class="eyebrow">Guatemala · Turismo consciente</div>
+        <h1 id="title-inicio">Conocé un lugar.<br>Conectá con su gente.</h1>
+        <p>Conversá, ubicá tu próximo destino y seguí el recorrido. Todo en un mismo lugar, con respeto por la cultura y el territorio.</p>
+        <a class="button primary" href="#explorar">Abrir el mapa <span aria-hidden="true">↗</span></a>
+        <span class="hero-orbit" aria-hidden="true">✳</span>
+      </section>
+      <section class="home-content">
+        <div class="eyebrow">Empezamos por lo esencial</div>
+        <h2>Un punto de partida.<br>Un destino. Tu recorrido.</h2>
+        <div class="cards">
+          <div class="card"><span class="glyph" aria-hidden="true">◎</span><h3>Ubicá</h3><p>Explorá el mapa y elegí un punto. Antigua es nuestro centro inicial.</p></div>
+          <div class="card"><span class="glyph" aria-hidden="true">↗</span><h3>Recorré</h3><p>Calculá un recorrido a pie y seguí tu ubicación sin salir de esta web.</p></div>
+          <div class="card"><span class="glyph" aria-hidden="true">✳</span><h3>Conversá</h3><p>Buscá entre los puntos cargados. Sin opiniones ni lugares inventados.</p></div>
+        </div>
+        <aside class="notice"><strong>Primera base de prueba</strong><p>La conversación funciona con reglas. No hay IA conectada ni puntos curados cargados todavía. El seguimiento del recorrido es experimental: necesita conexión, permiso de ubicación y la pantalla abierta.</p></aside>
+      </section>
+    </article>
+
+    <article id="page-explorar" class="page" aria-labelledby="title-explorar" hidden>
+      <div class="explore-heading"><div><div class="eyebrow">Tu territorio, más cerca</div><h1 id="title-explorar">Explorá a tu ritmo.</h1></div><span class="location-badge" id="location-badge">Ubicación desactivada</span></div>
+      <div class="workspace">
+        <section class="map-column" aria-label="Mapa y recorrido">
+          <div class="map-wrap"><div id="map" role="region" aria-label="Mapa interactivo de destinos"></div><div id="map-message" class="map-message" role="status">Cargando mapa…</div></div>
+          <div class="map-toolbar">
+            <button id="locate-button" class="button compact" type="button">◎ Activar mi ubicación</button>
+            <button id="stop-button" class="button compact secondary" type="button" hidden>Detener ubicación</button>
+            <button id="pick-button" class="button compact secondary" type="button" aria-pressed="false">Elegir destino en el mapa</button>
+          </div>
+          <p class="privacy-note">Tu ubicación no se guarda. Al calcular una ruta, las coordenadas de origen y destino se envían al servicio de rutas FOSSGIS. El mapa usa OpenStreetMap.</p>
+          <form id="coordinate-form" class="coordinate-form">
+            <details><summary>Elegir destino por coordenadas</summary><div class="coordinate-fields"><label>Latitud<input id="destination-lat" type="number" step="any" min="-90" max="90" required placeholder="14.56"></label><label>Longitud<input id="destination-lng" type="number" step="any" min="-180" max="180" required placeholder="-90.73"></label><button class="button compact secondary" type="submit">Usar punto</button></div></details>
+          </form>
+          <section id="destination-panel" class="destination-panel" aria-labelledby="destination-title" hidden>
+            <div class="destination-heading"><div><div class="eyebrow">Destino elegido</div><h2 id="destination-title"></h2><p id="destination-detail" class="muted"></p></div><button id="clear-destination" class="text-button" type="button">Quitar</button></div>
+            <button id="route-button" class="button" type="button">Calcular ruta a pie</button>
+            <p id="route-status" role="status" class="route-status">Activá tu ubicación para calcular el recorrido.</p>
+            <div id="route-panel" hidden>
+              <p id="route-distance" class="route-distance"></p>
+              <div id="next-instruction" class="next-instruction" role="status"></div>
+              <p class="small muted">Las indicaciones dependen del mapa y del GPS; pueden tener errores. Confirmá el camino en el lugar. No hay seguimiento con la pantalla bloqueada.</p>
+              <details><summary>Ver indicaciones del recorrido</summary><ol id="route-steps"></ol></details>
+            </div>
+          </section>
+        </section>
+        <section class="chat-column" aria-labelledby="chat-title">
+          <div class="chat-heading"><div class="avatar" aria-hidden="true">✳</div><div><h2 id="chat-title">Hablemos del camino</h2><span id="chat-mode">Conversación guiada · sin IA conectada</span></div></div>
+          <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="message assistant"><span class="speaker">nAIhual</span><p>¡Hola! ¿Qué punto querés encontrar? Podés decirme un nombre o elegir un destino en el mapa.</p></div></div>
+          <div class="quick-actions"><button type="button" data-prompt="Mostrar puntos">Ver puntos</button><button type="button" data-prompt="Cómo llego a mi destino">Cómo llegar</button></div>
+          <form id="chat-form" class="chat-form"><label class="sr-only" for="chat-input">Tu mensaje</label><input id="chat-input" type="text" maxlength="500" required autocomplete="off" placeholder="¿A dónde querés ir?"><button id="send-button" type="submit" aria-label="Enviar mensaje"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18 18 6M6 6h12v12"/></svg></button></form>
+          <p class="chat-footnote">No guardamos la conversación. No escribás información personal.</p>
+          <section class="catalog" aria-labelledby="catalog-title"><div class="catalog-title"><h3 id="catalog-title">Puntos de interés</h3><span id="place-count">0 puntos</span></div><p id="catalog-status" class="small muted" role="status">Cargando selección…</p><div id="places-list"></div></section>
+        </section>
+      </div>
+    </article>
+
+    <article id="page-resumen" class="page simple-page" aria-labelledby="title-resumen" hidden>
+      <div class="eyebrow">Tu selección</div><h1 id="title-resumen">Tu consulta</h1><p id="selection-summary">Todavía no elegiste un destino.</p><a class="button" href="#explorar">Volver al mapa</a>
+    </article>
+    <article id="page-proposito" class="page simple-page" aria-labelledby="title-proposito" hidden>
+      <div class="eyebrow">Nuestro punto de partida</div><h1 id="title-proposito">Primero las personas.</h1><p>El turismo debería generar encuentros respetuosos, no reducir las comunidades a una atracción.</p>
+      <div class="cards"><div class="card"><h2>Comunidad</h2><p>Escuchar a las personas que viven en cada territorio.</p></div><div class="card"><h2>Cultura</h2><p>Compartir conocimiento con fuentes, atribución y respeto.</p></div><div class="card"><h2>Naturaleza</h2><p>Evitar la difusión de lugares sensibles o información que pueda causar daño.</p></div></div>
+      <aside class="notice"><strong>Datos antes que opiniones</strong><p>La selección de puntos necesita fuentes y revisión. Un recorrido calculado no demuestra seguridad, accesibilidad, horarios ni beneficio comunitario.</p></aside><a class="button" href="#explorar">Volver a explorar</a>
+    </article>
+  </main>
+  <footer><span>nAIhual ✳ · Personas, cultura y territorio</span><a href="c0/">Consultar C0 original</a></footer>
+  <noscript><p class="notice">Necesitás activar JavaScript para usar el mapa y conversar. Podés leer el propósito en esta página.</p></noscript>
+</body>
+</html>
