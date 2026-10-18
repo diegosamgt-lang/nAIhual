@@ -47,11 +47,17 @@
       <div class="explore-heading"><div><div class="eyebrow">Tu territorio, más cerca</div><h1 id="title-explorar">Explorá a tu ritmo.</h1></div><span class="location-badge" id="location-badge">Ubicación desactivada</span></div>
       <div class="workspace">
         <section class="map-column" aria-label="Mapa y recorrido">
+          <div class="journey-overview" aria-label="Estado de tu recorrido" aria-live="polite">
+            <div id="journey-destination" data-state="pending"><span>01 · Destino</span><strong>Sin elegir</strong></div>
+            <div id="journey-location" data-state="pending"><span>02 · Ubicación</span><strong>Desactivada</strong></div>
+            <div id="journey-route" data-state="pending"><span>03 · Recorrido</span><strong>Sin calcular</strong></div>
+          </div>
           <div class="map-wrap"><div id="map" role="region" aria-label="Mapa interactivo de destinos"></div><div id="map-message" class="map-message" role="status">Cargando mapa…</div></div>
           <div class="map-toolbar">
             <button id="locate-button" class="button compact" type="button">◎ Activar mi ubicación</button>
             <button id="stop-button" class="button compact secondary" type="button" hidden>Detener ubicación</button>
             <button id="pick-button" class="button compact secondary" type="button" aria-pressed="false">Elegir destino en el mapa</button>
+            <button id="center-button" class="button compact secondary" type="button">Centrar mapa</button>
           </div>
           <p class="privacy-note">Tu ubicación no se guarda. Al calcular una ruta, las coordenadas de origen y destino se envían al servicio de rutas FOSSGIS. El mapa usa OpenStreetMap.</p>
           <form id="coordinate-form" class="coordinate-form">
@@ -70,11 +76,12 @@
           </section>
         </section>
         <section class="chat-column" aria-labelledby="chat-title">
-          <div class="chat-heading"><div class="avatar" aria-hidden="true">✳</div><div><h2 id="chat-title">Hablemos del camino</h2><span id="chat-mode">Conversación guiada · sin IA conectada</span></div></div>
+          <div class="chat-heading"><div class="avatar" aria-hidden="true">✳</div><div><h2 id="chat-title">Hablemos del camino</h2><span id="chat-mode">Conversación guiada · sin IA conectada</span></div><button id="clear-chat" class="text-button" type="button">Borrar chat</button></div>
           <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="message assistant"><span class="speaker">nAIhual</span><p>¡Hola! ¿Qué punto querés encontrar? Podés decirme un nombre o elegir un destino en el mapa.</p></div></div>
-          <div class="quick-actions"><button type="button" data-prompt="Mostrar puntos">Ver puntos</button><button type="button" data-prompt="Cómo llego a mi destino">Cómo llegar</button></div>
+          <div class="quick-actions"><button type="button" data-prompt="Qué podés hacer">Cómo empezar</button><button type="button" data-prompt="Mostrar puntos">Ver puntos</button><button type="button" data-prompt="Cuál es mi destino">Mi destino</button><button type="button" data-prompt="Cómo llego a mi destino">Cómo llegar</button></div>
           <form id="chat-form" class="chat-form"><label class="sr-only" for="chat-input">Tu mensaje</label><input id="chat-input" type="text" maxlength="500" required autocomplete="off" placeholder="¿A dónde querés ir?"><button id="send-button" type="submit" aria-label="Enviar mensaje"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18 18 6M6 6h12v12"/></svg></button></form>
           <p class="chat-footnote">No guardamos la conversación. No escribás información personal.</p>
+          <p class="coordinate-tip">¿Ya tenés las coordenadas? Escribí <strong>latitud, longitud</strong> en el chat. Te voy a pedir que confirmés el punto antes de elegirlo.</p>
           <section class="catalog" aria-labelledby="catalog-title"><div class="catalog-title"><h3 id="catalog-title">Puntos de interés</h3><span id="place-count">0 puntos</span></div><p id="catalog-status" class="small muted" role="status">Cargando selección…</p><div id="places-list"></div></section>
         </section>
       </div>

@@ -675,6 +675,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 @media(max-width:850px){.badge{display:none}.workspace{grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr);gap:14px;padding-left:18px;padding-right:18px}.map-wrap{height:400px}.topbar{padding:0 20px}.cards{gap:10px}.card{padding:18px}.hero-orbit{right:-60px}}
 @media(max-width:650px){.topbar{height:64px;padding:0 16px;gap:10px}.brand{font-size:25px}nav{gap:0}nav a{font-size:11px;padding:8px 9px}.hero{padding:46px 23px;border-radius:0 0 26px 26px;min-height:auto}.hero h1{font-size:46px}.hero p{font-size:15px;max-width:330px}.hero-orbit{font-size:180px;right:-100px;top:50px}.home-content,.simple-page{padding:30px 22px}.home-content>h2{font-size:29px}.cards{grid-template-columns:1fr}.explore-heading{padding:21px 16px 17px;align-items:start}.explore-heading h1{font-size:27px}.eyebrow{font-size:9px}.location-badge{font-size:9px;padding:7px 9px}.workspace{display:flex;flex-direction:column;gap:18px;padding:0 12px 25px}.map-column,.chat-column{width:100%}.map-wrap{height:clamp(245px,38svh,370px);border-radius:15px}.map-toolbar{gap:6px}.map-toolbar .button{font-size:11px;flex-grow:1;padding:9px}.privacy-note{margin:9px 3px;font-size:10px}.coordinate-fields{flex-wrap:wrap}.coordinate-fields .button{width:100%}.chat-log{height:225px}.chat-heading{padding:15px 18px}.destination-panel{padding:17px}.destination-heading h2{font-size:21px}footer{padding:20px 17px;flex-wrap:wrap}.notice{padding:17px}.simple-page h1{font-size:43px}}
 .explore-support{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:34px;margin:0 26px 38px;padding:30px;border:1px solid var(--border);border-radius:20px;background:#fff}.explore-support h2{font-size:26px;margin:8px 0 14px}.support-intro{max-width:500px;font-size:14px;color:var(--muted);margin:0 0 20px}.journey-steps{list-style:none;margin:0;padding:0}.journey-steps li{display:flex;gap:14px;align-items:flex-start;margin:0 0 21px}.step-number{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;background:#edf3e4;border-radius:11px;color:#4a6740;font-size:11px;font-weight:800}.journey-steps h3{font-size:14px;margin:0 0 5px}.journey-steps p,.territory-note p,.explore-faq p{font-size:13px;line-height:1.65;margin:0;color:var(--muted)}.territory-note{padding:16px;border-radius:12px;background:#f1f5e9}.territory-note strong{display:block;font-size:13px;margin-bottom:5px}.explore-faq details{border-bottom:1px solid var(--border);padding:14px 0}.explore-faq details:last-child{border-bottom:0}.explore-faq summary{font-size:13px;line-height:1.5;padding-right:6px}.explore-faq p{padding:10px 0 0}
+.journey-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.journey-overview>div{padding:12px;border:1px solid var(--border);border-radius:12px;background:#fff;min-width:0}.journey-overview span{display:block;font-size:9px;color:var(--muted);letter-spacing:.04em}.journey-overview strong{display:block;margin-top:4px;font-size:11px;overflow-wrap:anywhere}.journey-overview [data-state=done]{background:#eaf2de;border-color:#bbd19f}.journey-overview [data-state=caution]{background:#fff4e3;border-color:#e5d0a5}.coordinate-tip{font-size:11px;line-height:1.6;color:var(--muted);margin:0 18px 18px;padding:12px;background:#f3f6ed;border-radius:10px}.chat-heading>div:nth-child(2){min-width:0;flex:1}.chat-heading .text-button{font-size:10px;padding:5px;flex-shrink:0}.coordinate-confirm{margin-top:12px;width:100%;font-size:12px;min-height:40px;padding:9px}
 @media(max-width:650px){.explore-support{grid-template-columns:1fr;gap:28px;margin:0 12px 25px;padding:22px 18px}.explore-support h2{font-size:24px}.journey-steps li{gap:11px}.support-intro{font-size:13px}}
 @media(max-width:360px){.topbar{padding:0 12px;gap:6px}.brand{font-size:23px}nav a{padding:8px 7px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
@@ -719,11 +720,17 @@ svg.leaflet-image-layer.leaflet-interactive path {
       <div class="explore-heading"><div><div class="eyebrow">Tu territorio, más cerca</div><h1 id="title-explorar">Explorá a tu ritmo.</h1></div><span class="location-badge" id="location-badge">Ubicación desactivada</span></div>
       <div class="workspace">
         <section class="map-column" aria-label="Mapa y recorrido">
+          <div class="journey-overview" aria-label="Estado de tu recorrido" aria-live="polite">
+            <div id="journey-destination" data-state="pending"><span>01 · Destino</span><strong>Sin elegir</strong></div>
+            <div id="journey-location" data-state="pending"><span>02 · Ubicación</span><strong>Desactivada</strong></div>
+            <div id="journey-route" data-state="pending"><span>03 · Recorrido</span><strong>Sin calcular</strong></div>
+          </div>
           <div class="map-wrap"><div id="map" role="region" aria-label="Mapa interactivo de destinos"></div><div id="map-message" class="map-message" role="status">Cargando mapa…</div></div>
           <div class="map-toolbar">
             <button id="locate-button" class="button compact" type="button">◎ Activar mi ubicación</button>
             <button id="stop-button" class="button compact secondary" type="button" hidden>Detener ubicación</button>
             <button id="pick-button" class="button compact secondary" type="button" aria-pressed="false">Elegir destino en el mapa</button>
+            <button id="center-button" class="button compact secondary" type="button">Centrar mapa</button>
           </div>
           <p class="privacy-note">Tu ubicación no se guarda. Al calcular una ruta, las coordenadas de origen y destino se envían al servicio de rutas FOSSGIS. El mapa usa OpenStreetMap.</p>
           <form id="coordinate-form" class="coordinate-form">
@@ -742,11 +749,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
           </section>
         </section>
         <section class="chat-column" aria-labelledby="chat-title">
-          <div class="chat-heading"><div class="avatar" aria-hidden="true">✳</div><div><h2 id="chat-title">Hablemos del camino</h2><span id="chat-mode">Conversación guiada · sin IA conectada</span></div></div>
+          <div class="chat-heading"><div class="avatar" aria-hidden="true">✳</div><div><h2 id="chat-title">Hablemos del camino</h2><span id="chat-mode">Conversación guiada · sin IA conectada</span></div><button id="clear-chat" class="text-button" type="button">Borrar chat</button></div>
           <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="message assistant"><span class="speaker">nAIhual</span><p>¡Hola! ¿Qué punto querés encontrar? Podés decirme un nombre o elegir un destino en el mapa.</p></div></div>
-          <div class="quick-actions"><button type="button" data-prompt="Mostrar puntos">Ver puntos</button><button type="button" data-prompt="Cómo llego a mi destino">Cómo llegar</button></div>
+          <div class="quick-actions"><button type="button" data-prompt="Qué podés hacer">Cómo empezar</button><button type="button" data-prompt="Mostrar puntos">Ver puntos</button><button type="button" data-prompt="Cuál es mi destino">Mi destino</button><button type="button" data-prompt="Cómo llego a mi destino">Cómo llegar</button></div>
           <form id="chat-form" class="chat-form"><label class="sr-only" for="chat-input">Tu mensaje</label><input id="chat-input" type="text" maxlength="500" required autocomplete="off" placeholder="¿A dónde querés ir?"><button id="send-button" type="button" aria-label="Enviar mensaje"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18 18 6M6 6h12v12"/></svg></button></form>
           <p class="chat-footnote">No guardamos la conversación. No escribás información personal.</p>
+          <p class="coordinate-tip">¿Ya tenés las coordenadas? Escribí <strong>latitud, longitud</strong> en el chat. Te voy a pedir que confirmés el punto antes de elegirlo.</p>
           <section class="catalog" aria-labelledby="catalog-title"><div class="catalog-title"><h3 id="catalog-title">Puntos de interés</h3><span id="place-count">0 puntos</span></div><p id="catalog-status" class="small muted" role="status">Cargando selección…</p><div id="places-list"></div></section>
         </section>
       </div>
@@ -811,6 +819,15 @@ function validateCatalog(input) {
 function guidedReply(message, places, classification = null) {
   const query = normalize(message);
   const base = { mode: 'guided', action: 'none', places: [] };
+  const coordinates = query.match(/^(?:(?:llevame a|quiero ir a|ir a|destino|coordenadas|usar)\s+)?(?:lat(?:itud)?\s*:?\s*)?([+-]?\d+(?:\.\d+)?)\s*[,;]\s*(?:(?:longitud|lon|lng)\s*:?\s*)?([+-]?\d+(?:\.\d+)?)\s*$/);
+  if (coordinates) {
+    const point = { lat: Number(coordinates[1]), lng: Number(coordinates[2]) };
+    if (!validCoordinate(point)) return { ...base, action:'invalid-coordinates', text:'Esas coordenadas están fuera de rango. La latitud va de −90 a 90 y la longitud de −180 a 180. Escribilas en ese orden, separadas por coma.' };
+    return { ...base, action:'coordinates', destination:{...point,name:'Punto indicado en la conversación',status:'manual'}, text:`Me indicaste ${point.lat.toFixed(5)}, ${point.lng.toFixed(5)}. Confirmá si querés usar ese punto como destino. No es una ficha curada y todavía no calculé una ruta.` };
+  }
+  if (/\b(ayuda|que podes hacer|que puedes hacer|como funciona|como empiezo)\b/.test(query)) return { ...base, action:'help', text:'Podés ver los puntos cargados, elegir un destino en el mapa o escribirme coordenadas en formato latitud, longitud. También podés preguntar «¿Cuál es mi destino?» o «¿Dónde estoy?». Para calcular una ruta activás tu ubicación y pulsás «Calcular ruta a pie». Sigo en modo guiado, sin IA conectada.' };
+  if (/\b(donde estoy|mi ubicacion|mi posicion)\b/.test(query)) return { ...base, action:'show-location', text:'Para mostrar dónde estás necesito una posición reciente de tu dispositivo. La ubicación se activa solo cuando vos pulsás «Activar mi ubicación».' };
+  if (/\b(mi destino|que elegi|punto elegido|destino elegido)\b/.test(query) && !/\b(llegar|llego|ruta|caminar|guiame)\b/.test(query)) return { ...base, action:'show-destination', text:'Todavía no elegiste un destino. Podés marcarlo en el mapa o escribir sus coordenadas.' };
   if (/\b(mejor|peor|bonito|seguro|peligroso|opinion|precio|horario|abierto)\b/.test(query)) return { ...base, text: 'Puedo ayudarte con ubicaciones y direcciones. No tengo opiniones, horarios, precios ni información de seguridad verificada.' };
   if (/\b(gracias|hola|buenas|buenos dias)\b/.test(query)) return { ...base, text: '¡Hola! Decime qué punto querés encontrar. También podés elegir un destino directamente en el mapa.' };
   if (classification?.intent === 'directions' || /\b(llegar|llego|direccion|direcciones|ruta|caminar|guiame)\b/.test(query)) {
@@ -872,8 +889,16 @@ if(!location.hash)location.hash='explorar';
 
 
 const $ = id => document.getElementById(id);
-const state = { map:null, catalog:[], catalogReady:false, selected:null, destinationMarker:null, locationMarker:null, accuracyCircle:null, location:null, watch:null, locationEpoch:0, route:null, routeLayer:null, routeController:null, routeVersion:0, lastRouteAt:0, history:[], picking:false, apiAvailable:false, busy:false, locationError:false, startedLocation:false };
+const state = { map:null, catalog:[], catalogReady:false, selected:null, destinationMarker:null, locationMarker:null, accuracyCircle:null, location:null, watch:null, locationEpoch:0, route:null, routeLayer:null, routeController:null, routeVersion:0, lastRouteAt:0, history:[], picking:false, apiAvailable:false, busy:false, chatEpoch:0, chatController:null, locationError:false, startedLocation:false };
 const mapMessage = text => { $('map-message').textContent=text; $('map-message').hidden=!text; };
+
+function refreshJourney() {
+  const fresh=state.location&&!state.locationError&&Date.now()-state.location.timestamp<=30000&&state.location.accuracy<=80;
+  const show=(id,text,status)=>{const box=$(id),label=box.querySelector('strong');if(label.textContent!==text)label.textContent=text;if(box.dataset.state!==status)box.dataset.state=status;};
+  show('journey-destination',state.selected?'Elegido':'Sin elegir',state.selected?'done':'pending');
+  show('journey-location',fresh?'Señal recibida':state.startedLocation?'Esperando señal':'Desactivada',fresh?'done':state.startedLocation?'caution':'pending');
+  show('journey-route',state.route?(fresh?'Ruta calculada':'Seguimiento pausado'):state.routeController?'Calculando…':'Sin calcular',state.route?(fresh?'done':'caution'):'pending');
+}
 
 function message(role,text) {
   const el=document.createElement('div'); el.className=`message ${role}`;
@@ -892,10 +917,10 @@ function clearRoute() {
   state.routeLayer=null;state.route=null;$('route-panel').hidden=true;$('route-steps').replaceChildren();
   $('route-button').disabled=false;
   $('route-status').textContent=state.location?'Podés calcular un nuevo recorrido.':'Activá tu ubicación para calcular el recorrido.';
+  refreshJourney();
 }
 
-function selectDestination(place) {
-  clearRoute();state.selected=place;state.picking=false;$('pick-button').setAttribute('aria-pressed','false');
+function drawDestination(place) {
   if(state.destinationMarker) state.map?.removeLayer(state.destinationMarker);
   if(state.map) {
     const icon=L.divIcon({className:'destination-icon',html:'<svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18 18 6M6 6h12v12"/></svg>',iconSize:[30,30],iconAnchor:[15,15]});
@@ -903,10 +928,16 @@ function selectDestination(place) {
     const label=document.createElement('span');label.textContent=place.name;state.destinationMarker.bindPopup(label);
     state.map.panTo([place.lat,place.lng]);
   }
+}
+
+function selectDestination(place) {
+  clearRoute();state.selected=place;state.picking=false;$('pick-button').setAttribute('aria-pressed','false');
+  drawDestination(place);
   $('destination-panel').hidden=false;$('destination-title').textContent=place.name;
   $('destination-detail').textContent=place.status==='verified' ? [place.address,place.city,`Revisado: ${place.reviewedAt}`].filter(Boolean).join(' · ') : `${place.lat.toFixed(5)}, ${place.lng.toFixed(5)} · Punto elegido por vos; no es una ficha curada.`;
   $('selection-summary').textContent=`Destino: ${place.name}. Coordenadas: ${place.lat.toFixed(5)}, ${place.lng.toFixed(5)}.`;
   mapMessage('Destino elegido. Activá tu ubicación y calculá una ruta a pie.');
+  refreshJourney();
 }
 
 function placeButton(place,container) {
@@ -946,6 +977,7 @@ function initMap() {
     selectDestination({name:'Punto elegido en el mapa',lat:event.latlng.lat,lng:event.latlng.lng,status:'manual'});
   });
   mapMessage('Mové el mapa y pulsá «Elegir destino en el mapa».');
+  if(state.selected)drawDestination(state.selected);
 }
 
 function stopLocation(reason='Ubicación detenida. Tu posición se borró de esta sesión.') {
@@ -956,6 +988,7 @@ function stopLocation(reason='Ubicación detenida. Tu posición se borró de est
   if(state.accuracyCircle)state.map?.removeLayer(state.accuracyCircle);
   state.locationMarker=null;state.accuracyCircle=null;
   $('locate-button').hidden=false;$('locate-button').disabled=false;$('stop-button').hidden=true;$('location-badge').textContent='Ubicación desactivada';mapMessage(reason);
+  refreshJourney();
 }
 
 function locationFailure(error) {
@@ -966,6 +999,7 @@ function locationFailure(error) {
   if(state.route)$('next-instruction').textContent='Seguimiento pausado: no hay una posición actual confiable.';
   mapMessage(text);
   if(!state.location){$('locate-button').hidden=false;$('locate-button').disabled=false;}
+  refreshJourney();
 }
 
 function onPosition(position) {
@@ -988,10 +1022,12 @@ function startLocation() {
   if(state.watch!==null)navigator.geolocation.clearWatch(state.watch);
   const epoch=++state.locationEpoch;
   state.locationError=false;state.startedLocation=true;$('locate-button').disabled=true;$('stop-button').hidden=false;$('location-badge').textContent='Pidiendo permiso…';
+  refreshJourney();
   state.watch=navigator.geolocation.watchPosition(p=>{if(epoch===state.locationEpoch)onPosition(p);},e=>{if(epoch===state.locationEpoch)locationFailure(e);},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
 }
 
 function updateProgress() {
+  refreshJourney();
   if(!state.route || !state.location)return;
   if(state.locationError || Date.now()-state.location.timestamp>30000 || state.location.accuracy>80) {$('next-instruction').textContent='Seguimiento pausado: esperando una ubicación reciente y precisa.';return;}
   const progress=nearestOnRoute(state.location,state.route.coordinates);
@@ -1012,6 +1048,7 @@ async function calculateRoute() {
   const origin={...state.location},destination={...state.selected};
   const controller=new AbortController();state.routeController=controller;
   const timer=setTimeout(()=>controller.abort(),15000);$('route-button').disabled=true;$('route-status').textContent='Consultando recorrido a pie…';
+  refreshJourney();
   try {
     // Backend explícitamente peatonal. No usar router OSRM de automóvil como ruta a pie.
     const url=`https://routing.openstreetmap.de/routed-foot/route/v1/foot/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview=full&geometries=geojson&steps=true`;
@@ -1027,29 +1064,42 @@ async function calculateRoute() {
     mapMessage('Recorrido experimental a pie. Confirmá el camino y las condiciones en el lugar.');updateProgress();
   } catch(error) {
     if(version===state.routeVersion){$('route-status').textContent=error.name==='AbortError'?'La consulta tardó demasiado. Volvé a intentar.':(error instanceof TypeError?'No pude conectar con el servicio de rutas. Revisá tu conexión e intentá de nuevo.':error.message);}
-  } finally {clearTimeout(timer);if(version===state.routeVersion){$('route-button').disabled=false;state.routeController=null;}}
+  } finally {clearTimeout(timer);if(version===state.routeVersion){$('route-button').disabled=false;state.routeController=null;refreshJourney();}}
 }
 
 async function sendChat(text) {
   text=text.trim().slice(0,500);if(!text||state.busy)return;
   state.busy=true;$('send-button').disabled=true;
+  const epoch=++state.chatEpoch;
   const history=state.history.slice(-6);message('user',text);$('chat-input').value='';
   try {
-    let reply;
-    if(state.apiAvailable){
+    const local=guidedReply(text,state.catalog);
+    let reply=['coordinates','invalid-coordinates','help','show-destination','show-location'].includes(local.action)?local:null;
+    if(!reply&&state.apiAvailable){
       try {
-        const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history}),signal:AbortSignal.timeout(15000)});
+        state.chatController=new AbortController();
+        const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history}),signal:AbortSignal.any([state.chatController.signal,AbortSignal.timeout(15000)])});
         if(!res.ok)throw new Error();reply=await res.json();
         if(typeof reply.text!=='string'||!['guided','ai'].includes(reply.mode))throw new Error();
-      } catch {state.apiAvailable=false;reply=null;}
+      } catch {if(epoch!==state.chatEpoch)return;state.apiAvailable=false;reply=null;}
     }
-    if(!reply)reply=guidedReply(text,state.catalog);
-    if(!state.catalogReady && !reply.places?.length)reply={...reply,text:'No pude cargar la selección de puntos. Podés elegir un destino en el mapa, pero no puedo confirmar búsquedas en el catálogo.'};
+    if(epoch!==state.chatEpoch)return;
+    if(!reply)reply=local;
+    if(!state.catalogReady && !reply.places?.length && !['coordinates','invalid-coordinates','help','show-destination','show-location'].includes(reply.action))reply={...reply,text:'No pude cargar la selección de puntos. Podés elegir un destino en el mapa, pero no puedo confirmar búsquedas en el catálogo.'};
+    if(reply.action==='show-destination'&&state.selected)reply.text=`Tu destino es ${state.selected.name}: ${state.selected.lat.toFixed(5)}, ${state.selected.lng.toFixed(5)}. Podés cambiarlo desde el mapa o indicar otras coordenadas.`;
+    if(reply.action==='show-location'&&state.location){
+      reply.text=!state.locationError&&Date.now()-state.location.timestamp<=30000&&state.location.accuracy<=80?`Tu dispositivo indica ${state.location.lat.toFixed(5)}, ${state.location.lng.toFixed(5)}, con precisión aproximada de ±${Math.round(state.location.accuracy)} m. Esa posición no se guarda.`:'No tengo una posición reciente y precisa para mostrarte. Esperá una mejor señal de ubicación.';
+    }
     $('chat-mode').textContent=reply.mode==='ai'?'IA para interpretar · ubicaciones de tu selección':'Conversación guiada · sin IA conectada';
     if(reply.action==='directions'&&state.selected&&!reply.places?.length)reply.text=`Tu destino elegido es ${state.selected.name}. Activá tu ubicación y pulsá «Calcular ruta a pie».`;
     message('assistant',reply.text+(reply.notice?'\n'+reply.notice:''));
+    if(reply.action==='coordinates'&&validCoordinate(reply.destination)){
+      const button=document.createElement('button');button.type='button';button.className='button coordinate-confirm';button.textContent='Usar este destino';
+      button.addEventListener('click',()=>{selectDestination(reply.destination);button.disabled=true;button.textContent='Destino elegido';message('assistant',state.startedLocation?'Destino elegido. La ubicación sigue activada; no calculé una ruta nueva. Pulsá «Calcular ruta a pie» cuando querás continuar.':'Destino elegido. La ubicación sigue desactivada y no calculé la ruta; esos pasos los decidís vos.');});
+      $('chat-log').lastElementChild.append(button);
+    }
     for(const candidate of reply.places||[]){const place=state.catalog.find(p=>p.id===candidate.id);if(place)placeButton(place,$('chat-log').lastElementChild);}
-  } finally {state.busy=false;$('send-button').disabled=false;}
+  } finally {if(epoch===state.chatEpoch){state.busy=false;state.chatController=null;$('send-button').disabled=false;}}
 }
 
 function renderPage() {
@@ -1065,8 +1115,16 @@ function renderPage() {
 
 $('locate-button').addEventListener('click',startLocation);
 $('stop-button').addEventListener('click',()=>stopLocation());
+$('center-button').addEventListener('click',()=>{
+  if(!state.map){mapMessage('El mapa todavía no está disponible. Podés seguir conversando o indicar coordenadas.');return;}
+  const current=state.location&&!state.locationError&&Date.now()-state.location.timestamp<=30000&&state.location.accuracy<=80?state.location:null;
+  if(current&&state.selected)state.map.fitBounds([[current.lat,current.lng],[state.selected.lat,state.selected.lng]],{padding:[35,35],maxZoom:17});
+  else if(current||state.selected){const point=current||state.selected;state.map.setView([point.lat,point.lng],16);}
+  else state.map.setView([14.5586,-90.7336],15);
+});
+$('clear-chat').addEventListener('click',()=>{state.chatEpoch++;state.chatController?.abort();state.chatController=null;state.busy=false;$('send-button').disabled=false;state.history=[];$('chat-log').replaceChildren();message('assistant','La conversación se borró de esta pantalla. Podés empezar otra consulta. Tu destino y la ubicación no cambian; para detener el GPS usá «Detener ubicación».');});
 $('pick-button').addEventListener('click',()=>{if(!state.map){mapMessage('El mapa no está disponible. Usá las coordenadas para elegir un destino.');return;}state.picking=!state.picking;$('pick-button').setAttribute('aria-pressed',String(state.picking));mapMessage(state.picking?'Tocá un punto del mapa para elegir tu destino.':'Selección de destino cancelada.');});
-$('clear-destination').addEventListener('click',()=>{clearRoute();state.selected=null;if(state.destinationMarker)state.map?.removeLayer(state.destinationMarker);state.destinationMarker=null;$('destination-panel').hidden=true;$('selection-summary').textContent='Todavía no elegiste un destino.';});
+$('clear-destination').addEventListener('click',()=>{clearRoute();state.selected=null;if(state.destinationMarker)state.map?.removeLayer(state.destinationMarker);state.destinationMarker=null;$('destination-panel').hidden=true;$('selection-summary').textContent='Todavía no elegiste un destino.';refreshJourney();});
 $('preview-coordinate-apply').addEventListener('click',event=>{event.preventDefault();const lat=$('destination-lat').value,lng=$('destination-lng').value;const point={lat:Number(lat),lng:Number(lng)};if(!lat||!lng||!validCoordinate(point))return;selectDestination({...point,name:'Punto indicado por coordenadas',status:'manual'});});
 $('route-button').addEventListener('click',calculateRoute);
 $('send-button').addEventListener('click',event=>{event.preventDefault();sendChat($('chat-input').value);});
@@ -1076,7 +1134,7 @@ document.querySelector('.skip').addEventListener('click',event=>{event.preventDe
 window.addEventListener('pagehide',()=>stopLocation());
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.startedLocation)stopLocation('La ubicación se detuvo al salir de esta pantalla. Activala de nuevo para continuar.');});
 setInterval(updateProgress,5000);
-initMap();renderPage();loadCatalog();
+initMap();renderPage();loadCatalog();refreshJourney();
 
 })();</script>
 </body>

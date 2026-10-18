@@ -1,8 +1,16 @@
 import { validateCatalog, validCoordinate, guidedReply, parseRoute, nearestOnRoute, instruction, distance } from './lib/core.mjs';
 
 const $ = id => document.getElementById(id);
-const state = { map:null, catalog:[], catalogReady:false, selected:null, destinationMarker:null, locationMarker:null, accuracyCircle:null, location:null, watch:null, locationEpoch:0, route:null, routeLayer:null, routeController:null, routeVersion:0, lastRouteAt:0, history:[], picking:false, apiAvailable:true, busy:false, locationError:false, startedLocation:false };
+const state = { map:null, catalog:[], catalogReady:false, selected:null, destinationMarker:null, locationMarker:null, accuracyCircle:null, location:null, watch:null, locationEpoch:0, route:null, routeLayer:null, routeController:null, routeVersion:0, lastRouteAt:0, history:[], picking:false, apiAvailable:true, busy:false, chatEpoch:0, chatController:null, locationError:false, startedLocation:false };
 const mapMessage = text => { $('map-message').textContent=text; $('map-message').hidden=!text; };
+
+function refreshJourney() {
+  const fresh=state.location&&!state.locationError&&Date.now()-state.location.timestamp<=30000&&state.location.accuracy<=80;
+  const show=(id,text,status)=>{const box=$(id),label=box.querySelector('strong');if(label.textContent!==text)label.textContent=text;if(box.dataset.state!==status)box.dataset.state=status;};
+  show('journey-destination',state.selected?'Elegido':'Sin elegir',state.selected?'done':'pending');
+  show('journey-location',fresh?'Señal recibida':state.startedLocation?'Esperando señal':'Desactivada',fresh?'done':state.startedLocation?'caution':'pending');
+  show('journey-route',state.route?(fresh?'Ruta calculada':'Seguimiento pausado'):state.routeController?'Calculando…':'Sin calcular',state.route?(fresh?'done':'caution'):'pending');
+}
 
 function message(role,text) {
   const el=document.createElement('div'); el.className=`message ${role}`;
@@ -21,10 +29,10 @@ function clearRoute() {
   state.routeLayer=null;state.route=null;$('route-panel').hidden=true;$('route-steps').replaceChildren();
   $('route-button').disabled=false;
   $('route-status').textContent=state.location?'Podés calcular un nuevo recorrido.':'Activá tu ubicación para calcular el recorrido.';
+  refreshJourney();
 }
 
-function selectDestination(place) {
-  clearRoute();state.selected=place;state.picking=false;$('pick-button').setAttribute('aria-pressed','false');
+function drawDestination(place) {
   if(state.destinationMarker) state.map?.removeLayer(state.destinationMarker);
   if(state.map) {
     const icon=L.divIcon({className:'destination-icon',html:'<svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18 18 6M6 6h12v12"/></svg>',iconSize:[30,30],iconAnchor:[15,15]});
@@ -32,10 +40,16 @@ function selectDestination(place) {
     const label=document.createElement('span');label.textContent=place.name;state.destinationMarker.bindPopup(label);
     state.map.panTo([place.lat,place.lng]);
   }
+}
+
+function selectDestination(place) {
+  clearRoute();state.selected=place;state.picking=false;$('pick-button').setAttribute('aria-pressed','false');
+  drawDestination(place);
   $('destination-panel').hidden=false;$('destination-title').textContent=place.name;
   $('destination-detail').textContent=place.status==='verified' ? [place.address,place.city,`Revisado: ${place.reviewedAt}`].filter(Boolean).join(' · ') : `${place.lat.toFixed(5)}, ${place.lng.toFixed(5)} · Punto elegido por vos; no es una ficha curada.`;
   $('selection-summary').textContent=`Destino: ${place.name}. Coordenadas: ${place.lat.toFixed(5)}, ${place.lng.toFixed(5)}.`;
   mapMessage('Destino elegido. Activá tu ubicación y calculá una ruta a pie.');
+  refreshJourney();
 }
 
 function placeButton(place,container) {
@@ -76,6 +90,7 @@ function initMap() {
     selectDestination({name:'Punto elegido en el mapa',lat:event.latlng.lat,lng:event.latlng.lng,status:'manual'});
   });
   mapMessage('Mové el mapa y pulsá «Elegir destino en el mapa».');
+  if(state.selected)drawDestination(state.selected);
 }
 
 function stopLocation(reason='Ubicación detenida. Tu posición se borró de esta sesión.') {
@@ -86,6 +101,7 @@ function stopLocation(reason='Ubicación detenida. Tu posición se borró de est
   if(state.accuracyCircle)state.map?.removeLayer(state.accuracyCircle);
   state.locationMarker=null;state.accuracyCircle=null;
   $('locate-button').hidden=false;$('locate-button').disabled=false;$('stop-button').hidden=true;$('location-badge').textContent='Ubicación desactivada';mapMessage(reason);
+  refreshJourney();
 }
 
 function locationFailure(error) {
@@ -96,6 +112,7 @@ function locationFailure(error) {
   if(state.route)$('next-instruction').textContent='Seguimiento pausado: no hay una posición actual confiable.';
   mapMessage(text);
   if(!state.location){$('locate-button').hidden=false;$('locate-button').disabled=false;}
+  refreshJourney();
 }
 
 function onPosition(position) {
@@ -118,10 +135,12 @@ function startLocation() {
   if(state.watch!==null)navigator.geolocation.clearWatch(state.watch);
   const epoch=++state.locationEpoch;
   state.locationError=false;state.startedLocation=true;$('locate-button').disabled=true;$('stop-button').hidden=false;$('location-badge').textContent='Pidiendo permiso…';
+  refreshJourney();
   state.watch=navigator.geolocation.watchPosition(p=>{if(epoch===state.locationEpoch)onPosition(p);},e=>{if(epoch===state.locationEpoch)locationFailure(e);},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
 }
 
 function updateProgress() {
+  refreshJourney();
   if(!state.route || !state.location)return;
   if(state.locationError || Date.now()-state.location.timestamp>30000 || state.location.accuracy>80) {$('next-instruction').textContent='Seguimiento pausado: esperando una ubicación reciente y precisa.';return;}
   const progress=nearestOnRoute(state.location,state.route.coordinates);
@@ -142,6 +161,7 @@ async function calculateRoute() {
   const origin={...state.location},destination={...state.selected};
   const controller=new AbortController();state.routeController=controller;
   const timer=setTimeout(()=>controller.abort(),15000);$('route-button').disabled=true;$('route-status').textContent='Consultando recorrido a pie…';
+  refreshJourney();
   try {
     // Backend explícitamente peatonal. No usar router OSRM de automóvil como ruta a pie.
     const url=`https://routing.openstreetmap.de/routed-foot/route/v1/foot/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview=full&geometries=geojson&steps=true`;
@@ -157,29 +177,42 @@ async function calculateRoute() {
     mapMessage('Recorrido experimental a pie. Confirmá el camino y las condiciones en el lugar.');updateProgress();
   } catch(error) {
     if(version===state.routeVersion){$('route-status').textContent=error.name==='AbortError'?'La consulta tardó demasiado. Volvé a intentar.':(error instanceof TypeError?'No pude conectar con el servicio de rutas. Revisá tu conexión e intentá de nuevo.':error.message);}
-  } finally {clearTimeout(timer);if(version===state.routeVersion){$('route-button').disabled=false;state.routeController=null;}}
+  } finally {clearTimeout(timer);if(version===state.routeVersion){$('route-button').disabled=false;state.routeController=null;refreshJourney();}}
 }
 
 async function sendChat(text) {
   text=text.trim().slice(0,500);if(!text||state.busy)return;
   state.busy=true;$('send-button').disabled=true;
+  const epoch=++state.chatEpoch;
   const history=state.history.slice(-6);message('user',text);$('chat-input').value='';
   try {
-    let reply;
-    if(state.apiAvailable){
+    const local=guidedReply(text,state.catalog);
+    let reply=['coordinates','invalid-coordinates','help','show-destination','show-location'].includes(local.action)?local:null;
+    if(!reply&&state.apiAvailable){
       try {
-        const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history}),signal:AbortSignal.timeout(15000)});
+        state.chatController=new AbortController();
+        const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history}),signal:AbortSignal.any([state.chatController.signal,AbortSignal.timeout(15000)])});
         if(!res.ok)throw new Error();reply=await res.json();
         if(typeof reply.text!=='string'||!['guided','ai'].includes(reply.mode))throw new Error();
-      } catch {state.apiAvailable=false;reply=null;}
+      } catch {if(epoch!==state.chatEpoch)return;state.apiAvailable=false;reply=null;}
     }
-    if(!reply)reply=guidedReply(text,state.catalog);
-    if(!state.catalogReady && !reply.places?.length)reply={...reply,text:'No pude cargar la selección de puntos. Podés elegir un destino en el mapa, pero no puedo confirmar búsquedas en el catálogo.'};
+    if(epoch!==state.chatEpoch)return;
+    if(!reply)reply=local;
+    if(!state.catalogReady && !reply.places?.length && !['coordinates','invalid-coordinates','help','show-destination','show-location'].includes(reply.action))reply={...reply,text:'No pude cargar la selección de puntos. Podés elegir un destino en el mapa, pero no puedo confirmar búsquedas en el catálogo.'};
+    if(reply.action==='show-destination'&&state.selected)reply.text=`Tu destino es ${state.selected.name}: ${state.selected.lat.toFixed(5)}, ${state.selected.lng.toFixed(5)}. Podés cambiarlo desde el mapa o indicar otras coordenadas.`;
+    if(reply.action==='show-location'&&state.location){
+      reply.text=!state.locationError&&Date.now()-state.location.timestamp<=30000&&state.location.accuracy<=80?`Tu dispositivo indica ${state.location.lat.toFixed(5)}, ${state.location.lng.toFixed(5)}, con precisión aproximada de ±${Math.round(state.location.accuracy)} m. Esa posición no se guarda.`:'No tengo una posición reciente y precisa para mostrarte. Esperá una mejor señal de ubicación.';
+    }
     $('chat-mode').textContent=reply.mode==='ai'?'IA para interpretar · ubicaciones de tu selección':'Conversación guiada · sin IA conectada';
     if(reply.action==='directions'&&state.selected&&!reply.places?.length)reply.text=`Tu destino elegido es ${state.selected.name}. Activá tu ubicación y pulsá «Calcular ruta a pie».`;
     message('assistant',reply.text+(reply.notice?'\n'+reply.notice:''));
+    if(reply.action==='coordinates'&&validCoordinate(reply.destination)){
+      const button=document.createElement('button');button.type='button';button.className='button coordinate-confirm';button.textContent='Usar este destino';
+      button.addEventListener('click',()=>{selectDestination(reply.destination);button.disabled=true;button.textContent='Destino elegido';message('assistant',state.startedLocation?'Destino elegido. La ubicación sigue activada; no calculé una ruta nueva. Pulsá «Calcular ruta a pie» cuando querás continuar.':'Destino elegido. La ubicación sigue desactivada y no calculé la ruta; esos pasos los decidís vos.');});
+      $('chat-log').lastElementChild.append(button);
+    }
     for(const candidate of reply.places||[]){const place=state.catalog.find(p=>p.id===candidate.id);if(place)placeButton(place,$('chat-log').lastElementChild);}
-  } finally {state.busy=false;$('send-button').disabled=false;}
+  } finally {if(epoch===state.chatEpoch){state.busy=false;state.chatController=null;$('send-button').disabled=false;}}
 }
 
 function renderPage() {
@@ -195,8 +228,16 @@ function renderPage() {
 
 $('locate-button').addEventListener('click',startLocation);
 $('stop-button').addEventListener('click',()=>stopLocation());
+$('center-button').addEventListener('click',()=>{
+  if(!state.map){mapMessage('El mapa todavía no está disponible. Podés seguir conversando o indicar coordenadas.');return;}
+  const current=state.location&&!state.locationError&&Date.now()-state.location.timestamp<=30000&&state.location.accuracy<=80?state.location:null;
+  if(current&&state.selected)state.map.fitBounds([[current.lat,current.lng],[state.selected.lat,state.selected.lng]],{padding:[35,35],maxZoom:17});
+  else if(current||state.selected){const point=current||state.selected;state.map.setView([point.lat,point.lng],16);}
+  else state.map.setView([14.5586,-90.7336],15);
+});
+$('clear-chat').addEventListener('click',()=>{state.chatEpoch++;state.chatController?.abort();state.chatController=null;state.busy=false;$('send-button').disabled=false;state.history=[];$('chat-log').replaceChildren();message('assistant','La conversación se borró de esta pantalla. Podés empezar otra consulta. Tu destino y la ubicación no cambian; para detener el GPS usá «Detener ubicación».');});
 $('pick-button').addEventListener('click',()=>{if(!state.map){mapMessage('El mapa no está disponible. Usá las coordenadas para elegir un destino.');return;}state.picking=!state.picking;$('pick-button').setAttribute('aria-pressed',String(state.picking));mapMessage(state.picking?'Tocá un punto del mapa para elegir tu destino.':'Selección de destino cancelada.');});
-$('clear-destination').addEventListener('click',()=>{clearRoute();state.selected=null;if(state.destinationMarker)state.map?.removeLayer(state.destinationMarker);state.destinationMarker=null;$('destination-panel').hidden=true;$('selection-summary').textContent='Todavía no elegiste un destino.';});
+$('clear-destination').addEventListener('click',()=>{clearRoute();state.selected=null;if(state.destinationMarker)state.map?.removeLayer(state.destinationMarker);state.destinationMarker=null;$('destination-panel').hidden=true;$('selection-summary').textContent='Todavía no elegiste un destino.';refreshJourney();});
 $('coordinate-form').addEventListener('submit',event=>{event.preventDefault();const lat=$('destination-lat').value,lng=$('destination-lng').value;const point={lat:Number(lat),lng:Number(lng)};if(!lat||!lng||!validCoordinate(point))return;selectDestination({...point,name:'Punto indicado por coordenadas',status:'manual'});});
 $('route-button').addEventListener('click',calculateRoute);
 $('chat-form').addEventListener('submit',event=>{event.preventDefault();sendChat($('chat-input').value);});
@@ -206,4 +247,4 @@ document.querySelector('.skip').addEventListener('click',event=>{event.preventDe
 window.addEventListener('pagehide',()=>stopLocation());
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.startedLocation)stopLocation('La ubicación se detuvo al salir de esta pantalla. Activala de nuevo para continuar.');});
 setInterval(updateProgress,5000);
-initMap();renderPage();loadCatalog();
+initMap();renderPage();loadCatalog();refreshJourney();

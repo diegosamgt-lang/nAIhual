@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateCatalog } from './lib/core.mjs';
+import { createHash } from 'node:crypto';
 
 // Derivado de las mismas fuentes de la web: no mantiene otra implementación.
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -34,4 +35,24 @@ const inlineNavigation = `document.addEventListener('click',event=>{const link=e
 html = html.replace('</body>',`<script>${scriptSafe(leaflet)}</script>\n<script>(function(){\n${scriptSafe(core)}\n${inlineNavigation}\nif(!location.hash)location.hash='explorar';\n${scriptSafe(app)}\n})();</script>\n</body>`);
 await mkdir(path.join(root,'entregas'),{recursive:true});
 await writeFile(path.join(root,'entregas/naihual-editor.html'),html);
-console.log('HTML único preparado: entregas/naihual-editor.html; estilos, catálogo y JavaScript incluidos.');
+// Para pegar directamente en el editor: la interfaz no depende de GitHub.
+// Solo el mapa se mejora con Leaflet si el visor permite su CDN.
+const integrity = async file => 'sha384-'+createHash('sha384').update(await readFile(path.join(root,file))).digest('base64');
+const optionalMap = `
+function loadOptionalMap(){
+  const unavailable=()=>mapMessage('El visor no pudo cargar el mapa externo. Podés seguir usando el panel y la conversación.');
+  mapMessage('El panel está listo. Intentando cargar el mapa externo…');
+  const css=document.createElement('link');css.rel='stylesheet';css.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';
+  const js=document.createElement('script');js.src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';js.async=true;
+  css.integrity='${await integrity('vendor/leaflet/leaflet.css')}';css.crossOrigin='anonymous';
+  js.integrity='${await integrity('vendor/leaflet/leaflet.js')}';js.crossOrigin='anonymous';
+  const ready=element=>new Promise((resolve,reject)=>{element.onload=resolve;element.onerror=reject;setTimeout(()=>reject(new Error('Mapa no disponible')),10000);});
+  const loaded=Promise.all([ready(css),ready(js)]);
+  document.head.append(css);document.body.append(js);
+  loaded.then(()=>{initMap();state.map?.invalidateSize();}).catch(unavailable);
+}
+renderPage();loadCatalog();loadOptionalMap();`;
+let directHtml=html.replace(`<script>${scriptSafe(leaflet)}</script>`,'').replace(`<style>${styles}</style>`,`<style>${await read('styles.css')}</style>`);
+directHtml=directHtml.replace('initMap();renderPage();loadCatalog();refreshJourney();',optionalMap+'refreshJourney();');
+await writeFile(path.join(root,'entregas/editor-chatgpt.html'),directHtml);
+console.log('HTML generado: nai​hual-editor.html con biblioteca incluida; editor-chatgpt.html con interfaz local y mapa externo opcional.');

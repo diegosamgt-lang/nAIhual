@@ -55,3 +55,28 @@ test('valida mensajes y conserva búsqueda guiada si el proveedor falla',async()
   const reply=await chatReply({message:'museo'},[place],{GEMINI_API_KEY:'test',GEMINI_MODEL:'modelo-prueba'},async()=>({ok:false}));
   assert.equal(reply.mode,'guided');assert.match(reply.notice,/No pude conectar/);
 });
+
+test('coordenadas escritas se mantienen como propuesta manual sin inventar fichas',()=>{
+  for(const text of ['14.56, -90.73','llevame a 14.56; -90.73','latitud: 14.56, longitud: -90.73']){
+    const reply=guidedReply(text,[]);assert.equal(reply.action,'coordinates');assert.deepEqual(reply.places,[]);
+    assert.equal(reply.destination.lat,14.56);assert.equal(reply.destination.lng,-90.73);assert.equal(reply.destination.status,'manual');
+  }
+  assert.equal(guidedReply('91, -90',[]).action,'invalid-coordinates');
+  assert.equal(guidedReply('14, -181',[]).action,'invalid-coordinates');
+  for(const ambiguous of ['14.56, -90.73, 2','precio 14,90','1e2, 0'])assert.notEqual(guidedReply(ambiguous,[]).action,'coordinates');
+});
+
+test('ayuda, destino y ubicación distinguen intención sin suponer datos del dispositivo',()=>{
+  assert.equal(guidedReply('Qué podés hacer',[]).action,'help');
+  assert.equal(guidedReply('Cuál es mi destino',[]).action,'show-destination');
+  assert.equal(guidedReply('Dónde estoy',[]).action,'show-location');
+  assert.equal(guidedReply('Cómo llego a mi destino',[]).action,'directions');
+});
+
+test('coordenadas y consultas locales no se envían al proveedor de IA aunque haya claves',async()=>{
+  let calls=0;const fetcher=async()=>{calls++;throw new Error();};
+  for(const message of ['14.56, -90.73','91, -90','Cuál es mi destino','Dónde estoy','Qué podés hacer']){
+    await chatReply({message},[place],{GEMINI_API_KEY:'test',GEMINI_MODEL:'modelo-prueba'},fetcher);
+  }
+  assert.equal(calls,0);
+});

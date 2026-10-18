@@ -137,6 +137,43 @@ with sync_playwright() as p:
     page.evaluate('emitLocation({coords:{latitude:14.5586,longitude:-90.7336,accuracy:10},timestamp:Date.now()})')
     expect(page.locator('#location-badge')).to_contain_text('desactivada')
     assert not errors;context.close();RESULTS.append('GPS impreciso, posición vencida y callback después de detener: no guía con datos inválidos: OK')
+    # Proponer coordenadas no debe elegir destino, activar GPS ni enviar mensajes a IA.
+    context,page,errors=setup(browser)
+    api_calls=[];route_calls=[]
+    page.add_init_script("window.gpsCalls=0;Object.defineProperty(navigator,'geolocation',{value:{watchPosition(){window.gpsCalls++;return 1},clearWatch(){}}})")
+    context.route('**/api/chat',lambda route:(api_calls.append(route.request.url),route.abort()))
+    context.route('https://routing.openstreetmap.de/**',lambda route:(route_calls.append(route.request.url),route.abort()))
+    page.goto(BASE+'/#explorar')
+    page.get_by_role('button',name='Cómo empezar',exact=True).click();expect(page.locator('#chat-log')).to_contain_text('latitud, longitud')
+    page.locator('#chat-input').fill('14.56, -90.73');page.locator('#send-button').click()
+    expect(page.get_by_role('button',name='Usar este destino',exact=True)).to_be_visible()
+    expect(page.locator('#destination-panel')).to_be_hidden();expect(page.locator('#journey-destination')).to_contain_text('Sin elegir')
+    page.get_by_role('button',name='Usar este destino',exact=True).click()
+    expect(page.locator('#destination-detail')).to_contain_text('14.56000, -90.73000')
+    expect(page.locator('#journey-destination')).to_contain_text('Elegido')
+    page.get_by_role('button',name='Mi destino',exact=True).click();expect(page.locator('#chat-log .assistant').last).to_contain_text('14.56000, -90.73000')
+    page.locator('#chat-input').fill('Dónde estoy');page.locator('#send-button').click()
+    expect(page.locator('#chat-log .assistant').last).to_contain_text('posición reciente')
+    assert page.evaluate('gpsCalls')==0;assert not api_calls and not route_calls
+    page.get_by_role('button',name='Borrar chat',exact=True).click()
+    expect(page.locator('#chat-log')).not_to_contain_text('14.56000')
+    expect(page.locator('#destination-detail')).to_contain_text('14.56000')
+    assert not errors;context.close();RESULTS.append('Coordenadas confirmadas y contexto: sin GPS, rutas o IA automáticos; borrar chat conserva destino: OK')
+
+    # Borrar durante una respuesta pendiente no permite que reaparezca el mensaje viejo.
+    context,page,errors=setup(browser);pending=[]
+    context.route('**/api/chat',lambda route:pending.append(route))
+    page.goto(BASE+'/#explorar');page.locator('#chat-input').fill('buscar un lago');page.locator('#send-button').click()
+    expect(page.locator('#send-button')).to_be_disabled()
+    page.get_by_role('button',name='Borrar chat',exact=True).click();expect(page.locator('#send-button')).to_be_enabled()
+    if pending:
+        try:pending[0].fulfill(status=200,content_type='application/json',body=json.dumps({'mode':'guided','text':'RESPUESTA VIEJA','places':[]}))
+        except Exception:pass
+    page.get_by_role('button',name='Cómo empezar',exact=True).click()
+    expect(page.locator('#chat-log')).to_contain_text('latitud, longitud')
+    expect(page.locator('#chat-log')).not_to_contain_text('RESPUESTA VIEJA')
+    expect(page.locator('#chat-log')).not_to_contain_text('buscar un lago')
+    assert not errors;context.close();RESULTS.append('Chat borrado durante respuesta pendiente: la respuesta anterior no reaparece: OK')
     browser.close()
 
 print('\n'.join(RESULTS))
