@@ -52,7 +52,11 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
   - **No'j**: historia y monumentos; cosmovisión maya\*; respeto y costumbres; lugares para aprender.
   - ⚠️ Ajpu «seguridad» exige fuente oficial (regla 7). «Volcanes» quedó fuera del primer bloque (Documento Rector).
   - Consecuencia: cada lugar del catálogo necesita una etiqueta con el o los guardianes que lo recomiendan.
-- ❓ Actitud y forma de hablar de cada guardián.
+- ✅ (18-oct) **Cómo habla cada uno** (dentro de la voz cálida y directa de la marca):
+  - **B'atz'**: juguetón y curioso, ligero, con humor. «¡Empecemos por algo que te vas a llevar en las manos!»
+  - **Kej**: práctico y ordenado, claro como un mapa. «Cuatro paradas, a pie, en este orden.»
+  - **Ajpu**: valiente y retador, motiva a atreverse. «¿Te animás? Esto vale la pena.»
+  - **No'j**: maestro cercano, enseña como amigo. «¿Sabías que…? Mirá este detalle.»
 - ❓ No'j: según el cuaderno 7144, la fecha del fundador cae en 11 No'j. ¿Tiene que ver con su papel?
 - \* Las direcciones, los elementos y los valores no están validados. Ojo: los cargadores del año en el altiplano (PDF) son Iq', Kej, E y No'j; B'atz' y Ajpu no están entre ellos. Hay que preguntarle al Ajq'ij si la asignación de direcciones es correcta.
 - Otros nawales usados para nombrar fases: Aq'ab'al, E, Kawoq, Tijax, Kan.
