@@ -54,5 +54,6 @@ function loadOptionalMap(){
 renderPage();loadCatalog();loadOptionalMap();`;
 let directHtml=html.replace(`<script>${scriptSafe(leaflet)}</script>`,'').replace(`<style>${styles}</style>`,`<style>${await read('styles.css')}</style>`);
 directHtml=directHtml.replace('initMap();renderPage();loadCatalog();refreshJourney();',optionalMap+'refreshJourney();');
-await writeFile(path.join(root,'entregas/editor-chatgpt.html'),directHtml);
-console.log('HTML generado: nai​hual-editor.html con biblioteca incluida; editor-chatgpt.html con interfaz local y mapa externo opcional.');
+await writeFile(path.join(root,'entregas/editor-completo.html'),directHtml);
+await writeFile(path.join(root,'entregas/editor-chatgpt.html'),await read('entregas/panel-editor-simple.html'));
+console.log('Vista del editor preparada sin archivos externos: entregas/editor-chatgpt.html. La aplicación completa se conserva por separado.');

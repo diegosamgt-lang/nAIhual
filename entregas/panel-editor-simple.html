@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es-GT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>nAIhual · Panel del editor</title>
+</head>
+<body style="margin:0;background:#f6f6ef;color:#183d33;font-family:system-ui,-apple-system,sans-serif;line-height:1.5">
+<div id="naihual-panel" style="min-height:100vh;background:#f6f6ef;color:#183d33;font-family:system-ui,-apple-system,sans-serif;line-height:1.5">
+  <header style="background:#fff;border-bottom:1px solid #dbe2d7;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <strong style="font-size:27px;letter-spacing:-1.3px">nAIhual<span style="color:#80a357">✳</span></strong>
+    <span style="font-size:12px;background:#e8efdd;border-radius:20px;padding:7px 13px">Explorar · vista del editor</span>
+  </header>
+
+  <main style="max-width:1120px;margin:auto;padding:26px 18px">
+    <p style="font-size:10px;letter-spacing:2px;font-weight:750;margin:0">GUATEMALA · TURISMO CONSCIENTE</p>
+    <h1 style="font-size:clamp(30px,5vw,46px);line-height:1.1;letter-spacing:-1.7px;margin:10px 0">Explorá a tu ritmo.</h1>
+    <p style="color:#607068;max-width:650px;margin:12px 0 24px">Un lugar, un punto de partida y un recorrido. Con respeto por las personas y el territorio.</p>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+      <section aria-label="Destino y mapa" style="flex:1.4 1 360px;min-width:0">
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <div style="flex:1;background:white;border:1px solid #dbe2d7;border-radius:12px;padding:12px;min-width:0">
+            <span style="font-size:10px;color:#607068">01 · DESTINO</span><strong id="estado-destino" style="display:block;font-size:12px;margin-top:4px">Sin elegir</strong>
+          </div>
+          <div style="flex:1;background:white;border:1px solid #dbe2d7;border-radius:12px;padding:12px;min-width:0">
+            <span style="font-size:10px;color:#607068">02 · UBICACIÓN</span><strong style="display:block;font-size:12px;margin-top:4px">No solicitada</strong>
+          </div>
+        </div>
+
+        <div style="min-height:270px;background:#e5ebdf;border:1px solid #d0dcc8;border-radius:18px;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center">
+          <div style="max-width:330px">
+            <div aria-hidden="true" style="font-size:43px;color:#6d8953">◎</div>
+            <h2 style="font-size:23px;letter-spacing:-.7px;margin:10px 0">Antigua Guatemala</h2>
+            <p style="font-size:13px;color:#52684f;margin:0">Área del mapa. Esta vista no carga cartografía externa ni navegación en vivo.</p>
+          </div>
+        </div>
+
+        <section style="margin-top:16px;padding:20px;background:white;border:1px solid #dbe2d7;border-radius:18px">
+          <h2 style="font-size:18px;margin:0 0 8px">Elegí un destino</h2>
+          <p style="font-size:13px;color:#607068;margin:0 0 14px">Escribí coordenadas que ya conozcás: latitud, longitud. No buscamos ni inventamos lugares.</p>
+          <label for="coordenadas" style="display:block;font-size:12px;font-weight:700;margin-bottom:6px">Coordenadas del destino</label>
+          <input id="coordenadas" type="text" maxlength="120" autocomplete="off" placeholder="Latitud, longitud" style="box-sizing:border-box;width:100%;padding:13px;border:1px solid #cbd7c6;border-radius:10px;font:inherit;color:#183d33;background:#fff">
+          <button id="revisar" type="button" style="margin-top:12px;border:0;border-radius:10px;padding:12px 16px;background:#183d33;color:white;font:inherit;font-size:13px;font-weight:700;cursor:pointer">Revisar destino</button>
+          <p id="destino" role="status" style="font-size:13px;color:#607068;margin:14px 0 0">Todavía no elegiste un destino.</p>
+        </section>
+      </section>
+
+      <section aria-label="Conversación guiada" style="flex:1 1 300px;min-width:0;background:white;border:1px solid #dbe2d7;border-radius:18px;overflow:hidden">
+        <div style="display:flex;gap:12px;align-items:center;padding:20px;border-bottom:1px solid #dbe2d7">
+          <span aria-hidden="true" style="background:#183d33;color:#d9edac;font-size:28px;border-radius:12px;padding:1px 10px">✳</span>
+          <div><h2 style="font-size:18px;margin:0">Hablemos del camino</h2><span style="font-size:11px;color:#607068">Guía local · sin IA conectada</span></div>
+        </div>
+        <div id="mensajes" role="log" aria-live="polite" style="height:250px;overflow:auto;padding:18px;box-sizing:border-box">
+          <div style="padding:13px;background:#edf3e5;border-radius:12px;font-size:13px">¡Hola! Podés preguntarme cómo empezar o indicar un destino por coordenadas.</div>
+        </div>
+        <div style="display:flex;gap:7px;padding:0 18px 12px;flex-wrap:wrap">
+          <button id="ayuda" type="button" style="border:1px solid #d0dcc8;background:white;color:#183d33;border-radius:20px;padding:8px 12px;font:inherit;font-size:11px;cursor:pointer">Cómo empezar</button>
+          <button id="mi-destino" type="button" style="border:1px solid #d0dcc8;background:white;color:#183d33;border-radius:20px;padding:8px 12px;font:inherit;font-size:11px;cursor:pointer">Mi destino</button>
+          <button id="borrar" type="button" style="border:1px solid #d0dcc8;background:white;color:#183d33;border-radius:20px;padding:8px 12px;font:inherit;font-size:11px;cursor:pointer">Borrar chat</button>
+        </div>
+        <div style="display:flex;gap:8px;padding:0 18px 12px">
+          <input id="mensaje" aria-label="Tu mensaje" maxlength="500" autocomplete="off" placeholder="¿Qué querés saber?" style="box-sizing:border-box;flex:1;min-width:0;padding:12px;border:1px solid #dbe2d7;border-radius:10px;font:inherit;font-size:13px;color:#183d33;background:#fff">
+          <button id="enviar" type="button" style="border:0;border-radius:10px;padding:10px 14px;background:#183d33;color:white;font:inherit;font-size:12px;cursor:pointer">Enviar</button>
+        </div>
+        <p style="font-size:10px;color:#607068;margin:0 18px 18px">La conversación y el destino quedan solo en esta vista. Se pierden al recargar.</p>
+        <div style="background:#f4f7ef;padding:18px;border-top:1px solid #dbe2d7">
+          <strong style="font-size:12px">Puntos curados: 0</strong><p style="font-size:12px;color:#607068;margin:6px 0 0">Todavía no hay una selección de lugares cargada.</p>
+        </div>
+      </section>
+    </div>
+
+    <section style="background:white;border:1px solid #dbe2d7;border-radius:18px;padding:22px;margin-top:22px">
+      <h2 style="font-size:23px;letter-spacing:-.6px;margin:0 0 18px">Antes de salir</h2>
+      <details style="padding:12px 0;border-bottom:1px solid #e4eadf"><summary style="cursor:pointer;font-size:13px;font-weight:700">¿Qué funciona en esta vista?</summary><p style="font-size:13px;color:#607068">El diseño, la ayuda desplegable, la conversación guiada y la elección de un destino por coordenadas. No calcula rutas ni solicita ubicación.</p></details>
+      <details style="padding:12px 0;border-bottom:1px solid #e4eadf"><summary style="cursor:pointer;font-size:13px;font-weight:700">¿De dónde saldrán los puntos?</summary><p style="font-size:13px;color:#607068">De la selección curada del proyecto, con fuente y revisión. No se agregan lugares para llenar la pantalla.</p></details>
+      <details style="padding:12px 0"><summary style="cursor:pointer;font-size:13px;font-weight:700">¿Qué guía a nAIhual?</summary><p style="font-size:13px;color:#607068">Las personas, la cultura y la naturaleza. Respetá los accesos, la propiedad privada y a quienes viven en cada lugar.</p></details>
+    </section>
+    <noscript><p style="padding:15px;background:#fff4df;border-radius:10px">El panel puede verse sin JavaScript. Para conversar y elegir un destino, el visor necesita permitir scripts.</p></noscript>
+  </main>
+
+  <footer style="padding:20px;text-align:center;border-top:1px solid #dbe2d7;font-size:11px;color:#607068">nAIhual ✳ · Personas, cultura y territorio</footer>
+</div>
+
+<script>
+(function(){
+  var elegido=null;
+  var mensajes=document.getElementById('mensajes');
+  var entrada=document.getElementById('mensaje');
+  function agregar(texto,usuario){
+    var caja=document.createElement('div');
+    caja.style.cssText='padding:13px;border-radius:12px;font-size:13px;margin-bottom:10px;overflow-wrap:anywhere;white-space:pre-wrap;background:'+(usuario?'#183d33':'#edf3e5')+';color:'+(usuario?'#ffffff':'#183d33');
+    caja.textContent=texto;
+    mensajes.appendChild(caja);
+    while(mensajes.children.length>24)mensajes.removeChild(mensajes.firstChild);
+    mensajes.scrollTop=mensajes.scrollHeight;
+    return caja;
+  }
+  function coordenadas(texto){
+    var par=texto.trim().match(/^([+-]?\d+(?:\.\d+)?)\s*[,;]\s*([+-]?\d+(?:\.\d+)?)$/);
+    if(!par)return null;
+    var lat=Number(par[1]),lng=Number(par[2]);
+    if(!Number.isFinite(lat)||!Number.isFinite(lng)||Math.abs(lat)>90||Math.abs(lng)>180)return null;
+    return {lat:lat,lng:lng};
+  }
+  function proponer(texto){
+    var punto=coordenadas(texto);
+    if(!punto){agregar('Escribí latitud y longitud numéricas, separadas por coma. La latitud va de −90 a 90 y la longitud de −180 a 180.',false);return;}
+    var caja=agregar('Coordenadas recibidas: '+punto.lat.toFixed(5)+', '+punto.lng.toFixed(5)+'. Confirmá para usarlas como destino. No es una ficha curada.',false);
+    var boton=document.createElement('button');
+    boton.type='button';boton.textContent='Confirmar destino';
+    boton.style.cssText='display:block;margin-top:12px;padding:10px 14px;border:0;border-radius:9px;background:#183d33;color:white;font:inherit;cursor:pointer';
+    boton.addEventListener('click',function(){
+      elegido=punto;
+      document.getElementById('estado-destino').textContent='Elegido';
+      document.getElementById('destino').textContent='Destino: '+punto.lat.toFixed(5)+', '+punto.lng.toFixed(5)+'. No se solicitó ubicación ni se calculó una ruta.';
+      boton.disabled=true;boton.textContent='Destino confirmado';
+      agregar('Destino confirmado. En esta vista no hay navegación en vivo.',false);
+    });
+    caja.appendChild(boton);
+  }
+  function responder(texto){
+    texto=texto.trim().slice(0,500);if(!texto)return;
+    agregar(texto,true);
+    var normal=texto.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    if(coordenadas(texto)){proponer(texto);return;}
+    if(/\b(ayuda|empezar|funciona|hacer)\b/.test(normal)){agregar('Podés indicar coordenadas y confirmar un destino, consultar «Mi destino» y revisar la ayuda. Esta es una vista local: no solicita GPS, calcula rutas ni conecta una IA.',false);return;}
+    if(/\b(destino|elegi)\b/.test(normal)){agregar(elegido?'Tu destino es '+elegido.lat.toFixed(5)+', '+elegido.lng.toFixed(5)+'. No hay ruta calculada.':'Todavía no elegiste un destino. Escribí sus coordenadas y confirmá el punto.',false);return;}
+    if(/\b(hola|buenas|gracias)\b/.test(normal)){agregar('¡Hola! Podés pedirme ayuda para empezar o indicar coordenadas.',false);return;}
+    if(/\b(ubicacion|estoy|ruta|llegar|llego)\b/.test(normal)){agregar('Esta vista del editor no solicita tu ubicación ni calcula recorridos. No conozco tu posición actual.',false);return;}
+    agregar('Todavía no hay puntos curados cargados. Puedo ayudarte a elegir un destino por coordenadas, sin inventar lugares ni opiniones.',false);
+  }
+  document.getElementById('enviar').addEventListener('click',function(){var texto=entrada.value;entrada.value='';responder(texto);});
+  entrada.addEventListener('keydown',function(evento){if(evento.key==='Enter'){evento.preventDefault();document.getElementById('enviar').click();}});
+  document.getElementById('revisar').addEventListener('click',function(){proponer(document.getElementById('coordenadas').value);});
+  document.getElementById('ayuda').addEventListener('click',function(){responder('Cómo empezar');});
+  document.getElementById('mi-destino').addEventListener('click',function(){responder('Mi destino');});
+  document.getElementById('borrar').addEventListener('click',function(){mensajes.textContent='';agregar('La conversación se borró. El destino elegido se conserva hasta recargar esta vista.',false);});
+})();
+</script>
+</body>
+</html>
