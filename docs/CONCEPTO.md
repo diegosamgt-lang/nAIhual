@@ -23,7 +23,7 @@ Fuentes leídas: resumen viejo pegado por el fundador (chat anterior, antes del 
 - Visión (3–5 años): agente de referencia, en texto y voz, en varios países.
 - Valores: protección, guía espiritual, integración, amor, luz, autenticidad, aceptación, tolerancia.
 - Voz: narrador cálido, latino neutro con guiños, orgullosamente guatemalteco, multilingüe, cero venta agresiva.
-  - ❓ Choca con «nada cursi ni místico», que escribió una IA el 17-oct, no el fundador.
+  - ✅ (18-oct) Voz **cálida y directa**: cercana y útil, sin tono místico. Lo espiritual aparece solo cuando se habla de cultura.
 - Frases candidatas: «La cultura local, a un tap.» · «Viaja directo a la raíz.» ❓ falta elegir.
 
 ## 3. Los 4 guardianes (núcleo del concepto)
@@ -38,7 +38,9 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 | No'j | Sabiduría: conocimiento interior, consejo claro | Sur · aire/viento | Comprender (cultura, respeto) |
 
 - ✅ (18-oct) Cada guardián es un **personaje distinto**, con instrucciones, actitudes y recomendaciones propias, que «toma» la app.
-- ❓ Cómo se reparten la app, quién es el principal y cómo se elige.
+- ✅ (18-oct) Cada personaje = **valor + función juntos** (columnas 2 y 4 de la tabla). Ej.: Kej = Equilibrio y Explorar.
+- ✅ (18-oct) **Aparece el que corresponde:** nAIhual escucha la pregunta y responde el guardián indicado. El turista no tiene que elegir.
+- ❓ Si hay un principal.
 - ❓ No'j: según el cuaderno 7144, la fecha del fundador cae en 11 No'j. ¿Tiene que ver con su papel?
 - \* Las direcciones, los elementos y los valores no están validados. Ojo: los cargadores del año en el altiplano (PDF) son Iq', Kej, E y No'j; B'atz' y Ajpu no están entre ellos. Hay que preguntarle al Ajq'ij si la asignación de direcciones es correcta.
 - Otros nawales usados para nombrar fases: Aq'ab'al, E, Kawoq, Tijax, Kan.
@@ -49,7 +51,7 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 - ❓ Hay dos paletas en conflicto:
   - Vieja: terracota #C25A3C, jade #009E74, crema #F7F0E6, carbón #333333; Prata + Inter.
   - Actual de los prototipos (Claude, 17-oct): Organic, con crema, terracota, salvia; Caprasimo + Figtree.
-- ✅ El fundador hace la parte gráfica (traspaso). Ningún color es definitivo.
+- ✅ (18-oct) **Ninguno de los dos sigue.** El fundador hace el arte final; mientras tanto, los prototipos usan algo neutro.
 
 ## 5. Producto y tecnología
 
