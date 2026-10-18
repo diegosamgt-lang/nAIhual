@@ -39,8 +39,8 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 
 - ✅ (18-oct) Cada guardián es un **personaje distinto**, con instrucciones, actitudes y recomendaciones propias, que «toma» la app.
 - ✅ (18-oct) Cada personaje = **valor + función juntos** (columnas 2 y 4 de la tabla). Ej.: Kej = Equilibrio y Explorar.
-- ✅ (18-oct) **Aparece el que corresponde:** nAIhual escucha la pregunta y responde el guardián indicado. El turista no tiene que elegir.
-- ❓ Si hay un principal.
+- ❌ «Aparece el que corresponde según la pregunta» (respuesta de la ronda 1, corregida en la ronda 2).
+- ✅ (18-oct) **Turnos:** no hay guardián principal. Los guardianes se turnan para ser el guía. Cada pregunta (escrita o elegida) la contesta uno diferente, con su tono propio. Aunque la respuesta sea parecida, el tono cambia porque cambia el guía. Así el turista siempre habla con uno distinto.
 - ❓ No'j: según el cuaderno 7144, la fecha del fundador cae en 11 No'j. ¿Tiene que ver con su papel?
 - \* Las direcciones, los elementos y los valores no están validados. Ojo: los cargadores del año en el altiplano (PDF) son Iq', Kej, E y No'j; B'atz' y Ajpu no están entre ellos. Hay que preguntarle al Ajq'ij si la asignación de direcciones es correcta.
 - Otros nawales usados para nombrar fases: Aq'ab'al, E, Kawoq, Tijax, Kan.
@@ -64,9 +64,13 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 
 ## 6. Dinero
 
+- ✅ (18-oct) Turista: nacional y extranjero, **por igual**.
+- ✅ (18-oct) El turista usa nAIhual **gratis ahora**. Premium para turistas (WhatsApp, voz, alertas) **después**.
+- ✅ (18-oct) **Sin afiliados de plataformas grandes.** Solo negocios locales.
+
 - ✅ Fase 1 vigente: Plan Fundador, Q250/mes × 3 meses, 5 lugares, siempre marcado como patrocinado (17-oct).
-- ❌ Paywall para turistas ($1 acceso, $2 día, $5 semana, $9 mes): sin confirmar y fuera del primer bloque.
-- ❓ Afiliados con Expedia, Booking u OpenTable: choca con el principio «comunidad primero, no cadenas grandes».
+- ❌ Paywall desde el inicio ($1 acceso, $2 día, $5 semana, $9 mes). Premium queda para después; sin precios definidos.
+- ❌ Afiliados con Expedia, Booking u OpenTable (decisión del 18-oct).
 - Se mantiene como idea: publicidad ética, «destacado» siempre marcado.
 
 ## 7. Plan y medición
