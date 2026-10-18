@@ -24,7 +24,7 @@ Fuentes leídas: resumen viejo pegado por el fundador (chat anterior, antes del 
 - Valores: protección, guía espiritual, integración, amor, luz, autenticidad, aceptación, tolerancia.
 - Voz: narrador cálido, latino neutro con guiños, orgullosamente guatemalteco, multilingüe, cero venta agresiva.
   - ✅ (18-oct) Voz **cálida y directa**: cercana y útil, sin tono místico. Lo espiritual aparece solo cuando se habla de cultura.
-- Frases candidatas: «La cultura local, a un tap.» · «Viaja directo a la raíz.» ❓ falta elegir.
+- ✅ (18-oct) Frase de marca: **«Viaja directo a la raíz.»**
 
 ## 3. Los 4 guardianes (núcleo del concepto)
 
@@ -60,6 +60,13 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 - ❓ No'j: según el cuaderno 7144, la fecha del fundador cae en 11 No'j. ¿Tiene que ver con su papel?
 - \* Las direcciones, los elementos y los valores no están validados. Ojo: los cargadores del año en el altiplano (PDF) son Iq', Kej, E y No'j; B'atz' y Ajpu no están entre ellos. Hay que preguntarle al Ajq'ij si la asignación de direcciones es correcta.
 - Otros nawales usados para nombrar fases: Aq'ab'al, E, Kawoq, Tijax, Kan.
+
+## 3b. Próxima versión (decidido 18-oct)
+
+- ✅ Pantalla 1: **el chat con el guardián de turno**. Saluda; el turista escribe o toca una pregunta lista.
+- ✅ Motor: **reglas fijas, gratis**. Respuestas armadas con el catálogo y el tono de cada guardián. Sin IA todavía; Gemini después.
+- ✅ Curan y validan: el fundador, su red de contactos y fuentes oficiales para la historia.
+  - ❓ No se marcó al Ajq'ij. ¿Lo cultural sigue con \* hasta que lo valide un Ajq'ij, o cambia la regla?
 
 ## 4. Identidad visual
 
@@ -99,8 +106,8 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 
 ## 8. Preguntas abiertas (heredadas)
 
-1. Frase de marca.
+1. ~~Frase de marca~~ → «Viaja directo a la raíz.»
 2. Primera ciudad después de Antigua (¿Atitlán? ¿Ciudad de Guatemala?).
 3. Curadores locales y cómo validan contenido.
 4. Canal: web, WhatsApp o voz.
-5. Personajes: papel, actitud e instrucciones de cada guardián.
+5. ~~Personajes~~ → definidos en la sección 3.
