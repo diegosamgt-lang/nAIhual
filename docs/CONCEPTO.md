@@ -41,6 +41,11 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 - ✅ (18-oct) Cada personaje = **valor + función juntos** (columnas 2 y 4 de la tabla). Ej.: Kej = Equilibrio y Explorar.
 - ❌ «Aparece el que corresponde según la pregunta» (respuesta de la ronda 1, corregida en la ronda 2).
 - ✅ (18-oct) **Turnos:** no hay guardián principal. Los guardianes se turnan para ser el guía. Cada pregunta (escrita o elegida) la contesta uno diferente, con su tono propio. Aunque la respuesta sea parecida, el tono cambia porque cambia el guía. Así el turista siempre habla con uno distinto.
+- ✅ (18-oct) **Orden fijo del turno:** B'atz' → Kej → Ajpu → No'j → B'atz'… (el ciclo del 4). Esto reemplaza el «aleatorio» de la descripción anterior.
+- ✅ (18-oct) Cambia el **tono y también la recomendación**: cada uno recomienda según su valor.
+- ✅ (18-oct) Cada respuesta muestra **nombre e ícono** del guardián que guía.
+- ✅ (18-oct) El turista **puede pedir** a un guardián en particular («quiero hablar con No'j»). Si no pide, sigue el turno.
+- ❓ Qué recomienda cada guardián.
 - ❓ No'j: según el cuaderno 7144, la fecha del fundador cae en 11 No'j. ¿Tiene que ver con su papel?
 - \* Las direcciones, los elementos y los valores no están validados. Ojo: los cargadores del año en el altiplano (PDF) son Iq', Kej, E y No'j; B'atz' y Ajpu no están entre ellos. Hay que preguntarle al Ajq'ij si la asignación de direcciones es correcta.
 - Otros nawales usados para nombrar fases: Aq'ab'al, E, Kawoq, Tijax, Kan.
