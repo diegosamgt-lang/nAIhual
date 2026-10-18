@@ -45,7 +45,14 @@ Origen: resumen viejo, simbología central basada en el número 4 y las direccio
 - ✅ (18-oct) Cambia el **tono y también la recomendación**: cada uno recomienda según su valor.
 - ✅ (18-oct) Cada respuesta muestra **nombre e ícono** del guardián que guía.
 - ✅ (18-oct) El turista **puede pedir** a un guardián en particular («quiero hablar con No'j»). Si no pide, sigue el turno.
-- ❓ Qué recomienda cada guardián.
+- ✅ (18-oct) **Qué recomienda cada uno** (el fundador marcó todas las opciones propuestas):
+  - **B'atz'**: arte y artesanía; experiencias para crear con las manos (clases, talleres); qué contar del viaje, con respeto; los inicios (primer día, por dónde empezar).
+  - **Kej**: rutas a pie; naturaleza (miradores, cerros, fincas); pausas y calma (cafés, jardines); comunidad y mercados.
+  - **Ajpu**: la mejor opción, directo; aventura y retos; seguridad y cuidado; comida con carácter.
+  - **No'j**: historia y monumentos; cosmovisión maya\*; respeto y costumbres; lugares para aprender.
+  - ⚠️ Ajpu «seguridad» exige fuente oficial (regla 7). «Volcanes» quedó fuera del primer bloque (Documento Rector).
+  - Consecuencia: cada lugar del catálogo necesita una etiqueta con el o los guardianes que lo recomiendan.
+- ❓ Actitud y forma de hablar de cada guardián.
 - ❓ No'j: según el cuaderno 7144, la fecha del fundador cae en 11 No'j. ¿Tiene que ver con su papel?
 - \* Las direcciones, los elementos y los valores no están validados. Ojo: los cargadores del año en el altiplano (PDF) son Iq', Kej, E y No'j; B'atz' y Ajpu no están entre ellos. Hay que preguntarle al Ajq'ij si la asignación de direcciones es correcta.
 - Otros nawales usados para nombrar fases: Aq'ab'al, E, Kawoq, Tijax, Kan.
