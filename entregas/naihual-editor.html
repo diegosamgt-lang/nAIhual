@@ -727,7 +727,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
           </div>
           <p class="privacy-note">Tu ubicación no se guarda. Al calcular una ruta, las coordenadas de origen y destino se envían al servicio de rutas FOSSGIS. El mapa usa OpenStreetMap.</p>
           <form id="coordinate-form" class="coordinate-form">
-            <details><summary>Elegir destino por coordenadas</summary><div class="coordinate-fields"><label>Latitud<input id="destination-lat" type="number" step="any" min="-90" max="90" required placeholder="14.56"></label><label>Longitud<input id="destination-lng" type="number" step="any" min="-180" max="180" required placeholder="-90.73"></label><button class="button compact secondary" type="submit">Usar punto</button></div></details>
+            <details><summary>Elegir destino por coordenadas</summary><div class="coordinate-fields"><label>Latitud<input id="destination-lat" type="number" step="any" min="-90" max="90" required placeholder="14.56"></label><label>Longitud<input id="destination-lng" type="number" step="any" min="-180" max="180" required placeholder="-90.73"></label><button class="button compact secondary" type="button" id="preview-coordinate-apply">Usar punto</button></div></details>
           </form>
           <section id="destination-panel" class="destination-panel" aria-labelledby="destination-title" hidden>
             <div class="destination-heading"><div><div class="eyebrow">Destino elegido</div><h2 id="destination-title"></h2><p id="destination-detail" class="muted"></p></div><button id="clear-destination" class="text-button" type="button">Quitar</button></div>
@@ -745,7 +745,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
           <div class="chat-heading"><div class="avatar" aria-hidden="true">✳</div><div><h2 id="chat-title">Hablemos del camino</h2><span id="chat-mode">Conversación guiada · sin IA conectada</span></div></div>
           <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="message assistant"><span class="speaker">nAIhual</span><p>¡Hola! ¿Qué punto querés encontrar? Podés decirme un nombre o elegir un destino en el mapa.</p></div></div>
           <div class="quick-actions"><button type="button" data-prompt="Mostrar puntos">Ver puntos</button><button type="button" data-prompt="Cómo llego a mi destino">Cómo llegar</button></div>
-          <form id="chat-form" class="chat-form"><label class="sr-only" for="chat-input">Tu mensaje</label><input id="chat-input" type="text" maxlength="500" required autocomplete="off" placeholder="¿A dónde querés ir?"><button id="send-button" type="submit" aria-label="Enviar mensaje"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18 18 6M6 6h12v12"/></svg></button></form>
+          <form id="chat-form" class="chat-form"><label class="sr-only" for="chat-input">Tu mensaje</label><input id="chat-input" type="text" maxlength="500" required autocomplete="off" placeholder="¿A dónde querés ir?"><button id="send-button" type="button" aria-label="Enviar mensaje"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18 18 6M6 6h12v12"/></svg></button></form>
           <p class="chat-footnote">No guardamos la conversación. No escribás información personal.</p>
           <section class="catalog" aria-labelledby="catalog-title"><div class="catalog-title"><h3 id="catalog-title">Puntos de interés</h3><span id="place-count">0 puntos</span></div><p id="catalog-status" class="small muted" role="status">Cargando selección…</p><div id="places-list"></div></section>
         </section>
@@ -867,7 +867,7 @@ function instruction(step) {
   return `Seguí${way || ' el recorrido marcado'}`;
 }
 
-document.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');const hash=link?.getAttribute('href');if(['#inicio','#explorar','#resumen','#proposito'].includes(hash)){event.preventDefault();location.hash=hash;}});
+document.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');const hash=link?.getAttribute('href');if(['#inicio','#explorar','#resumen','#proposito'].includes(hash)){event.preventDefault();location.hash=hash;}});document.addEventListener('keydown',event=>{if(event.key!=='Enter')return;if(event.target.id==='chat-input'){event.preventDefault();document.getElementById('send-button').click();}else if(event.target.closest('#coordinate-form')){event.preventDefault();document.getElementById('preview-coordinate-apply').click();}});
 if(!location.hash)location.hash='explorar';
 
 
@@ -1067,9 +1067,9 @@ $('locate-button').addEventListener('click',startLocation);
 $('stop-button').addEventListener('click',()=>stopLocation());
 $('pick-button').addEventListener('click',()=>{if(!state.map){mapMessage('El mapa no está disponible. Usá las coordenadas para elegir un destino.');return;}state.picking=!state.picking;$('pick-button').setAttribute('aria-pressed',String(state.picking));mapMessage(state.picking?'Tocá un punto del mapa para elegir tu destino.':'Selección de destino cancelada.');});
 $('clear-destination').addEventListener('click',()=>{clearRoute();state.selected=null;if(state.destinationMarker)state.map?.removeLayer(state.destinationMarker);state.destinationMarker=null;$('destination-panel').hidden=true;$('selection-summary').textContent='Todavía no elegiste un destino.';});
-$('coordinate-form').addEventListener('submit',event=>{event.preventDefault();const lat=$('destination-lat').value,lng=$('destination-lng').value;const point={lat:Number(lat),lng:Number(lng)};if(!lat||!lng||!validCoordinate(point))return;selectDestination({...point,name:'Punto indicado por coordenadas',status:'manual'});});
+$('preview-coordinate-apply').addEventListener('click',event=>{event.preventDefault();const lat=$('destination-lat').value,lng=$('destination-lng').value;const point={lat:Number(lat),lng:Number(lng)};if(!lat||!lng||!validCoordinate(point))return;selectDestination({...point,name:'Punto indicado por coordenadas',status:'manual'});});
 $('route-button').addEventListener('click',calculateRoute);
-$('chat-form').addEventListener('submit',event=>{event.preventDefault();sendChat($('chat-input').value);});
+$('send-button').addEventListener('click',event=>{event.preventDefault();sendChat($('chat-input').value);});
 document.querySelectorAll('[data-prompt]').forEach(b=>b.addEventListener('click',()=>sendChat(b.dataset.prompt)));
 window.addEventListener('hashchange',renderPage);
 document.querySelector('.skip').addEventListener('click',event=>{event.preventDefault();$('principal').focus();});
