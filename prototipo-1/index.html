@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>nAIhual Guardianes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: chat de una columna (máx. 520px). Arriba la rueda de los 4 guardianes; abajo preguntas listas y caja de texto fija.
+   Visual NEUTRO y provisional: el fundador hará el arte final. Los colores de guardián solo sirven para distinguirlos. */
+:root {
+  --bg: #f3f2ef; --surface: #ffffff; --sunk: #e8e6e1;
+  --ink: #1b1b1a; --ink-2: #4a4945; --ink-3: #75736d;
+  --line: rgba(27,27,26,.12);
+  --g-batz: #a8573f; --g-kej: #5b7148; --g-ajpu: #a77c1f; --g-noj: #4f6b80;
+  --g-batz-soft: #f3e4de; --g-kej-soft: #e3eadc; --g-ajpu-soft: #f2e9d2; --g-noj-soft: #dfe7ed;
+  --on-g: #ffffff;
+  --star: #8a4b2a; --hist: #4f6340;
+  --shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.05);
+  --font: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #161615; --surface: #222220; --sunk: #2c2c29;
+  --ink: #efede8; --ink-2: #c9c6be; --ink-3: #9d9a92;
+  --line: rgba(239,237,232,.14);
+  --g-batz: #d98468; --g-kej: #93ab7c; --g-ajpu: #d9ad4c; --g-noj: #86a7bf;
+  --g-batz-soft: #3a2620; --g-kej-soft: #26301f; --g-ajpu-soft: #362b13; --g-noj-soft: #1f2a33;
+  --on-g: #161615; --star: #e59b72; --hist: #a9c08f;
+  --shadow: 0 1px 2px rgba(0,0,0,.5);
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #161615; --surface: #222220; --sunk: #2c2c29;
+  --ink: #efede8; --ink-2: #c9c6be; --ink-3: #9d9a92;
+  --line: rgba(239,237,232,.14);
+  --g-batz: #d98468; --g-kej: #93ab7c; --g-ajpu: #d9ad4c; --g-noj: #86a7bf;
+  --g-batz-soft: #3a2620; --g-kej-soft: #26301f; --g-ajpu-soft: #362b13; --g-noj-soft: #1f2a33;
+  --on-g: #161615; --star: #e59b72; --hist: #a9c08f;
+  --shadow: 0 1px 2px rgba(0,0,0,.5);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15.5px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--ink-3); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.app { max-width: 520px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; background: var(--bg); padding-block: 14px 10px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; flex-direction: column; }
+.brand b { font-size: 21px; letter-spacing: -.01em; }
+.brand span { font-size: 12.5px; color: var(--ink-3); }
+.seg { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--sunk); }
+.seg button { border: 0; cursor: pointer; padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: transparent; color: var(--ink-2); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+
+.wheel { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; align-items: stretch; }
+.wg { border: 0; cursor: pointer; background: transparent; border-radius: 14px; padding: 6px 2px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; }
+.wg .av { width: 40px; height: 40px; font-size: 16px; opacity: .45; transition: opacity .2s, transform .2s; }
+.wg small { font-size: 12px; font-weight: 600; color: var(--ink-3); }
+.wg[aria-current="true"] .av { opacity: 1; transform: scale(1.08); }
+.wg[aria-current="true"] small { color: var(--ink); }
+.wg[aria-current="true"]::after { content: ""; position: absolute; bottom: 0; width: 18px; height: 3px; border-radius: 3px; background: var(--gc); }
+.wheel-hint { font-size: 12px; color: var(--ink-3); text-align: center; margin: -4px 0 0; }
+
+.av { flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: var(--on-g); background: var(--gc); }
+.g-batz { --gc: var(--g-batz); --gs: var(--g-batz-soft); }
+.g-kej { --gc: var(--g-kej); --gs: var(--g-kej-soft); }
+.g-ajpu { --gc: var(--g-ajpu); --gs: var(--g-ajpu-soft); }
+.g-noj { --gc: var(--g-noj); --gs: var(--g-noj-soft); }
+
+main { flex: 1; display: flex; flex-direction: column; gap: 16px; padding-block: 18px 210px; }
+.msg { display: flex; flex-direction: column; gap: 8px; min-width: 0; scroll-margin-top: 190px; }
+.who { display: flex; align-items: center; gap: 10px; }
+.who .av { width: 34px; height: 34px; font-size: 14px; }
+.who b { font-size: 14.5px; }
+.who div span { font-size: 12.5px; color: var(--ink-3); }
+.bubble { background: var(--gs); border-radius: 4px 20px 20px 20px; padding: 13px 16px; max-width: 100%; text-wrap: pretty; }
+.bubble p { margin: 0; }
+.bubble p + p { margin-top: 8px; }
+.me { align-self: flex-end; max-width: 85%; background: var(--ink); color: var(--bg); border-radius: 20px 4px 20px 20px; padding: 10px 15px; }
+
+.cards { display: flex; flex-direction: column; gap: 8px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.card .k { font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.card h3 { margin: 0; font-size: 17px; line-height: 1.25; text-wrap: balance; }
+.card p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+.card .ad { font-size: 13px; color: var(--ink-3); }
+.card ol { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; counter-reset: s; }
+.card ol li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0,1fr); gap: 8px; align-items: baseline; font-size: 14.5px; }
+.card ol li::before { content: counter(s); width: 22px; height: 22px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+.card ol li span { color: var(--ink-3); font-size: 13px; }
+.btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; margin-top: 4px; border-radius: 999px; border: 1px solid var(--line); font-size: 14px; font-weight: 600; text-decoration: none; background: var(--surface); }
+.btn.solid { background: var(--ink); color: var(--bg); border-color: transparent; }
+.btn svg { fill: none; stroke: currentColor; }
+.tipcard { background: var(--sunk); border: 0; }
+.tipcard p { color: var(--ink); }
+.notes { display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; }
+.note-star { color: var(--star); } .note-hist { color: var(--hist); } .note-muted { color: var(--ink-3); }
+
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: linear-gradient(to top, var(--bg) 80%, transparent);
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); padding-top: 18px; }
+.dock-in { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 2px; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1px solid var(--line); background: var(--surface); cursor: pointer; min-height: 40px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+form { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 5px 5px 16px; box-shadow: var(--shadow); }
+form input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; min-height: 40px; }
+form button { flex: none; border: 0; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--gc); color: var(--on-g); }
+form button svg { fill: none; stroke: currentColor; }
+.foot { font-size: 11.5px; color: var(--ink-3); text-align: center; margin: 0; }
+.linkbtn { border: 0; background: none; padding: 0; cursor: pointer; text-decoration: underline; color: var(--ink-3); font-size: 11.5px; }
+
+dialog { border: 0; padding: 0; border-radius: 22px; width: min(480px, calc(100% - 32px)); max-height: 85vh; background: var(--bg); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+dialog::backdrop { background: rgba(0,0,0,.4); }
+.dlg { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.dlg h2 { margin: 0; font-size: 20px; }
+.dlg > p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+.gcard { background: var(--gs); border-radius: 18px; padding: 14px 16px; display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 12px; }
+.gcard .av { width: 44px; height: 44px; font-size: 17px; }
+.gcard b { font-size: 16px; }
+.gcard dl { margin: 4px 0 0; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 2px 10px; font-size: 13.5px; }
+.gcard dt { color: var(--ink-3); }
+.gcard dd { margin: 0; }
+.dlg .close { align-self: flex-end; }
+@media (prefers-reduced-motion: no-preference) { .msg.new { animation: up .25s ease-out; } @keyframes up { from { transform: translateY(6px); opacity: .4; } } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="top">
+      <div class="brand"><b>nAIhual</b><span id="tagline"></span></div>
+      <div class="seg" role="group" aria-label="Idioma / Language">
+        <button type="button" id="lang-es" data-lang="es">ES</button>
+        <button type="button" id="lang-en" data-lang="en">EN</button>
+      </div>
+    </div>
+    <div class="wheel" id="wheel" role="group"></div>
+    <p class="wheel-hint" id="wheel-hint"></p>
+  </header>
+  <main id="chat" aria-live="polite"></main>
+</div>
+<div class="dock">
+  <div class="dock-in">
+    <div class="chips" id="chips"></div>
+    <form id="ask" autocomplete="off">
+      <input id="q" type="text" maxlength="200">
+      <button type="submit" id="send" aria-label="Enviar"><svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+    </form>
+    <p class="foot"><span id="foot"></span> · <button type="button" class="linkbtn" id="who-btn"></button></p>
+  </div>
+</div>
+<dialog id="dlg"><div class="dlg" id="dlg-body"></div></dialog>
+
+<script>
+(function () {
+'use strict';
+function w(es, en) { return { es: es, en: en }; }
+
+// ---------- Guardianes (docs/CONCEPTO.md, sección 3) ----------
+var ORDER = ['batz', 'kej', 'ajpu', 'noj'];
+var G = {
+  batz: { name: "B'atz'", ini: 'B', value: w('El inicio', 'The beginning'), role: w('Crear', 'Create'), speaks: w('Juguetón y curioso', 'Playful and curious'),
+    recs: w('Arte y artesanía, talleres, qué contar de tu viaje, por dónde empezar', 'Art and crafts, workshops, what to share from your trip, where to start'),
+    hello: w("Soy B'atz', el inicio*: el hilo con el que empieza todo.", "I'm B'atz', the beginning*: the thread everything starts with."),
+    pdf: w('Hilo del tiempo, tejido, origen · Mono', 'Thread of time, weaving, origin · Monkey') },
+  kej: { name: 'Kej', ini: 'K', value: w('El equilibrio', 'Balance'), role: w('Explorar', 'Explore'), speaks: w('Práctico y ordenado', 'Practical and orderly'),
+    recs: w('Rutas a pie, naturaleza, pausas y calma, comunidad y mercados', 'Walking routes, nature, calm breaks, community and markets'),
+    hello: w('Soy Kej, el equilibrio*. Yo te ordeno el camino.', "I'm Kej, balance*. I put your path in order."),
+    pdf: w('Venado, 4 pilares del cosmos · Venado', 'Deer, the 4 pillars of the cosmos · Deer') },
+  ajpu: { name: 'Ajpu', ini: 'A', value: w('La fuerza', 'Strength'), role: w('Decidir', 'Decide'), speaks: w('Valiente y retador', 'Brave and daring'),
+    recs: w('La mejor opción directo, aventura, seguridad y cuidado, comida con carácter', 'The best option, straight up; adventure; safety and care; food with character'),
+    hello: w('Soy Ajpu, la fuerza del sol*. Yo te reto a ir.', "I'm Ajpu, the strength of the sun*. I dare you to go."),
+    pdf: w('El Sol, cazador célebre, autoridad · Espíritu humano / Sol', 'The Sun, the famed hunter, authority · Human spirit / Sun') },
+  noj: { name: "No'j", ini: 'N', value: w('La sabiduría', 'Wisdom'), role: w('Comprender', 'Understand'), speaks: w('Maestro cercano', 'A friendly teacher'),
+    recs: w('Historia y monumentos, cosmovisión maya, respeto y costumbres, lugares para aprender', 'History and monuments, Maya worldview, respect and customs, places to learn'),
+    hello: w("Soy No'j, la sabiduría*. Yo te cuento el porqué.", "I'm No'j, wisdom*. I tell you the why."),
+    pdf: w('Mente, pensamiento, sabiduría · Coyote, lobo, pájaro carpintero', 'Mind, thought, wisdom · Coyote, wolf, woodpecker') }
+};
+
+// ---------- Catálogo (igual que el Prototipo 0). addr null = sin verificar: nunca se recomienda. ----------
+var P = {
+  parque: { cat: 'cultura', hist: true, name: 'Parque Central', addr: 'Entre 4a y 5a Calle, 4a y 5a Avenida', why: w('La plaza principal. A su alrededor están la Catedral, el Palacio de los Capitanes Generales y el Ayuntamiento.', 'The main square, framed by the Cathedral, the Palace of the Captains General and City Hall.') },
+  catedral: { cat: 'cultura', hist: true, name: 'Catedral de San José', addr: 'Lado oriente del Parque Central', why: w('Se empezó a construir en 1545. Los terremotos de 1773 la dañaron: una parte sigue siendo iglesia y otra quedó en ruinas.', 'Construction began in 1545. After the 1773 earthquakes, part is still a church and part remains in ruins.') },
+  palacio: { cat: 'cultura', hist: true, name: 'Palacio de los Capitanes Generales', addr: 'Lado sur del Parque Central', why: w('Fue la sede del gobierno colonial de la Capitanía General de Guatemala.', 'Seat of the colonial government of the Captaincy General of Guatemala.') },
+  arco: { cat: 'cultura', hist: true, name: 'Arco de Santa Catalina', addr: '5a Avenida Norte', why: w('Del siglo XVII. Unía dos partes de un convento para que las monjas cruzaran la calle sin ser vistas.', 'From the 17th century. It joined two parts of a convent so the nuns could cross the street unseen.') },
+  merced: { cat: 'cultura', hist: true, name: 'Iglesia de La Merced', addr: '1a Calle Poniente y 6a Avenida Norte', why: w('Iglesia barroca del siglo XVIII, amarilla y con su fachada cubierta de relieves blancos.', 'An 18th-century baroque church, yellow, its façade covered in white relief work.') },
+  capuchinas: { cat: 'cultura', hist: true, name: 'Convento de las Capuchinas', addr: '2a Avenida Norte y 2a Calle Oriente', why: w('Ruinas de un convento del siglo XVIII con una torre circular de celdas.', 'Ruins of an 18th-century convent with a circular tower of cells.') },
+  santaclara: { cat: 'cultura', hist: true, name: 'Ruinas de Santa Clara', addr: '2a Avenida Sur y 6a Calle Oriente', why: w('Convento de las clarisas. Enfrente está el tanque Unión, lavaderos públicos de la época colonial.', 'Convent of the Poor Clares. Across the street is Tanque Unión, the colonial-era public washbasins.') },
+  sanfrancisco: { cat: 'cultura', hist: true, name: 'Iglesia de San Francisco el Grande', addr: '1a Avenida Sur y 7a Calle Oriente', why: w('Aquí está la tumba del Santo Hermano Pedro de San José de Betancur.', 'Home to the tomb of Saint Hermano Pedro de San José de Betancur.') },
+  doce: { cat: 'cafe', name: '12 Onzas', addr: '4a Calle Oriente 5', why: w('No falla con el café, expertos catadores.', 'Never misses with coffee. Expert cuppers.') },
+  artista: { cat: 'cafe', name: 'Artista de Café', addr: '5a Avenida Sur 34B', why: w('No falla con el café, expertos catadores, pero con una forma super aesthetic de comunicar el amor por el café.', 'Never misses with coffee, with a super aesthetic way of sharing their love for it.') },
+  siena: { cat: 'cafe', name: 'Siena Luz', addr: '6a Avenida Norte', why: w('La vibe con filosofía y literatura combinada con el mejor café es una experiencia top.', 'Philosophy and literature vibes plus the best coffee: a top experience.') },
+  fatcat: { cat: 'cafe', name: 'Fat Cat Coffee House', addr: '4a Calle Oriente, frente a 12 Onzas', why: w('Especialistas en café.', 'Coffee specialists.') },
+  coffea: { cat: 'cafe', name: 'Coffea Cafés Especiales', addr: '6a Calle Oriente 18A', why: w('Especialistas en café. Entre las 100 mejores coffee shops del mundo.', 'Coffee specialists. Among the world’s 100 best coffee shops.') },
+  cazador: { cat: 'comida', name: 'El Cazador Italiano', addr: '3a Avenida Norte 1B, detrás de la Catedral', why: w('Lo mejor si querés la mejor pizza tradicional italiana o panadería italiana.', 'The place for the best traditional Italian pizza or Italian bakery.') },
+  once: { cat: 'comida', name: 'Once Once', addr: '2a Calle Oriente 22', why: w('Lugar vegano/vegetariano que recomiendo sobre todas las cosas. Cualquier plato de ahí es perfecto.', 'A vegan/vegetarian spot I recommend above all. Any dish there is perfect.') },
+  patio: { cat: 'comida', name: 'Patio de la Primera', addr: '1a Avenida Sur 17C', why: w('De todo un poco, pero sobresale el ambiente y lo instagrameable del lugar.', 'A bit of everything, but the vibe and how photogenic it is stand out.') }
+};
+var ROUTES = {
+  centro: { stops: ['parque', 'catedral', 'doce', 'palacio', 'arco', 'merced'], kicker: w('Una mañana', 'A morning'), title: w('El corazón de Antigua', 'The heart of Antigua') },
+  conventos: { stops: ['capuchinas', 'once', 'santaclara', 'sanfrancisco', 'patio'], kicker: w('Una tarde', 'An afternoon'), title: w('Conventos del oriente', 'Convents to the east') },
+  norte: { stops: ['catedral', 'cazador', 'arco', 'merced', 'siena'], kicker: w('Un par de horas', 'A couple of hours'), title: w('Del Arco a La Merced', 'From the Arch to La Merced') }
+};
+var TIPS = {
+  foto: { body: w('Antes de fotografiar a alguien, pedí permiso. Un «¿puedo?» basta.', 'Before photographing someone, ask first. A simple “may I?” is enough.') },
+  horario: { body: w('Los horarios cambian. Confirmalos en Google Maps antes de salir.', 'Opening hours change. Check them in Google Maps before you head out.') },
+  calles: { body: w('Caminá con respeto: estas calles son casa de mucha gente.', 'Walk with respect: these streets are home to many people.') },
+  cholqij: { star: true, body: w('El Cholq\'ij, el calendario sagrado maya, tiene 260 días: 13 números por 20 nawales.', 'The Cholq\'ij, the sacred Maya calendar, has 260 days: 13 numbers times 20 nawales.') },
+  rukux: { star: true, body: w('Ruk\'u\'x Kaj y Ruk\'u\'x Ulew: el Corazón del Cielo y el Corazón de la Tierra.', 'Ruk\'u\'x Kaj and Ruk\'u\'x Ulew: the Heart of Sky and the Heart of Earth.') },
+  maiz: { star: true, body: w('En el Popol Wuj, la humanidad está hecha de maíz.', 'In the Popol Wuj, humanity is made of maize.') },
+  nikaj: { star: true, body: w('El cero maya, Nik\'aj, no es vacío: es plenitud, semilla y ciclo completo.', 'The Maya zero, Nik\'aj, is not emptiness: it means fullness, seed and a completed cycle.') },
+  nawalpersona: { star: true, body: w('Los nawales son los significados de los días. Decirle a alguien «cuál es su nawal» le corresponde a un Ajq\'ij.', 'Nawales are the meanings of the days. Telling someone "what their nawal is" is the work of an Ajq\'ij.') }
+};
+
+// ---------- Respuestas: cada guardián con su tono y su recomendación (propuesta de Claude, por corregir) ----------
+// items: 'p:id' lugar · 'r:id' ruta · 't:id' consejo · plan: lista de lugares en orden
+var R = {
+  empezar: {
+    batz: { t: w('¡Empecemos por el nudo donde se juntan todos los hilos! El Parque Central. Desde ahí todo queda a pie. Y una idea para tu primera foto: pedí permiso antes de retratar a alguien.', 'Let’s start where all the threads meet! Parque Central. From there everything is walkable. And an idea for your first photo: ask before you take someone’s portrait.'), items: ['p:parque', 't:foto'] },
+    kej: { t: w('Primer paso: ubicate. Esta ruta te ordena el centro en un par de horas. Cinco paradas, en este orden.', 'Step one: get your bearings. This route lays out the centre in a couple of hours. Five stops, in this order.'), items: ['r:norte'] },
+    ajpu: { t: w('¿Te animás a arrancar fuerte? Si hoy hacés una sola cosa, que sea esta: el corazón de Antigua, de la plaza a La Merced.', 'Up for a strong start? If you do one thing today, make it this: the heart of Antigua, from the square to La Merced.'), items: ['r:centro'] },
+    noj: { t: w('¿Sabías que Antigua fue la sede de toda la Capitanía General de Guatemala? Empezá por la plaza: ahí entendés por qué.', 'Did you know Antigua was the seat of the whole Captaincy General of Guatemala? Start at the square and you’ll see why.'), items: ['p:parque', 'p:palacio', 'p:catedral'] }
+  },
+  horas: {
+    batz: { t: w('¡Tres horas dan para mucho! Calles bonitas, un arco para tu foto y un café con libros para cerrar.', 'Three hours go a long way! Pretty streets, an arch for your photo and a café full of books to finish.'), plan: ['arco', 'merced', 'siena'] },
+    kej: { t: w('Para unas horas: cinco paradas a pie, en este orden. Confirmá horarios antes de salir.', 'For a few hours: five stops on foot, in this order. Check opening hours before you go.'), items: ['r:norte'] },
+    ajpu: { t: w('¿Tenés la tarde? Andate al lado tranquilo: tres ruinas y una cena. Vale la pena.', 'Got the afternoon? Head to the quiet side: three ruins and dinner. Worth it.'), items: ['r:conventos'] },
+    noj: { t: w('Mirá este detalle: en el oriente de la ciudad quedan tres historias de conventos, una junto a la otra. En unas horas las podés leer todas.', 'Look at this: on the east side of town, three convent stories sit side by side. In a few hours you can read them all.'), plan: ['capuchinas', 'santaclara', 'sanfrancisco'] }
+  },
+  dia: {
+    batz: { t: w('¡Un día entero para tejer! Arrancá en la plaza y cerrá en un patio para contar todo lo que viviste.', 'A whole day to weave! Start at the square and end in a courtyard to tell everything you lived.'), items: ['r:centro', 'r:conventos'] },
+    kej: { t: w('Un día, dos rutas. Mañana: el centro. Tarde: los conventos del oriente. En ese orden.', 'One day, two routes. Morning: the centre. Afternoon: the eastern convents. In that order.'), items: ['r:centro', 'r:conventos'] },
+    ajpu: { t: w('Un día completo, sin excusas. ¿Te animás a las dos rutas? Mañana centro, tarde conventos.', 'A full day, no excuses. Up for both routes? Centre in the morning, convents in the afternoon.'), items: ['r:centro', 'r:conventos'] },
+    noj: { t: w('¿Sabías que casi todo lo que vas a ver sobrevivió a los terremotos de 1773? Por la mañana, el poder colonial; por la tarde, la vida de los conventos.', 'Did you know most of what you’ll see survived the 1773 earthquakes? Morning: colonial power. Afternoon: convent life.'), items: ['r:centro', 'r:conventos'] }
+  },
+  cafe: {
+    batz: { t: w('¡Café con estilo! Este lo cuenta todo con mucho amor y estética. Perfecto para tu historia del día.', 'Coffee with style! This one shares its love for coffee beautifully. Perfect for your story of the day.'), items: ['p:artista'] },
+    kej: { t: w('Tres cafés de especialidad, cerca uno del otro: dos están frente a frente en la 4a Calle Oriente.', 'Three specialty cafés close together: two face each other on 4a Calle Oriente.'), plan: ['doce', 'fatcat', 'coffea'] },
+    ajpu: { t: w('Uno solo, el mejor para lo que buscás: Coffea. ¿Te animás a probar uno de los cien mejores del mundo?', 'Just one, the best for you: Coffea. Up for trying one of the world’s hundred best?'), items: ['p:coffea'] },
+    noj: { t: w('¿Café y algo para pensar? Siena Luz junta filosofía, literatura y buen café.', 'Coffee and something to think about? Siena Luz brings together philosophy, literature and great coffee.'), items: ['p:siena'] }
+  },
+  comida: {
+    batz: { t: w('¡A comer con ambiente! Este patio es de esos lugares que dan ganas de contar.', 'Let’s eat somewhere with atmosphere! This courtyard is the kind of place you want to share.'), items: ['p:patio'] },
+    kej: { t: w('Una pausa tranquila: comida vegana y vegetariana en el lado oriente.', 'A calm break: vegan and vegetarian food on the east side.'), items: ['p:once'] },
+    ajpu: { t: w('Comida con carácter: pizza italiana de verdad, detrás de la Catedral. Andá.', 'Food with character: real Italian pizza, right behind the Cathedral. Go.'), items: ['p:cazador'] },
+    noj: { t: w('Mirá, aquí van tres opciones distintas. Elegí sabiendo qué buscás: vegana, italiana o de ambiente.', 'Here are three different options. Choose knowing what you want: vegan, Italian or atmosphere.'), items: ['p:once', 'p:cazador', 'p:patio'] }
+  },
+  cultura: {
+    batz: { t: w('¡El tiempo maya también es un tejido! Mirá cómo se cuenta.', 'Maya time is a weaving too! Look how it’s counted.'), items: ['t:cholqij', 't:nikaj'] },
+    kej: { t: w('Tres ruinas y una iglesia viva, a pie y en orden.', 'Three ruins and a living church, on foot and in order.'), items: ['r:conventos'] },
+    ajpu: { t: w('Si vas a ver una sola ruina, que sea esta. ¿Te animás a ver la torre circular de celdas?', 'If you see only one ruin, make it this one. Up for the circular tower of cells?'), items: ['p:capuchinas'] },
+    noj: { t: w('¿Sabías que en el Popol Wuj la humanidad está hecha de maíz? Te dejo tres ideas para entender la cosmovisión.', 'Did you know that in the Popol Wuj humanity is made of maize? Here are three ideas to understand the worldview.'), items: ['t:rukux', 't:maiz', 't:nikaj'] }
+  },
+  respeto: {
+    batz: { t: w('Antes de contarlo, pedí permiso. La mejor historia es la que la otra persona quiere compartir.', 'Before you share it, ask. The best story is the one the other person wants to share.'), items: ['t:foto'] },
+    kej: { t: w('Dos reglas simples para moverte bien por la ciudad.', 'Two simple rules for moving well around town.'), items: ['t:calles', 't:horario'] },
+    ajpu: { t: w('¿Te animás a algo difícil? Preguntar antes de fotografiar. Y cuidar el lugar como si fuera tuyo.', 'Up for something hard? Asking before you take a photo. And caring for the place like it’s yours.'), items: ['t:foto', 't:calles'] },
+    noj: { t: w('Mirá este detalle: los nawales son los significados de los días, no etiquetas para personas.', 'Look at this: nawales are the meanings of the days, not labels for people.'), items: ['t:nawalpersona', 't:foto'] }
+  }
+};
+
+// Temas que todavía no tienen lugares curados: el guardián lo dice y no inventa.
+var GAPS = {
+  naturaleza: w('naturaleza y miradores', 'nature and viewpoints'),
+  arte: w('talleres y artesanía', 'workshops and crafts'),
+  mercado: w('mercados', 'markets'),
+  aventura: w('aventura y volcanes', 'adventure and volcanoes')
+};
+var GAP_VOICE = {
+  batz: w('¡Uy! De {x} todavía no tengo nada curado, y no te voy a inventar.', 'Oops! I don’t have anything curated on {x} yet, and I won’t make it up.'),
+  kej: w('Sobre {x}: todavía no hay lugares verificados en nAIhual. No te invento nada.', 'On {x}: there are no verified places in nAIhual yet. I won’t invent any.'),
+  ajpu: w('Te reto a algo: esperá un poco. De {x} todavía no tengo lugares verificados y no te mando a ciegas.', 'A challenge: hold on a bit. I don’t have verified places for {x} yet, and I won’t send you in blind.'),
+  noj: w('Te cuento la verdad: de {x} todavía no tenemos información curada. Prefiero no inventar.', 'Here’s the truth: we don’t have curated information on {x} yet. I’d rather not invent it.')
+};
+var SAFETY = w('Sobre seguridad no tengo una fuente oficial verificada, así que no te voy a dar consejos inventados. Preguntá en tu hospedaje o en la oficina de turismo local.', 'I don’t have a verified official source on safety, so I won’t give you made-up advice. Ask at your lodging or the local tourist office.');
+var GAP_TAIL = w('Preguntame por cafés, comida, rutas a pie o cultura.', 'Ask me about cafés, food, walking routes or culture.');
+var UNKNOWN = {
+  batz: w('¡Uy, esa no la entendí! Probá con una de las preguntas de abajo.', 'Oops, I didn’t get that one! Try one of the questions below.'),
+  kej: w('No entendí la pregunta. Elegí una de abajo y te ordeno el camino.', 'I didn’t understand. Pick one below and I’ll lay out the way.'),
+  ajpu: w('No te entendí. ¿Te animás con una de las de abajo?', 'I didn’t get that. Up for one of the ones below?'),
+  noj: w('Mirá, esa todavía no sé responderla. Probá con una de abajo.', 'I can’t answer that one yet. Try one of the questions below.')
+};
+
+var STR = {
+  es: { tagline: 'Viaja directo a la raíz.', placeholder: 'Escribí tu pregunta…', send: 'Enviar', foot: 'Prototipo 1 · reglas fijas, sin IA · arte provisional', who: '¿Quiénes son los guardianes?',
+    hint: 'Se turnan para guiarte. Tocá uno para pedirlo.', guides: 'te guía', next: 'Después sigue', asked: 'Pediste a',
+    welcome: 'Hoy los cuatro guardianes nos turnamos para guiarte por Antigua. Cada pregunta la contesta uno distinto, en este orden: B\'atz\', Kej, Ajpu y No\'j. ¿Qué querés hacer?',
+    chips: [['empezar', '¿Por dónde empiezo?'], ['horas', 'Tengo 3 horas'], ['cafe', 'Quiero un café'], ['comida', '¿Dónde como?'], ['dia', 'Plan de un día'], ['cultura', 'Contame de la cultura maya'], ['respeto', '¿Cómo me porto con respeto?']],
+    place: { cultura: 'Cultura', cafe: 'Café', comida: 'Para comer' }, route: 'Ruta a pie', plan: 'Plan', tip: 'Consejo',
+    maps: 'Cómo llegar', full: 'Abrir ruta completa a pie', stops: 'paradas',
+    starNote: '* Información cultural por confirmar con un Ajq\'ij.', histNote: '† Dato histórico por confirmar con fuente oficial.', enNote: '',
+    dlgTitle: 'Los cuatro guardianes', dlgIntro: 'Se turnan en este orden. Cada uno habla y recomienda a su manera. Lo que dice el PDF sobre cada nawal lleva * hasta que lo valide un Ajq\'ij.',
+    dValue: 'Es', dRole: 'Hace', dSpeaks: 'Habla', dRecs: 'Recomienda', dPdf: 'Nawal (PDF)*', close: 'Cerrar' },
+  en: { tagline: 'Travel straight to the roots.', placeholder: 'Type your question…', send: 'Send', foot: 'Prototype 1 · fixed rules, no AI · placeholder art', who: 'Who are the guardians?',
+    hint: 'They take turns guiding you. Tap one to ask for them.', guides: 'is your guide', next: 'Next up', asked: 'You asked for',
+    welcome: 'Today the four guardians take turns guiding you through Antigua. Each question gets a different one, in this order: B\'atz\', Kej, Ajpu and No\'j. What would you like to do?',
+    chips: [['empezar', 'Where do I start?'], ['horas', 'I have 3 hours'], ['cafe', 'I want a coffee'], ['comida', 'Where should I eat?'], ['dia', 'A one-day plan'], ['cultura', 'Tell me about Maya culture'], ['respeto', 'How do I travel respectfully?']],
+    place: { cultura: 'Culture', cafe: 'Coffee', comida: 'Food' }, route: 'Walking route', plan: 'Plan', tip: 'Tip',
+    maps: 'Directions', full: 'Open full walking route', stops: 'stops',
+    starNote: '* Cultural information pending confirmation by an Ajq\'ij.', histNote: '† Historical detail pending confirmation with an official source.', enNote: 'English not yet reviewed by a native speaker.',
+    dlgTitle: 'The four guardians', dlgIntro: 'They take turns in this order. Each one speaks and recommends in their own way. What the PDF says about each nawal is marked * until an Ajq\'ij validates it.',
+    dValue: 'Is', dRole: 'Does', dSpeaks: 'Speaks', dRecs: 'Recommends', dPdf: 'Nawal (PDF)*', close: 'Close' }
+};
+
+// ---------- Entender la pregunta (reglas fijas) ----------
+function norm(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’`´]/g, "'"); }
+var RULES = [
+  ['seguridad', /segur|peligr|safe|danger|robo|theft/],
+  ['naturaleza', /natur|volcan|mirador|cerro|finca|lago|lake|viewpoint|hike|hiking/],
+  ['aventura', /aventur|advent|adrenalin|reto|challenge/],
+  ['arte', /arte\b|artesan|taller|tejid|tejer|clase|class|workshop|craft|\bart\b|galer/],
+  ['mercado', /mercad|market/],
+  ['cafe', /cafe|coffee|matcha|capuchino|latte/],
+  ['respeto', /respet|foto|photo|costumbr|custom|etiquet|portar/],
+  ['comida', /donde como|que como|comer|comida|almuerz|cena|cenar|desayun|hambre|vegan|vegetar|pizza|food|eat|lunch|dinner|breakfast|restaur|hungry/],
+  ['cultura', /cultur|histori|ruina|iglesi|convent|catedral|monument|maya|nawal|nahual|cholq|calendar|church|histor|ruin|cosmovis|popol/],
+  ['dia', /\bdia\b|un dia|todo el dia|day|itinerar/],
+  ['horas', /hora|hours|\brato\b|tiempo|cerca|near|time/],
+  ['empezar', /empiez|empez|inicio|primer|start|begin|first|llegu|arriv|hola|hello|hi\b/]
+];
+function detectGuardian(t) {
+  if (/b'?atz/.test(t)) return 'batz';
+  if (/\bkej\b/.test(t)) return 'kej';
+  if (/\bajpu\b|\bajpu'/.test(t)) return 'ajpu';
+  if (/\bno'?j\b/.test(t)) return 'noj';
+  return null;
+}
+function detectIntent(t) { for (var i = 0; i < RULES.length; i++) if (RULES[i][1].test(t)) return RULES[i][0]; return null; }
+
+// ---------- Estado ----------
+var S = { lang: 'es', turn: 0, msgs: [], forced: null };
+try { var l0 = localStorage.getItem('naihual.p1.lang'); if (l0 === 'en' || l0 === 'es') S.lang = l0; } catch (e) {}
+function saveLang() { try { localStorage.setItem('naihual.p1.lang', S.lang); } catch (e) {} }
+
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function q(p) { return [p.name, p.addr, 'Antigua Guatemala'].filter(Boolean).join(', '); }
+function mapsUrl(p) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q(p)); }
+function routeUrl(ids) {
+  var qs = ids.map(function (id) { return encodeURIComponent(q(P[id])); });
+  return 'https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=' + qs[0] + '&destination=' + qs[qs.length - 1] + (qs.length > 2 ? '&waypoints=' + qs.slice(1, -1).join('%7C') : '');
+}
+var PIN = '<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>';
+var NAV = '<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>';
+
+function current() { return ORDER[S.turn % 4]; }
+
+// Un mensaje del guardián se guarda como datos, así se puede volver a dibujar al cambiar de idioma.
+function answer(text, isWelcome) {
+  var t = norm(text), asked = detectGuardian(t), gid;
+  if (asked) { gid = asked; S.turn = ORDER.indexOf(asked); } else { gid = current(); }
+  var intent = detectIntent(t);
+  var m = { from: gid, asked: !!asked, intro: !S.msgs.some(function (x) { return x.from === gid; }) };
+  if (isWelcome) m.kind = 'welcome';
+  else if (intent && R[intent]) { m.kind = 'r'; m.intent = intent; }
+  else if (intent === 'seguridad') m.kind = 'safety';
+  else if (intent && GAPS[intent]) { m.kind = 'gap'; m.gap = intent; }
+  else if (asked) { m.kind = 'hello'; }
+  else m.kind = 'unknown';
+  S.msgs.push(m);
+  if (!isWelcome) S.turn = (S.turn + 1) % 4;
+}
+
+function cardsHTML(list, plan) {
+  var t = STR[S.lang], L = S.lang, h = '', star = false, hist = false;
+  if (plan) {
+    plan.forEach(function (id) { if (P[id].hist) hist = true; });
+    h += '<div class="card"><span class="k">' + esc(t.plan) + ' · ' + plan.length + ' ' + esc(t.stops) + '</span><ol>' +
+      plan.map(function (id) { var p = P[id]; return '<li><div><b>' + esc(p.name) + (p.hist ? ' †' : '') + '</b><br><span>' + esc(p.addr) + '</span></div></li>'; }).join('') +
+      '</ol><a class="btn solid" href="' + routeUrl(plan) + '" target="_blank" rel="noopener">' + NAV + esc(t.full) + '</a></div>';
+  }
+  (list || []).forEach(function (key) {
+    var k = key.split(':')[0], id = key.split(':')[1];
+    if (k === 'p') {
+      var p = P[id]; if (!p.addr) return; if (p.hist) hist = true;
+      h += '<div class="card"><span class="k">' + esc(t.place[p.cat]) + '</span><h3>' + esc(p.name) + (p.hist ? ' †' : '') + '</h3><p>' + esc(p.why[L]) + '</p><span class="ad">' + esc(p.addr) + '</span>' +
+        '<a class="btn" href="' + mapsUrl(p) + '" target="_blank" rel="noopener">' + PIN + esc(t.maps) + '</a></div>';
+    } else if (k === 'r') {
+      var r = ROUTES[id]; hist = true;
+      h += '<div class="card"><span class="k">' + esc(t.route) + ' · ' + esc(r.kicker[L]) + '</span><h3>' + esc(r.title[L]) + ' †</h3><ol>' +
+        r.stops.map(function (s) { return '<li><div>' + esc(P[s].name) + '</div></li>'; }).join('') +
+        '</ol><a class="btn solid" href="' + routeUrl(r.stops) + '" target="_blank" rel="noopener">' + NAV + esc(t.full) + '</a></div>';
+    } else if (k === 't') {
+      var tp = TIPS[id]; if (tp.star) star = true;
+      h += '<div class="card tipcard"><span class="k">' + esc(t.tip) + '</span><p>' + esc(tp.body[L]) + (tp.star ? ' *' : '') + '</p></div>';
+    }
+  });
+  return { html: h ? '<div class="cards">' + h + '</div>' : '', star: star, hist: hist };
+}
+
+function msgHTML(m, isLast) {
+  if (m.user) return '<div class="msg me' + (isLast ? ' new' : '') + '">' + esc(m.user) + '</div>';
+  var t = STR[S.lang], L = S.lang, g = G[m.from], paras = [], cards = { html: '', star: false, hist: false };
+  if (m.intro || m.kind === 'hello') paras.push(g.hello[L]);
+  if (m.kind === 'welcome') paras.push(t.welcome);
+  else if (m.kind === 'r') { var r = R[m.intent][m.from]; paras.push(r.t[L]); cards = cardsHTML(r.items, r.plan); }
+  else if (m.kind === 'gap') paras.push(GAP_VOICE[m.from][L].replace('{x}', GAPS[m.gap][L]) + ' ' + GAP_TAIL[L]);
+  else if (m.kind === 'safety') paras.push(SAFETY[L]);
+  else if (m.kind === 'unknown') paras.push(UNKNOWN[m.from][L]);
+  var star = cards.star || m.intro || m.kind === 'hello';
+  var notes = (star ? '<span class="note-star">' + esc(t.starNote) + '</span>' : '') + (cards.hist ? '<span class="note-hist">' + esc(t.histNote) + '</span>' : '') + (L === 'en' ? '<span class="note-muted">' + esc(t.enNote) + '</span>' : '');
+  return '<div class="msg g-' + m.from + (isLast ? ' new' : '') + '"><div class="who"><span class="av" aria-hidden="true">' + g.ini + '</span><div><b>' + esc(g.name) + '</b> <span>' + esc((m.asked ? t.asked + ' ' + g.name : t.guides) + ' · ' + g.value[L].toLowerCase()) + '</span></div></div>' +
+    '<div class="bubble">' + paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' + cards.html +
+    (notes ? '<div class="notes">' + notes + '</div>' : '') + '</div>';
+}
+
+var chat = document.getElementById('chat');
+function render(scroll) {
+  var t = STR[S.lang], cur = current();
+  document.documentElement.lang = S.lang;
+  ['es', 'en'].forEach(function (l) { document.getElementById('lang-' + l).setAttribute('aria-pressed', String(S.lang === l)); });
+  document.getElementById('tagline').textContent = t.tagline;
+  document.getElementById('wheel-hint').textContent = t.hint;
+  document.getElementById('q').placeholder = t.placeholder;
+  document.getElementById('send').setAttribute('aria-label', t.send);
+  document.getElementById('foot').textContent = t.foot;
+  document.getElementById('who-btn').textContent = t.who;
+  document.getElementById('ask').className = 'g-' + cur;
+  document.getElementById('wheel').innerHTML = ORDER.map(function (id) {
+    var g = G[id];
+    return '<button type="button" class="wg g-' + id + '" data-g="' + id + '" aria-current="' + (id === cur) + '" aria-label="' + esc(g.name + ' · ' + g.value[S.lang]) + '"><span class="av">' + g.ini + '</span><small>' + esc(g.name) + '</small></button>';
+  }).join('');
+  document.getElementById('chips').innerHTML = t.chips.map(function (c) { return '<button type="button" class="chip" data-chip="' + c[0] + '">' + esc(c[1]) + '</button>'; }).join('');
+  chat.innerHTML = S.msgs.map(function (m, i) { return msgHTML(m, i === S.msgs.length - 1 && scroll); }).join('');
+  if (scroll) { var last = chat.lastElementChild; if (last) last.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+}
+
+function ask(text) {
+  text = text.trim(); if (!text) return;
+  S.msgs.push({ user: text });
+  answer(text, false);
+  render(true);
+  var msgs = chat.querySelectorAll('.msg'); if (msgs.length > 1) msgs[msgs.length - 2].scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+
+document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); var i = document.getElementById('q'); ask(i.value); i.value = ''; });
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-lang],[data-chip],[data-g],#who-btn,[data-close]');
+  if (!el) return;
+  if (el.hasAttribute('data-lang')) { S.lang = el.getAttribute('data-lang'); saveLang(); render(false); return; }
+  if (el.hasAttribute('data-chip')) { var c = STR[S.lang].chips.filter(function (x) { return x[0] === el.getAttribute('data-chip'); })[0]; ask(c[1]); return; }
+  if (el.hasAttribute('data-g')) {
+    var id = el.getAttribute('data-g'); S.turn = ORDER.indexOf(id);
+    var i = document.getElementById('q'); i.focus(); render(false); return;
+  }
+  if (el.id === 'who-btn') { openDlg(); return; }
+  if (el.hasAttribute('data-close')) document.getElementById('dlg').close();
+});
+
+function openDlg() {
+  var t = STR[S.lang], L = S.lang;
+  document.getElementById('dlg-body').innerHTML = '<h2>' + esc(t.dlgTitle) + '</h2><p>' + esc(t.dlgIntro) + '</p>' +
+    ORDER.map(function (id) { var g = G[id]; return '<div class="gcard g-' + id + '"><span class="av">' + g.ini + '</span><div><b>' + esc(g.name) + '</b><dl>' +
+      [[t.dValue, g.value[L] + ' *'], [t.dRole, g.role[L]], [t.dSpeaks, g.speaks[L]], [t.dRecs, g.recs[L]], [t.dPdf, g.pdf[L]]].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
+      '</dl></div></div>'; }).join('') +
+    '<button type="button" class="btn solid close" data-close>' + esc(t.close) + '</button>';
+  var d = document.getElementById('dlg');
+  if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+}
+
+answer('', true);
+render(false);
+})();
+</script>
+</body>
+</html>
