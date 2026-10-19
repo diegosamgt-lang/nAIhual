@@ -128,6 +128,7 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 | Respuestas de los guardianes | Dentro de `app/index.html` | Claude (propuesta) | Sí, el fundador corrige |
 | Cosmovisión y 20 nawales | PDF Consolidado | Fundador | No; en la app con \* |
 | Fuentes originales | NotebookLM (Claude no tiene acceso) | Fundador | Propuesta: copiarlas a Google Drive, carpeta «nAIhual fuentes» |
+| Contexto para NotebookLM | `docs/contexto-notebooklm.md`. Se sube al cuaderno como fuente; NotebookLM revisa los nawales contra sus 46 fuentes | Claude | Sí, cuando cambie la app |
 | Web C0 vieja | Netlify (gregarious-tulumba-42cb05) | — | No tocar |
 
 ## 7. Catálogo (Antigua)
