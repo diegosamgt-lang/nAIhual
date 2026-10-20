@@ -1,10 +1,11 @@
-# Mi Tablero — traspaso
+# Curtis — traspaso
 
 ## Qué existe
 - **Tablero:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
-- **Archivo fuente:** `tablero/mi-tablero.html` (publicar siempre este mismo archivo para no cambiar el link).
+- **Archivo fuente:** `tablero/curtis.html` (publicar siempre este mismo archivo para no cambiar el link).
 - **Fuente de verdad:** el registro propio del tablero. Se escribe directo desde la página.
-- **Conectores que usa la página (con la cuenta del dueño):** Google Drive (`create_file`, `search_files`), Zoho Books (`list_contacts`, `create_estimate`), Claude (`sample`, con herramientas).
+- **Conectores que usa la página (con la cuenta del dueño):** Google Drive (`create_file`, `search_files`, `update_file` para mover), Zoho Books (`list_contacts`, `create_estimate`), Claude (`sample` con herramientas). Librería jsPDF 2.5.1 (cdnjs) para el PDF de links.
+- **Partes y circuitos:** ver `CURTIS_PARTES.md` (fuente principal de estado).
 - **Zoho:** organización «Creatif» `914134862`, moneda GTQ. Ojo: en Zoho aparece la prueba PREMIUM vencida; crear cotizaciones puede fallar hasta que se active un plan.
 - **Viejo, para borrar si el dueño confirma:** tablero tipo Dashboard https://claude.ai/artifact/SgXX8BWzG2rXP3jvmtfdEm y la hoja de Drive «Mi Tablero — registro».
 
@@ -12,7 +13,12 @@
 - `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · creado · actualizado · terminado
 - `proyectos/*`: nombre · icono · color · cliente · entrega · estado (activo|pausa|terminado) · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] · chat
 - `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · zohoOrg
-- `resumen/dia`: {fecha, texto} — resumen de Claude del día
+- `resumen/dia`, `frase/dia`: {fecha, texto} por día
+- `etiquetas/*`: nombre · color · icono
+- `memoria/*`: tipo (precio|tiempo|horario|error|mejora|motivacion|pasos|cliente|otro) · texto · origen (auto|curtis|yo) · fecha
+- `curtis/chat`: chat general
+- proyectos además: categoria · precio · etiquetas · entregado · entregaUrl · entregaFolderId
+- ajustes además: plantillaEntrega · checklistEntrega · plantillasCat
 
 ## Cómo está armado (ideas tomadas)
 - **Asana:** Mis tareas por fecha (De días anteriores / Hoy / Esta semana / Más adelante / Sin fecha / Listas), proyectos con secciones, vista Lista y Tablero, panel de detalle con subtareas.
@@ -48,3 +54,4 @@
 - v1: escritura directa, estilo graffiti saturado.
 - v2: diseño sobrio, guía, chat con Claude por tarea.
 - v3: rehecho como Asana + Notion pensado para TDAH. Resumen estético primero, proyectos con secciones y tablero, todo editable con guardado automático, foco, Claude con herramientas (tareas, pasos, Drive, Zoho). Errores encontrados en la auditoría y corregidos: secciones y menú que salían como texto roto, pasos que se pisaban al agregar varios seguidos, panel que no abría al crear reunión/bitácora, Esc que no cerraba avisos, resumen que redibujaba toda la página.
+- v4: Curtis (ver CURTIS_PARTES.md).

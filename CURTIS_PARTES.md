@@ -11,21 +11,21 @@
 | 1.1 | Anotar con + → queda con fecha de hoy | ✅ |
 | 1.2 | Todo editable con guardado automático (tarea, proyecto, sección, pasos) | ✅ |
 | 1.3 | Borrar con confirmación; lo terminado queda tachado | ✅ |
-| 1.4 | **Etiquetas que el dueño crea** (nombre + color + ícono), se ponen a tareas y proyectos y sirven para filtrar | ⬜ |
+| 1.4 | Etiquetas que el dueño crea (nombre + color + ícono), en tareas y proyectos, con filtro | ✅ probado |
 
 ## P2 · Tiempo: resumen, calendario y fechas límite
 | # | Circuito | Estado |
 |---|---|---|
 | 2.1 | Resumen arriba que se actualiza solo | ✅ |
-| 2.2 | **Mini calendario en Inicio**: puntos por día (tareas, entregas, reuniones); tocás un día y ves qué hay | ⬜ |
-| 2.3 | **Línea de fechas límite**: próximas entregas en orden, con cuenta regresiva | ⬜ |
-| 2.4 | Mis tareas ordenado por tiempo (antes / hoy / semana / después) | ✅ (se reordena con 2.3) |
+| 2.2 | Mini calendario en Inicio y en Mis tareas: puntos por día; tocás un día y ves qué hay | ✅ probado |
+| 2.3 | Fechas límite (21 días en Inicio, 45 en calendario grande) con cuenta regresiva | ✅ probado |
+| 2.4 | Mis tareas por tiempo: atrasadas · hoy · próximos 3 días · resto de la semana · después · sin fecha | ✅ |
 
 ## P3 · Urgencia
 | # | Circuito | Estado |
 |---|---|---|
 | 3.1 | Prioridad alta / normal | ✅ |
-| 3.2 | **Sistema de íconos de urgencia** calculado solo: vence hoy, vence en ≤3 días, atrasada, sin fecha, esperando a otro | ⬜ |
+| 3.2 | Íconos de urgencia calculados solos: atrasada · hoy · 1–3 días · semana · después · esperando · sin fecha | ✅ probado |
 
 ## P4 · NIHR y registro
 | # | Circuito | Estado |
@@ -39,34 +39,34 @@
 |---|---|---|
 | 5.1 | «Ahora»: una sola cosa | ✅ |
 | 5.2 | Reloj de foco 15/25/45 que guarda el tiempo | ✅ |
-| 5.3 | **Frase del día** escrita por Curtis según lo que estás haciendo y lo que aprendió de vos (motivar tu creatividad, sin logros vacíos) | ⬜ |
-| 5.4 | **Invitación a llenar**: si falta la bitácora de hoy o una reunión sin acuerdos, Curtis te lo pide en una línea | ⬜ |
-| 5.5 | Movimiento sutil (anillo, calendario, festejo al terminar) | 🟡 parcial |
+| 5.3 | Frase del día: Curtis la escribe sola una vez al día (si ya diste permiso) según lo que hacés; si no, una de 30 frases propias | ✅ probado (simulado) |
+| 5.4 | Invitaciones a llenar (bitácora de hoy, acuerdos, esperando hace días, entrega cerca, proyecto sin tareas, atrasadas) | ✅ |
+| 5.5 | Movimiento sutil: curvas de nivel que cambian cada día y se mueven despacio, festejo al terminar | ✅ |
 
 ## P6 · Curtis: IA y memoria
 | # | Circuito | Estado |
 |---|---|---|
 | 6.1 | Chat en cada tarea y proyecto con contexto | 🟡 probado con respuesta simulada |
 | 6.2 | Resumen del día por Curtis | 🟡 |
-| 6.3 | **Memoria de cómo trabajás** (decidido): tiempos reales, horario en que rendís, precios y clientes, pasos que se repiten, **errores que cometés y áreas de mejora**, y qué te motiva. Se guarda un perfil «Así trabajás» que se actualiza con cada cosa que terminás; lo podés ver y editar | ⬜ |
-| 6.4 | **Sugerencias de automatización** a partir de esa memoria (ej. «tus manuales de marca siempre tienen estos 6 pasos, ¿los creo solos?») | ⬜ |
-| 6.5 | Nombre e identidad «Curtis» en todo el panel | ⬜ |
+| 6.3 | Memoria «Así trabajás»: calculada de tus datos (tiempos, horario, % tarde, foco, precio y días por categoría, pasos repetidos) + lo que anota Curtis + lo que anotás vos; editable | ✅ probado |
+| 6.4 | Automatización: pasos repetidos por categoría → «Usar como plantilla» → proyecto nuevo de esa categoría carga los pasos | 🟡 construido, falta uso real |
+| 6.5 | Nombre e identidad «Curtis» en todo el panel | ✅ |
 
 ## P7 · Entregas
 | # | Circuito | Estado |
 |---|---|---|
-| 7.1 | Carpetas de entrega en Drive (con permiso) | 🟡 simulado |
-| 7.2 | **Entregar proyecto**: el dueño sube el PDF resumen + archivos (versiones de logo, editables, producto). Curtis crea SIEMPRE la misma estructura de carpetas, mete cada archivo donde va y deja el proyecto como terminado | ⬜ decidido |
-| 7.3 | **Mensaje de entrega**: Curtis escribe el mensaje con el link y una explicación corta de qué es cada carpeta | ⬜ |
-| 7.4 | **Opción: PDF de links**: Curtis genera un PDF con el link de cada carpeta (Logo · Branding · Elementos…) | ⬜ |
-| 7.5 | **NIHR: ordenar el Drive** — inventario de archivos sueltos, propuesta de estructura, mover (nunca borrar) con permiso; carpeta final lista para **diciembre 2026** | ⬜ prioridad por fecha |
+| 7.1 | Carpetas de trabajo en Drive (con permiso) | 🟡 simulado |
+| 7.2 | Entregar proyecto: revisión de calidad → subís archivos (o carpeta) → Curtis los acomoda en la estructura fija → crea todo en Drive con permiso → proyecto Entregado | ✅ simulado con tus archivos reales de Beauty Sleep · ❓ falta prueba real |
+| 7.3 | Mensaje de entrega con link y qué hay en cada carpeta; copiar; «Mejorar con Curtis» | ✅ |
+| 7.4 | PDF con el link de cada carpeta, guardado en «00 Léeme» | ✅ simulado |
+| 7.5 | NIHR: proyecto «Carpeta final» con 5 pasos hasta el 1 de diciembre (fecha aproximada). Curtis lista, crea carpetas y mueve archivos con permiso; nunca borra | 🟡 herramientas simuladas · ❓ día exacto de entrega |
 | Límite | Subir archivos desde el panel: hasta 16 MB por archivo. Carpetas muy pesadas conviene subirlas directo a Drive y que Curtis las ordene después. ❓ por confirmar en la primera prueba real | — |
 
 ## P8 · Dinero
 | # | Circuito | Estado |
 |---|---|---|
 | 8.1 | Cotización en Zoho en borrador | 🟡 simulado · la prueba de Zoho está vencida |
-| 8.2 | Historial de precios por tipo de proyecto (Curtis te sugiere cuánto cobrar) | ⬜ (depende de 6.3) |
+| 8.2 | Precio por proyecto + promedio por categoría en «Así trabajás»; cada cotización y entrega se anota en la memoria | ✅ |
 
 ## P9 · Crecimiento: clientes y LinkedIn
 | # | Circuito | Estado |
@@ -79,7 +79,7 @@
 ## P10 · Identidad visual
 | # | Circuito | Estado |
 |---|---|---|
-| 10.1 | Fuentes y paleta nuevas: **inspiración National Geographic** — naturaleza, minimalista, orgánico y vivo (marco amarillo como acento, verdes de bosque, tierra, cielo; fotografía/texturas naturales sutiles) | ⬜ decidido |
+| 10.1 | Estilo inspirado en National Geographic: papel cálido, bosque, musgo, tierra, lago y el marco amarillo; Newsreader + Instrument Sans | 🟡 falta que el dueño lo vea |
 
 ---
 
@@ -93,6 +93,13 @@
 3. **Bloque C** — P6.3–6.4 (memoria «Así trabajás» y automatizaciones) + P5.3–5.4 (frase del día, invitaciones a llenar)
 4. **Bloque D** — P9 (LinkedIn: perfil, posts desde proyectos, prospectos) + P8.2 (precios)
 
+## Lo que sigue (bloque D y pendientes)
+- P9.1–9.3 LinkedIn: perfil, post desde cada entrega, lista de prospectos con seguimiento. Hoy Curtis ya da consejos en el chat; falta la sección propia.
+- Primera prueba real: crear una carpeta en Drive, una entrega chica, una cotización (Zoho tiene la prueba vencida).
+- Confirmar día exacto de entrega NIHR.
+- Borrar el tablero viejo y la hoja «Mi Tablero — registro» (esperando confirmación).
+
 ## Bitácora de actualizaciones
 - 2026-10-20 · v1–v3 construidas (ver TABLERO_TRASPASO.md).
 - 2026-10-20 · Auditoría por partes. Decisiones del dueño: estilo NatGeo; entrega con archivos subidos + estructura fija + mensaje o PDF de links; memoria amplia (incluye errores y mejoras); LinkedIn primero. Nuevo: ordenar Drive NIHR antes de diciembre. Esperando CONSTRUYE.
+- 2026-10-20 · **v4 Curtis** construida: estilo NatGeo, etiquetas, urgencia, calendario, fechas límite, frase del día, invitaciones, memoria «Así trabajás», entrega con estructura fija y PDF de links, orden de Drive NIHR, chat general con Curtis. Prueba: 31/31 nueva + prueba de v3 sin regresiones. Migrado «Logo de nahual» a proyecto. Cargados 8 aprendizajes del paquete Beauty Sleep y el proyecto NIHR.
