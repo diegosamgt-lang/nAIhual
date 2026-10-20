@@ -7,7 +7,8 @@
 - **Viejo, para borrar si el dueño confirma:** tablero tipo Dashboard https://claude.ai/artifact/SgXX8BWzG2rXP3jvmtfdEm y la hoja de Drive «Mi Tablero — registro». Fue un error: se decidió sin preguntar.
 
 ## Cómo se guarda cada cosa (`items`)
-tipo · titulo · estado · fecha · con_quien · notas · que_sigue · horas · creado · actualizado · terminado · acuerdosEnviados
+tipo · titulo · estado · fecha · con_quien · notas · que_sigue · horas · creado · actualizado · terminado · acuerdosEnviados · chat
+- chat: lista de `{rol: yo|claude, texto, at}`, máximo 30 mensajes por tarea
 - tipo: tarea, proyecto, reunion, bitacora, meta-mes, meta-año
 - estado: por hacer, en proceso, esperando, listo (reunión y bitácora se guardan como listo)
 - `ajustes/general.horasMin` = mínimo de horas NIHR al mes
@@ -24,12 +25,18 @@ tipo · titulo · estado · fecha · con_quien · notas · que_sigue · horas ·
 | 7 | Metas del mes y del año | ✅ probado |
 | 8 | Proyecto con fecha vencida → sube a AHORA con etiqueta VENCIDA | ✅ probado |
 | 9 | Editar y borrar (con confirmación) | ✅ probado |
-| 10 | Estilo graffiti NY 90: pared, tags, contornos, goteos, stickers HELLO, flecha | 🟡 aplicado, falta que el dueño lo revise |
+| 10 | Preguntarle a Claude dentro de cada tarea → responde con contexto de la tarea y la lista; la conversación queda guardada | ✅ probado con respuesta simulada |
+| 11 | Guía «Cómo funciona este tablero» arriba (se puede ocultar) | ✅ |
+| 12 | Estilo v2: limpio tipo Apple, colores apagados, graffiti solo en acentos | 🟡 falta que el dueño lo revise |
 
-«Probado» = prueba automática en navegador con un registro de prueba, en compu y celular (390 px), modo claro y oscuro, 0 errores, abre en <1 s.
+«Probado» = prueba automática (28 de 28) en navegador con un registro de prueba, en compu y celular (390 px), modo claro y oscuro, 0 errores, abre en <1 s.
 Falta: prueba del dueño con su cuenta en el tablero publicado.
 
 ## Reglas
 - El diseño nunca cambia qué datos se muestran ni de dónde salen.
 - No se decide la fuente de un dato sin preguntarle al dueño.
 - Lo terminado no se borra: queda en la pestaña Listo.
+
+## Historial
+- v1: tablero con escritura directa, estilo graffiti saturado.
+- v2: rediseño sobrio (pedido del dueño: «Apple con graffiti, no tan saturado»), guía de uso, chat con Claude por tarea, arreglos: fecha «mañana» mal calculada, texto «null» suelto, mayúsculas en fechas, campo de mínimo de horas que se borraba al escribir.
