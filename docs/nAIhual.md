@@ -128,6 +128,7 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 | Respuestas de los guardianes | Dentro de `app/index.html` | Claude (propuesta) | Sí, el fundador corrige |
 | Cosmovisión y 20 nawales | PDF Consolidado | Fundador | No; en la app con \* |
 | Fuentes originales | NotebookLM (Claude no tiene acceso) | Fundador | Propuesta: copiarlas a Google Drive, carpeta «nAIhual fuentes» |
+| Diseño editable | Figma: «nAIhual · App 1.0» https://www.figma.com/design/K67raFNTRvhkSOAEpWtByE · 3 páginas (Leeme y fundamentos · Componentes · Pantallas y textos). Capas «#…» = textos que usa la app | Fundador (diseño) + Claude (lee y pasa a la app) | Sí. El fundador rediseña; Claude copia los cambios a la app |
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md`. Se sube al cuaderno como fuente; NotebookLM revisa los nawales contra sus 46 fuentes | Claude | Sí, cuando cambie la app |
 | Web C0 vieja | Netlify (gregarious-tulumba-42cb05) | — | No tocar |
 
