@@ -108,21 +108,20 @@
 | # | Circuito | Estado |
 |---|---|---|
 | 12.1 | Personalidad: chistoso, amigable, ordenado, estricto, puntual, resolutivo; experto en TDAH, productos digitales, branding, diseño e ilustración (ver CURTIS_PERSONALIDAD.md) | ⬜ ❓ aprobar borrador |
-| 12.2 | Logo chistoso inspirado en el estilo NatGeo | ⬜ ❓ elegir A, B o C |
+| 12.2 | Logo: **B · ardilla que se asoma por el marco amarillo**, «Una ardilla a la vez» | ⬜ decidido |
 | 12.3 | Técnicas TDAH en el chat y en la interfaz (estacionamiento de ardillas, regla de 2 minutos, cuerpo presente en Foco) | ⬜ |
 
 ## Cambios pedidos (PAUSA, esperando CONSTRUYE)
 1. **Proyectos:** renombrar y borrar desde la lista (menú en cada tarjeta), no solo adentro del proyecto.
-2. **Borrar el proyecto NIHR** y sus 5 tareas. El dueño va a crear su propia base de proyectos con NAIHUAL. ❓ confirmar el borrado
-3. **Ajustes:** el dueño no los entiende. Propuesta: quitar «Ajustes» y poner cada cosa donde se usa (etiquetas al crear etiquetas, estructura y revisión dentro de «Entregar», mínimo de horas en Bitácoras, Zoho escondido).
-4. **Revisión de entrega con botón «Que Curtis revise»:** revisión automática de los archivos (nombres, RGB/CMYK, resolución, transparencia, vectores, duplicados) + opinión de Curtis mirando los logos. Opción de **recopilar** los archivos desde la carpeta de trabajo en Drive en vez de subirlos. ❓ cuál o ambas
+2. ✅ Hecho: proyecto NIHR y sus 5 tareas borrados (confirmado por el dueño). La hoja «Mi Tablero — registro» enviada a la papelera de Drive. El tablero viejo ya no existía.
+3. **Ajustes:** el dueño no los entiende. Decidido: **dejarlo, pero explicado** (qué hace cada cosa, con ejemplo, en lenguaje simple).
+4. **Revisión de entrega, botón «Que Curtis revise»:** decidido **opinión visual** (Curtis mira logos y hoja de marca como director de arte) + **recopilar de Drive** (toma los archivos de la carpeta de trabajo del proyecto y los copia a la entrega; requiere `copy_file` de Drive).
 5. Google Calendar solo lectura (P11.3).
 
 ## Lo que sigue (bloque D y pendientes)
 - P9.1–9.3 LinkedIn: perfil, post desde cada entrega, lista de prospectos con seguimiento. Hoy Curtis ya da consejos en el chat; falta la sección propia.
 - Primera prueba real: crear una carpeta en Drive, una entrega chica, una cotización (Zoho tiene la prueba vencida).
 - Confirmar día exacto de entrega NIHR.
-- Borrar el tablero viejo y la hoja «Mi Tablero — registro» (esperando confirmación).
 
 ## Bitácora de actualizaciones
 - 2026-10-20 · v1–v3 construidas (ver TABLERO_TRASPASO.md).
@@ -130,3 +129,4 @@
 - 2026-10-20 · **v4 Curtis** construida: estilo NatGeo, etiquetas, urgencia, calendario, fechas límite, frase del día, invitaciones, memoria «Así trabajás», entrega con estructura fija y PDF de links, orden de Drive NIHR, chat general con Curtis. Prueba: 31/31 nueva + prueba de v3 sin regresiones. Migrado «Logo de nahual» a proyecto. Cargados 8 aprendizajes del paquete Beauty Sleep y el proyecto NIHR.
 - 2026-10-20 · PAUSA: pregunta sobre conexiones. Anotado P11.
 - 2026-10-20 · PAUSA: Google Calendar solo lectura; personalidad y logo de Curtis; renombrar/borrar proyectos; quitar NIHR; Ajustes confuso; botón de revisión. Anotado P12 y cambios 1–5.
+- 2026-10-20 · Decisiones: logo B (ardilla), Ajustes explicado, revisión = opinión visual + recopilar de Drive. Borrados con confirmación: proyecto NIHR + 5 tareas, hoja de Drive (papelera). Esperando CONSTRUYE.
