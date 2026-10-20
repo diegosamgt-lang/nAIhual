@@ -99,7 +99,7 @@
 |---|---|---|
 | 11.1 | Google Drive (crear carpetas, subir, buscar, mover) | 🟡 conectado a Curtis, sin prueba real |
 | 11.2 | Zoho Books (clientes, cotizaciones) | 🟡 conectado a Curtis; la prueba de Zoho está vencida |
-| 11.3 | Google Calendar **solo lectura** (decidido): tus reuniones aparecen en el calendario, en las fechas límite y en «Hoy»; Curtis las conoce; al terminar una reunión te invita a anotar los acuerdos | ⬜ decidido |
+| 11.3 | Google Calendar solo lectura: reuniones en el calendario, «Reuniones de hoy», aviso 1 h antes y al terminar (anotar acuerdos), Curtis las conoce. Se actualiza cada 15 min | ✅ simulado · ❓ falta prueba real |
 | 11.4 | Apple Calendar | — descartado: las reuniones viven en Google Calendar |
 | 11.5 | Gmail / Zoom (mensaje de entrega, acuerdos de reuniones) | ⬜ conectores existen en la cuenta, no están en Curtis |
 
@@ -107,16 +107,26 @@
 ## P12 · Personalidad y marca de Curtis
 | # | Circuito | Estado |
 |---|---|---|
-| 12.1 | Personalidad: chistoso, amigable, ordenado, estricto, puntual, resolutivo; experto en TDAH, productos digitales, branding, diseño e ilustración (ver CURTIS_PERSONALIDAD.md) | ⬜ ❓ aprobar borrador |
-| 12.2 | Logo: **B · ardilla que se asoma por el marco amarillo**, «Una ardilla a la vez» | ⬜ decidido |
-| 12.3 | Técnicas TDAH en el chat y en la interfaz (estacionamiento de ardillas, regla de 2 minutos, cuerpo presente en Foco) | ⬜ |
+| 12.1 | Personalidad aplicada (chat, frases, festejos, avisos) | ✅ |
+| 12.2 | Logo B: ardilla que se asoma por el marco amarillo, «una ardilla a la vez» | 🟡 falta que el dueño lo vea |
+| 12.3 | Técnicas TDAH: estacionamiento de ardillas en Foco; Curtis usa las técnicas en el chat | ✅ |
 
-## Cambios pedidos (PAUSA, esperando CONSTRUYE)
-1. **Proyectos:** renombrar y borrar desde la lista (menú en cada tarjeta), no solo adentro del proyecto.
+## Cambios pedidos (construidos en v5)
+1. ✅ Proyectos: menú ⋯ en cada tarjeta para renombrar, abrir y borrar.
 2. ✅ Hecho: proyecto NIHR y sus 5 tareas borrados (confirmado por el dueño). La hoja «Mi Tablero — registro» enviada a la papelera de Drive. El tablero viejo ya no existía.
-3. **Ajustes:** el dueño no los entiende. Decidido: **dejarlo, pero explicado** (qué hace cada cosa, con ejemplo, en lenguaje simple).
-4. **Revisión de entrega, botón «Que Curtis revise»:** decidido **opinión visual** (Curtis mira logos y hoja de marca como director de arte) + **recopilar de Drive** (toma los archivos de la carpeta de trabajo del proyecto y los copia a la entrega; requiere `copy_file` de Drive).
-5. Google Calendar solo lectura (P11.3).
+3. ✅ Ajustes explicados: cada sección dice qué hace y trae un ejemplo.
+4. ✅ Entrega: «Que Curtis revise» (revisión automática: nombres, CMYK/RGB, transparencia, resolución, vectores, carpetas vacías + opinión visual mirando las imágenes) y «Recopilar de Drive» (copia de la carpeta del proyecto y del catálogo; los originales no se tocan).
+5. ✅ Google Calendar solo lectura (P11.3).
+
+## P13 · Ilustraciones y licencias
+| # | Circuito | Estado |
+|---|---|---|
+| 13.1 | Catálogo de ilustraciones: subir → miniatura en Curtis + original en Drive («Curtis · Ilustraciones»); nombre, tema, año, link, estado, tamaño de impresión | ✅ simulado |
+| 13.2 | Elegir ilustraciones del catálogo para un proyecto (o subir nuevas desde ahí) | ✅ |
+| 13.3 | Paquete y precio de licencia: producto, cantidad, exclusividad, duración, territorio, tiraje; pago único / regalía / mixto; diseño aparte; avisos de precio malo; opinión de Curtis | ✅ |
+| 13.4 | Propuesta para el cliente (copiar, PDF en Drive, pasar a Zoho) y memoria del precio | ✅ simulado |
+| 13.5 | Entrega de licencia con estructura propia (00 Licencia… 04 Crédito y uso) | ✅ simulado |
+| 13.6 | Proyecto «Tienda aeropuerto · Naipes» con 5 pasos | ✅ cargado |
 
 ## Lo que sigue (bloque D y pendientes)
 - P9.1–9.3 LinkedIn: perfil, post desde cada entrega, lista de prospectos con seguimiento. Hoy Curtis ya da consejos en el chat; falta la sección propia.
@@ -130,3 +140,4 @@
 - 2026-10-20 · PAUSA: pregunta sobre conexiones. Anotado P11.
 - 2026-10-20 · PAUSA: Google Calendar solo lectura; personalidad y logo de Curtis; renombrar/borrar proyectos; quitar NIHR; Ajustes confuso; botón de revisión. Anotado P12 y cambios 1–5.
 - 2026-10-20 · Decisiones: logo B (ardilla), Ajustes explicado, revisión = opinión visual + recopilar de Drive. Borrados con confirmación: proyecto NIHR + 5 tareas, hoja de Drive (papelera). Esperando CONSTRUYE.
+- 2026-10-20 · **v5** construida: logo ardilla, personalidad, Google Calendar solo lectura, menú de proyectos, Ajustes explicados, revisión y recopilación en entregas, catálogo de ilustraciones, licencias con precio y propuesta, estacionamiento de ardillas. Corregido: doble redibujo al salir de un campo (error real). Prueba: 35/35 nueva + 31/31 de v4. Cargado proyecto Tienda aeropuerto · Naipes.

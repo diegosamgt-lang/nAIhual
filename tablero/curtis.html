@@ -349,6 +349,44 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
 .confetti { position: fixed; z-index: 90; pointer-events: none; width: 7px; height: 11px; border-radius: 40% 60%; }
 @media (prefers-reduced-motion: no-preference) { .confetti { animation: pop 1000ms ease-out forwards; } @keyframes pop { to { transform: translate(var(--dx), var(--dy)) rotate(300deg); opacity: 0; } } }
 @media (prefers-reduced-motion: reduce) { .confetti { display: none; } }
+.logo { display: block; flex: none; overflow: visible; }
+.brand-txt { display: grid; line-height: 1; }
+.brand-txt b { font-family: var(--f-head); font-style: italic; font-weight: 600; font-size: 1.6rem; letter-spacing: -.01em; }
+.brand-txt small { font-size: .66rem; color: var(--muted); font-weight: 600; margin-top: 3px; }
+.hero-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pwrap { position: relative; min-width: 0; display: grid; }
+.pmenu-btn { position: absolute; right: 8px; top: 8px; z-index: 2; background: color-mix(in srgb, var(--surface) 88%, transparent); border-radius: 999px; width: 34px; height: 34px; color: var(--ink); }
+.pmenu-btn .ic { stroke-width: 3.2; }
+.pmenu { position: absolute; right: 8px; top: 46px; z-index: 3; background: var(--surface); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.18); padding: 6px; display: grid; min-width: 11rem; }
+.pmenu button { border: 0; background: none; text-align: left; padding: 9px 10px; border-radius: 8px; display: flex; gap: 8px; align-items: center; font-weight: 550; }
+.pmenu button:hover { background: var(--surface-2); }
+.meet { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.meet:last-child { border-bottom: 0; }
+.meet-h { font-variant-numeric: tabular-nums; font-weight: 700; font-size: .82rem; color: var(--lake-t); }
+.meet-t { font-weight: 600; overflow-wrap: anywhere; display: grid; gap: 1px; }
+.meet-t small { color: var(--muted); font-weight: 500; font-size: .78rem; }
+.gcal-chip { display: inline-flex; align-items: center; gap: 5px; font-size: .74rem; font-weight: 650; color: var(--lake-t); }
+.ilus-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr)); }
+.ilus { border: 0; padding: 0; text-align: left; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; display: grid; min-width: 0; }
+.ilus-img { aspect-ratio: 1 / 1; background: var(--surface-2); display: grid; place-items: center; color: var(--muted); overflow: hidden; }
+.ilus-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ilus-b { padding: 8px 10px 10px; display: grid; gap: 2px; }
+.ilus-t { font-weight: 650; font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ilus[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--forest); }
+.ilus-new { border: 2px dashed var(--line); background: transparent; box-shadow: none; display: grid; place-items: center; min-height: 10rem; color: var(--muted); font-weight: 650; gap: 6px; }
+.price-big { font-family: var(--f-head); font-size: 2.1rem; font-weight: 600; font-variant-numeric: tabular-nums; margin: 0; line-height: 1.1; }
+.desglose { display: grid; gap: 4px; font-size: .86rem; }
+.desglose div { display: flex; justify-content: space-between; gap: 10px; }
+.opt-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+.reco { background: color-mix(in srgb, var(--forest) 10%, var(--surface)); border-radius: 12px; padding: 10px 12px; font-size: .88rem; }
+.set-sec { display: grid; gap: 8px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.set-sec h4 { margin: 0; font-family: var(--f-head); font-size: 1.15rem; font-weight: 600; display: flex; gap: 8px; align-items: center; }
+.set-sec textarea, .set-sec input, .set-sec select { border: 0; background: var(--surface-2); border-radius: 10px; padding: 9px 11px; width: 100%; box-sizing: border-box; }
+.ardilla { display: flex; gap: 8px; width: min(100%, 28rem); }
+.ardilla input { flex: 1; min-width: 0; border: 0; background: var(--surface-2); border-radius: 10px; padding: 9px 11px; }
+.review { display: grid; gap: 6px; background: var(--bg); border-radius: 12px; padding: 12px; font-size: .88rem; }
+.review p { margin: 0; white-space: pre-wrap; }
+.review .ok { color: var(--forest-t); } .review .bad { color: var(--clay-t); }
 </style>
 
 <div class="app">
@@ -374,6 +412,9 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   const SECCIONES_BASE = ['Brief', 'Diseño', 'Revisión', 'Entrega'];
   const CARPETAS_BASE = ['01 Brief y referencias', '02 Bocetos', '03 Diseño', '04 Revisiones', '05 Entregables finales', '06 Cotización y facturas'];
   const ENTREGA_BASE = ['00 Léeme — Resumen de marca', '01 Logotipo/PNG sin fondo', '01 Logotipo/JPG con fondo', '02 Isotipo e isologo/PNG sin fondo', '02 Isotipo e isologo/JPG con fondo', '03 Color y tipografía', '04 Editables (AI · SVG · PDF)', '05 Aplicaciones y mockups', '06 Video y extras'];
+  const LICENCIA_BASE = ['00 Licencia y condiciones', '01 Ilustraciones en alta resolución', '02 Archivos para imprenta', '03 Mockups', '04 Crédito y uso'];
+  const GCAL = 'Google Calendar';
+  const ILUS_FOLDER = 'Curtis · Ilustraciones';
   const QA_BASE = ['Archivos editables / vectoriales (AI, SVG o PDF vector)', 'Versión a color del logo, no solo blanco y negro', 'JPG y PNG en RGB para pantalla (no CMYK)', 'Códigos de color revisados (HEX, RGB y CMYK coinciden)', 'Licencias de las fuentes aclaradas al cliente', 'Reglas de uso: espacio libre, tamaño mínimo, fondos', 'Nombres de archivo ordenados y sin espacios raros'];
   const ZOHO_ORG = '914134862';
   const FOLDER = 'application/vnd.google-apps.folder';
@@ -384,16 +425,16 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   const SUG_C = ['¿Cómo voy esta semana?', 'Revisemos mi LinkedIn', 'Ayudame a ordenar mi Drive de la NIHR', '¿Qué errores repito?'];
   const MEM_TIPOS = { precio: ['Precio', 'receipt', 'earth'], tiempo: ['Tiempo', 'clock', 'lake'], horario: ['Horario', 'sun', 'yellow'], error: ['Error que repito', 'alert', 'clay'], mejora: ['Área de mejora', 'trend', 'moss'], motivacion: ['Me motiva', 'leaf', 'forest'], pasos: ['Pasos repetidos', 'list', 'lake'], cliente: ['Cliente', 'users', 'earth'], otro: ['Nota', 'book', 'moss'] };
   const FRASES = [
-    'Empezá feo. Lo bonito llega en la tercera vuelta.', 'Un boceto hoy vale más que la idea perfecta mañana.', 'Hacé una cosa. Después otra. Así se hace un bosque.',
-    'No tenés que tener ganas para empezar; las ganas llegan empezando.', 'Lo que no se anota, se olvida. Lo que se anota, se hace.', 'El trabajo chico y constante le gana al trabajo heroico.',
-    'Tu cliente compra claridad. Dale menos opciones y mejores.', 'Cobrar bien también es parte del diseño.', 'Diez minutos de foco ya cuentan.',
-    'Cerrá un pendiente antes de abrir otro.', 'La creatividad necesita límites: ponele hora y fecha.', 'Si te trabaste, pedí ayuda o partilo en pasos más chicos.',
-    'Mirá lo que ya hiciste esta semana. Eso también es avance.', 'Un proyecto bien entregado consigue el siguiente.', 'Ordená el archivo hoy y te ahorrás una hora mañana.',
-    'Tu estilo se nota más cuando no copiás.', 'Primero que funcione, después que brille.', 'Dejá algo listo antes de cerrar el día.',
-    'Descansar también es parte del proceso.', 'Hoy no hace falta hacerlo todo. Hace falta hacer lo importante.', 'Cada entrega ordenada es tu portafolio creciendo.',
-    'Escribile hoy a quien estás esperando. Un mensaje destraba días.', 'La disciplina es cariño a tu yo del futuro.', 'Una buena pregunta al cliente ahorra tres revisiones.',
-    'Lo simple es más difícil, y por eso vale más.', 'Mostrá tu proceso: la gente contrata personas, no solo archivos.', 'El primer trazo es el más valiente.',
-    'Si lo podés terminar en dos minutos, terminalo ya.', 'Tu trabajo tiene valor aunque te haya salido fácil.', 'Volvé a lo básico: forma, contraste, intención.',
+    'Una ardilla a la vez. La de hoy: lo que dice «Ahora».', 'Empezá feo. Pulir es trabajo del vos de mañana.', 'Si te toma menos de 2 minutos, ya lo hubieras hecho. Dale.',
+    'Tu cerebro no es desordenado: es un museo sin curador. Yo curo.', 'Diez minutos de foco cuentan. Cinco también; no te pongás exquisito.', 'La ardilla puede esperar. La entrega no.',
+    'Un boceto hoy le gana a la idea perfecta de la próxima semana.', 'Cobrar bien también es diseño. Revisá ese precio.', 'Lo que no está anotado no existe. Anotalo y soltalo.',
+    'Partí la tarea en pedacitos. Las ardillas comen así.', 'Primero lo feo. Después el café.', 'Hecho es mejor que perfecto. «Perfecto» es la excusa favorita del TDAH.',
+    'Tu cliente compra claridad: menos opciones, mejores.', 'Si te trabaste no es flojera: es una tarea mal partida.', 'Hoy no hay que hacerlo todo. Hay que hacer lo de «Ahora».',
+    'Un archivo bien nombrado es un favor a tu yo del futuro.', 'Cerrá una pestaña. Literal. Te espero.', 'Cada entrega ordenada es tu portafolio creciendo solo.',
+    'Escribile hoy a quien estás esperando. Un mensaje destraba días.', 'El hiperfoco es un superpoder con mala puntería. Apuntémoslo.', 'Descansá cinco minutos, no cinco capítulos.',
+    'Tu estilo se nota cuando dejás de compararte.', 'Una buena pregunta al cliente ahorra tres revisiones.', 'Lo simple cuesta más. Cobralo como tal.',
+    'Mostrá tu proceso: la gente contrata personas, no archivos.', 'Te distrajiste. Normal. Volvé sin drama, la tarea sigue aquí.', 'Poné la alarma, no la fuerza de voluntad.',
+    'Si lo vas a hacer «después», anotalo ya. Después no existe.', 'Tu trabajo vale aunque te haya salido fácil.', 'Forma, contraste, intención. Lo demás es ruido.',
   ];
 
   const ICONS = {
@@ -425,12 +466,14 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     package: 'M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8', quote: 'M7 7h4v4c0 3-1 5-4 6M15 7h4v4c0 3-1 5-4 6',
     brain: 'M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1',
     external: 'M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6',
+    dots: 'M5 12h.01M12 12h.01M19 12h.01', edit: 'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z', image: 'M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15 9h.01', cards: 'M8 3h10a2 2 0 0 1 2 2v12M5 7h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z',
   };
 
   // ================= estado =================
   const S = {
     db: null, sample: null, sampleTools: false, sampleOff: false, mcp: null, fileArgs: false, perms: null,
-    items: [], proyectos: [], etiquetas: [], memoria: [], ajustes: {}, resumen: null, frase: null, curtisChat: [],
+    items: [], proyectos: [], etiquetas: [], memoria: [], ilustraciones: [], ajustes: {}, resumen: null, frase: null, curtisChat: [],
+    assets: null, sampleImages: null, gcal: { events: [], range: '', err: '', perm: '', cargando: false, ok: false }, pmenu: null, proyTab: 'proyectos',
     loadedItems: false, loadedProy: false,
     view: 'inicio', proyectoId: null, tareasModo: 'lista', proyModo: 'lista', registroTab: 'reuniones', filtroTag: '',
     calMes: '', calSel: '', drawer: null, picking: null, emojiOpen: false, collapsed: new Set(), asking: new Map(), chatErr: new Map(),
@@ -453,12 +496,33 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     for (const c of kids.flat(4)) if (c != null && c !== false && c !== '') el.append(c.nodeType ? c : document.createTextNode(String(c)));
     return el;
   }
-  const put = (el, ...kids) => el.replaceChildren(...kids.flat(5).filter((k) => k != null && k !== false && k !== ''));
+  // redibujo seguro: si un redibujo dispara otro (por ejemplo al salir de un campo), el segundo espera su turno
+  const ocupados = new WeakSet();
+  function put(el, ...kids) {
+    const list = kids.flat(5).filter((k) => k != null && k !== false && k !== '');
+    if (ocupados.has(el)) { queueMicrotask(() => put(el, ...list)); return; }
+    ocupados.add(el);
+    try { el.replaceChildren(...list); } finally { ocupados.delete(el); }
+  }
   function icon(name, cls) {
     const ns = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(ns, 'svg');
     svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('class', 'ic' + (cls ? ' ' + cls : '')); svg.setAttribute('aria-hidden', 'true');
     const p = document.createElementNS(ns, 'path'); p.setAttribute('d', ICONS[name] || ICONS.tag); svg.append(p);
+    return svg;
+  }
+  function logo(size) {
+    const ns = 'http://www.w3.org/2000/svg'; const w = size || 44;
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 64 48'); svg.setAttribute('width', String(w)); svg.setAttribute('height', String(Math.round(w * 0.75))); svg.setAttribute('class', 'logo'); svg.setAttribute('aria-hidden', 'true');
+    const el = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v)); svg.append(e); return e; };
+    el('path', { d: 'M41 42 C 58 42, 62 25, 53 15 C 48 10, 52 3, 59 6', fill: 'none', stroke: 'var(--earth)', 'stroke-width': '7', 'stroke-linecap': 'round' });
+    el('ellipse', { cx: '37', cy: '19', rx: '7.5', ry: '6.5', fill: 'var(--earth)' });
+    el('path', { d: 'M35.5 13.5 L 38.5 6 L 41.5 13 Z', fill: 'var(--earth)' });
+    el('rect', { x: '4', y: '5', width: '30', height: '38', fill: 'none', stroke: 'var(--yellow)', 'stroke-width': '5' });
+    el('circle', { cx: '39.6', cy: '18', r: '2.3', fill: '#fff' }); el('circle', { cx: '40.2', cy: '18.3', r: '1.25', fill: '#1a1f1b' });
+    el('circle', { cx: '44.4', cy: '20.6', r: '1.05', fill: '#1a1f1b' });
+    el('ellipse', { cx: '35', cy: '25.5', rx: '2.7', ry: '2.1', fill: 'var(--earth)' });
     return svg;
   }
   const isoLocal = (d) => d.toLocaleDateString('en-CA');
@@ -493,6 +557,9 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   const proyecto = (id) => S.proyectos.find((p) => p.id === id);
   const item = (id) => S.items.find((x) => x.id === id);
   const etiqueta = (id) => S.etiquetas.find((t) => t.id === id);
+  const ilus = (id) => S.ilustraciones.find((x) => x.id === id);
+  const folderIdFrom = (p) => (p && (p.driveFolderId || (String(p.driveUrl || '').match(/folders\/([\w-]+)/) || [])[1])) || '';
+  const esLicencia = (p) => /licen|ilustr/i.test((p && p.categoria) || '');
   const colorVar = (c) => 'var(--' + (COLORES.includes(c) ? c : 'moss') + ')';
   const ajuste = (k, def) => (S.ajustes[k] == null || S.ajustes[k] === '' ? def : S.ajustes[k]);
   const lines = (t) => String(t || '').split('\n').map((s) => s.trim()).filter(Boolean);
@@ -574,7 +641,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     patchItem(id, { estado });
     if (estado === 'listo') { const r = ev && ev.target && ev.target.getBoundingClientRect ? ev.target.getBoundingClientRect() : null; confetti(r ? r.left + r.width / 2 : innerWidth / 2, r ? r.top : innerHeight / 2); toast(fraseListo()); }
   }
-  function fraseListo() { const f = ['Listo. Una menos.', 'Hecho. Seguí con la próxima.', 'Bien. Eso ya no te pesa.', 'Cerrado. Respirá y seguí.']; return f[Math.floor(Math.random() * f.length)]; }
+  function fraseListo() { const f = ['Listo. Una ardilla menos.', 'Hecho. Siguiente, sin drama.', 'Eso ya no te persigue.', 'Cerrado. Un sorbo de agua y seguí.']; return f[Math.floor(Math.random() * f.length)]; }
 
   // ================= urgencia =================
   function urgencia(fecha, estado) {
@@ -629,7 +696,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   function horasMes() { const m = mesActual(); return S.items.filter((it) => it.tipo === 'bitacora' && (it.fecha || '').startsWith(m)).reduce((s, it) => s + (Number(it.horas) || 0), 0); }
   function resumenLocal() {
     const { pend, hechas, antes } = hoyStats(); const trab = trabadas(); const prox = proyActivos()[0];
-    if (!tareas().length && !S.proyectos.length) return 'Día limpio. Anotá lo primero que tengás en la cabeza y yo lo ordeno.';
+    if (!tareas().length && !S.proyectos.length) return 'Día limpio. Anotá lo primero que tengás en la cabeza; de ordenar me encargo yo.';
     const parts = [];
     parts.push(pend.length + hechas.length ? hechas.length + ' de ' + (pend.length + hechas.length) + ' listas hoy.' : 'Nada con fecha de hoy.');
     if (antes.length) parts.push(antes.length + (antes.length === 1 ? ' atrasada.' : ' atrasadas.'));
@@ -641,8 +708,9 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   function eventosDel(iso) {
     const ts = tareas().filter((it) => it.fecha === iso && pasaFiltro(it));
     const ps = S.proyectos.filter((p) => p.entrega === iso && p.estado !== 'terminado' && pasaFiltro(p));
-    const rs = S.items.filter((it) => it.tipo === 'reunion' && it.fecha === iso);
-    return { ts, ps, rs };
+    const gs = gcalDel(iso);
+    const rs = S.items.filter((it) => it.tipo === 'reunion' && it.fecha === iso && !(it.gcalId && gs.some((e) => e.id === it.gcalId)));
+    return { ts, ps, rs, gs };
   }
   function fechasLimite(dias) {
     const t = hoy(); const fin = addDays(t, dias);
@@ -651,9 +719,63 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     tareas().filter((it) => isOpen(it) && isDay(it.fecha) && it.fecha <= fin && (it.fecha < t || it.fecha > t || it.prioridad === 'alta') && pasaFiltro(it)).forEach((it) => out.push({ kind: 't', fecha: it.fecha, it }));
     return out.sort((a, b) => a.fecha.localeCompare(b.fecha) || (a.kind === 'p' ? -1 : 1));
   }
+  // ---------- Google Calendar (solo lectura) ----------
+  function gcalRange() {
+    const [y, m] = (S.calMes || mesActual()).split('-').map(Number);
+    const a = isoLocal(new Date(y, m - 1, -6)); const b = isoLocal(new Date(y, m, 7));
+    const t = hoy(); const far = addDays(t, 45);
+    return { from: a < t ? a : t, to: b > far ? b : far };
+  }
+  async function cargarGcal(force) {
+    if (!S.mcp || S.gcal.cargando) return;
+    const r = gcalRange(); const key = r.from + '_' + r.to;
+    if (!force && S.gcal.range === key) return;
+    S.gcal.range = key; S.gcal.cargando = true;
+    try {
+      const res = await S.mcp.callTool(GCAL, 'list_events', { startTime: r.from + 'T00:00:00', endTime: r.to + 'T23:59:00', orderBy: 'startTime', pageSize: 250 });
+      const pl = res && res.payload; const list = (pl && (pl.events || pl.items)) || [];
+      S.gcal.events = list.filter((e) => e && e.status !== 'cancelled').map((e) => ({
+        id: String(e.id || ''), titulo: e.summary || '(sin título)',
+        inicio: (e.start && (e.start.dateTime || e.start.date)) || '', fin: (e.end && (e.end.dateTime || e.end.date)) || '',
+        todoDia: !!(e.start && e.start.date && !e.start.dateTime), lugar: e.location || '', link: e.htmlLink || '',
+        gente: (e.attendees || []).filter((a) => !a.self).map((a) => a.displayName || a.email).slice(0, 6),
+      })).filter((e) => e.inicio);
+      S.gcal.err = ''; S.gcal.ok = true; S.gcal.perm = 'granted';
+    } catch (e) { S.gcal.err = mcpErr(e, GCAL); S.gcal.range = ''; if (e && e.code === 'not_in_manifest') S.gcal.perm = 'denied'; }
+    S.gcal.cargando = false; renderMain();
+  }
+  const evDia = (e) => String(e.inicio).slice(0, 10);
+  const evHora = (e) => (e.todoDia ? 'Todo el día' : new Date(e.inicio).toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }));
+  const gcalDel = (iso) => S.gcal.events.filter((e) => evDia(e) === iso);
+  const reunionDe = (e) => S.items.find((it) => it.gcalId && it.gcalId === e.id);
+  async function acuerdosDeEvento(e) {
+    const ex = reunionDe(e); if (ex) { openItem(ex.id, 'notas'); return; }
+    const id = await addItem({ tipo: 'reunion', titulo: e.titulo, fecha: evDia(e), estado: 'listo', con_quien: e.gente.join(', '), gcalId: e.id });
+    if (id) openItem(id, 'notas');
+  }
+  function meetRow(e) {
+    const ex = reunionDe(e);
+    return h('div', { class: 'meet' }, h('span', { class: 'meet-h', text: evHora(e) }),
+      h('span', { class: 'meet-t' }, e.titulo, e.gente.length || e.lugar ? h('small', { text: [e.gente.join(', '), e.lugar].filter(Boolean).join(' · ') }) : null),
+      h('span', { style: 'display:flex;gap:4px' },
+        h('button', { type: 'button', class: 'btn soft small', onclick: () => acuerdosDeEvento(e) }, ex ? 'Ver acuerdos' : 'Acuerdos'),
+        e.link ? h('a', { class: 'icon-btn', href: e.link, target: '_blank', rel: 'noopener', 'aria-label': 'Abrir en Google Calendar', title: 'Abrir en Google Calendar' }, icon('external', 'sm')) : null));
+  }
+  function gcalEstado() {
+    if (!S.mcp) return null;
+    if (S.gcal.ok) return h('span', { class: 'gcal-chip', title: 'Solo lectura' }, icon('calendar', 'sm'), 'Google Calendar');
+    if (S.gcal.cargando) return h('span', { class: 'hint', text: 'Leyendo tu calendario…' });
+    if (S.gcal.perm === 'denied') return h('span', { class: 'hint', text: 'Google Calendar sin permiso' });
+    return h('button', { type: 'button', class: 'btn soft small', onclick: () => cargarGcal(true) }, icon('calendar', 'sm'), 'Conectar Google Calendar');
+  }
   function invitaciones() {
     const out = []; const now = new Date(); const t = hoy();
     const min = Number(ajuste('horasMin', 0)) || 0;
+    gcalDel(t).filter((e) => !e.todoDia).forEach((e) => {
+      const ini = new Date(e.inicio).getTime(); const fin = new Date(e.fin || e.inicio).getTime(); const ahora = Date.now();
+      if (ini > ahora && ini - ahora <= 60 * 60000) out.push({ icon: 'calendar', text: 'A las ' + evHora(e) + ': «' + e.titulo + '». Prepará lo que necesitás.', go: () => acuerdosDeEvento(e) });
+      else if (fin < ahora && ahora - fin < 8 * 3600000 && !(reunionDe(e) && String(reunionDe(e).notas || '').trim())) out.push({ icon: 'users', text: 'Terminó «' + e.titulo + '». Anotá los acuerdos antes de que se te vuelen.', go: () => acuerdosDeEvento(e) });
+    });
     if (min && now.getDay() >= 1 && now.getDay() <= 5 && now.getHours() >= 15 && !S.items.some((it) => it.tipo === 'bitacora' && it.fecha === t)) out.push({ icon: 'book', text: '¿Anotás la bitácora NIHR de hoy? Son 2 minutos.', go: () => nuevoRegistro('bitacora') });
     S.items.filter((it) => it.tipo === 'reunion' && it.fecha === t && !String(it.notas || '').trim()).slice(0, 1).forEach((r) => out.push({ icon: 'users', text: 'Anotá los acuerdos de «' + (r.titulo || 'la reunión de hoy') + '» antes de que se te olviden.', go: () => openItem(r.id, 'notas') }));
     trabadas().filter((it) => Date.now() - (it.actualizado || 0) > 3 * 864e5).slice(0, 1).forEach((it) => out.push({ icon: 'pause', text: 'Hace ' + Math.floor((Date.now() - it.actualizado) / 864e5) + ' días esperás' + (it.con_quien ? ' a ' + it.con_quien : '') + ' por «' + it.titulo + '». ¿Le escribís hoy?', go: () => openItem(it.id, 'ask') }));
@@ -717,7 +839,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const cur = S.view === 'proyecto' ? 'proyectos' : S.view;
     const pendN = pendientesOrden().length;
     put($('#side'),
-      h('div', { class: 'brand' }, h('span', { class: 'brand-mark', 'aria-hidden': 'true' }), h('b', { text: 'Curtis' })),
+      h('div', { class: 'brand' }, logo(46), h('div', { class: 'brand-txt' }, h('b', { text: 'Curtis' }), h('small', { text: 'una ardilla a la vez' }))),
       NAV.map(([k, l, ic]) => h('button', { type: 'button', class: 'nav-btn', 'aria-current': cur === k && S.view !== 'proyecto' ? 'page' : null, onclick: () => go(k) }, icon(ic), k === 'tareas' ? 'Mis tareas' : l, k === 'tareas' && pendN ? h('span', { class: 'count', text: String(pendN) }) : null)),
       h('div', { class: 'nav-h' }, 'Proyectos', h('button', { type: 'button', 'aria-label': 'Nuevo proyecto', title: 'Nuevo proyecto', onclick: nuevoProyecto }, icon('plus', 'sm'))),
       proyActivos().map((p) => h('button', { type: 'button', class: 'nav-btn', 'aria-current': S.view === 'proyecto' && S.proyectoId === p.id ? 'page' : null, onclick: () => go('proyecto', p.id) },
@@ -832,19 +954,22 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
       const d = new Date(start); d.setDate(start.getDate() + i); const iso = isoLocal(d);
       if (i >= 35 && d.getMonth() !== m - 1) break;
       const ev = eventosDel(iso);
-      const dots = [...ev.ps.map((p) => ({ sq: true, c: colorVar(p.color) })), ...ev.ts.filter(isOpen).map((it) => ({ c: URG_COLOR[urgencia(it.fecha, it.estado).k] })), ...ev.rs.map(() => ({ c: 'var(--lake)' }))].slice(0, 4);
-      cells.push(h('button', { type: 'button', class: 'cal-d' + (d.getMonth() !== m - 1 ? ' out' : '') + (iso === hoy() ? ' today' : ''), 'aria-pressed': String(iso === S.calSel), 'aria-label': fmtDate(iso, { weekday: 'long', day: 'numeric', month: 'long' }) + (dots.length ? ', ' + (ev.ts.length + ev.ps.length + ev.rs.length) + ' cosas' : ''),
+      const dots = [...ev.ps.map((p) => ({ sq: true, c: colorVar(p.color) })), ...ev.gs.map(() => ({ c: 'var(--lake)' })), ...ev.ts.filter(isOpen).map((it) => ({ c: URG_COLOR[urgencia(it.fecha, it.estado).k] })), ...ev.rs.map(() => ({ c: 'var(--lake)' }))].slice(0, 4);
+      cells.push(h('button', { type: 'button', class: 'cal-d' + (d.getMonth() !== m - 1 ? ' out' : '') + (iso === hoy() ? ' today' : ''), 'aria-pressed': String(iso === S.calSel), 'aria-label': fmtDate(iso, { weekday: 'long', day: 'numeric', month: 'long' }) + (dots.length ? ', ' + (ev.ts.length + ev.ps.length + ev.rs.length + ev.gs.length) + ' cosas' : ''),
         onclick: () => { S.calSel = iso; renderMain(true); } }, h('span', { text: String(d.getDate()) }), h('span', { class: 'cal-dots' }, dots.map((x) => h('i', { class: x.sq ? 'sq' : '', style: 'background:' + x.c })))));
     }
-    const mover = (n) => { const d = new Date(y, m - 1 + n, 1); S.calMes = isoLocal(d).slice(0, 7); renderMain(true); };
+    const mover = (n) => { const d = new Date(y, m - 1 + n, 1); S.calMes = isoLocal(d).slice(0, 7); renderMain(true); if (S.gcal.ok) cargarGcal(); };
     const ev = eventosDel(S.calSel);
     const agenda = h('div', { class: 'agenda' },
       h('div', { class: 'agenda-h' }, icon('calendar', 'sm'), cap(fmtDate(S.calSel, { weekday: 'long', day: 'numeric', month: 'long' }))),
       ev.ps.map((p) => h('button', { type: 'button', class: 'dl-row', style: 'grid-template-columns:auto minmax(0,1fr)', onclick: () => go('proyecto', p.id) }, h('span', { class: 'u today' }, icon('package', 'sm'), 'Entrega'), h('span', { class: 'dl-t proj', text: (p.icono || '') + ' ' + p.nombre }))),
+      ev.gs.length ? h('div', {}, ev.gs.map(meetRow)) : null,
       ev.rs.map((r) => h('button', { type: 'button', class: 'dl-row', style: 'grid-template-columns:auto minmax(0,1fr)', onclick: () => openItem(r.id) }, h('span', { class: 'u wait' }, icon('users', 'sm'), 'Reunión'), h('span', { class: 'dl-t', text: r.titulo || 'Sin tema' }))),
       ev.ts.length ? h('ul', { class: 'rows', style: 'box-shadow:none;padding:0' }, ev.ts.flatMap((it) => taskRow(it, { showProj: true })), opts.add !== false ? addRow('Agregar para este día', () => ({ fecha: S.calSel })) : null)
-        : h('ul', { class: 'rows', style: 'box-shadow:none;padding:0' }, h('li', { class: 'hint', style: 'padding:6px 0', text: ev.ps.length || ev.rs.length ? '' : 'Día libre.' }), addRow('Agregar para este día', () => ({ fecha: S.calSel }))));
+        : h('ul', { class: 'rows', style: 'box-shadow:none;padding:0' }, h('li', { class: 'hint', style: 'padding:6px 0', text: ev.ps.length || ev.rs.length || ev.gs.length ? '' : 'Día libre.' }), addRow('Agregar para este día', () => ({ fecha: S.calSel }))));
     return h('div', { class: 'card pad', id: 'calendario' },
+      S.mcp ? h('div', { style: 'display:flex;justify-content:flex-end;margin:-4px 0 6px' }, gcalEstado()) : null,
+      S.gcal.err ? h('p', { class: 'err', style: 'margin-bottom:6px', text: S.gcal.err }) : null,
       h('div', { class: 'cal-h' }, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Mes anterior', onclick: () => mover(-1) }, icon('back')), h('b', { text: fmtDate(S.calMes) }),
         h('div', { style: 'display:flex;gap:4px' }, S.calMes !== mesActual() ? h('button', { type: 'button', class: 'btn soft small', onclick: () => { S.calMes = mesActual(); S.calSel = hoy(); renderMain(true); } }, 'Hoy') : null, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Mes siguiente', onclick: () => mover(1) }, icon('right')))),
       h('div', { class: 'cal' }, ['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d) => h('span', { class: 'cal-dow', text: d })), cells),
@@ -902,7 +1027,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const st = S.asking.get('frase');
     const hero = h('section', { class: 'hero', id: 'resumen', 'aria-label': 'Resumen del día' }, topo(),
       h('div', { class: 'hero-top' },
-        h('div', { class: 'frame' }, h('p', { class: 'kicker', style: 'margin-bottom:8px', text: 'Curtis · resumen' }), h('p', { class: 'hero-greet', text: saludo }),
+        h('div', { class: 'frame' }, h('div', { class: 'hero-brand' }, logo(40), h('p', { class: 'kicker', style: 'margin:0', text: 'Curtis · tu resumen' })), h('p', { class: 'hero-greet', text: saludo }),
           h('p', { class: 'hero-date' }, icon(hr >= 6 && hr < 19 ? 'sun' : 'moon', 'sm'), cap(new Date().toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))),
           h('p', { class: 'hero-line', text: loading ? 'Abriendo tu registro…' : resumenLocal() })),
         ring(total ? hechas.length / total : 0, total ? hechas.length + '/' + total : '0', 'hoy')),
@@ -930,6 +1055,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
       hero,
       h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Tu tiempo' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => { S.tareasModo = 'calendario'; go('tareas'); } }, 'Calendario grande')),
         h('div', { class: 'two' }, calendario(), fechasLimiteCard(21))),
+      gcalDel(hoy()).length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Reuniones de hoy' }), h('span', { class: 'gcal-chip' }, icon('calendar', 'sm'), 'Google Calendar')), h('div', { class: 'card pad', style: 'padding-block:6px' }, gcalDel(hoy()).map(meetRow))) : null,
       h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Hoy' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('tareas') }, 'Ver todas')),
         h('ul', { class: 'rows' }, hoyList.slice(0, 7).flatMap((it) => taskRow(it, { showProj: true })), addRow('Agregar tarea para hoy', { fecha: hoy() }))),
       proyActivos().length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Proyectos activos' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('proyectos') }, 'Ver todos')),
@@ -996,12 +1122,42 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
       group('pronto', 'Próximos 3 días', pronto, { icon: 'hourglass', showProj: true, add: addRow('Agregar para mañana', { fecha: addDays(t, 1) }) }),
       group('semana', 'Resto de la semana', sem, { icon: 'calendar', showProj: true }),
       group('luego', 'Más adelante', luego, { icon: 'leaf', showProj: true }),
-      sin.length ? group('sin', 'Sin fecha', sin, { icon: 'dashed', showProj: true }) : null,
+      sin.length ? group('sin', 'Sin fecha · ardillas estacionadas', sin, { icon: 'dashed', showProj: true }) : null,
       group('listas', 'Listas (últimas 30)', listas, { icon: 'check', showProj: true, empty: 'Todavía nada terminado.' })];
   }
 
   // ================= PROYECTOS =================
   function pcard(p) {
+    const card = pcardInner(p);
+    return h('div', { class: 'pwrap' }, card,
+      h('button', { type: 'button', class: 'icon-btn pmenu-btn', 'aria-label': 'Opciones de ' + (p.nombre || 'proyecto'), 'aria-expanded': String(S.pmenu === p.id), onclick: (ev) => { ev.stopPropagation(); S.pmenu = S.pmenu === p.id ? null : p.id; renderMain(true); } }, icon('dots')),
+      S.pmenu === p.id ? h('div', { class: 'pmenu', role: 'menu' },
+        h('button', { type: 'button', role: 'menuitem', onclick: () => { S.pmenu = null; renombrarProyecto(p.id); } }, icon('edit', 'sm'), 'Renombrar'),
+        h('button', { type: 'button', role: 'menuitem', onclick: () => { S.pmenu = null; go('proyecto', p.id); } }, icon('arrow', 'sm'), 'Abrir'),
+        h('button', { type: 'button', role: 'menuitem', onclick: () => { S.pmenu = null; renderMain(true); borrarProyecto(p.id); } }, icon('trash', 'sm'), 'Borrar')) : null);
+  }
+  function renombrarProyecto(id) {
+    const p = proyecto(id); if (!p) return;
+    const inp = h('input', { type: 'text', value: p.nombre || '', 'aria-label': 'Nombre del proyecto' });
+    const guardar = () => { const v = inp.value.trim(); if (!v) { toast('Escribí un nombre.'); return; } hideModal(); patchProyecto(id, { nombre: v }); toast('Renombrado'); };
+    inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); guardar(); } });
+    showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+      h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Renombrar proyecto' }, h('h3', {}, icon('edit'), 'Renombrar proyecto'), h('label', { class: 'field' }, inp),
+        h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn soft', onclick: hideModal }, 'Cancelar'), h('button', { type: 'button', class: 'btn forest', onclick: guardar }, 'Guardar')))), hideModal);
+    inp.focus(); inp.select();
+  }
+  function borrarProyecto(id) {
+    const p = proyecto(id); if (!p) return;
+    const ts = tareas().filter((it) => it.proyecto === id);
+    confirmar('¿Borrar el proyecto «' + (p.nombre || '') + '»?', 'Sus ' + ts.length + ' tareas no se borran: pasan a Mis tareas sin proyecto. En Drive no se borra nada.', 'Borrar proyecto', () => {
+      ts.forEach((it) => patchItem(it.id, { proyecto: '', seccion: '' }));
+      enqueue('p/' + id, () => S.db.doc('proyectos/' + id).delete());
+      if (S.view === 'proyecto' && S.proyectoId === id) go('proyectos');
+      toast('Proyecto borrado');
+    });
+  }
+  document.addEventListener('click', (ev) => { if (S.pmenu && !(ev.target.closest && ev.target.closest('.pwrap'))) { S.pmenu = null; renderMain(true); } });
+  function pcardInner(p) {
     const s = proyStats(p);
     return h('button', { type: 'button', class: 'pcard', onclick: () => go('proyecto', p.id) },
       h('div', { class: 'pcard-cover', style: 'background:linear-gradient(135deg,' + colorVar(p.color) + ', color-mix(in srgb,' + colorVar(p.color) + ' 40%, var(--surface)))' }, h('span', { class: 'pcard-emoji', text: p.icono || '📁' })),
@@ -1017,10 +1173,12 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     if (id) { go('proyecto', id); setTimeout(() => { const t = document.getElementById('p-title'); if (t) { t.focus(); t.select(); } }, 80); }
   }
   function viewProyectos() {
+    const tabs = h('div', { class: 'seg', role: 'group', 'aria-label': 'Ver' }, [['proyectos', 'Proyectos', 'grid'], ['ilustraciones', 'Ilustraciones', 'image']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.proyTab === k), onclick: () => { S.proyTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
+    if (S.proyTab === 'ilustraciones') return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Tu catálogo para licenciar' }), h('h1', { text: 'Ilustraciones' }))), tabs, viewIlustraciones()];
     const act = S.proyectos.filter((p) => p.estado !== 'terminado' && pasaFiltro(p)).sort((a, b) => (a.entrega || '9999').localeCompare(b.entrega || '9999'));
     const fin = S.proyectos.filter((p) => p.estado === 'terminado' && pasaFiltro(p)).sort((a, b) => (b.entregado || '').localeCompare(a.entregado || ''));
     return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Ordenados por entrega' }), h('h1', { text: 'Proyectos' })), h('button', { type: 'button', class: 'btn forest', onclick: nuevoProyecto }, icon('plus', 'sm'), 'Nuevo proyecto')),
-      filtroBar(),
+      tabs, filtroBar(),
       h('div', { class: 'gallery' }, act.map(pcard), h('button', { type: 'button', class: 'pcard pcard-new', onclick: nuevoProyecto }, icon('plus', 'lg'), 'Nuevo proyecto')),
       fin.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Entregados' })), h('div', { class: 'gallery' }, fin.map(pcard))) : null];
   }
@@ -1058,11 +1216,18 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
       (p.cotizaciones || []).length ? h('div', { class: 'prop' }, h('span', {}, icon('receipt', 'sm'), 'Cotizaciones'), h('span', {}, (p.cotizaciones || []).map((c) => c.numero + ' · ' + money(c.total)).join('  ·  '))) : null,
       h('div', { class: 'prop' }, h('span', {}, icon('check', 'sm'), 'Avance'), h('div', { style: 'display:grid;gap:4px' }, h('div', { class: 'bar' }, h('span', { style: 'width:' + Math.round(s.pct * 100) + '%' })), h('span', { class: 'hint', text: s.done + ' de ' + s.total + ' tareas listas' }))));
     const desc = pf('descripcion', h('textarea', { class: 'desc', placeholder: 'Notas del proyecto: brief, contactos, links, lo que necesités recordar…', 'aria-label': 'Notas del proyecto' }, p.descripcion || ''));
+    const ilusIds = Array.isArray(p.ilustraciones) ? p.ilustraciones : [];
+    const ilusSec = esLicencia(p) || ilusIds.length ? h('section', { class: 'card pad', id: 'ilus-proyecto', style: 'display:grid;gap:12px' },
+      h('div', { class: 'sec-h', style: 'margin:0' }, h('h2', {}, icon('image'), 'Ilustraciones de este proyecto'), h('span', { class: 'hint', text: ilusIds.length + (ilusIds.length === 1 ? ' elegida' : ' elegidas') })),
+      ilusIds.length ? h('div', { class: 'ilus-grid' }, ilusIds.map(ilus).filter(Boolean).map((x) => ilusCard(x))) : h('p', { class: 'hint', text: 'Elegí del catálogo las ilustraciones que vas a licenciar (o subilas desde aquí).' }),
+      h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => elegirIlus(p.id) }, icon('image', 'sm'), 'Elegir o subir ilustraciones'), h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirLicencia(p.id) }, icon('receipt', 'sm'), 'Armar paquete y precio')),
+      p.licencia && p.licencia.total ? h('p', { class: 'hint', text: 'Última propuesta guardada: ' + money(p.licencia.total) + ' · ' + fmtDate(p.licencia.fecha) }) : null) : null;
     const emojiBtn = h('button', { type: 'button', class: 'p-emoji', 'aria-label': 'Cambiar ícono', onclick: () => { S.emojiOpen = !S.emojiOpen; renderMain(true); } }, p.icono || '📁');
     const tools = h('div', { class: 'tools-row' },
       p.estado !== 'terminado' ? h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Entregar proyecto') : h('button', { type: 'button', class: 'btn soft', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Volver a entregar'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => crearCarpetasBoton(p.id) }, icon('folder', 'sm'), p.driveFolderId ? 'Agregar carpetas de trabajo' : 'Carpetas de trabajo en Drive'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => abrirCotizacion(p.id) }, icon('receipt', 'sm'), 'Cotización en Zoho'),
+      !esLicencia(p) && !ilusIds.length ? h('button', { type: 'button', class: 'btn soft', onclick: () => abrirLicencia(p.id) }, icon('image', 'sm'), 'Licenciar ilustraciones') : null,
       h('button', { type: 'button', class: 'btn soft', onclick: () => { S.drawer = { kind: 'chat-proyecto', id: p.id, focus: 'ask' }; renderDrawer(true); } }, icon('sparkle', 'sm'), 'Curtis del proyecto'),
       plantillaCat && !ts.length ? h('button', { type: 'button', class: 'btn ok', onclick: async () => { for (const l of lines(plantillaCat)) await addItem({ titulo: l, proyecto: p.id, seccion: secs[0].id }); toast('Pasos de ' + p.categoria + ' cargados'); } }, icon('list', 'sm'), 'Cargar pasos de ' + p.categoria) : null);
     const head = h('div', { class: 'page-h' },
@@ -1096,11 +1261,8 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     return [
       h('button', { type: 'button', class: 'btn soft small', style: 'justify-self:start', onclick: () => go('proyectos') }, icon('back', 'sm'), 'Proyectos'),
       h('div', {}, cover, h('div', { class: 'p-head' }, emojiBtn, S.emojiOpen ? h('div', { class: 'emoji-grid' }, EMOJIS.map((e) => h('button', { type: 'button', 'aria-label': 'Ícono ' + e, onclick: () => { S.emojiOpen = false; patchProyecto(p.id, { icono: e }); } }, e))) : null, title)),
-      props, desc, tools, head, body,
-      h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn ghost small', onclick: () => confirmar('¿Borrar el proyecto «' + (p.nombre || '') + '»?', 'Sus ' + ts.length + ' tareas no se borran: pasan a Mis tareas sin proyecto. En Drive no se borra nada.', 'Borrar proyecto', () => {
-        ts.forEach((it) => patchItem(it.id, { proyecto: '', seccion: '' }));
-        enqueue('p/' + p.id, () => S.db.doc('proyectos/' + p.id).delete()); go('proyectos'); toast('Proyecto borrado');
-      }) }, icon('trash', 'sm'), 'Borrar proyecto')),
+      props, ilusSec, desc, tools, head, body,
+      h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn ghost small', onclick: () => borrarProyecto(p.id) }, icon('trash', 'sm'), 'Borrar proyecto')),
     ];
   }
 
@@ -1190,7 +1352,13 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
           f.running ? h('button', { type: 'button', class: 'btn forest', onclick: pauseFoco }, icon('stop', 'sm'), 'Pausar') : h('button', { type: 'button', class: 'btn forest', onclick: startFoco }, icon('play', 'sm'), f.remaining < f.mins * 60 ? 'Seguir' : 'Empezar'),
           h('button', { type: 'button', class: 'btn soft', onclick: () => { clearInterval(f.timer); f.running = false; f.remaining = f.mins * 60; saveFoco(); renderMain(true); } }, 'Reiniciar'),
           it ? h('button', { type: 'button', class: 'btn ok', onclick: (ev) => { const spent = Math.round((f.mins * 60 - f.remaining) / 60); if (spent > 0) patchItem(it.id, { minutosFoco: (Number(it.minutosFoco) || 0) + spent }); clearInterval(f.timer); f.running = false; f.remaining = f.mins * 60; setEstado(it.id, 'listo', ev); f.taskId = ''; saveFoco(); renderMain(true); } }, icon('check', 'sm'), 'Terminé la tarea') : null),
-        it && it.minutosFoco ? h('p', { class: 'hint', text: 'Ya le dedicaste ' + it.minutosFoco + ' min de foco a esta tarea.' }) : null)];
+        it && it.minutosFoco ? h('p', { class: 'hint', text: 'Ya le dedicaste ' + it.minutosFoco + ' min de foco a esta tarea.' }) : null,
+        (() => {
+          const inp = h('input', { type: 'text', placeholder: '¿Se cruzó una ardilla? Anotala y seguí', 'aria-label': 'Estacionar una distracción' });
+          const go2 = async () => { const t = inp.value.trim(); if (!t) return; inp.value = ''; await addItem({ titulo: t, fecha: '', notas: 'Ardilla estacionada durante el foco · ' + fmtDate(hoy()) }); toast('Estacionada. Volvé al foco.'); };
+          inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); go2(); } });
+          return h('div', { class: 'ardilla' }, inp, h('button', { type: 'button', class: 'btn soft', onclick: go2 }, 'Estacionar'));
+        })())];
   }
 
   // ================= CURTIS (memoria + chat) =================
@@ -1229,7 +1397,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   function closeDrawer() { S.drawer = null; renderDrawer(); }
   function renderDrawer(force) {
     const root = $('#drawer-root'); const d = S.drawer;
-    if (!d) { root.replaceChildren(); return; }
+    if (!d) { put(root); return; }
     if (!force && root.firstChild && typingIn('#drawer-root')) { S.pendingDrawer = true; return; }
     S.pendingDrawer = false;
     const keepScroll = root.querySelector('.drawer') ? root.querySelector('.drawer').scrollTop : 0;
@@ -1237,8 +1405,8 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     if (d.kind === 'item') panel = drawerItem(d);
     else if (d.kind === 'chat-proyecto') panel = drawerChatProyecto(d);
     else if (d.kind === 'ajustes') panel = drawerAjustes();
-    if (!panel) { if (d.wait && Date.now() - d.wait < 6000) return; S.drawer = null; root.replaceChildren(); return; }
-    root.replaceChildren(h('div', { class: 'drawer-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) closeDrawer(); } }, panel));
+    if (!panel) { if (d.wait && Date.now() - d.wait < 6000) return; S.drawer = null; put(root); return; }
+    put(root, h('div', { class: 'drawer-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) closeDrawer(); } }, panel));
     const dr = root.querySelector('.drawer'); if (dr && !d.focus) dr.scrollTop = keepScroll;
     if (d.focus) {
       const f = d.focus; d.focus = null;
@@ -1343,16 +1511,17 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   }
   function abrirAjustes() { S.drawer = { kind: 'ajustes' }; renderDrawer(true); }
   function drawerAjustes() {
-    const field = (label, el, hint) => h('label', { class: 'field' }, h('span', { text: label }), el, hint ? h('span', { class: 'hint', text: hint }) : null);
-    const ta = (key, def, rows) => { const t = h('textarea', { rows: String(rows || 5) }, ajuste(key, def)); t.addEventListener('change', () => saveAjustes({ [key]: t.value })); return t; };
-    const minI = h('input', { type: 'number', min: '0', step: '0.5', value: ajuste('horasMin', '') }); minI.addEventListener('change', () => saveAjustes({ horasMin: Number(minI.value) || 0 }));
-    const orgI = h('input', { type: 'text', value: ajuste('zohoOrg', ZOHO_ORG) }); orgI.addEventListener('change', () => saveAjustes({ zohoOrg: orgI.value.trim() }));
+    const sec = (ic, title, expl, ...ctrl) => h('section', { class: 'set-sec' }, h('h4', {}, icon(ic), title), h('p', { class: 'hint', text: expl }), ctrl);
+    const ta = (key, def, rows) => { const t = h('textarea', { rows: String(rows || 5), 'aria-label': key }, ajuste(key, def)); t.addEventListener('change', () => { saveAjustes({ [key]: t.value }); }); return t; };
+    const minI = h('input', { type: 'number', min: '0', step: '0.5', value: ajuste('horasMin', ''), placeholder: 'Ejemplo: 40', 'aria-label': 'Mínimo de horas NIHR' }); minI.addEventListener('change', () => saveAjustes({ horasMin: Number(minI.value) || 0 }));
+    const firmaI = h('input', { type: 'text', value: ajuste('firma', ''), placeholder: 'Tu nombre artístico', 'aria-label': 'Tu firma' }); firmaI.addEventListener('change', () => saveAjustes({ firma: firmaI.value.trim() }));
+    const orgI = h('input', { type: 'text', value: ajuste('zohoOrg', ZOHO_ORG), 'aria-label': 'Organización de Zoho' }); orgI.addEventListener('change', () => saveAjustes({ zohoOrg: orgI.value.trim() }));
     const tagRows = S.etiquetas.map((t) => {
-      const n = h('input', { type: 'text', value: t.nombre, 'aria-label': 'Nombre de la etiqueta', style: 'flex:1;min-width:6rem' });
+      const n = h('input', { type: 'text', value: t.nombre, 'aria-label': 'Nombre de la etiqueta', style: 'flex:1;min-width:6rem;width:auto' });
       n.addEventListener('change', () => { const v = n.value.trim(); if (v) enqueue('t/' + t.id, () => S.db.doc('etiquetas/' + t.id).update({ nombre: v.slice(0, 40) })); });
       const ic = h('select', { 'aria-label': 'Ícono', style: 'width:auto' }, TAG_ICONS.map((x) => h('option', { value: x, selected: t.icono === x ? true : null, text: x })));
       ic.addEventListener('change', () => enqueue('t/' + t.id, () => S.db.doc('etiquetas/' + t.id).update({ icono: ic.value })));
-      return h('div', { style: 'display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid var(--line)' }, icon(t.icono || 'tag', 'sm'), n,
+      return h('div', { style: 'display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:4px 0' }, icon(t.icono || 'tag', 'sm'), n,
         COLORES.map((c) => h('button', { type: 'button', class: 'swatch', style: 'background:' + colorVar(c), 'aria-label': 'Color ' + c, 'aria-pressed': String(t.color === c), onclick: () => enqueue('t/' + t.id, () => S.db.doc('etiquetas/' + t.id).update({ color: c })).then(() => renderDrawer(true)) })),
         ic, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Borrar etiqueta ' + t.nombre, onclick: () => confirmar('¿Borrar la etiqueta «' + t.nombre + '»?', 'Se quita de las tareas y proyectos que la tengan. Las tareas no se borran.', 'Borrar', () => {
           S.items.filter((x) => (x.etiquetas || []).includes(t.id)).forEach((x) => patchItem(x.id, { etiquetas: x.etiquetas.filter((y) => y !== t.id) }));
@@ -1360,27 +1529,28 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
           enqueue('t/' + t.id, () => S.db.doc('etiquetas/' + t.id).delete()); if (S.filtroTag === t.id) S.filtroTag = '';
         }) }, icon('trash', 'sm')));
     });
-    const newTag = h('input', { type: 'text', placeholder: 'Nombre y Enter' });
-    newTag.addEventListener('keydown', async (ev) => { if (ev.key !== 'Enter') return; ev.preventDefault(); const v = newTag.value.trim(); if (!v) return; newTag.value = ''; await addEtiqueta(v); toast('Etiqueta creada'); setTimeout(() => renderDrawer(true), 60); });
+    const newTag = h('input', { type: 'text', placeholder: 'Nueva etiqueta y Enter', 'aria-label': 'Nueva etiqueta' });
+    newTag.addEventListener('keydown', async (ev) => { if (ev.key !== 'Enter') return; ev.preventDefault(); const v = newTag.value.trim(); if (!v) return; newTag.value = ''; newTag.blur(); await addEtiqueta(v); toast('Etiqueta creada'); setTimeout(() => renderDrawer(true), 60); });
     const cats = Object.entries(ajuste('plantillasCat', {}));
     return h('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Ajustes' },
       h('div', { class: 'drawer-top' }, h('b', { style: 'font-family:var(--f-head);font-size:1.4rem', text: 'Ajustes' }), h('span', { class: 'saved', id: 'saved' }), h('span', { class: 'spacer' }), h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Cerrar', onclick: closeDrawer }, icon('x'))),
-      h('div', { class: 'form-grid' },
-        h('div', { class: 'field' }, h('span', { text: 'Etiquetas' }), tagRows, h('label', { class: 'field' }, newTag)),
-        field('Mínimo de horas NIHR al mes', minI),
-        field('Secciones de cada proyecto nuevo (una por línea)', ta('plantillaSecciones', SECCIONES_BASE.join('\n'), 4)),
-        field('Estructura de entrega (una carpeta por línea; «/» para subcarpetas)', ta('plantillaEntrega', ENTREGA_BASE.join('\n'), 9), 'Se usa igual en cada entrega. Curtis acomoda cada archivo en su carpeta.'),
-        field('Revisión antes de entregar (una por línea)', ta('checklistEntrega', QA_BASE.join('\n'), 7)),
-        field('Carpetas de trabajo en Drive (una por línea)', ta('plantillaCarpetas', CARPETAS_BASE.join('\n'), 6)),
-        cats.length ? h('div', { class: 'field' }, h('span', { text: 'Plantillas de pasos por categoría' }), cats.map(([c, v]) => { const t = h('textarea', { rows: '4' }, v); t.addEventListener('change', () => saveAjustes({ plantillasCat: Object.assign({}, ajuste('plantillasCat', {}), { [c]: t.value }) })); return h('label', { class: 'field' }, h('span', { text: c }), t); })) : null,
-        field('Organización de Zoho Books', orgI, 'La tuya es «Creatif» (' + ZOHO_ORG + ').')),
-      h('p', { class: 'hint', text: 'Todo se guarda solo al salir de cada campo.' }));
+      h('p', { class: 'hint', text: 'Aquí le enseñás a Curtis cómo te gusta trabajar. Lo cambiás una vez y se usa siempre. Todo se guarda solo cuando salís de cada campo.' }),
+      sec('tag', 'Etiquetas', 'Sirven para agrupar cosas que no son del mismo proyecto. Ejemplo: «Freelance», «Ilustración», «Cliente difícil». Después filtrás Mis tareas y Proyectos por etiqueta. También las creás desde cualquier tarea.', tagRows, newTag),
+      sec('clock', 'Horas NIHR al mes', 'Tu mínimo de horas. Con esto Curtis te dice cuánto te falta cada mes.', minI),
+      sec('edit', 'Tu firma', 'Tu nombre como ilustrador. Va en el crédito de las licencias y en las propuestas.', firmaI),
+      sec('list', 'Columnas de cada proyecto nuevo', 'Las secciones con las que nace cada proyecto. Una por línea. Ejemplo: Brief, Diseño, Revisión, Entrega.', ta('plantillaSecciones', SECCIONES_BASE.join('\n'), 4)),
+      sec('folder', 'Carpetas de trabajo en Drive', 'Lo que Curtis crea en Drive cuando tocás «Carpetas de trabajo» en un proyecto: donde guardás bocetos y versiones mientras trabajás. Una por línea.', ta('plantillaCarpetas', CARPETAS_BASE.join('\n'), 6)),
+      sec('package', 'Cómo se ordena una entrega de diseño', 'La carpeta que le mandás al cliente siempre queda igual. Una carpeta por línea; con «/» hacés subcarpetas. Ejemplo: «01 Logotipo/PNG sin fondo».', ta('plantillaEntrega', ENTREGA_BASE.join('\n'), 9)),
+      sec('image', 'Cómo se ordena una entrega de licencia', 'Para proyectos donde licenciás ilustraciones (categoría «Licencia»). Misma idea: una carpeta por línea.', ta('plantillaLicencia', LICENCIA_BASE.join('\n'), 5)),
+      sec('check', 'Revisión antes de entregar', 'La lista que marcás antes de mandar algo. Si falta algo, Curtis te avisa y lo anota para que no se repita.', ta('checklistEntrega', QA_BASE.join('\n'), 7)),
+      cats.length ? sec('list', 'Pasos que se cargan solos por categoría', 'Curtis los aprendió de tus proyectos. Cuando creás un proyecto de esa categoría, te ofrece cargarlos.', cats.map(([c, v]) => { const t = h('textarea', { rows: '4', 'aria-label': c }, v); t.addEventListener('change', () => saveAjustes({ plantillasCat: Object.assign({}, ajuste('plantillasCat', {}), { [c]: t.value }) })); return h('label', { class: 'field' }, h('span', { text: c }), t); })) : null,
+      sec('receipt', 'Zoho Books', 'El número de tu empresa en Zoho. Ya está puesto («Creatif»). No lo cambiés salvo que cambiés de empresa.', orgI));
   }
 
   // ================= Curtis (IA) =================
   function perfil() {
-    return 'Sos Curtis, el asistente personal de un diseñador gráfico y artista de Guatemala. Trabaja freelance (se está especializando en diseño corporativo para empresas grandes) y medio tiempo a distancia en la NIHR, donde debe cumplir un mínimo de horas al mes y entregar su carpeta final en diciembre. Tiene TDAH: le cuesta dar seguimiento y tiende a procrastinar. Tu meta a largo plazo: que trabaje ordenado, cobre bien y consiga clientes (LinkedIn primero).\n'
-      + 'Cómo respondés: español de Guatemala, de vos. Directo, seco y firme, sin adornos ni halagos vacíos: si algo está mal o un precio está bajo, decilo claro. Corto: máximo 5 líneas o 3 pasos. Una cosa a la vez. Sin palabras técnicas. Siempre cerrá con el siguiente paso más chico que pueda hacer ya. No inventes datos: si te falta algo, hacé una sola pregunta.\n';
+    return 'Sos Curtis, el socio de estudio de un diseñador gráfico e ilustrador de Guatemala (freelance en diseño corporativo para empresas grandes y medio tiempo a distancia en la NIHR, con mínimo de horas al mes). Tiene TDAH y vos lo entendés a fondo: te reís del caos con él (nunca de él) y lo acompañás con técnicas concretas: partir en pasos chicos, regla de 2 minutos, cuerpo presente (te quedás con él en un bloque de foco), estacionamiento de ardillas (anotar la distracción y volver), primero lo feo, bloques de tiempo en su mejor horario, hecho es mejor que perfecto. Sos experto en productos digitales, marcas, branding, diseño gráfico, ilustración, y en cómo cobrar y licenciar su trabajo. Meta: que trabaje ordenado, cobre bien y consiga clientes (LinkedIn primero).\n'
+      + 'Personalidad: chistoso y amigable, pero ordenado, estricto, puntual y resolutivo. Tu frase: «una ardilla a la vez». Cómo respondés: español de Guatemala, de vos. Corto: máximo 5 líneas o 3 pasos. Una cosa a la vez. Sin palabras técnicas. Sin halagos vacíos ni logros falsos: si algo está mal o un precio está bajo, lo decís directo. Siempre cerrá con el siguiente paso concreto y cuándo hacerlo. No inventes datos: si falta algo, hacé una sola pregunta.\n';
   }
   const lineaTarea = (x) => '- ' + (x.titulo || 'Sin título') + ' [' + x.estado + (x.fecha ? ', ' + x.fecha : '') + (x.con_quien ? ', ' + x.con_quien : '') + (x.prioridad === 'alta' ? ', prioridad alta' : '') + ']';
   function memoriaTexto() {
@@ -1409,6 +1579,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     } else {
       ctx += '\nPROYECTOS ACTIVOS:\n' + (proyActivos().slice(0, 10).map((p) => '- ' + p.nombre + ' (' + (p.categoria || 'sin categoría') + ', entrega ' + (p.entrega || '—') + ', ' + proyStats(p).done + '/' + proyStats(p).total + ')').join('\n') || '(ninguno)');
     }
+    ctx += '\n\nREUNIONES DE HOY (Google Calendar):\n' + (gcalDel(hoy()).map((e) => '- ' + evHora(e) + ' ' + e.titulo + (e.gente.length ? ' con ' + e.gente.join(', ') : '')).join('\n') || '(ninguna o sin acceso)');
     ctx += '\n\nSU FILA DE PENDIENTES:\n' + (pendientesOrden().slice(0, 8).map(lineaTarea).join('\n') || '(nada)');
     ctx += '\nESPERANDO A OTROS:\n' + (trabadas().slice(0, 5).map(lineaTarea).join('\n') || '(nada)');
     ctx += memoriaTexto();
@@ -1515,6 +1686,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     S.asking.set('resumen', st); S.chatErr.delete('resumen'); renderMain(true);
     const prompt = perfil() + '\nHoy es ' + hoy() + '.\nResumile su día en máximo 3 líneas cortas: cómo va, qué es lo más importante hoy y el primer paso. Sin listas largas.\n\nDATOS:\n' + resumenLocal()
       + '\n\nPENDIENTES:\n' + (pendientesOrden().slice(0, 10).map(lineaTarea).join('\n') || '(nada)') + '\nESPERANDO:\n' + (trabadas().map(lineaTarea).join('\n') || '(nada)')
+      + '\nREUNIONES DE HOY:\n' + (gcalDel(hoy()).map((e) => '- ' + evHora(e) + ' ' + e.titulo).join('\n') || '(ninguna)')
       + '\nFECHAS LÍMITE:\n' + (fechasLimite(14).map((x) => '- ' + x.fecha + ' ' + (x.kind === 'p' ? 'ENTREGA ' + x.p.nombre : x.it.titulo)).join('\n') || '(nada)')
       + '\nHORAS NIHR ESTE MES: ' + num(horasMes()) + ' de ' + num(Number(ajuste('horasMin', 0)) || 0) + memoriaTexto();
     try {
@@ -1577,8 +1749,8 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
 
   // ================= avisos y permisos =================
   let modalClose = null;
-  function showModal(node, onClose) { modalClose = onClose; $('#modal-root').replaceChildren(node); }
-  function hideModal() { modalClose = null; $('#modal-root').replaceChildren(); }
+  function showModal(node, onClose) { modalClose = onClose; put($('#modal-root'), node); }
+  function hideModal() { modalClose = null; put($('#modal-root')); }
   function confirmar(titulo, texto, accion, fn) {
     const close = hideModal;
     showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) close(); } },
@@ -1642,19 +1814,22 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const find = (re, sub) => carpetas.find((c) => re.test(norm(c)) && (!sub || sub.test(norm(c)))) || null;
     const raster = ['png', 'jpg', 'jpeg', 'webp'].includes(e);
     const sub = e === 'png' ? /png|sin fondo/ : /jpg|con fondo/;
+    if (e === 'pdf' && /licencia|acuerdo|contrato|propuesta/.test(n)) return find(/licencia|condiciones|^00|leeme/) || carpetas[0];
     if (e === 'pdf' && /resumen|entregable|manual|guia|brand|marca|final/.test(n)) return find(/^00|leeme|resumen/) || carpetas[0];
-    if (['ai', 'svg', 'eps', 'psd', 'indd', 'fig', 'afdesign', 'cdr', 'pdf'].includes(e)) return find(/editable|vector|ai /) || carpetas[0];
+    if (raster && /mockup/.test(n)) return find(/mockup|aplicacion/) || carpetas[0];
+    if (['ai', 'svg', 'eps', 'psd', 'indd', 'fig', 'afdesign', 'cdr', 'pdf', 'tif', 'tiff'].includes(e)) return find(/editable|vector|imprenta|ai /) || find(/ilustraci/) || carpetas[0];
     if (['mp4', 'mov', 'gif', 'webm'].includes(e)) return find(/video|extra/) || carpetas[carpetas.length - 1];
     if (raster && /isotipo|isologo|simbolo|icono/.test(n)) return find(/isotipo|isologo/, sub) || find(/isotipo|isologo/) || carpetas[0];
     if (raster && /color|paleta|tipograf|fuente/.test(n)) return find(/color|tipograf/) || carpetas[0];
     if (raster && /mockup|aplicacion|tarjeta|papeleria/.test(n)) return find(/mockup|aplicacion/) || carpetas[0];
-    if (raster) return find(/logotipo|logo/, sub) || find(/logotipo|logo/) || carpetas[0];
-    return find(/video|extra/) || carpetas[carpetas.length - 1];
+    if (raster) return find(/logotipo|logo/, sub) || find(/logotipo|logo/) || find(/ilustraci/) || carpetas[0];
+    return find(/video|extra|credito/) || carpetas[carpetas.length - 1];
   }
-  const DESC = [[/leeme|resumen/, 'la guía rápida de la marca (empezá por acá)'], [/logotipo|logo/, 'el logotipo en todas sus versiones'], [/isotipo|isologo/, 'el símbolo y sus combinaciones'], [/color|tipograf/, 'la paleta de color y las fuentes'], [/editable|vector/, 'los archivos editables para imprenta y diseño'], [/mockup|aplicacion/, 'ejemplos de la marca aplicada'], [/video|extra/, 'video y archivos extra']];
+  const DESC = [[/licencia|condiciones/, 'el acuerdo de uso y sus condiciones'], [/ilustraci/, 'las ilustraciones en alta resolución'], [/imprenta/, 'los archivos listos para imprimir'], [/credito/, 'cómo dar el crédito al ilustrador'], [/leeme|resumen/, 'la guía rápida de la marca (empezá por acá)'], [/logotipo|logo/, 'el logotipo en todas sus versiones'], [/isotipo|isologo/, 'el símbolo y sus combinaciones'], [/color|tipograf/, 'la paleta de color y las fuentes'], [/editable|vector/, 'los archivos editables para imprenta y diseño'], [/mockup|aplicacion/, 'ejemplos de la marca aplicada'], [/video|extra/, 'video y archivos extra']];
   function mensajeEntrega(p, url, tops) {
     const lineas = tops.map((t) => { const d = DESC.find(([re]) => re.test(norm(t))); return '• ' + t + ': ' + (d ? d[1] : 'archivos del proyecto') + '.'; });
-    return 'Hola' + (p.cliente ? ' ' + p.cliente : '') + ', tu proyecto «' + (p.nombre || '') + '» está listo.\n\nAcá está la carpeta de entrega:\n' + url + '\n\nQué vas a encontrar:\n' + lineas.join('\n') + '\n\nPara web y redes usá los PNG y JPG. Para imprenta, los editables.\nCualquier duda me escribís. ¡Gracias por la confianza!';
+    const cierre = esLicencia(p) ? 'Antes de producir, mandame una muestra impresa para aprobarla. Recordá el crédito en el empaque.' : 'Para web y redes usá los PNG y JPG. Para imprenta, los editables.';
+    return 'Hola' + (p.cliente ? ' ' + p.cliente : '') + ', tu proyecto «' + (p.nombre || '') + '» está listo.\n\nAcá está la carpeta de entrega:\n' + url + '\n\nQué vas a encontrar:\n' + lineas.join('\n') + '\n\n' + cierre + '\nCualquier duda me escribís. ¡Gracias por la confianza!';
   }
   let jspdfP = null;
   function loadJsPDF() {
@@ -1682,6 +1857,84 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     });
     return doc.output('blob');
   }
+  async function infoImagen(file) {
+    const e = extOf(file.name);
+    try {
+      const buf = new Uint8Array(await file.slice(0, 512 * 1024).arrayBuffer());
+      if (e === 'png' && buf[0] === 0x89 && buf.length > 26) {
+        const rd = (o) => ((buf[o] << 24) | (buf[o + 1] << 16) | (buf[o + 2] << 8) | buf[o + 3]) >>> 0;
+        const ct = buf[25]; let trns = false;
+        for (let i = 8; i < buf.length - 8;) { const len = rd(i); const t = String.fromCharCode(buf[i + 4], buf[i + 5], buf[i + 6], buf[i + 7]); if (t === 'tRNS') { trns = true; break; } if (t === 'IDAT' || len > buf.length) break; i += 12 + len; }
+        return { w: rd(16), h: rd(20), alpha: ct === 4 || ct === 6 || trns, cmyk: false };
+      }
+      if ((e === 'jpg' || e === 'jpeg') && buf[0] === 0xff && buf[1] === 0xd8) {
+        let i = 2;
+        while (i < buf.length - 9) {
+          if (buf[i] !== 0xff) { i++; continue; }
+          const m = buf[i + 1]; const len = (buf[i + 2] << 8) | buf[i + 3];
+          if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return { w: (buf[i + 7] << 8) | buf[i + 8], h: (buf[i + 5] << 8) | buf[i + 6], cmyk: buf[i + 9] === 4, alpha: false };
+          i += 2 + len;
+        }
+      }
+    } catch (err) { /* sin datos */ }
+    return null;
+  }
+  async function revisarEntrega(p, st, carpetas) {
+    const checks = []; const lic = esLicencia(p);
+    const nombres = [...st.files.map((f) => ({ name: f.file.name, carpeta: f.carpeta })), ...st.drive.filter((d) => d.on).map((d) => ({ name: d.name, carpeta: d.carpeta }))];
+    if (!nombres.length) { checks.push({ ok: false, text: 'No hay archivos todavía. Subilos o recopilalos de Drive.' }); return { checks, opinion: '' }; }
+    const raros = nombres.filter((f) => /^\s|\s$|\s\.\w+$|\s{2,}|copia|copy|final\s*final|\(\d\)/i.test(f.name));
+    checks.push(raros.length ? { ok: false, text: 'Nombres desordenados: ' + raros.slice(0, 4).map((f) => '«' + f.name + '»').join(', ') + (raros.length > 4 ? '…' : '') + '. Usá Marca_Version_Color.ext.' } : { ok: true, text: 'Nombres de archivo ordenados.' });
+    const dup = nombres.filter((f, i) => nombres.findIndex((g) => norm(g.name) === norm(f.name)) !== i);
+    if (dup.length) checks.push({ ok: false, text: 'Archivos repetidos: ' + dup.slice(0, 3).map((f) => f.name).join(', ') + '.' });
+    let cmyk = 0; let sinAlfa = 0; let chicos = 0; let revisadas = 0;
+    for (const f of st.files) {
+      const inf = await infoImagen(f.file); if (!inf) continue; revisadas++;
+      if (inf.cmyk) cmyk++;
+      if (/sin fondo|png/i.test(f.carpeta) && extOf(f.file.name) === 'png' && !inf.alpha) sinAlfa++;
+      if (Math.min(inf.w, inf.h) < (lic ? 1100 : 1500)) chicos++;
+    }
+    if (revisadas) {
+      checks.push(cmyk ? { ok: false, text: cmyk + ' JPG en CMYK. En pantalla y redes se ven lavados: convertilos a RGB (dejá CMYK solo en los archivos para imprenta).' } : { ok: true, text: 'Imágenes en RGB.' });
+      if (sinAlfa) checks.push({ ok: false, text: sinAlfa + ' PNG en «sin fondo» no tienen transparencia.' });
+      checks.push(chicos ? { ok: false, text: chicos + ' imágenes chicas para imprimir' + (lic ? ' una carta de naipe a 300 dpi (mínimo ~1100 px de lado corto).' : ' (menos de 1500 px).') } : { ok: true, text: 'Resolución suficiente.' });
+    }
+    const vect = nombres.some((f) => /\.(ai|svg|eps|pdf|tif|tiff|psd)$/i.test(f.name) && !/resumen|entregable|licencia|propuesta|acuerdo/i.test(f.name));
+    checks.push(vect ? { ok: true, text: lic ? 'Hay archivos para imprenta.' : 'Hay archivos editables / vectoriales.' } : { ok: false, text: lic ? 'No veo archivos para imprenta (PDF/TIFF en CMYK con sangrado). La imprenta los va a pedir.' : 'No hay vectores (AI, SVG o PDF). Es lo primero que pide una empresa grande.' });
+    const tops = carpetas.map((c) => c.split('/')[0].trim()).filter((v, k, a) => a.indexOf(v) === k);
+    const vacias = tops.filter((t) => !nombres.some((f) => f.carpeta.split('/')[0].trim() === t));
+    if (vacias.length) checks.push({ ok: false, text: 'Carpetas que quedarían vacías: ' + vacias.join(', ') + '.' });
+    let opinion = '';
+    if (S.sample && !S.sampleOff) {
+      const imgs = st.files.filter((f) => /\.(png|jpe?g|webp)$/i.test(f.file.name)).slice(0, Math.min(4, (S.sampleImages && S.sampleImages.maxCount) || 0));
+      const blobs = [];
+      for (const f of imgs) { try { const m = await miniatura(f.file); if (m.blob) blobs.push(m.blob); } catch (err) { /* se salta */ } }
+      const prompt = perfil() + '\nSos director de arte. Revisá esta entrega antes de que salga al cliente' + (p.cliente ? ' (' + p.cliente + ')' : '') + ': ' + (lic ? 'licencia de ilustraciones para ' + ((p.licencia && p.licencia.producto) || 'un producto') : 'proyecto de ' + (p.categoria || 'diseño')) + '. '
+        + (blobs.length ? 'Te mando ' + blobs.length + ' imágenes en miniatura. Opiná de calidad, coherencia entre piezas, legibilidad en tamaño chico, contraste y presentación. ' : 'No podés ver las imágenes; opiná solo por la lista y la revisión automática. ')
+        + 'Máximo 6 líneas, directo, con lo que hay que arreglar antes de mandar y lo que está bien.\n\nARCHIVOS:\n' + nombres.slice(0, 40).map((f) => '- ' + f.name + ' → ' + f.carpeta).join('\n') + '\n\nREVISIÓN AUTOMÁTICA:\n' + checks.map((c) => (c.ok ? '✓ ' : '✗ ') + c.text).join('\n');
+      try {
+        const opts = { cache: false }; if (blobs.length) opts.images = blobs;
+        const { text } = await S.sample(prompt, opts); opinion = text;
+      } catch (err) {
+        if (err && err.code === 'images_unavailable') { try { const { text } = await S.sample(prompt.replace(/Te mando .*? presentación\. /, 'No podés ver las imágenes; opiná solo por la lista. '), { cache: false }); opinion = text; } catch (e2) { opinion = sampleErr(e2); } }
+        else opinion = sampleErr(err);
+      }
+    }
+    return { checks, opinion };
+  }
+  async function recopilarDrive(p, carpetas) {
+    const out = [];
+    const fid = folderIdFrom(p);
+    if (fid) {
+      const nivel1 = await driveListar(fid);
+      for (const f of nivel1) {
+        if (f.tipo === 'carpeta') { if (/entrega/i.test(f.nombre)) continue; const sub = await driveListar(f.id); sub.filter((x) => x.tipo !== 'carpeta').forEach((x) => out.push({ id: x.id, name: x.nombre, mime: x.tipo, desde: f.nombre })); }
+        else out.push({ id: f.id, name: f.nombre, mime: f.tipo, desde: 'carpeta del proyecto' });
+      }
+    }
+    (p.ilustraciones || []).map(ilus).filter((x) => x && x.driveId).forEach((x) => { if (!out.some((o) => o.id === x.driveId)) out.push({ id: x.driveId, name: x.archivo || (x.titulo + '.png'), mime: 'image', desde: 'catálogo de ilustraciones' }); });
+    return out.map((o) => Object.assign(o, { carpeta: asignarCarpeta({ name: o.name }, carpetas), on: true }));
+  }
   async function subirArchivo(file, parentId, name) {
     const e = extOf(name || file.name); const type = file.type || MIME[e] || 'application/octet-stream';
     const r = await S.mcp.callTool('Google Drive', 'create_file', { title: name || file.name, parentId, contentMimeType: type, disableConversionToGoogleType: true, base64Content: { $file: { data: file, name: (name || file.name).replace(/[\\/:*?"<>|]/g, '-'), type } } });
@@ -1690,9 +1943,10 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   }
   function abrirEntrega(projId) {
     const p = proyecto(projId); if (!p) return;
-    const carpetas = lines(ajuste('plantillaEntrega', ENTREGA_BASE.join('\n')));
+    const lic = esLicencia(p);
+    const carpetas = lines(ajuste(lic ? 'plantillaLicencia' : 'plantillaEntrega', (lic ? LICENCIA_BASE : ENTREGA_BASE).join('\n')));
     const qa = lines(ajuste('checklistEntrega', QA_BASE.join('\n')));
-    const st = { paso: 1, qa: {}, files: [], progreso: '', errores: [], root: null, folders: {}, mensaje: '', pdfUrl: '' };
+    const st = { paso: 1, qa: {}, files: [], drive: [], recopilando: false, recErr: '', revision: null, revisando: false, progreso: '', errores: [], root: null, folders: {}, mensaje: '', pdfUrl: '' };
     const close = () => { if (st.paso === 3) return; hideModal(); };
     const bar = () => h('div', { class: 'steps-bar', 'aria-hidden': 'true' }, [1, 2, 3, 4].map((i) => h('span', { class: i <= st.paso ? 'on' : '' })));
     const addFiles = (list) => { for (const f of list) { if (st.files.some((x) => x.file.name === f.name && x.file.size === f.size)) continue; st.files.push({ file: f, carpeta: asignarCarpeta(f, carpetas) }); } draw(); };
@@ -1713,9 +1967,29 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
         drop.addEventListener('dragleave', () => drop.classList.remove('over'));
         drop.addEventListener('drop', (ev) => { ev.preventDefault(); drop.classList.remove('over'); addFiles(ev.dataTransfer.files); });
         const pesados = st.files.filter((f) => f.file.size > MAX_FILE);
+        const recopilar = async () => {
+          if (!S.mcp) { toast('Drive no está disponible en esta vista.'); return; }
+          if (!folderIdFrom(p) && !(p.ilustraciones || []).some((i) => ilus(i) && ilus(i).driveId)) { st.recErr = 'Este proyecto no tiene carpeta en Drive. Pegá el link en «Carpeta Drive» del proyecto o creala con «Carpetas de trabajo».'; draw(); return; }
+          st.recopilando = true; st.recErr = ''; draw();
+          try { const nuevos = await recopilarDrive(p, carpetas); nuevos.forEach((n) => { if (!st.drive.some((d) => d.id === n.id)) st.drive.push(n); }); if (!nuevos.length) st.recErr = 'No encontré archivos en la carpeta del proyecto.'; }
+          catch (e) { st.recErr = mcpErr(e, 'Google Drive'); }
+          st.recopilando = false; draw();
+        };
+        const revisar = async () => { st.revisando = true; draw(); st.revision = await revisarEntrega(p, st, carpetas); st.revisando = false; draw(); };
         body = [
-          !S.fileArgs ? h('p', { class: 'err', text: 'En esta vista no se pueden subir archivos desde el panel. Curtis igual crea la estructura y el mensaje; los archivos los subís vos a cada carpeta en Drive.' }) : null,
+          !S.fileArgs ? h('p', { class: 'err', text: 'En esta vista no se pueden subir archivos desde el panel. Usá «Recopilar de Drive» o subilos vos a cada carpeta después.' }) : null,
           drop,
+          h('div', { class: 'row-actions' },
+            h('button', { type: 'button', class: 'btn soft', disabled: st.recopilando ? true : null, onclick: recopilar }, icon('folder', 'sm'), st.recopilando ? 'Buscando en Drive…' : 'Recopilar de Drive'),
+            h('button', { type: 'button', class: 'btn soft', disabled: st.revisando ? true : null, onclick: revisar }, icon('sparkle', 'sm'), st.revisando ? 'Curtis revisando…' : 'Que Curtis revise')),
+          st.recErr ? h('p', { class: 'err', text: st.recErr }) : null,
+          st.revision ? h('div', { class: 'review', id: 'revision' }, h('b', { text: 'Revisión de Curtis' }), st.revision.checks.map((c) => h('p', { class: c.ok ? 'ok' : 'bad', text: (c.ok ? '✓ ' : '✗ ') + c.text })), st.revision.opinion ? h('p', { text: st.revision.opinion }) : null) : null,
+          st.drive.length ? h('div', {}, h('p', { class: 'block-h' }, icon('folder', 'sm'), st.drive.filter((d) => d.on).length + ' de ' + st.drive.length + ' archivos de Drive para copiar'),
+            st.drive.map((d) => {
+              const sel = h('select', { 'aria-label': 'Carpeta para ' + d.name }, carpetas.map((c) => h('option', { value: c, selected: c === d.carpeta ? true : null, text: c })));
+              sel.addEventListener('change', () => { d.carpeta = sel.value; });
+              return h('div', { class: 'file-row' }, h('span', { class: 'file-name', title: d.name, style: 'display:flex;gap:8px;align-items:center' }, h('button', { type: 'button', class: 'check', role: 'checkbox', 'aria-checked': String(d.on), 'aria-label': 'Incluir ' + d.name, onclick: () => { d.on = !d.on; draw(); } }, d.on ? icon('check', 'sm') : null), h('span', { style: 'overflow:hidden;text-overflow:ellipsis' }, d.name, ' ', h('small', { text: '· de ' + d.desde }))), sel);
+            })) : null,
           st.files.length ? h('div', {}, h('p', { class: 'block-h' }, st.files.length + ' archivos · Curtis ya los acomodó (podés cambiar la carpeta)'),
             st.files.map((f, i) => {
               const sel = h('select', { 'aria-label': 'Carpeta para ' + f.file.name }, carpetas.map((c) => h('option', { value: c, selected: c === f.carpeta ? true : null, text: c })));
@@ -1753,18 +2027,24 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const ejecutar = async () => {
       if (!S.mcp) { toast('Drive no está disponible en esta vista.'); return; }
       const subir = S.fileArgs ? st.files.filter((f) => f.file.size <= MAX_FILE) : [];
+      const copiar = st.drive.filter((d) => d.on);
       const rootName = (p.cliente ? p.cliente + ' — ' : '') + (p.nombre || 'Proyecto') + ' · Entrega ' + hoy();
-      const usadas = [...new Set([...carpetas, ...subir.map((f) => f.carpeta)])];
-      const ok = await pedirPermiso('¿Creo la entrega en tu Drive?', ['Carpeta: «' + rootName + '»' + (p.driveFolderId ? ' (dentro de la carpeta del proyecto)' : ''), usadas.length + ' carpetas con la estructura estándar', subir.length + ' archivos para subir (' + (subir.reduce((s, f) => s + f.file.size, 0) / 1048576).toFixed(1) + ' MB)', 'El proyecto queda como Entregado.'], 'Sí, crear entrega');
+      const usadas = [...new Set([...carpetas, ...subir.map((f) => f.carpeta), ...copiar.map((d) => d.carpeta)])];
+      const ok = await pedirPermiso('¿Creo la entrega en tu Drive?', ['Carpeta: «' + rootName + '»' + (folderIdFrom(p) ? ' (dentro de la carpeta del proyecto)' : ''), usadas.length + ' carpetas con la estructura estándar', subir.length + ' archivos para subir (' + (subir.reduce((s, f) => s + f.file.size, 0) / 1048576).toFixed(1) + ' MB)', copiar.length + ' archivos para copiar desde tu Drive (los originales no se tocan)', 'El proyecto queda como Entregado.'], 'Sí, crear entrega');
       if (!ok) { draw(); return; }
       st.paso = 3; st.progreso = 'Creando carpetas…'; draw();
       try {
-        st.root = await driveCrearCarpeta(rootName, p.driveFolderId || '');
+        st.root = await driveCrearCarpeta(rootName, folderIdFrom(p));
         for (const c of usadas) { st.progreso = 'Creando carpeta ' + c + '…'; draw(); await ensurePath(st.root.id, c, st.folders); }
         let i = 0;
         for (const f of subir) {
           i++; st.progreso = 'Subiendo ' + i + ' de ' + subir.length + ': ' + f.file.name; draw();
           try { await subirArchivo(f.file, st.folders['/' + f.carpeta.split('/').map((s) => s.trim()).join('/')].id); } catch (e) { st.errores.push(f.file.name + ': ' + mcpErr(e, 'Google Drive')); }
+        }
+        let k = 0;
+        for (const d of copiar) {
+          k++; st.progreso = 'Copiando ' + k + ' de ' + copiar.length + ' desde Drive: ' + d.name; draw();
+          try { await S.mcp.callTool('Google Drive', 'copy_file', { fileId: d.id, parentId: st.folders['/' + d.carpeta.split('/').map((x) => x.trim()).join('/')].id, title: d.name }); } catch (e) { st.errores.push(d.name + ': ' + mcpErr(e, 'Google Drive')); }
         }
         st.files.filter((f) => f.file.size > MAX_FILE || !S.fileArgs).forEach((f) => st.errores.push(f.file.name + ': subilo vos a «' + f.carpeta + '»'));
         const tops = carpetas.map((c) => c.split('/')[0].trim()).filter((v, k, a) => a.indexOf(v) === k);
@@ -1773,9 +2053,219 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
         await patchProyecto(projId, { estado: 'terminado', entregado: hoy(), entregaUrl: st.root.url, entregaFolderId: st.root.id });
         await addMemoria('tiempo', 'Entregaste «' + p.nombre + '»' + (p.categoria ? ' (' + p.categoria + ')' : '') + (dias != null ? ' ' + dias + ' días después de crearlo en Curtis' : '') + (isDay(p.entrega) ? (hoy() > p.entrega ? ', ' + -diffDays(p.entrega) + ' días tarde.' : ', a tiempo.') : '.'), 'auto', { proyecto: projId });
         if (p.precio) await addMemoria('precio', (p.categoria || 'Proyecto') + ' «' + p.nombre + '» cobrado en ' + money(p.precio) + '.', 'auto', { proyecto: projId });
+        if (st.revision) { const malos = st.revision.checks.filter((c) => !c.ok).map((c) => c.text); if (malos.length) await addMemoria('error', 'En la entrega de «' + p.nombre + '» Curtis encontró: ' + malos.join(' ').slice(0, 400), 'auto', { proyecto: projId }); }
+        if (lic) (p.ilustraciones || []).forEach((i) => { if (ilus(i) && p.licencia && p.licencia.exclusividad === 'total') enqueue('il/' + i, () => S.db.doc('ilustraciones/' + i).update({ estado: 'licenciada' })); });
         const sinQA = qa.filter((q) => !st.qa[q]); if (sinQA.length) await addMemoria('mejora', 'En «' + p.nombre + '» entregaste sin: ' + sinQA.join('; ') + '.', 'auto', { proyecto: projId });
         st.paso = 4; confetti(innerWidth / 2, innerHeight / 3); draw();
       } catch (e) { st.paso = 2; draw(); toast(mcpErr(e, 'Google Drive')); }
+    };
+    draw();
+  }
+
+  // ================= ILUSTRACIONES =================
+  function ilusCard(x, opts) {
+    opts = opts || {};
+    return h('button', { type: 'button', class: 'ilus', 'aria-pressed': opts.sel != null ? String(!!opts.sel) : null, onclick: opts.onclick || (() => abrirIlus(x.id)) },
+      h('div', { class: 'ilus-img' }, x.thumb ? h('img', { src: '/_blob/' + x.thumb, alt: x.titulo || 'Ilustración', loading: 'lazy', onerror: (ev) => ev.target.replaceWith(icon('image', 'lg')) }) : icon('image', 'lg')),
+      h('div', { class: 'ilus-b' }, h('span', { class: 'ilus-t', text: x.titulo || 'Sin título' }), h('span', { class: 'hint', text: x.estado === 'licenciada' ? 'Licenciada' : [x.tema, x.anio].filter(Boolean).join(' · ') || (x.driveUrl ? 'En Drive' : 'Sin archivo en Drive') })));
+  }
+  function viewIlustraciones() {
+    const list = [...S.ilustraciones].sort((a, b) => (b.creado || 0) - (a.creado || 0));
+    const input = h('input', { type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: (ev) => agregarIlustraciones([...ev.target.files]) });
+    return [h('p', { class: 'hint', text: 'Las ilustraciones que podés licenciar para productos: naipes, pachones, postales, empaques. Curtis guarda una miniatura aquí y el original en tu Drive, en «' + ILUS_FOLDER + '».' }),
+      h('div', { class: 'ilus-grid' }, list.map((x) => ilusCard(x)), h('button', { type: 'button', class: 'ilus ilus-new', onclick: () => input.click() }, icon('upload', 'lg'), 'Agregar ilustraciones'), input)];
+  }
+  async function miniatura(file) {
+    const bmp = await createImageBitmap(file);
+    const sc = Math.min(1, 640 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(bmp.width * sc)); c.height = Math.max(1, Math.round(bmp.height * sc));
+    const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise((r) => c.toBlob(r, 'image/jpeg', 0.85));
+    return { blob, w: bmp.width, h: bmp.height };
+  }
+  async function agregarIlustraciones(files) {
+    files = files.filter((f) => /^image\//.test(f.type));
+    if (!files.length) { toast('Elegí archivos de imagen (JPG, PNG…).'); return []; }
+    if (!S.db) { toast('Tu registro todavía no abrió.'); return []; }
+    const subirDrive = !!(S.mcp && S.fileArgs);
+    const ok = await pedirPermiso('¿Guardo ' + files.length + (files.length === 1 ? ' ilustración' : ' ilustraciones') + '?', [
+      'Una miniatura queda en Curtis para verla rápido.',
+      subirDrive ? 'El original se guarda en tu Drive, en «' + ILUS_FOLDER + '».' : 'El original no se sube desde esta vista: después pegás el link de Drive en cada una.',
+      ...files.slice(0, 8).map((f) => f.name + (f.size > MAX_FILE ? ' (pesa más de 16 MB: solo miniatura)' : '')), files.length > 8 ? '…y ' + (files.length - 8) + ' más' : ''].filter(Boolean), 'Sí, guardalas');
+    if (!ok) return [];
+    let folderId = ajuste('ilusFolderId', ''); const ids = []; let i = 0;
+    for (const f of files) {
+      i++; toast('Guardando ' + i + ' de ' + files.length + '…');
+      let thumb = ''; let dims = null; let driveId = ''; let driveUrl = '';
+      try { const m = await miniatura(f); dims = { w: m.w, h: m.h }; if (S.assets && m.blob) { const a = await S.assets.upload(m.blob, { type: 'image/jpeg' }); thumb = a.id; } } catch (e) { /* queda sin miniatura */ }
+      if (subirDrive && f.size <= MAX_FILE) {
+        try {
+          if (!folderId) { const fo = await driveCrearCarpeta(ILUS_FOLDER, ''); folderId = fo.id; await saveAjustes({ ilusFolderId: folderId, ilusFolderUrl: fo.url }); }
+          const up = await subirArchivo(f, folderId); driveId = up.id; driveUrl = up.viewUrl || '';
+        } catch (e) { toast(mcpErr(e, 'Google Drive')); }
+      }
+      try { const ref = await S.db.collection('ilustraciones').add({ titulo: f.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim().slice(0, 80), thumb, driveId, driveUrl, archivo: f.name, ancho: dims ? dims.w : null, alto: dims ? dims.h : null, tema: '', anio: anioActual(), notas: '', estado: 'disponible', creado: Date.now() }); ids.push(ref.id); } catch (e) { toast(dbErr(e)); }
+    }
+    toast(ids.length === 1 ? 'Ilustración guardada' : ids.length + ' ilustraciones guardadas');
+    return ids;
+  }
+  function abrirIlus(id) {
+    const x = ilus(id); if (!x) return;
+    const f = (label, key, type, ph) => { const el = h('input', { type: type || 'text', value: x[key] == null ? '' : x[key], placeholder: ph || '' }); el.addEventListener('change', () => enqueue('il/' + id, () => S.db.doc('ilustraciones/' + id).update({ [key]: el.value.trim() }))); return h('label', { class: 'field' }, h('span', { text: label }), el); };
+    const est = h('select', {}, [['disponible', 'Disponible'], ['licenciada', 'Licenciada (exclusiva)']].map(([v, l]) => h('option', { value: v, selected: x.estado === v ? true : null, text: l })));
+    est.addEventListener('change', () => enqueue('il/' + id, () => S.db.doc('ilustraciones/' + id).update({ estado: est.value })));
+    const usos = S.proyectos.filter((p) => (p.ilustraciones || []).includes(id));
+    const cm = x.ancho ? (Math.min(x.ancho, x.alto || x.ancho) / 300 * 2.54).toFixed(1) : null;
+    showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+      h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Ilustración' },
+        h('div', { class: 'ilus-img', style: 'border-radius:12px;max-height:18rem' }, x.thumb ? h('img', { src: '/_blob/' + x.thumb, alt: x.titulo || '', style: 'object-fit:contain', onerror: (ev) => ev.target.replaceWith(icon('image', 'lg')) }) : icon('image', 'lg')),
+        f('Nombre', 'titulo'), h('div', { class: 'opt-grid' }, f('Tema', 'tema', 'text', 'Ej. mercado, volcanes'), f('Año', 'anio', 'text')),
+        f('Link del original en Drive', 'driveUrl', 'url', 'https://drive.google.com/…'),
+        h('label', { class: 'field' }, h('span', { text: 'Estado' }), est),
+        x.ancho ? h('p', { class: 'hint', text: 'Tamaño: ' + x.ancho + ' × ' + x.alto + ' px. A 300 dpi imprime bien hasta ' + cm + ' cm de lado.' + (cm < 9 ? ' Ojo: para una carta de naipe (6.3 × 8.8 cm) queda justo o corto.' : '') }) : null,
+        usos.length ? h('p', { class: 'hint', text: 'Usada en: ' + usos.map((p) => p.nombre).join(', ') }) : null,
+        h('div', { class: 'row-actions', style: 'justify-content:space-between' },
+          h('button', { type: 'button', class: 'btn ghost small', onclick: () => confirmar('¿Borrar «' + (x.titulo || 'esta ilustración') + '» del catálogo?', 'Se quita de Curtis y de los proyectos donde está elegida. El original en Drive no se borra.', 'Borrar', async () => {
+            S.proyectos.filter((p) => (p.ilustraciones || []).includes(id)).forEach((p) => patchProyecto(p.id, { ilustraciones: p.ilustraciones.filter((y) => y !== id) }));
+            await enqueue('il/' + id, () => S.db.doc('ilustraciones/' + id).delete());
+            if (x.thumb && S.assets && S.assets.delete) S.assets.delete(x.thumb).catch(() => {});
+            toast('Borrada del catálogo');
+          }) }, icon('trash', 'sm'), 'Borrar'),
+          h('button', { type: 'button', class: 'btn forest', onclick: hideModal }, 'Listo')))), hideModal);
+  }
+  function elegirIlus(projId) {
+    const p = proyecto(projId); if (!p) return;
+    let sel = new Set(p.ilustraciones || []);
+    const input = h('input', { type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: async (ev) => { const files = [...ev.target.files]; hideModal(); const ids = await agregarIlustraciones(files); ids.forEach((i) => sel.add(i)); await patchProyecto(projId, { ilustraciones: [...sel] }); setTimeout(draw, 80); } });
+    const draw = () => {
+      const list = [...S.ilustraciones].sort((a, b) => (b.creado || 0) - (a.creado || 0));
+      showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+        h('div', { class: 'modal wide', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Elegir ilustraciones' },
+          h('h3', {}, icon('image'), 'Ilustraciones para «' + (p.nombre || '') + '»'),
+          h('p', { class: 'hint', text: sel.size + (sel.size === 1 ? ' elegida' : ' elegidas') + '. Tocá para elegir o quitar.' }),
+          h('div', { class: 'ilus-grid' }, list.map((x) => ilusCard(x, { sel: sel.has(x.id), onclick: () => { sel.has(x.id) ? sel.delete(x.id) : sel.add(x.id); draw(); } })),
+            h('button', { type: 'button', class: 'ilus ilus-new', onclick: () => input.click() }, icon('upload', 'lg'), 'Subir nuevas'), input),
+          h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn soft', onclick: hideModal }, 'Cancelar'),
+            h('button', { type: 'button', class: 'btn forest', onclick: () => { patchProyecto(projId, { ilustraciones: [...sel] }); hideModal(); toast('Ilustraciones guardadas en el proyecto'); } }, 'Guardar')))), hideModal);
+    };
+    draw();
+  }
+
+  // ================= LICENCIAS (paquete, precio, propuesta) =================
+  const EXCL = { no: ['No exclusiva', 'el ilustrador puede licenciar las mismas ilustraciones para otros productos o clientes', 1, 8], producto: ['Exclusiva en este producto', 'nadie más puede usar estas ilustraciones en este tipo de producto durante la licencia', 1.5, 10], total: ['Exclusiva total', 'nadie más puede usar estas ilustraciones en ningún producto durante la licencia', 3, 12] };
+  const DUR = { '1': ['1 año', 1], '2': ['2 años', 1.4], perpetua: ['Sin vencimiento', 2.5] };
+  const TERR = { gt: ['Guatemala', 1], ca: ['Centroamérica', 1.3], mundo: ['Todo el mundo', 2] };
+  const TIR = { '1000': ['Hasta 1,000 unidades', 1], '3000': ['Hasta 3,000 unidades', 1.6], libre: ['Sin límite de unidades', 2.5] };
+  function precioLicencia(c) {
+    const n = Math.max(1, Math.round(Number(c.n) || 1));
+    const vol = n >= 30 ? 0.45 : n >= 10 ? 0.6 : n >= 2 ? 0.8 : 1;
+    const ex = EXCL[c.exclusividad] || EXCL.no; const du = DUR[c.duracion] || DUR['1']; const te = TERR[c.territorio] || TERR.gt; const ti = TIR[c.tiraje] || TIR['1000'];
+    const base = Math.max(0, Number(c.base) || 600);
+    const bruto = base * n * vol * ex[2] * du[1] * te[1] * ti[1];
+    const unico = Math.max(1500, Math.round(bruto / 50) * 50);
+    const diseno = c.diseno ? Math.max(0, Number(c.disenoMonto) || 0) : 0;
+    const pct = ex[3];
+    const anticipo = Math.round((c.modelo === 'mixto' ? unico * 0.5 : unico * 0.3) / 50) * 50;
+    const pctFinal = c.modelo === 'mixto' ? pct - 2 : pct;
+    const may = Number(c.mayorista) || 0;
+    const porUnidad = may ? may * pctFinal / 100 : 0;
+    const total = c.modelo === 'unico' ? unico + diseno : anticipo + diseno;
+    return { n, vol, ex, du, te, ti, base, unico, diseno, pct: pctFinal, anticipo, porUnidad, total };
+  }
+  function textoPropuesta(p, c, r) {
+    const firma = ajuste('firma', '') || 'el ilustrador';
+    const pago = c.modelo === 'unico'
+      ? '• Licencia de uso: ' + money(r.unico) + (r.diseno ? '\n• Diseño y adaptación del producto: ' + money(r.diseno) : '') + '\n• Total: ' + money(r.total) + '\nForma de pago: 50% al aceptar y 50% al entregar los archivos.'
+      : '• Anticipo: ' + money(r.anticipo) + ' (se descuenta de las regalías)' + (r.diseno ? '\n• Diseño y adaptación del producto: ' + money(r.diseno) : '') + '\n• Regalía: ' + r.pct + '% del precio de venta al por mayor de cada unidad vendida, con reporte y pago mensual.' + (r.porUnidad ? ' (Con un precio mayorista de ' + money(Number(c.mayorista)) + ', son ' + money(r.porUnidad) + ' por unidad.)' : '') + '\nForma de pago: anticipo' + (r.diseno ? ' y diseño' : '') + ' al aceptar.';
+    return 'PROPUESTA DE LICENCIA DE ILUSTRACIONES — ' + (c.producto || 'Producto').toUpperCase() + '\n'
+      + 'Para: ' + (p.cliente || '________') + ' · Fecha: ' + fmtDate(hoy(), { day: 'numeric', month: 'long', year: 'numeric' }) + '\n\n'
+      + 'Qué incluye:\n• Uso de ' + r.n + (r.n === 1 ? ' ilustración original' : ' ilustraciones originales') + ' de ' + firma + ' para ' + (c.producto || 'el producto') + '.\n'
+      + '• Territorio: ' + r.te[0] + '. Duración: ' + r.du[0] + ' desde la firma. Tiraje: ' + r.ti[0].toLowerCase() + '.\n'
+      + '• ' + r.ex[0] + ': ' + r.ex[1] + '.\n'
+      + (r.diseno ? '• Diseño y adaptación de ' + (c.producto || 'el producto') + ', listo para imprenta.\n' : '')
+      + '\nInversión:\n' + pago + '\n\n'
+      + 'Condiciones:\n• Las ilustraciones siguen siendo propiedad de ' + firma + ': se licencia su uso, no se venden los derechos.\n'
+      + '• Uso solo en el producto y en las condiciones de esta propuesta. Otros productos se cotizan aparte.\n'
+      + '• Crédito visible en el empaque: «Ilustración: ' + firma + '».\n'
+      + '• Aprobación de una muestra impresa antes de producir.\n'
+      + '• Entrega: carpeta en Google Drive con los archivos en alta resolución listos para imprenta y este acuerdo en PDF.\n\n'
+      + 'Esta propuesta es válida por 15 días.';
+  }
+  async function pdfTexto(titulo, texto) {
+    const { jsPDF } = await loadJsPDF();
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    doc.setFillColor(255, 199, 44); doc.rect(36, 36, 523, 8, 'F');
+    doc.setFont('times', 'bold'); doc.setFontSize(18); doc.text(doc.splitTextToSize(titulo, 515), 40, 76);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); doc.setTextColor(26, 31, 27);
+    let y = 110;
+    doc.splitTextToSize(texto, 515).forEach((ln) => { if (y > 800) { doc.addPage(); y = 50; } doc.text(ln, 40, y); y += 15; });
+    return doc.output('blob');
+  }
+  function abrirLicencia(projId) {
+    const p = proyecto(projId); if (!p) return;
+    const prev = p.licencia || {};
+    const c = Object.assign({ n: (p.ilustraciones || []).length || 1, producto: /naipe/i.test(p.nombre || '') ? 'Naipes' : '', territorio: 'gt', duracion: '1', exclusividad: 'no', tiraje: '1000', modelo: 'unico', base: 600, diseno: true, disenoMonto: 4000, mayorista: '' }, prev);
+    let opinion = ''; let pensando = false;
+    const sel = (key, map, label) => { const el = h('select', { 'aria-label': label }, Object.entries(map).map(([k, v]) => h('option', { value: k, selected: String(c[key]) === k ? true : null, text: v[0] }))); el.addEventListener('change', () => { c[key] = el.value; draw(); }); return h('label', { class: 'field' }, h('span', { text: label }), el); };
+    const numF = (key, label, step) => { const el = h('input', { type: 'number', min: '0', step: step || '1', value: c[key], 'aria-label': label }); el.addEventListener('change', () => { c[key] = el.value; draw(); }); return h('label', { class: 'field' }, h('span', { text: label }), el); };
+    const draw = () => {
+      const r = precioLicencia(c);
+      const prod = h('input', { type: 'text', value: c.producto, placeholder: 'Naipes, pachón, postal…', 'aria-label': 'Producto' }); prod.addEventListener('change', () => { c.producto = prod.value.trim(); draw(); });
+      const modelo = h('div', { class: 'seg', role: 'group', 'aria-label': 'Cómo cobrás' }, [['unico', 'Pago único'], ['regalia', 'Regalía'], ['mixto', 'Mixto']].map(([k, l]) => h('button', { type: 'button', 'aria-pressed': String(c.modelo === k), onclick: () => { c.modelo = k; draw(); } }, l)));
+      const disCk = h('button', { type: 'button', class: 'check', role: 'checkbox', 'aria-checked': String(!!c.diseno), 'aria-label': 'Incluir diseño', onclick: () => { c.diseno = !c.diseno; draw(); } }, c.diseno ? icon('check', 'sm') : null);
+      const avisos = [];
+      if (c.exclusividad === 'total' && c.duracion === 'perpetua') avisos.push('Exclusiva total y sin vencimiento es casi vender la ilustración. Si lo hacés, que sea a un precio de compra de derechos, no de licencia.');
+      if (Number(c.base) < 400) avisos.push('Menos de Q400 por ilustración está por debajo de lo que cuesta tu tiempo. Subilo.');
+      if (c.modelo !== 'unico' && !Number(c.mayorista)) avisos.push('Para regalía necesitás el precio mayorista por unidad; si no, no sabés cuánto vas a ganar.');
+      const texto = textoPropuesta(p, c, r);
+      const ta = h('textarea', { rows: '10', style: 'width:100%;box-sizing:border-box;border:0;background:var(--surface-2);border-radius:12px;padding:12px;font-size:.86rem' }, texto);
+      showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+        h('div', { class: 'modal wide', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Paquete de licencia' },
+          h('h3', {}, icon('receipt'), 'Paquete de licencia'),
+          h('p', { class: 'reco', text: 'Para un primer producto de prueba: pago único, no exclusiva, 1 año, Guatemala, hasta 1,000 unidades. Si se vende, renegociás más tiraje o exclusividad, que valen más.' }),
+          h('div', { class: 'opt-grid' },
+            h('label', { class: 'field' }, h('span', { text: 'Producto' }), prod),
+            numF('n', 'Cuántas ilustraciones'),
+            sel('exclusividad', EXCL, 'Exclusividad'), sel('duracion', DUR, 'Duración'), sel('territorio', TERR, 'Territorio'), sel('tiraje', TIR, 'Tiraje')),
+          h('div', { class: 'field' }, h('span', { text: 'Cómo cobrás' }), modelo),
+          h('div', { class: 'opt-grid' }, numF('base', 'Base por ilustración (Q)', '50'),
+            h('div', { class: 'field' }, h('span', { text: 'Diseño y adaptación del producto' }), h('div', { style: 'display:flex;gap:8px;align-items:center' }, disCk, (() => { const el = h('input', { type: 'number', min: '0', step: '100', value: c.disenoMonto, disabled: c.diseno ? null : true, 'aria-label': 'Monto del diseño' }); el.addEventListener('change', () => { c.disenoMonto = el.value; draw(); }); return el; })())),
+            c.modelo !== 'unico' ? numF('mayorista', 'Precio mayorista por unidad (Q)', '1') : null),
+          h('div', { class: 'card pad', style: 'display:grid;gap:8px;box-shadow:none;background:var(--bg)' },
+            h('p', { class: 'kicker', text: c.modelo === 'unico' ? 'Precio total' : 'Para arrancar' }),
+            h('p', { class: 'price-big', text: money(r.total) }),
+            h('div', { class: 'desglose' },
+              h('div', {}, h('span', { text: r.n + ' × ' + money(r.base) + (r.vol < 1 ? ' con descuento por volumen (' + Math.round((1 - r.vol) * 100) + '%)' : '') }), h('span', { text: money(r.base * r.n * r.vol) })),
+              h('div', {}, h('span', { text: r.ex[0] + ' ×' + r.ex[2] + ' · ' + r.du[0] + ' ×' + r.du[1] + ' · ' + r.te[0] + ' ×' + r.te[1] + ' · ' + r.ti[0] + ' ×' + r.ti[1] }), h('span', { text: money(r.unico) })),
+              c.modelo !== 'unico' ? h('div', {}, h('span', { text: 'Anticipo + ' + r.pct + '% por unidad vendida' + (r.porUnidad ? ' (' + money(r.porUnidad) + ' c/u)' : '') }), h('span', { text: money(r.anticipo) })) : null,
+              r.diseno ? h('div', {}, h('span', { text: 'Diseño y adaptación' }), h('span', { text: money(r.diseno) })) : null),
+            h('p', { class: 'hint', text: 'Cómo calculo: base por ilustración × cantidad × descuento por volumen × exclusividad × duración × territorio × tiraje. Mínimo Q1,500 por licencia. La regalía va de 8% (no exclusiva) a 12% (exclusiva total) del precio mayorista.' })),
+          avisos.map((a) => h('p', { class: 'err', text: a })),
+          opinion || pensando ? h('div', { class: 'review' }, h('b', {}, icon('sparkle', 'sm'), ' Curtis opina'), h('p', { text: pensando ? 'Pensando…' : opinion })) : null,
+          h('label', { class: 'field' }, h('span', { text: 'Propuesta para el cliente (editala y copiala)' }), ta),
+          h('div', { class: 'row-actions' },
+            h('button', { type: 'button', class: 'btn forest', onclick: async () => {
+              const total = r.total;
+              await patchProyecto(projId, { licencia: Object.assign({}, c, { total, unico: r.unico, fecha: hoy() }), precio: total });
+              await addMemoria('precio', 'Licencia de ' + r.n + ' ilustraciones para ' + (c.producto || 'un producto') + ' (' + r.ex[0].toLowerCase() + ', ' + r.du[0] + ', ' + r.ti[0].toLowerCase() + ', ' + (c.modelo === 'unico' ? 'pago único' : c.modelo) + '): ' + money(total) + (p.cliente ? ' a ' + p.cliente : '') + '.', 'auto', { proyecto: projId });
+              toast('Propuesta guardada en el proyecto');
+            } }, icon('check', 'sm'), 'Guardar en el proyecto'),
+            h('button', { type: 'button', class: 'btn soft', onclick: async () => { try { await navigator.clipboard.writeText(ta.value); toast('Propuesta copiada'); } catch (e) { ta.focus(); ta.select(); toast('Seleccionada: copiala con Ctrl/Cmd + C'); } } }, icon('copy', 'sm'), 'Copiar'),
+            S.sample && !S.sampleOff ? h('button', { type: 'button', class: 'btn soft', disabled: pensando ? true : null, onclick: async () => {
+              pensando = true; draw();
+              try { const { text } = await S.sample(perfil() + '\nRevisá este precio de licencia de ilustraciones para un producto souvenir en Guatemala y decí en máximo 4 líneas si está bajo, bien o alto, por qué, y qué cambiarías. Sé directo.\n\n' + ta.value + memoriaTexto(), { cache: false }); opinion = text; } catch (e) { opinion = sampleErr(e); }
+              pensando = false; draw();
+            } }, icon('sparkle', 'sm'), 'Que Curtis revise el precio') : null,
+            S.mcp && S.fileArgs ? h('button', { type: 'button', class: 'btn soft', onclick: async (ev) => {
+              const b = ev.currentTarget; const dest = folderIdFrom(p) || ajuste('ilusFolderId', '');
+              const ok = await pedirPermiso('¿Guardo la propuesta en PDF en tu Drive?', [dest ? 'En la carpeta del proyecto.' : 'En «Mi unidad» (el proyecto no tiene carpeta).', 'Nombre: Propuesta licencia — ' + (p.nombre || 'proyecto') + '.pdf'], 'Sí, guardala');
+              if (!ok) { draw(); return; }
+              try { const blob = await pdfTexto('Propuesta de licencia — ' + (c.producto || p.nombre || ''), ta.value); const f = await subirArchivo(blob, dest, 'Propuesta licencia — ' + (p.nombre || 'proyecto') + '.pdf'); toast('PDF guardado en Drive'); if (f.viewUrl) { c.pdfUrl = f.viewUrl; } } catch (e) { toast(e && e.code ? mcpErr(e, 'Google Drive') : 'No se pudo generar el PDF.'); }
+              draw();
+            } }, icon('book', 'sm'), 'PDF en Drive') : null,
+            c.pdfUrl ? h('a', { class: 'btn soft', href: c.pdfUrl, target: '_blank', rel: 'noopener' }, icon('external', 'sm'), 'Ver PDF') : null,
+            S.mcp ? h('button', { type: 'button', class: 'btn soft', onclick: () => { hideModal(); abrirCotizacion(projId, [{ nombre: 'Licencia de ' + r.n + ' ilustraciones — ' + (c.producto || 'producto'), descripcion: r.ex[0] + ', ' + r.du[0] + ', ' + r.te[0] + ', ' + r.ti[0].toLowerCase(), cantidad: 1, precio: c.modelo === 'unico' ? r.unico : r.anticipo }].concat(r.diseno ? [{ nombre: 'Diseño y adaptación — ' + (c.producto || 'producto'), descripcion: '', cantidad: 1, precio: r.diseno }] : [])); } }, icon('receipt', 'sm'), 'Pasar a Zoho') : null),
+          h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn', onclick: hideModal }, 'Cerrar')))), hideModal);
     };
     draw();
   }
@@ -1811,10 +2301,10 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
       return { ok: true, numero, total: Number(est.total) || total };
     } catch (e) { const msg = mcpErr(e, 'Zoho Books'); toast(msg); return { ok: false, msg }; }
   }
-  function abrirCotizacion(projId) {
+  function abrirCotizacion(projId, lineasPre) {
     const p = proyecto(projId); if (!p) return;
     if (!S.mcp) { toast('Zoho no está disponible en esta vista.'); return; }
-    const st = { clientes: [], clienteId: '', clienteNombre: '', buscando: false, err: '', qtxt: p.cliente || '', lineas: [{ nombre: (p.categoria ? p.categoria + ' — ' : 'Diseño — ') + (p.nombre || ''), descripcion: '', cantidad: 1, precio: Number(p.precio) || 0 }], notas: '' };
+    const st = { clientes: [], clienteId: '', clienteNombre: '', buscando: false, err: '', qtxt: p.cliente || '', lineas: lineasPre && lineasPre.length ? lineasPre : [{ nombre: (p.categoria ? p.categoria + ' — ' : 'Diseño — ') + (p.nombre || ''), descripcion: '', cantidad: 1, precio: Number(p.precio) || 0 }], notas: '' };
     const close = hideModal;
     const buscar = async (t) => { st.buscando = true; st.err = ''; draw(); try { st.clientes = await zohoClientes(t); if (!st.clientes.length) st.err = 'No encontré clientes con ese nombre en Zoho. Crealo primero en Zoho Books.'; } catch (e) { st.err = e.message; } st.buscando = false; if (modalClose === close) draw(); };
     const draw = () => {
@@ -1890,10 +2380,20 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   use('permissions').then((pm) => { S.perms = pm || null; quizasFrase(); }).catch(() => {});
   use('sample').then(async (fn) => {
     S.sample = fn || null;
-    if (fn && fn.limits) { try { const l = await fn.limits(); S.sampleTools = !!(l && l.tools); } catch (e) { S.sampleTools = false; } }
+    if (fn && fn.limits) { try { const l = await fn.limits(); S.sampleTools = !!(l && l.tools); S.sampleImages = (l && l.images) || null; } catch (e) { S.sampleTools = false; } }
     renderMain(); renderDrawer(); quizasFrase();
   }).catch(() => {});
-  use('mcp').then(async (m) => { S.mcp = m || null; if (m && m.listTools) { try { const lt = await m.listTools(); S.fileArgs = !!(lt && lt.fileArgs); } catch (e) { S.fileArgs = false; } } }).catch(() => {});
+  use('mcp').then(async (m) => {
+    S.mcp = m || null;
+    if (m && m.listTools) { try { const lt = await m.listTools(); S.fileArgs = !!(lt && lt.fileArgs); } catch (e) { S.fileArgs = false; } }
+    if (m) {
+      let st = 'prompt';
+      try { const pm = await use('permissions'); if (pm) st = await pm.state('mcp:' + GCAL); } catch (e) { st = 'prompt'; }
+      S.gcal.perm = st;
+      if (st === 'granted') cargarGcal(true); else renderMain();
+    }
+  }).catch(() => {});
+  use('assets').then((a) => { S.assets = a || null; }).catch(() => {});
   use('db').then((db) => {
     if (!db) { S.loadedItems = S.loadedProy = true; renderMain(true); $('#main').prepend(h('p', { class: 'status', text: 'No se pudo abrir tu registro. Abrí Curtis desde claude.ai con tu cuenta.' })); return; }
     S.db = db;
@@ -1901,6 +2401,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     db.collection('items').onSnapshot((snap) => { S.items = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); S.loadedItems = true; renderAll(); refreshChats(); quizasFrase(); }, fail);
     db.collection('proyectos').onSnapshot((snap) => { S.proyectos = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); S.loadedProy = true; renderAll(); refreshChats(); }, fail);
     db.collection('etiquetas').onSnapshot((snap) => { S.etiquetas = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => (a.creado || 0) - (b.creado || 0)); renderAll(); }, () => {});
+    db.collection('ilustraciones').onSnapshot((snap) => { S.ilustraciones = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'proyectos' || S.view === 'proyecto') renderMain(); }, () => {});
     db.collection('memoria').onSnapshot((snap) => { S.memoria = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'curtis') renderMain(); }, () => {});
     db.doc('ajustes/general').onSnapshot((snap) => { S.ajustes = snap.exists ? snap.data() : {}; renderMain(); }, () => {});
     db.doc('resumen/dia').onSnapshot((snap) => { S.resumen = snap.exists ? snap.data() : null; renderMain(); }, () => {});
@@ -1909,6 +2410,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   });
   function refreshChats() { S.asking.forEach((_, k) => renderChatBox(k)); }
   let lastDay = hoy();
-  setInterval(() => { if (hoy() !== lastDay) { lastDay = hoy(); fraseIntentada = false; renderAll(); quizasFrase(); } }, 60000);
+  setInterval(() => { if (hoy() !== lastDay) { lastDay = hoy(); fraseIntentada = false; renderAll(); quizasFrase(); if (S.gcal.ok) cargarGcal(true); } }, 60000);
+  setInterval(() => { if (S.gcal.ok && document.visibilityState === 'visible') cargarGcal(true); }, 15 * 60000);
 })();
 </script>
