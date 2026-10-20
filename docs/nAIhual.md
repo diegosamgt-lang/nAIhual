@@ -129,7 +129,7 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 | Cosmovisión y 20 nawales | PDF Consolidado | Fundador | No; en la app con \* |
 | Fuentes originales | NotebookLM (Claude no tiene acceso) | Fundador | Propuesta: copiarlas a Google Drive, carpeta «nAIhual fuentes» |
 | Diseño editable | Figma: «nAIhual · App 1.0» https://www.figma.com/design/K67raFNTRvhkSOAEpWtByE · 3 páginas (Leeme y fundamentos · Componentes · Pantallas y textos). Capas «#…» = textos que usa la app | Fundador (diseño) + Claude (lee y pasa a la app) | Sí. El fundador rediseña; Claude copia los cambios a la app |
-| Línea gráfica (moodboard) | Figma: «nAIhual · Tablero visual» https://www.figma.com/design/tw3f3T31gReovmpb5bGcxi · 10 temas; capas «#mio», «#referencia» y «#nota» | Fundador | Sí. Es la fuente de verdad del estilo visual (fase 10) |
+| Línea gráfica | Figma: 6 pantallas para que el fundador las rediseñe (Entrar, Inicio, Guardianes, Chat, Muro, Ficha) https://www.figma.com/design/tw3f3T31gReovmpb5bGcxi | Fundador | Sí. Lo que el fundador dibuje aquí define el estilo visual (fase 10) |
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md`. Se sube al cuaderno como fuente; NotebookLM revisa los nawales contra sus 46 fuentes | Claude | Sí, cuando cambie la app |
 | Web C0 vieja | Netlify (gregarious-tulumba-42cb05) | — | No tocar |
 
