@@ -1,42 +1,50 @@
 # Mi Tablero — traspaso
 
 ## Qué existe
-- **Tablero (el que se usa):** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
+- **Tablero:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
 - **Archivo fuente:** `tablero/mi-tablero.html` (publicar siempre este mismo archivo para no cambiar el link).
-- **Fuente de verdad:** el registro propio del tablero (colección `items` + `ajustes/general`). Se escribe directo desde la página. No hay hoja de cálculo.
-- **Viejo, para borrar si el dueño confirma:** tablero tipo Dashboard https://claude.ai/artifact/SgXX8BWzG2rXP3jvmtfdEm y la hoja de Drive «Mi Tablero — registro». Fue un error: se decidió sin preguntar.
+- **Fuente de verdad:** el registro propio del tablero. Se escribe directo desde la página.
+- **Conectores que usa la página (con la cuenta del dueño):** Google Drive (`create_file`, `search_files`), Zoho Books (`list_contacts`, `create_estimate`), Claude (`sample`, con herramientas).
+- **Zoho:** organización «Creatif» `914134862`, moneda GTQ. Ojo: en Zoho aparece la prueba PREMIUM vencida; crear cotizaciones puede fallar hasta que se active un plan.
+- **Viejo, para borrar si el dueño confirma:** tablero tipo Dashboard https://claude.ai/artifact/SgXX8BWzG2rXP3jvmtfdEm y la hoja de Drive «Mi Tablero — registro».
 
-## Cómo se guarda cada cosa (`items`)
-tipo · titulo · estado · fecha · con_quien · notas · que_sigue · horas · creado · actualizado · terminado · acuerdosEnviados · chat
-- chat: lista de `{rol: yo|claude, texto, at}`, máximo 30 mensajes por tarea
-- tipo: tarea, proyecto, reunion, bitacora, meta-mes, meta-año
-- estado: por hacer, en proceso, esperando, listo (reunión y bitácora se guardan como listo)
-- `ajustes/general.horasMin` = mínimo de horas NIHR al mes
+## Datos
+- `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · creado · actualizado · terminado
+- `proyectos/*`: nombre · icono · color · cliente · entrega · estado (activo|pausa|terminado) · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] · chat
+- `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · zohoOrg
+- `resumen/dia`: {fecha, texto} — resumen de Claude del día
 
-## Circuitos
+## Cómo está armado (ideas tomadas)
+- **Asana:** Mis tareas por fecha (De días anteriores / Hoy / Esta semana / Más adelante / Sin fecha / Listas), proyectos con secciones, vista Lista y Tablero, panel de detalle con subtareas.
+- **Notion:** proyectos en galería con ícono y color de portada, propiedades editables, notas libres, plantillas (secciones y carpetas).
+- **TDAH:** resumen primero; «Ahora» muestra una sola cosa; reloj de foco 15/25/45 que guarda el tiempo dedicado; anotar sin decidir dónde (queda para hoy); «Pasar todo a hoy» sin culpa; pasos chicos; festejo al terminar; colores suaves; todo se guarda solo.
+
+## Circuitos (prueba automática v3: 34 de 34 ✅ con conectores simulados)
 | # | Circuito | Estado |
 |---|---|---|
-| 1 | Anoto una tarea → aparece en AHORA o en «Qué sigue» | ✅ probado |
-| 2 | Empezar → queda «en proceso» | ✅ probado |
-| 3 | «Me trabé» → pide a quién espero → va a «Trabado» | ✅ probado |
-| 4 | ¡Listo! → sale de la fila, queda en pestaña Listo, suma en «Listo esta semana» | ✅ probado |
-| 5 | Reunión con acuerdos → queda guardada; «Pasar acuerdos a tareas» crea una tarea por línea, una sola vez | ✅ probado |
-| 6 | Bitácora NIHR con fecha y horas → suma contra el mínimo del mes | ✅ probado |
-| 7 | Metas del mes y del año | ✅ probado |
-| 8 | Proyecto con fecha vencida → sube a AHORA con etiqueta VENCIDA | ✅ probado |
-| 9 | Editar y borrar (con confirmación) | ✅ probado |
-| 10 | Preguntarle a Claude dentro de cada tarea → responde con contexto de la tarea y la lista; la conversación queda guardada | ✅ probado con respuesta simulada |
-| 11 | Guía «Cómo funciona este tablero» arriba (se puede ocultar) | ✅ |
-| 12 | Estilo v2: limpio tipo Apple, colores apagados, graffiti solo en acentos | 🟡 falta que el dueño lo revise |
-
-«Probado» = prueba automática (28 de 28) en navegador con un registro de prueba, en compu y celular (390 px), modo claro y oscuro, 0 errores, abre en <1 s.
-Falta: prueba del dueño con su cuenta en el tablero publicado.
+| 1 | + anota tarea con fecha de hoy → aparece en Ahora y Hoy | ✅ |
+| 2 | Proyecto nuevo con secciones de plantilla; nombre, cliente, entrega, estado, color, ícono, notas editables | ✅ |
+| 3 | Secciones: renombrar, agregar, borrar (las tareas se mueven, no se borran) | ✅ |
+| 4 | Lista y Tablero (arrastrar entre columnas) en proyecto y en Mis tareas | ✅ |
+| 5 | Detalle de tarea: todo editable y se guarda solo; pasos chicos | ✅ |
+| 6 | Claude en tarea y en proyecto: agrega tareas y pasos | ✅ simulado |
+| 7 | Claude o botón: carpetas de entrega en Drive (pide permiso) y guarda el link | ✅ simulado · ❓ falta prueba real |
+| 8 | Cotización en Zoho en borrador (pide permiso, no la envía) y queda en el proyecto | ✅ simulado · ❓ falta prueba real (prueba de Zoho vencida) |
+| 9 | Reunión → acuerdos a tareas (una sola vez) | ✅ |
+| 10 | Bitácora con horas → suma contra el mínimo | ✅ |
+| 11 | Metas con mes/año actual | ✅ |
+| 12 | Foco con reloj | ✅ |
+| 13 | Resumen local siempre al día + resumen de Claude guardado por día | ✅ |
+| 14 | Borrar con confirmación; Esc cierra | ✅ |
+| 15 | Celular sin scroll lateral en las 5 vistas; modo oscuro | ✅ |
 
 ## Reglas
-- El diseño nunca cambia qué datos se muestran ni de dónde salen.
 - No se decide la fuente de un dato sin preguntarle al dueño.
-- Lo terminado no se borra: queda en la pestaña Listo.
+- Nada se crea en Drive o Zoho sin que el dueño apruebe en la ventana de permiso.
+- Lo terminado no se borra.
+- Probar antes de publicar; auditar el código antes de entregar.
 
 ## Historial
-- v1: tablero con escritura directa, estilo graffiti saturado.
-- v2: rediseño sobrio (pedido del dueño: «Apple con graffiti, no tan saturado»), guía de uso, chat con Claude por tarea, arreglos: fecha «mañana» mal calculada, texto «null» suelto, mayúsculas en fechas, campo de mínimo de horas que se borraba al escribir.
+- v1: escritura directa, estilo graffiti saturado.
+- v2: diseño sobrio, guía, chat con Claude por tarea.
+- v3: rehecho como Asana + Notion pensado para TDAH. Resumen estético primero, proyectos con secciones y tablero, todo editable con guardado automático, foco, Claude con herramientas (tareas, pasos, Drive, Zoho). Errores encontrados en la auditoría y corregidos: secciones y menú que salían como texto roto, pasos que se pisaban al agregar varios seguidos, panel que no abría al crear reunión/bitácora, Esc que no cerraba avisos, resumen que redibujaba toda la página.
