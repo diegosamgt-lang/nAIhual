@@ -99,9 +99,24 @@
 |---|---|---|
 | 11.1 | Google Drive (crear carpetas, subir, buscar, mover) | 🟡 conectado a Curtis, sin prueba real |
 | 11.2 | Zoho Books (clientes, cotizaciones) | 🟡 conectado a Curtis; la prueba de Zoho está vencida |
-| 11.3 | Google Calendar (ver eventos en el calendario de Curtis, crear reuniones) | ⬜ el conector existe en la cuenta, falta conectarlo a Curtis |
-| 11.4 | Apple Calendar | ⬜ no hay conector; camino propuesto: sincronizar Apple Calendar con la cuenta de Google |
+| 11.3 | Google Calendar **solo lectura** (decidido): tus reuniones aparecen en el calendario, en las fechas límite y en «Hoy»; Curtis las conoce; al terminar una reunión te invita a anotar los acuerdos | ⬜ decidido |
+| 11.4 | Apple Calendar | — descartado: las reuniones viven en Google Calendar |
 | 11.5 | Gmail / Zoom (mensaje de entrega, acuerdos de reuniones) | ⬜ conectores existen en la cuenta, no están en Curtis |
+
+
+## P12 · Personalidad y marca de Curtis
+| # | Circuito | Estado |
+|---|---|---|
+| 12.1 | Personalidad: chistoso, amigable, ordenado, estricto, puntual, resolutivo; experto en TDAH, productos digitales, branding, diseño e ilustración (ver CURTIS_PERSONALIDAD.md) | ⬜ ❓ aprobar borrador |
+| 12.2 | Logo chistoso inspirado en el estilo NatGeo | ⬜ ❓ elegir A, B o C |
+| 12.3 | Técnicas TDAH en el chat y en la interfaz (estacionamiento de ardillas, regla de 2 minutos, cuerpo presente en Foco) | ⬜ |
+
+## Cambios pedidos (PAUSA, esperando CONSTRUYE)
+1. **Proyectos:** renombrar y borrar desde la lista (menú en cada tarjeta), no solo adentro del proyecto.
+2. **Borrar el proyecto NIHR** y sus 5 tareas. El dueño va a crear su propia base de proyectos con NAIHUAL. ❓ confirmar el borrado
+3. **Ajustes:** el dueño no los entiende. Propuesta: quitar «Ajustes» y poner cada cosa donde se usa (etiquetas al crear etiquetas, estructura y revisión dentro de «Entregar», mínimo de horas en Bitácoras, Zoho escondido).
+4. **Revisión de entrega con botón «Que Curtis revise»:** revisión automática de los archivos (nombres, RGB/CMYK, resolución, transparencia, vectores, duplicados) + opinión de Curtis mirando los logos. Opción de **recopilar** los archivos desde la carpeta de trabajo en Drive en vez de subirlos. ❓ cuál o ambas
+5. Google Calendar solo lectura (P11.3).
 
 ## Lo que sigue (bloque D y pendientes)
 - P9.1–9.3 LinkedIn: perfil, post desde cada entrega, lista de prospectos con seguimiento. Hoy Curtis ya da consejos en el chat; falta la sección propia.
@@ -114,3 +129,4 @@
 - 2026-10-20 · Auditoría por partes. Decisiones del dueño: estilo NatGeo; entrega con archivos subidos + estructura fija + mensaje o PDF de links; memoria amplia (incluye errores y mejoras); LinkedIn primero. Nuevo: ordenar Drive NIHR antes de diciembre. Esperando CONSTRUYE.
 - 2026-10-20 · **v4 Curtis** construida: estilo NatGeo, etiquetas, urgencia, calendario, fechas límite, frase del día, invitaciones, memoria «Así trabajás», entrega con estructura fija y PDF de links, orden de Drive NIHR, chat general con Curtis. Prueba: 31/31 nueva + prueba de v3 sin regresiones. Migrado «Logo de nahual» a proyecto. Cargados 8 aprendizajes del paquete Beauty Sleep y el proyecto NIHR.
 - 2026-10-20 · PAUSA: pregunta sobre conexiones. Anotado P11.
+- 2026-10-20 · PAUSA: Google Calendar solo lectura; personalidad y logo de Curtis; renombrar/borrar proyectos; quitar NIHR; Ajustes confuso; botón de revisión. Anotado P12 y cambios 1–5.
