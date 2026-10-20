@@ -93,6 +93,16 @@
 3. **Bloque C** — P6.3–6.4 (memoria «Así trabajás» y automatizaciones) + P5.3–5.4 (frase del día, invitaciones a llenar)
 4. **Bloque D** — P9 (LinkedIn: perfil, posts desde proyectos, prospectos) + P8.2 (precios)
 
+
+## P11 · Conexiones
+| # | Conexión | Estado |
+|---|---|---|
+| 11.1 | Google Drive (crear carpetas, subir, buscar, mover) | 🟡 conectado a Curtis, sin prueba real |
+| 11.2 | Zoho Books (clientes, cotizaciones) | 🟡 conectado a Curtis; la prueba de Zoho está vencida |
+| 11.3 | Google Calendar (ver eventos en el calendario de Curtis, crear reuniones) | ⬜ el conector existe en la cuenta, falta conectarlo a Curtis |
+| 11.4 | Apple Calendar | ⬜ no hay conector; camino propuesto: sincronizar Apple Calendar con la cuenta de Google |
+| 11.5 | Gmail / Zoom (mensaje de entrega, acuerdos de reuniones) | ⬜ conectores existen en la cuenta, no están en Curtis |
+
 ## Lo que sigue (bloque D y pendientes)
 - P9.1–9.3 LinkedIn: perfil, post desde cada entrega, lista de prospectos con seguimiento. Hoy Curtis ya da consejos en el chat; falta la sección propia.
 - Primera prueba real: crear una carpeta en Drive, una entrega chica, una cotización (Zoho tiene la prueba vencida).
@@ -103,3 +113,4 @@
 - 2026-10-20 · v1–v3 construidas (ver TABLERO_TRASPASO.md).
 - 2026-10-20 · Auditoría por partes. Decisiones del dueño: estilo NatGeo; entrega con archivos subidos + estructura fija + mensaje o PDF de links; memoria amplia (incluye errores y mejoras); LinkedIn primero. Nuevo: ordenar Drive NIHR antes de diciembre. Esperando CONSTRUYE.
 - 2026-10-20 · **v4 Curtis** construida: estilo NatGeo, etiquetas, urgencia, calendario, fechas límite, frase del día, invitaciones, memoria «Así trabajás», entrega con estructura fija y PDF de links, orden de Drive NIHR, chat general con Curtis. Prueba: 31/31 nueva + prueba de v3 sin regresiones. Migrado «Logo de nahual» a proyecto. Cargados 8 aprendizajes del paquete Beauty Sleep y el proyecto NIHR.
+- 2026-10-20 · PAUSA: pregunta sobre conexiones. Anotado P11.
