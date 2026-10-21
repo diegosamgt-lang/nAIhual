@@ -1,6 +1,6 @@
 # CURTIS — resumen del proyecto
 
-> Actualizado: 2026-10-21 · versión 6
+> Actualizado: 2026-10-21 · versión 7
 > Panel: https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW (privado, solo vos lo abrís y lo editás)
 > Archivo: `tablero/curtis.html` · Datos y conexiones: `TABLERO_TRASPASO.md` · Personalidad: `CURTIS_PERSONALIDAD.md`
 >
@@ -26,16 +26,16 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 | P1 Núcleo | Anotar, editar, borrar, etiquetas | ✅ |
 | P2 Tiempo | Resumen, calendario, fechas límite, reuniones de Google Calendar | ✅ (Calendar 🟡 sin prueba real) |
 | P3 Urgencia | Íconos de urgencia calculados solos | ✅ |
-| P4 Registro | Reuniones, bitácoras con horas, metas | ✅ |
+| P4 Registro | Reuniones con notas grandes conectadas a la cita o la tarea, bitácoras, metas | ✅ simulado |
 | P5 TDAH | Foco, ardillas estacionadas, frases, invitaciones | ✅ |
 | P6 Curtis IA | Chats, memoria «Así trabajás», automatizaciones | ✅ (respuestas reales 🟡) |
-| P7 Proyectos y entregas | Proyectos tipo Asana/Notion, entrega ordenada en Drive | ✅ simulado · 🟡 sin prueba real |
-| P8 Precios y dinero | Catálogo de servicios, cotizaciones rápidas, licencias, Zoho | ✅ simulado · Zoho 🟡 |
+| P7 Proyectos y entregas | Áreas (sombrilla), proyectos, tareas dentro de tareas, entrega ordenada en Drive | ✅ simulado · 🟡 sin prueba real |
+| P8 Dinero | Catálogo, cotizaciones, facturas, cobros, suscripciones, gastos, licencias, Zoho | ✅ simulado · Zoho 🟡 |
 | P9 Ilustraciones | Catálogo para licenciar | ✅ simulado |
 | P10 Archivos | Un lugar para subir | ✅ simulado · 🟡 sin prueba real |
 | P11 Conexiones | Drive, Zoho, Calendar | 🟡 sin prueba real |
 | P12 Identidad | Logo, letras, frase que cambia, animaciones, frases | ✅ (falta tu visto bueno) |
-| P13 Crecimiento | LinkedIn y clientes | ⬜ |
+| P13 Crecimiento | Clientes ✅ · LinkedIn ⬜ | parcial |
 
 ---
 
@@ -68,8 +68,11 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 | # | Circuito | Estado |
 |---|---|---|
 | 4.1 | Bitácora con fecha y horas → suma contra el mínimo del mes | ✅ |
-| 4.2 | Reunión → los acuerdos se vuelven tareas (una sola vez) | ✅ |
-| 4.3 | Metas del mes y del año | ✅ |
+| 4.2 | Una reunión, un lugar: en la cita de Inicio o en una tarea, «Activar notas de reunión» crea UNA reunión conectada (la tarea trae sus notas). Desde Registro también se conecta a una cita | ✅ simulado |
+| 4.3 | Notas grandes: título, subtítulo, texto, checklist, numerada, viñetas, negrita; se guardan solas | ✅ |
+| 4.4 | Imágenes y archivos en las notas (botón, arrastrar o pegar) → Drive, carpeta «Curtis · Reuniones / AAAA-MM-DD — cita» | ✅ simulado · 🟡 sin prueba real |
+| 4.5 | Pendientes ☐ de la checklist → tareas (sin duplicar los que ya pasaste) | ✅ |
+| 4.6 | Metas del mes y del año | ✅ |
 
 ### P5 · TDAH: foco y ganas de volver
 | # | Circuito | Estado |
@@ -93,7 +96,9 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 ### P7 · Proyectos y entregas
 | # | Circuito | Estado |
 |---|---|---|
-| 7.1 | Proyectos con secciones, lista y tablero, cliente, categoría, entrega, precio, etiquetas, carpeta de Drive | ✅ |
+| 7.1 | Proyectos con secciones, lista y tablero, cliente, categoría, entrega, cobro final, etiquetas, carpeta de Drive | ✅ |
+| 7.1b | **Áreas** (la sombrilla): agrupa proyectos grandes (ej. NIHR). Página propia con proyectos, pendientes, reuniones y dinero del área. «Convertir en área» desde un proyecto. El menú agrupa por área | ✅ |
+| 7.1c | **Tareas dentro de tareas**: «Dentro de» en el detalle, «Tareas dentro» con su avance; en la lista se ven agrupadas | ✅ |
 | 7.2 | Menú ⋯ en cada proyecto: abrir, renombrar, borrar | ✅ |
 | 7.3 | Carpetas de trabajo en Drive (con permiso) | ✅ simulado · 🟡 sin prueba real |
 | 7.4 | Entregar: revisión de calidad → subís archivos → Curtis los ordena en la estructura fija → crea todo en Drive → proyecto Entregado | ✅ simulado con tus archivos de Beauty Sleep |
@@ -113,6 +118,12 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 | 8.8 | Desde cada proyecto: «Cotización rápida» con cliente, proyecto y notas ya llenos | ✅ |
 | 8.9 | Licencias: cada multiplicador (volumen, exclusividad, duración, territorio, tiraje) muestra su ×, explica qué suma y por qué, cuánto dinero mueve, se edita y se apaga. Mínimo y regalía editables. «Usar siempre estos valores» / «Volver a los de Curtis» | ✅ |
 | 8.10 | Cada cotización y propuesta se anota en la memoria de precios | ✅ |
+| 8.11 | La pestaña se llama **Dinero**: Resumen · Cotizaciones · Facturas · Catálogo · Gastos | ✅ |
+| 8.12 | Cada cotización termina en factura (total o anticipo 50% + saldo). Marcar pagada → entra a tus números y a la memoria | ✅ |
+| 8.13 | Factura a Zoho «Creatif» en borrador y «Leer facturas de Zoho»: las pagadas se marcan solas y trae las que no están en Curtis | ✅ simulado · 🟡 sin prueba real |
+| 8.14 | Cobro final por proyecto + franja Cobro final · Cotizado · Facturado · Cobrado | ✅ |
+| 8.15 | Resumen: cobrado del mes y del año, por cobrar, gastos, lo que te queda, gráfica de 6 meses con tabla, tabla por proyecto | ✅ |
+| 8.16 | Suscripciones (mensual/anual, Q o US$) y gastos/inversiones/ingresos sueltos; tipo de cambio para sumar dólares | ✅ |
 
 ### P9 · Ilustraciones
 | # | Circuito | Estado |
@@ -149,10 +160,12 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 | 12.4 | La frase de abajo cambia cada 9 segundos (12 frases tipo guía de campo) | ✅ |
 | 12.5 | Botones con animación tipo Apple (se hunden al tocar, tarjetas que suben); se apaga si tu equipo pide menos movimiento | ✅ |
 | 12.6 | Frases estilo Carl Jung con humor (30 propias + la del día de Curtis) | ✅ |
+| 12.7 | v7 jerarquía editorial: títulos más grandes, regla negra sobre cada sección, etiquetas en mayúsculas espaciadas, números grandes en serif, marco amarillo en lo activo, tarjetas con borde fino | 🟡 falta tu visto bueno |
 
 ### P13 · Crecimiento: clientes y LinkedIn
 | # | Circuito | Estado |
 |---|---|---|
+| 13.0 | **Clientes** (Proyectos → Clientes): ficha con contacto, notas, conexión con Zoho, proyectos, cotizaciones, cuánto te ha pagado y cuánto te debe. Detecta nombres sueltos y los guarda con un toque. En el proyecto: elegir cliente y «Ver cliente» | ✅ |
 | 13.1 | Al entregar, Curtis propone un caso de estudio o post para LinkedIn | ⬜ |
 | 13.2 | Consejos para tu perfil (titular, acerca de, destacados) | ⬜ |
 | 13.3 | Lista de prospectos con seguimiento | ⬜ |
@@ -184,12 +197,18 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 - Curtis no puede entrar a LinkedIn ni navegar internet desde el panel.
 - Las letras CURTIS son una aproximación: la fuente de National Geographic es de pago y su logo es un dibujo a medida.
 
+## 6b. Dónde se guardan las cosas
+- Todo lo que escribís: en el registro privado de Curtis (solo vos).
+- Imágenes de reuniones y archivos: en tu Google Drive. Si instalás «Google Drive para escritorio», esas carpetas también aparecen en tu compu. El panel no puede escribir directo en tu compu (el navegador no lo deja).
+
 ## 7. Lo que sigue
-1. Tu visto bueno del logo, las letras y las frases.
-2. Llenar tu catálogo de servicios (con tus precios reales).
-3. Primera prueba real: una carpeta en Drive, subir un archivo, una entrega chica, una cotización.
-4. P13 LinkedIn.
-5. Confirmar día exacto de entrega NIHR.
+1. Tu visto bueno a la nueva jerarquía visual, áreas, notas y Dinero.
+2. ¿Borro la reunión vacía del 21 oct? (Nada se borra sin tu sí.)
+3. ¿En qué calendario están tus reuniones? Tu Google Calendar principal no tiene citas del 14 oct al 3 nov.
+4. Llenar tu catálogo, tus clientes y tus suscripciones (con datos reales).
+5. Primera prueba real: una carpeta en Drive, subir un archivo, una entrega chica, una cotización y una factura en Zoho.
+6. P13 LinkedIn.
+7. Confirmar día exacto de entrega NIHR.
 
 ## 8. Bitácora
 - 2026-10-20 · v1: escritura directa, estilo graffiti saturado. v2: diseño sobrio, guía, chat por tarea. v3: rehecho como Asana + Notion para TDAH.
@@ -197,3 +216,4 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 - 2026-10-20 · **v4 Curtis**: etiquetas, urgencia, calendario, fechas límite, frase del día, invitaciones, memoria, entregas, chat general. 31/31 pruebas.
 - 2026-10-20 · **v5**: logo ardilla, personalidad, Google Calendar solo lectura, menú de proyectos, Ajustes explicados, revisión de entregas, ilustraciones y licencias. 35/35 + 31/31 pruebas. Proyecto Tienda aeropuerto · Naipes cargado.
 - 2026-10-21 · **v6**: pestaña Precios (catálogo + cotizaciones rápidas con títulos, subtítulos, servicios, notas y descuentos; Curtis escribe y revisa descripciones; PDF, Zoho, duplicar), multiplicadores de licencia editables y explicados, lugar para subir archivos (general y por proyecto), logo minimalista, «CURTIS» estilo revista, frase que cambia, animaciones tipo Apple, frases estilo Jung con humor, cada chat dice dónde se guarda. Error que ya venía de antes y quedó corregido: las descripciones se perdían al pasar una cotización a Zoho. Encontrados en las pruebas y corregidos antes de publicar: la cotización nueva se cerraba sola, un signo menos que el PDF no podía dibujar y el chat de una tarea podía recibir más herramientas de las permitidas. Pruebas: 74/74 nuevas + 31/31 de v4.
+- 2026-10-21 · **v7**: Áreas (sombrilla de proyectos; NIHR convertida en área con «NIHR · General» adentro), tareas dentro de tareas (la propuesta del naipe quedó dentro de «Diseñar el naipe»), reuniones con notas grandes conectadas a la cita o la tarea (títulos, checklist, numerada, fotos a Drive), clientes, Dinero (facturas por cotización, Zoho facturas, cobro final, resumen con gráfica, suscripciones y gastos), jerarquía visual editorial. La reunión con Daisy quedó conectada a su tarea con las notas más completas. Corregidos: la ventana de notas se cerraba al pedir permiso para subir una imagen; la checklist se encogía por un choque de estilos; las tareas agregadas con «Agregar tarea» no aparecían hasta tocar afuera (venía de antes); el tipo de cambio no se aplicaba al momento. Pruebas: 108/108 nuevas + 31/31 de v4.

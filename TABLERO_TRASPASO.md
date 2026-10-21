@@ -1,6 +1,6 @@
 # Curtis — traspaso
 
-> Actualizado: 2026-10-21 · versión 6. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
+> Actualizado: 2026-10-21 · versión 7. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
 
 ## Qué existe
 - **Panel:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
@@ -10,21 +10,26 @@
 - **Conectores que usa (con la cuenta del dueño):**
   - Google Drive: `create_file` (carpetas y archivos), `search_files`, `update_file` (mover), `copy_file` (recopilar).
   - Google Calendar: `list_events`, solo lectura.
-  - Zoho Books: `list_contacts`, `create_estimate` (borrador, con descuento a nivel de cotización).
+  - Zoho Books: `list_contacts`, `create_estimate` (borrador, con descuento), `create_invoice` (borrador), `list_invoices` (leer estado y saldo).
 - **Librería:** jsPDF 2.5.1 (cdnjs) para el PDF de links, la propuesta de licencia y la cotización.
 - **Zoho:** organización «Creatif» `914134862`, moneda GTQ. La prueba PREMIUM está vencida: crear cotizaciones puede fallar hasta activar un plan.
-- **Carpetas que Curtis crea en Drive cuando hace falta:** «Curtis · Ilustraciones», «Curtis · Bandeja» y la de cada proyecto.
+- **Carpetas que Curtis crea en Drive cuando hace falta:** «Curtis · Ilustraciones», «Curtis · Bandeja», «Curtis · Reuniones / AAAA-MM-DD — cita» y la de cada proyecto.
 
 ## Datos
-- `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · etiquetas · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · gcalId (reunión de Google Calendar) · creado · actualizado · terminado
-- `proyectos/*`: nombre · icono · color · cliente · categoria · precio · entrega · estado (activo|pausa|terminado) · etiquetas · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] (las de Zoho) · chat · ilustraciones[ids] · licencia{producto,n,exclusividad,duracion,territorio,tiraje,modelo,base,diseno,disenoMonto,mayorista,regaliaPct,fx,total,unico,fecha} · entregado · entregaUrl · entregaFolderId
+- `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · etiquetas · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · gcalId (cita de Google Calendar) · padre (tarea dentro de otra) · reunionId (tarea → su reunión) · reunión: tareaId · notasHtml · carpetaId · carpetaUrl · carpetaNombre · adjuntos[{nombre,driveUrl,asset,thumb}] · enviados[pendientes ya pasados a tareas] · creado · actualizado · terminado
+- `proyectos/*`: area · clienteId · nombre · icono · color · cliente · categoria · precio (cobro final) · entrega · estado (activo|pausa|terminado) · etiquetas · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] (las de Zoho) · chat · ilustraciones[ids] · licencia{producto,n,exclusividad,duracion,territorio,tiraje,modelo,base,diseno,disenoMonto,mayorista,regaliaPct,fx,total,unico,fecha} · entregado · entregaUrl · entregaFolderId
 - `servicios/*` (v6): titulo · subtitulo · grupo · precio · unidad · formato · tiempo · descripcion · creado · actualizado
 - `cotizaciones/*` (v6): titulo · cliente · proyecto · fecha · validez (días) · contexto (de qué se trata) · lineas[{id, tipo: titulo|subtitulo|servicio|nota|descuento, texto, servicioId, nombre, cantidad, precio, unidad, formato, descripcion, modo: monto|pct, valor}] · notas · estado (borrador|enviada|aceptada|rechazada) · total · pdfUrl · creado · actualizado
-- `archivos/*` (v6): nombre · tipo · tamano · proyecto ('' = Bandeja) · driveId · driveUrl · asset (si se guardó en Curtis) · thumb · fecha · creado
+- `areas/*` (v7): nombre · icono · color · descripcion · cliente · creado · actualizado
+- `clientes/*` (v7): nombre · empresa · contacto · correo · telefono · notas · zohoId
+- `facturas/*` (v7): numero (F-001…) · concepto · cotizacion · proyecto · cliente · clienteId · fecha · vence · total · moneda · estado (pendiente|pagada|anulada) · pagadoEl · saldo · parte (total|anticipo) · zohoId · zohoNumero · zohoEstado · notas
+- `suscripciones/*` (v7): nombre · monto · moneda (Q|US$) · frecuencia (mensual|anual) · categoria · desde · activa
+- `movimientos/*` (v7): tipo (gasto|ingreso) · concepto · monto · moneda · fecha · categoria · proyecto
+- `archivos/*` (v6): reunion (v7) · nombre · tipo · tamano · proyecto ('' = Bandeja) · driveId · driveUrl · asset (si se guardó en Curtis) · thumb · fecha · creado
 - `ilustraciones/*`: titulo · thumb · driveId · driveUrl · archivo · ancho · alto · tema · anio · notas · estado
 - `etiquetas/*`: nombre · color · icono
 - `memoria/*`: tipo (precio|tiempo|horario|error|mejora|motivacion|pasos|cliente|otro) · texto · origen (auto|curtis|yo) · fecha · proyecto
-- `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · plantillaEntrega · plantillaLicencia · checklistEntrega · plantillasCat · firma · zohoOrg · ilusFolderId · bandejaFolderId (v6) · factoresLicencia (v6: multiplicadores «de siempre»)
+- `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · plantillaEntrega · plantillaLicencia · checklistEntrega · plantillasCat · firma · zohoOrg · ilusFolderId · bandejaFolderId (v6) · factoresLicencia (v6: multiplicadores «de siempre») · tipoCambio (v7)
 - `resumen/dia`, `frase/dia`: {fecha, texto}
 - `curtis/chat`: chat general
 
@@ -43,7 +48,8 @@
 - Probar antes de publicar; auditar el código antes de entregar.
 
 ## Pruebas
-- Automáticas en el navegador con conectores simulados: v6 74/74 y la de v4 31/31 sin regresiones.
+- Automáticas en el navegador con conectores simulados: v7 108/108 y la de v4 31/31 sin regresiones.
+- Real (de solo lectura, desde esta sesión): Google Calendar responde; el calendario principal no tiene citas del 14 oct al 3 nov. Zoho `list_invoices` responde (todavía sin facturas).
 - Falta la primera prueba real con Drive, Calendar y Zoho.
 
 ## Historial
@@ -53,3 +59,4 @@
 - v4: Curtis (estilo NatGeo, memoria, entregas).
 - v5: ardilla, Google Calendar, ilustraciones y licencias.
 - v6: Precios (catálogo y cotizaciones), multiplicadores de licencia editables, archivos, logo minimalista, frases estilo Jung.
+- v7: Áreas, tareas dentro de tareas, reuniones conectadas con notas grandes, clientes, Dinero (facturas, cobros, suscripciones, gastos), jerarquía visual editorial.
