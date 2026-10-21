@@ -217,3 +217,20 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
 - 2026-10-20 · **v5**: logo ardilla, personalidad, Google Calendar solo lectura, menú de proyectos, Ajustes explicados, revisión de entregas, ilustraciones y licencias. 35/35 + 31/31 pruebas. Proyecto Tienda aeropuerto · Naipes cargado.
 - 2026-10-21 · **v6**: pestaña Precios (catálogo + cotizaciones rápidas con títulos, subtítulos, servicios, notas y descuentos; Curtis escribe y revisa descripciones; PDF, Zoho, duplicar), multiplicadores de licencia editables y explicados, lugar para subir archivos (general y por proyecto), logo minimalista, «CURTIS» estilo revista, frase que cambia, animaciones tipo Apple, frases estilo Jung con humor, cada chat dice dónde se guarda. Error que ya venía de antes y quedó corregido: las descripciones se perdían al pasar una cotización a Zoho. Encontrados en las pruebas y corregidos antes de publicar: la cotización nueva se cerraba sola, un signo menos que el PDF no podía dibujar y el chat de una tarea podía recibir más herramientas de las permitidas. Pruebas: 74/74 nuevas + 31/31 de v4.
 - 2026-10-21 · **v7**: Áreas (sombrilla de proyectos; NIHR convertida en área con «NIHR · General» adentro), tareas dentro de tareas (la propuesta del naipe quedó dentro de «Diseñar el naipe»), reuniones con notas grandes conectadas a la cita o la tarea (títulos, checklist, numerada, fotos a Drive), clientes, Dinero (facturas por cotización, Zoho facturas, cobro final, resumen con gráfica, suscripciones y gastos), jerarquía visual editorial. La reunión con Daisy quedó conectada a su tarea con las notas más completas. Corregidos: la ventana de notas se cerraba al pedir permiso para subir una imagen; la checklist se encogía por un choque de estilos; las tareas agregadas con «Agregar tarea» no aparecían hasta tocar afuera (venía de antes); el tipo de cambio no se aplicaba al momento. Pruebas: 108/108 nuevas + 31/31 de v4.
+
+## 9. Auditoría honesta (2026-10-21, PAUSA, después de la v7)
+- **Nota:** la idea va 8/10 y el uso real 4/10. Hay 7 secciones y unas 4,000 líneas de código, pero en el panel solo hay 11 cosas anotadas y la primera reunión real quedó repetida 3 veces. Lo que falla es la claridad, no la falta de funciones.
+- **Lo más importante:**
+  1. Probar Drive, Zoho y Calendar con tu cuenta real antes de construir nada nuevo. Tu calendario principal está vacío.
+  2. Revisar si las facturas de Zoho valen como factura legal (FEL de la SAT). Si no, Curtis solo lleva el control y la factura legal sale de otro lado.
+  3. Respaldo: hoy todo vive solo dentro del panel. Falta un botón «Guardar copia en Drive», sobre todo por el dinero.
+- **Simplificar:**
+  - Inicio tiene unos 12 bloques. Dejar solo «Ahora», «Hoy», «Citas de hoy» y un aviso.
+  - Hay cosas repetidas: «Pasos chicos» y «Tareas dentro»; tres botones distintos para cotizar; archivos en 3 lugares.
+  - 7 pestañas en el celular son demasiadas.
+- **Poco útil o que distrae:**
+  - La frase que cambia cada 9 segundos: es una ardilla en movimiento.
+  - La frase del día escrita por Curtis gasta tu cuenta todos los días.
+  - Las bitácoras NIHR, si ya no las usás.
+- **Lo que quedó pendiente:** conseguir clientes y LinkedIn, que era la meta del inicio.
+- **Propuesta:** 2 semanas sin funciones nuevas. Usarlo todos los días y después cortar lo que no usaste.
