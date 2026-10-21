@@ -1,7 +1,7 @@
 <title>Curtis</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Instrument+Sans:wght@400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Instrument+Sans:wght@400..700&family=Fira+Sans+Condensed:wght@500;600;700&display=swap">
 <style>
 /* Layout: inspiración revista de naturaleza. Papel cálido, tinta de bosque, el marco amarillo como único acento fuerte. Inicio: resumen enmarcado en amarillo sobre curvas de nivel que se mueven despacio; después tiempo (calendario + fechas límite), hoy y proyectos. Compu: barra lateral; celular: barra abajo. */
 :root {
@@ -11,6 +11,7 @@
   --shadow: 0 1px 2px rgba(26,31,27,.05), 0 10px 28px rgba(26,31,27,.06);
   --f-ui: "Instrument Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --f-head: "Newsreader", Georgia, "Times New Roman", serif;
+  --f-mark: "Fira Sans Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
   --r: 16px; --r-sm: 10px; --side: 244px;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -55,7 +56,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
 .nav-emoji { width: 22px; text-align: center; }
 .side-foot { margin-top: auto; padding-top: 12px; }
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; justify-content: space-around; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); padding: 6px max(6px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); }
-.tab-btn { border: 0; background: none; display: grid; justify-items: center; gap: 2px; font-size: .64rem; font-weight: 600; color: var(--muted); padding: 4px 2px; min-width: 50px; }
+.tab-btn { border: 0; background: none; display: grid; justify-items: center; gap: 2px; font-size: .62rem; font-weight: 600; color: var(--muted); padding: 4px 1px; min-width: 44px; flex: 1 1 0; }
 .tab-btn[aria-current="page"] { color: var(--ink); }
 .tab-btn[aria-current="page"] .ic { stroke: var(--forest); }
 .fab { position: fixed; right: max(18px, calc(env(safe-area-inset-right, 0px) + 18px)); bottom: calc(78px + env(safe-area-inset-bottom, 0px)); z-index: 31; width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--forest); color: #fff; display: grid; place-items: center; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
@@ -76,7 +77,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
 .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .chip { border: 0; background: var(--surface-2); border-radius: 999px; padding: 5px 11px; font-size: .82rem; font-weight: 550; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
-.seg { display: inline-flex; gap: 2px; background: var(--surface-2); border-radius: 999px; padding: 3px; }
+.seg { display: inline-flex; justify-self: start; max-width: 100%; overflow-x: auto; gap: 2px; background: var(--surface-2); border-radius: 999px; padding: 3px; }
 .seg button { border: 0; background: transparent; border-radius: 999px; padding: 6px 13px; font-weight: 600; font-size: .85rem; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 .page-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
@@ -350,9 +351,125 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
 @media (prefers-reduced-motion: no-preference) { .confetti { animation: pop 1000ms ease-out forwards; } @keyframes pop { to { transform: translate(var(--dx), var(--dy)) rotate(300deg); opacity: 0; } } }
 @media (prefers-reduced-motion: reduce) { .confetti { display: none; } }
 .logo { display: block; flex: none; overflow: visible; }
-.brand-txt { display: grid; line-height: 1; }
-.brand-txt b { font-family: var(--f-head); font-style: italic; font-weight: 600; font-size: 1.6rem; letter-spacing: -.01em; }
-.brand-txt small { font-size: .66rem; color: var(--muted); font-weight: 600; margin-top: 3px; }
+.brand-txt { display: grid; line-height: 1; min-width: 0; }
+.brand-txt b { font-family: var(--f-mark); font-style: normal; font-weight: 600; font-size: 1.32rem; letter-spacing: .16em; text-transform: uppercase; }
+.brand-txt small, .tagline { font-size: .68rem; color: var(--muted); font-weight: 600; margin-top: 4px; display: block; min-height: 1em; }
+.wordmark { font-family: var(--f-mark); font-weight: 600; letter-spacing: .16em; text-transform: uppercase; font-size: .86rem; margin: 0; }
+.brand-txt .tagline { min-height: 2.3em; line-height: 1.15; }
+.tagline.cambia { animation: tagfade .5s ease; }
+@keyframes tagfade { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+/* precios y licencias */
+.ic.up { transform: rotate(90deg); } .ic.down { transform: rotate(-90deg); }
+.fx-box { display: grid; gap: 4px; background: var(--bg); border-radius: 14px; padding: 12px 14px; }
+.fx-box h4 { margin: 0; font-size: 1rem; }
+.fx-row { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 10px 0 6px; border-top: 1px solid var(--line); }
+.fx-row.off .fx-main b, .fx-row.off .fx-main p { opacity: .5; }
+.fx-main b { font-size: .9rem; display: block; }
+.fx-main p { margin: 2px 0 3px; font-size: .82rem; color: var(--muted); line-height: 1.35; }
+.fx-main small { font-size: .78rem; font-weight: 650; color: var(--muted); }
+.fx-main small.up { color: var(--earth-t); } .fx-main small.down { color: var(--forest-t); }
+.fx-ico { width: 38px; display: grid; place-items: center; color: var(--muted); padding-top: 2px; }
+.fx-x { display: flex; align-items: center; gap: 4px; font-weight: 700; color: var(--muted); }
+.fx-x input { width: 4.4rem; border: 0; background: var(--surface); border-radius: 9px; padding: 7px 8px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 650; color: var(--ink); box-sizing: border-box; }
+.fx-x input:disabled { opacity: .45; }
+.switch { width: 38px; height: 22px; border-radius: 999px; border: 0; background: color-mix(in srgb, var(--ink) 22%, transparent); position: relative; padding: 0; margin-top: 1px; cursor: pointer; flex: none; transition: background-color .2s ease; }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .22s cubic-bezier(.2, .8, .2, 1); }
+.switch[aria-checked="true"] { background: var(--forest); }
+.switch[aria-checked="true"]::after { transform: translateX(16px); }
+.chip.static { background: var(--surface-2); color: var(--muted); font-size: .76rem; padding: 3px 9px; }
+.chip.strong { background: var(--ink); color: var(--surface); }
+.seg.small button { padding: 4px 10px; font-size: .8rem; }
+.empty-state { display: grid; justify-items: center; text-align: center; gap: 8px; padding: 28px 18px; }
+.empty-state h3 { margin: 0; font-family: var(--f-head); font-size: 1.35rem; }
+.empty-state p { max-width: 30rem; margin: 0; }
+.svc-group { display: grid; }
+.svc-list { display: grid; padding: 4px 14px; }
+.svc { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.svc:last-child { border-bottom: 0; }
+.svc .check { margin-top: 2px; }
+.svc-body { border: 0; background: none; padding: 0; text-align: left; display: grid; gap: 4px; color: var(--ink); min-width: 0; cursor: pointer; }
+.svc-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.svc-top b { font-size: 1rem; }
+.svc-price { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.svc-price small { font-weight: 550; color: var(--muted); font-size: .76rem; }
+.svc-sub { font-size: .86rem; color: var(--muted); font-weight: 600; }
+.svc-desc { font-size: .86rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.svc-desc.muted { color: var(--muted); font-style: italic; }
+.sel-bar { position: sticky; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; background: var(--surface); box-shadow: var(--shadow), 0 8px 30px rgba(0,0,0,.12); border-radius: 16px; padding: 10px 12px; }
+.sel-bar > span { font-variant-numeric: tabular-nums; }
+@media (min-width: 900px) { .sel-bar { bottom: 16px; } }
+.cot-list { display: grid; padding: 4px 6px; }
+.cot-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; border: 0; background: none; text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); color: var(--ink); border-radius: 10px; cursor: pointer; }
+.cot-row:last-child { border-bottom: 0; }
+.cot-row:hover { background: var(--surface-2); }
+.cot-main { display: grid; gap: 2px; min-width: 0; }
+.cot-main b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cot-main small { color: var(--muted); font-size: .8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cot-total { font-weight: 700; font-variant-numeric: tabular-nums; }
+.pill { font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+.pill.est-enviada { background: color-mix(in srgb, var(--lake) 16%, var(--surface)); color: var(--lake-t); }
+.pill.est-aceptada { background: color-mix(in srgb, var(--forest) 16%, var(--surface)); color: var(--forest-t); }
+.pill.est-rechazada { background: color-mix(in srgb, var(--clay) 14%, var(--surface)); color: var(--clay-t); }
+.cot-head { display: grid; gap: 12px; }
+.cot-lines { display: grid; gap: 2px; }
+.cot-line { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "type tools" "body body"; gap: 2px 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.cot-type { grid-area: type; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); align-self: center; }
+.cot-line > :nth-child(2) { grid-area: body; min-width: 0; }
+.cot-tools { grid-area: tools; display: flex; gap: 0; }
+.cot-tools .icon-btn { width: 30px; height: 30px; }
+.cot-tools .icon-btn:disabled { opacity: .3; }
+.cot-line input, .cot-line textarea { border: 0; background: var(--surface-2); border-radius: 10px; padding: 8px 10px; width: 100%; box-sizing: border-box; min-width: 0; font: inherit; color: var(--ink); }
+.cot-line input:focus, .cot-line textarea:focus { outline: 2px solid var(--ink); }
+.cot-line .cot-h1 { font-family: var(--f-head); font-size: 1.35rem; font-weight: 600; background: transparent; padding: 4px 6px; }
+.cot-line .cot-h2 { font-weight: 700; font-size: 1rem; background: transparent; padding: 4px 6px; }
+.cot-line .cot-note { font-style: italic; font-size: .9rem; }
+.cot-line.t-titulo { border-top: 2px solid var(--forest); margin-top: 6px; }
+.cot-svc { display: grid; gap: 6px; }
+.cot-svc-top { display: grid; grid-template-columns: minmax(0, 1fr) 4.2rem 6.4rem minmax(5.5rem, auto); gap: 6px; align-items: end; }
+.cot-name { font-weight: 650; }
+.mini-f { display: grid; gap: 2px; font-size: .68rem; font-weight: 650; color: var(--muted); }
+.mini-f.wide { display: flex; align-items: center; gap: 6px; }
+.mini-f.wide input { flex: 1; }
+.cot-line input.num { text-align: right; font-variant-numeric: tabular-nums; }
+.cot-sub { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; padding-bottom: 8px; }
+.cot-desc-wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px; align-items: start; }
+.cot-desc-wrap textarea { font-size: .88rem; }
+.cot-desc-line { display: grid; grid-template-columns: minmax(0, 1fr) auto 5.5rem minmax(5.5rem, auto); gap: 6px; align-items: center; }
+.cot-desc-line .cot-sub { padding: 0; color: var(--clay-t); }
+.cot-add { padding-top: 10px; }
+.cot-sum { position: sticky; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 5; display: grid; gap: 8px; box-shadow: var(--shadow), 0 8px 30px rgba(0,0,0,.12); }
+@media (min-width: 900px) { .cot-sum { bottom: 16px; } .cot-sum .row-actions { padding-right: 60px; } }
+.cot-sum-total { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+@media (max-width: 560px) {
+  .cot-svc-top { grid-template-columns: 4rem minmax(0, 1fr) minmax(5rem, auto); }
+  .cot-svc-top .cot-name { grid-column: 1 / -1; }
+  .cot-desc-line { grid-template-columns: minmax(0, 1fr) auto; }
+  .cot-sum .row-actions .btn { padding-inline: 10px; }
+  .cot-sum { position: static; }
+}
+.arch-sec summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; font-weight: 650; }
+.arch-sec summary::-webkit-details-marker { display: none; }
+.arch-sec summary .hint { margin-left: auto; }
+.arch-sec[open] { display: grid; gap: 10px; }
+.arch-list { display: grid; padding: 2px 10px; }
+.arch-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.arch-row:last-child { border-bottom: 0; }
+.arch-thumb { width: 40px; height: 40px; border-radius: 9px; background: var(--surface-2); display: grid; place-items: center; overflow: hidden; color: var(--muted); }
+.arch-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.arch-main { display: grid; gap: 1px; min-width: 0; }
+.arch-main a, .arch-main b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--ink); }
+.arch-main small { color: var(--muted); font-size: .78rem; }
+@media (prefers-reduced-motion: reduce) { .switch::after, .switch { transition: none; } .tagline.cambia { animation: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .btn, .chip, .icon-btn, .nav-btn, .tab-btn, .seg button, .stat, .pcard, .ilus, .nudge, .entry, .kcard, .cal-d, .fab, .st-btn, .check, .swatch, .dl-row, .svc, .cot-row, .switch, .arch-row { transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .2s ease, background-color .2s ease, color .2s ease, filter .2s ease; }
+  .btn:active, .chip:active, .icon-btn:active, .nav-btn:active, .tab-btn:active, .seg button:active, .stat:active, .nudge:active, .cal-d:active, .st-btn:active, .check:active, .swatch:active, .dl-row:active, .cot-row:active, .switch:active { transform: scale(.96); }
+  .pcard:hover, .ilus:hover, .entry:hover, .stat:hover, .kcard:hover { transform: translateY(-2px); }
+  .pcard:active, .ilus:active, .entry:active, .kcard:active { transform: scale(.98); }
+  .btn:hover:not(:disabled) { filter: brightness(1.06); }
+  .fab:hover { transform: scale(1.06); } .fab:active { transform: scale(.92); }
+  .logo .cola { transform-origin: 30px 36px; animation: cola 6s ease-in-out infinite; }
+  @keyframes cola { 0%, 86%, 100% { transform: rotate(0); } 90% { transform: rotate(-7deg); } 94% { transform: rotate(4deg); } }
+}
 .hero-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .pwrap { position: relative; min-width: 0; display: grid; }
 .pmenu-btn { position: absolute; right: 8px; top: 8px; z-index: 2; background: color-mix(in srgb, var(--surface) 88%, transparent); border-radius: 999px; width: 34px; height: 34px; color: var(--ink); }
@@ -425,16 +542,21 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   const SUG_C = ['¿Cómo voy esta semana?', 'Revisemos mi LinkedIn', 'Ayudame a ordenar mi Drive de la NIHR', '¿Qué errores repito?'];
   const MEM_TIPOS = { precio: ['Precio', 'receipt', 'earth'], tiempo: ['Tiempo', 'clock', 'lake'], horario: ['Horario', 'sun', 'yellow'], error: ['Error que repito', 'alert', 'clay'], mejora: ['Área de mejora', 'trend', 'moss'], motivacion: ['Me motiva', 'leaf', 'forest'], pasos: ['Pasos repetidos', 'list', 'lake'], cliente: ['Cliente', 'users', 'earth'], otro: ['Nota', 'book', 'moss'] };
   const FRASES = [
-    'Una ardilla a la vez. La de hoy: lo que dice «Ahora».', 'Empezá feo. Pulir es trabajo del vos de mañana.', 'Si te toma menos de 2 minutos, ya lo hubieras hecho. Dale.',
-    'Tu cerebro no es desordenado: es un museo sin curador. Yo curo.', 'Diez minutos de foco cuentan. Cinco también; no te pongás exquisito.', 'La ardilla puede esperar. La entrega no.',
-    'Un boceto hoy le gana a la idea perfecta de la próxima semana.', 'Cobrar bien también es diseño. Revisá ese precio.', 'Lo que no está anotado no existe. Anotalo y soltalo.',
-    'Partí la tarea en pedacitos. Las ardillas comen así.', 'Primero lo feo. Después el café.', 'Hecho es mejor que perfecto. «Perfecto» es la excusa favorita del TDAH.',
-    'Tu cliente compra claridad: menos opciones, mejores.', 'Si te trabaste no es flojera: es una tarea mal partida.', 'Hoy no hay que hacerlo todo. Hay que hacer lo de «Ahora».',
-    'Un archivo bien nombrado es un favor a tu yo del futuro.', 'Cerrá una pestaña. Literal. Te espero.', 'Cada entrega ordenada es tu portafolio creciendo solo.',
-    'Escribile hoy a quien estás esperando. Un mensaje destraba días.', 'El hiperfoco es un superpoder con mala puntería. Apuntémoslo.', 'Descansá cinco minutos, no cinco capítulos.',
-    'Tu estilo se nota cuando dejás de compararte.', 'Una buena pregunta al cliente ahorra tres revisiones.', 'Lo simple cuesta más. Cobralo como tal.',
-    'Mostrá tu proceso: la gente contrata personas, no archivos.', 'Te distrajiste. Normal. Volvé sin drama, la tarea sigue aquí.', 'Poné la alarma, no la fuerza de voluntad.',
-    'Si lo vas a hacer «después», anotalo ya. Después no existe.', 'Tu trabajo vale aunque te haya salido fácil.', 'Forma, contraste, intención. Lo demás es ruido.',
+    'Lo que evitás hacer también te está diciendo algo. Escuchalo… y después hacelo igual.', 'Tu sombra no es el problema: el problema es dejarla manejar el calendario.',
+    'Nadie se ordena por fuera sin ordenarse un poco por dentro. Empezá por una tarea.', 'La distracción es el inconsciente pidiendo atención. Anotala y volvé.',
+    'Lo que no hacés consciente se repite como destino. Por eso anotamos los errores.', 'La creatividad nace del caos, pero se entrega en una carpeta ordenada.',
+    'No te convertís en lo que pensás, sino en lo que terminás. Terminá algo hoy.', 'Tu ardilla interior no se va. Pero se puede sentar a esperar.',
+    'Quien mira hacia afuera sueña; quien mira su lista de pendientes, despierta.', 'El talento sin método es un volcán bonito que no calienta a nadie.',
+    'Encontrarte a vos mismo está bien. Encontrar el archivo final también.', 'Lo que te irrita del cliente puede enseñarte qué no estás diciendo claro.',
+    'Hay días de hiperfoco y días de niebla. Los dos cuentan si dejás algo hecho.', 'Toda obra grande empezó como un boceto que daba vergüenza.',
+    'Tu psique y tu bandeja de entrada tienen algo en común: necesitan límites.', 'El perfeccionismo es miedo con buena tipografía.',
+    'No viniste a este mundo a contestar correos. Pero hoy tocan tres.', 'La procrastinación es una conversación pendiente con vos mismo. Que dure 2 minutos.',
+    'Integrá tus contradicciones: podés ser artista y mandar la factura a tiempo.', 'El inconsciente trabaja de noche. Vos trabajá de 10 a 12, que es cuando rendís.',
+    'Si te persigue una tarea, dejá de huir: dale la vuelta y mirala de frente.', 'La intuición dice «este diseño». La revisión dice «en RGB, por favor».',
+    'Crecer duele un poco. Cobrar bien, al principio, también.', 'La luz no se hace imaginando la luz, sino ordenando lo oscuro. Empezá por el Drive.',
+    'Tu mejor idea de hoy vale menos que la idea mediana que sí entregás.', 'Lo que niegás te somete; lo que anotás, te obedece.',
+    'Un símbolo bien hecho dice más que diez propuestas. Elegí una.', 'Sé el arquetipo del héroe: el que vuelve con la entrega lista.',
+    'La ardilla no es tu enemiga: es tu musa con mala gestión del tiempo.', 'Mirarte con honestidad es el primer paso. El segundo es cerrar esta pestaña.',
   ];
 
   const ICONS = {
@@ -474,6 +596,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     db: null, sample: null, sampleTools: false, sampleOff: false, mcp: null, fileArgs: false, perms: null,
     items: [], proyectos: [], etiquetas: [], memoria: [], ilustraciones: [], ajustes: {}, resumen: null, frase: null, curtisChat: [],
     assets: null, sampleImages: null, gcal: { events: [], range: '', err: '', perm: '', cargando: false, ok: false }, pmenu: null, proyTab: 'proyectos',
+    servicios: [], cotizaciones: [], archivos: [], precioTab: 'catalogo', cotId: null, cotDraft: null, cotVisto: false, sampleToolsMax: 10, catSel: new Set(), catRevision: '', catRevisando: false, loadedCot: false, subirA: '',
     loadedItems: false, loadedProy: false,
     view: 'inicio', proyectoId: null, tareasModo: 'lista', proyModo: 'lista', registroTab: 'reuniones', filtroTag: '',
     calMes: '', calSel: '', drawer: null, picking: null, emojiOpen: false, collapsed: new Set(), asking: new Map(), chatErr: new Map(),
@@ -512,19 +635,25 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     return svg;
   }
   function logo(size) {
-    const ns = 'http://www.w3.org/2000/svg'; const w = size || 44;
+    // ícono minimalista: el marco amarillo y una ardilla que se asoma, con la cola detrás
+    const ns = 'http://www.w3.org/2000/svg'; const w = size || 40;
     const svg = document.createElementNS(ns, 'svg');
-    svg.setAttribute('viewBox', '0 0 64 48'); svg.setAttribute('width', String(w)); svg.setAttribute('height', String(Math.round(w * 0.75))); svg.setAttribute('class', 'logo'); svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('viewBox', '0 0 48 48'); svg.setAttribute('width', String(w)); svg.setAttribute('height', String(w)); svg.setAttribute('class', 'logo'); svg.setAttribute('aria-hidden', 'true');
     const el = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v)); svg.append(e); return e; };
-    el('path', { d: 'M41 42 C 58 42, 62 25, 53 15 C 48 10, 52 3, 59 6', fill: 'none', stroke: 'var(--earth)', 'stroke-width': '7', 'stroke-linecap': 'round' });
-    el('ellipse', { cx: '37', cy: '19', rx: '7.5', ry: '6.5', fill: 'var(--earth)' });
-    el('path', { d: 'M35.5 13.5 L 38.5 6 L 41.5 13 Z', fill: 'var(--earth)' });
-    el('rect', { x: '4', y: '5', width: '30', height: '38', fill: 'none', stroke: 'var(--yellow)', 'stroke-width': '5' });
-    el('circle', { cx: '39.6', cy: '18', r: '2.3', fill: '#fff' }); el('circle', { cx: '40.2', cy: '18.3', r: '1.25', fill: '#1a1f1b' });
-    el('circle', { cx: '44.4', cy: '20.6', r: '1.05', fill: '#1a1f1b' });
-    el('ellipse', { cx: '35', cy: '25.5', rx: '2.7', ry: '2.1', fill: 'var(--earth)' });
+    el('rect', { x: '5', y: '9', width: '21', height: '31', fill: 'none', stroke: 'var(--yellow)', 'stroke-width': '4.5' });
+    el('path', { class: 'cola', d: 'M28 38 C 42 40, 47 30, 44 21 C 42 15, 46 10, 42 7 C 38 4.5, 32.5 7.5, 35 12 C 37 15.5, 39 18, 38 23 C 37 29, 33 32, 28 31 Z', fill: 'var(--earth)' });
+    el('circle', { cx: '26', cy: '21', r: '5.4', fill: 'var(--earth)' });
+    el('path', { d: 'M24.4 16.6 L 26.6 11 L 29 16.8 Z', fill: 'var(--earth)' });
+    el('circle', { cx: '24', cy: '20.4', r: '1.15', fill: '#1a1f1b' });
     return svg;
   }
+  const TAGLINES = ['explorador del caos creativo', 'guía de campo para cerebros inquietos', 'curador de ardillas', 'cartógrafo de pendientes', 'domador de pestañas abiertas', 'expedición al foco', 'editor de tus distracciones', 'especie protegida: tu tiempo', 'hábitat natural: la fecha de entrega', 'avistamiento del día: una tarea terminada', 'documentando lo que sí hiciste', 'temporada de cerrar pendientes'];
+  let tagIdx = Math.floor(Date.now() / 9000) % TAGLINES.length;
+  const tagline = () => h('span', { class: 'tagline', text: TAGLINES[tagIdx] });
+  setInterval(() => {
+    tagIdx = (tagIdx + 1) % TAGLINES.length;
+    document.querySelectorAll('.tagline').forEach((el) => { el.textContent = TAGLINES[tagIdx]; el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia'); });
+  }, 9000);
   const isoLocal = (d) => d.toLocaleDateString('en-CA');
   const hoy = () => isoLocal(new Date());
   const mesActual = () => hoy().slice(0, 7);
@@ -828,8 +957,9 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   }
 
   // ================= navegación =================
-  const NAV = [['inicio', 'Inicio', 'home'], ['tareas', 'Tareas', 'check'], ['proyectos', 'Proyectos', 'grid'], ['registro', 'Registro', 'book'], ['foco', 'Foco', 'timer'], ['curtis', 'Curtis', 'brain']];
+  const NAV = [['inicio', 'Inicio', 'home'], ['tareas', 'Tareas', 'check'], ['proyectos', 'Proyectos', 'grid'], ['precios', 'Precios', 'receipt'], ['registro', 'Registro', 'book'], ['foco', 'Foco', 'timer'], ['curtis', 'Curtis', 'brain']];
   function go(view, extra) {
+    if (view !== 'precios' && S.cotId) { guardarCot(true); S.cotId = null; S.cotDraft = null; }
     S.view = view; S.picking = null; S.emojiOpen = false;
     if (view === 'proyecto') S.proyectoId = extra;
     renderNav(); renderMain(true);
@@ -839,7 +969,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const cur = S.view === 'proyecto' ? 'proyectos' : S.view;
     const pendN = pendientesOrden().length;
     put($('#side'),
-      h('div', { class: 'brand' }, logo(46), h('div', { class: 'brand-txt' }, h('b', { text: 'Curtis' }), h('small', { text: 'una ardilla a la vez' }))),
+      h('div', { class: 'brand' }, logo(40), h('div', { class: 'brand-txt' }, h('b', { text: 'Curtis' }), tagline())),
       NAV.map(([k, l, ic]) => h('button', { type: 'button', class: 'nav-btn', 'aria-current': cur === k && S.view !== 'proyecto' ? 'page' : null, onclick: () => go(k) }, icon(ic), k === 'tareas' ? 'Mis tareas' : l, k === 'tareas' && pendN ? h('span', { class: 'count', text: String(pendN) }) : null)),
       h('div', { class: 'nav-h' }, 'Proyectos', h('button', { type: 'button', 'aria-label': 'Nuevo proyecto', title: 'Nuevo proyecto', onclick: nuevoProyecto }, icon('plus', 'sm'))),
       proyActivos().map((p) => h('button', { type: 'button', class: 'nav-btn', 'aria-current': S.view === 'proyecto' && S.proyectoId === p.id ? 'page' : null, onclick: () => go('proyecto', p.id) },
@@ -856,6 +986,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     if (v === 'tareas') content = viewTareas();
     else if (v === 'proyectos') content = viewProyectos();
     else if (v === 'proyecto') content = viewProyecto();
+    else if (v === 'precios') content = viewPrecios();
     else if (v === 'registro') content = viewRegistro();
     else if (v === 'foco') content = viewFoco();
     else if (v === 'curtis') content = viewCurtis();
@@ -1027,7 +1158,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const st = S.asking.get('frase');
     const hero = h('section', { class: 'hero', id: 'resumen', 'aria-label': 'Resumen del día' }, topo(),
       h('div', { class: 'hero-top' },
-        h('div', { class: 'frame' }, h('div', { class: 'hero-brand' }, logo(40), h('p', { class: 'kicker', style: 'margin:0', text: 'Curtis · tu resumen' })), h('p', { class: 'hero-greet', text: saludo }),
+        h('div', { class: 'frame' }, h('div', { class: 'hero-brand' }, logo(34), h('div', {}, h('p', { class: 'wordmark', text: 'Curtis' }), tagline())), h('p', { class: 'hero-greet', text: saludo }),
           h('p', { class: 'hero-date' }, icon(hr >= 6 && hr < 19 ? 'sun' : 'moon', 'sm'), cap(new Date().toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))),
           h('p', { class: 'hero-line', text: loading ? 'Abriendo tu registro…' : resumenLocal() })),
         ring(total ? hechas.length / total : 0, total ? hechas.length + '/' + total : '0', 'hoy')),
@@ -1084,6 +1215,8 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
         h('li', {}, h('b', {}, icon('arrow', 'sm'), 'Una cosa a la vez'), '«Ahora» te muestra solo la que sigue. Empezá foco y el reloj te acompaña.'),
         h('li', {}, h('b', {}, icon('calendar', 'sm'), 'Mirá el tiempo'), 'El calendario y las fechas límite te dicen qué se viene. Tocá un día para ver todo.'),
         h('li', {}, h('b', {}, icon('package', 'sm'), 'Entregá desde aquí'), 'En cada proyecto, «Entregar»: subís los archivos y Curtis arma la carpeta, el mensaje y el PDF de links.'),
+        h('li', {}, h('b', {}, icon('receipt', 'sm'), 'Cotizá en segundos'), 'En «Precios» guardás tus servicios una vez. Marcás los que van, se suman solos y Curtis escribe las descripciones con el texto del proyecto.'),
+        h('li', {}, h('b', {}, icon('upload', 'sm'), 'Subí archivos'), 'En Proyectos → Archivos, o dentro de cada proyecto. Van a tu Drive y quedan anotados aquí.'),
         h('li', {}, h('b', {}, icon('brain', 'sm'), 'Curtis aprende'), 'Cada cosa que terminás le enseña tus tiempos, tu horario, tus precios y tus pasos. Lo ves en «Curtis».')),
       h('p', { class: 'block-h', style: 'margin-top:14px' }, 'Urgencia'),
       h('div', { class: 'legend' }, U.map(([c, ic, l]) => h('span', { class: 'u ' + c }, icon(ic, 'sm'), l))),
@@ -1173,7 +1306,8 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     if (id) { go('proyecto', id); setTimeout(() => { const t = document.getElementById('p-title'); if (t) { t.focus(); t.select(); } }, 80); }
   }
   function viewProyectos() {
-    const tabs = h('div', { class: 'seg', role: 'group', 'aria-label': 'Ver' }, [['proyectos', 'Proyectos', 'grid'], ['ilustraciones', 'Ilustraciones', 'image']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.proyTab === k), onclick: () => { S.proyTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
+    const tabs = h('div', { class: 'seg', role: 'group', 'aria-label': 'Ver' }, [['proyectos', 'Proyectos', 'grid'], ['ilustraciones', 'Ilustraciones', 'image'], ['archivos', 'Archivos', 'upload']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.proyTab === k), onclick: () => { S.proyTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
+    if (S.proyTab === 'archivos') return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Un lugar para subir' }), h('h1', { text: 'Archivos' }))), tabs, viewArchivos()];
     if (S.proyTab === 'ilustraciones') return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Tu catálogo para licenciar' }), h('h1', { text: 'Ilustraciones' }))), tabs, viewIlustraciones()];
     const act = S.proyectos.filter((p) => p.estado !== 'terminado' && pasaFiltro(p)).sort((a, b) => (a.entrega || '9999').localeCompare(b.entrega || '9999'));
     const fin = S.proyectos.filter((p) => p.estado === 'terminado' && pasaFiltro(p)).sort((a, b) => (b.entregado || '').localeCompare(a.entregado || ''));
@@ -1222,10 +1356,16 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
       ilusIds.length ? h('div', { class: 'ilus-grid' }, ilusIds.map(ilus).filter(Boolean).map((x) => ilusCard(x))) : h('p', { class: 'hint', text: 'Elegí del catálogo las ilustraciones que vas a licenciar (o subilas desde aquí).' }),
       h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => elegirIlus(p.id) }, icon('image', 'sm'), 'Elegir o subir ilustraciones'), h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirLicencia(p.id) }, icon('receipt', 'sm'), 'Armar paquete y precio')),
       p.licencia && p.licencia.total ? h('p', { class: 'hint', text: 'Última propuesta guardada: ' + money(p.licencia.total) + ' · ' + fmtDate(p.licencia.fecha) }) : null) : null;
+    const archs = S.archivos.filter((a) => a.proyecto === p.id).sort((a, b) => (b.creado || 0) - (a.creado || 0));
+    const archSec = h('details', { class: 'card pad arch-sec', open: archs.length ? true : null },
+      h('summary', {}, icon('upload', 'sm'), 'Archivos del proyecto', h('span', { class: 'hint', text: archs.length ? String(archs.length) : 'subí aquí' })),
+      zonaSubir(() => p.id, folderIdFrom(p) ? 'Arrastrá aquí: van a la carpeta del proyecto en Drive' : 'Arrastrá aquí tus archivos'),
+      archs.length ? h('div', { class: 'arch-list' }, archs.map((a) => archivoRow(a, false))) : null);
     const emojiBtn = h('button', { type: 'button', class: 'p-emoji', 'aria-label': 'Cambiar ícono', onclick: () => { S.emojiOpen = !S.emojiOpen; renderMain(true); } }, p.icono || '📁');
     const tools = h('div', { class: 'tools-row' },
       p.estado !== 'terminado' ? h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Entregar proyecto') : h('button', { type: 'button', class: 'btn soft', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Volver a entregar'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => crearCarpetasBoton(p.id) }, icon('folder', 'sm'), p.driveFolderId ? 'Agregar carpetas de trabajo' : 'Carpetas de trabajo en Drive'),
+      h('button', { type: 'button', class: 'btn soft', onclick: () => { const ya = S.cotizaciones.filter((c) => c.proyecto === p.id).sort((a, b) => (b.actualizado || 0) - (a.actualizado || 0))[0]; if (ya) abrirCot(ya); else nuevaCotizacion({ titulo: 'Cotización — ' + (p.nombre || 'proyecto'), cliente: p.cliente || '', proyecto: p.id, contexto: p.descripcion || '', lineas: [{ id: uid(), tipo: 'titulo', texto: p.nombre || 'Propuesta' }] }); } }, icon('receipt', 'sm'), S.cotizaciones.some((c) => c.proyecto === p.id) ? 'Ver cotización' : 'Cotización rápida'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => abrirCotizacion(p.id) }, icon('receipt', 'sm'), 'Cotización en Zoho'),
       !esLicencia(p) && !ilusIds.length ? h('button', { type: 'button', class: 'btn soft', onclick: () => abrirLicencia(p.id) }, icon('image', 'sm'), 'Licenciar ilustraciones') : null,
       h('button', { type: 'button', class: 'btn soft', onclick: () => { S.drawer = { kind: 'chat-proyecto', id: p.id, focus: 'ask' }; renderDrawer(true); } }, icon('sparkle', 'sm'), 'Curtis del proyecto'),
@@ -1261,7 +1401,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     return [
       h('button', { type: 'button', class: 'btn soft small', style: 'justify-self:start', onclick: () => go('proyectos') }, icon('back', 'sm'), 'Proyectos'),
       h('div', {}, cover, h('div', { class: 'p-head' }, emojiBtn, S.emojiOpen ? h('div', { class: 'emoji-grid' }, EMOJIS.map((e) => h('button', { type: 'button', 'aria-label': 'Ícono ' + e, onclick: () => { S.emojiOpen = false; patchProyecto(p.id, { icono: e }); } }, e))) : null, title)),
-      props, ilusSec, desc, tools, head, body,
+      props, ilusSec, desc, tools, archSec, head, body,
       h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn ghost small', onclick: () => borrarProyecto(p.id) }, icon('trash', 'sm'), 'Borrar proyecto')),
     ];
   }
@@ -1550,7 +1690,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   // ================= Curtis (IA) =================
   function perfil() {
     return 'Sos Curtis, el socio de estudio de un diseñador gráfico e ilustrador de Guatemala (freelance en diseño corporativo para empresas grandes y medio tiempo a distancia en la NIHR, con mínimo de horas al mes). Tiene TDAH y vos lo entendés a fondo: te reís del caos con él (nunca de él) y lo acompañás con técnicas concretas: partir en pasos chicos, regla de 2 minutos, cuerpo presente (te quedás con él en un bloque de foco), estacionamiento de ardillas (anotar la distracción y volver), primero lo feo, bloques de tiempo en su mejor horario, hecho es mejor que perfecto. Sos experto en productos digitales, marcas, branding, diseño gráfico, ilustración, y en cómo cobrar y licenciar su trabajo. Meta: que trabaje ordenado, cobre bien y consiga clientes (LinkedIn primero).\n'
-      + 'Personalidad: chistoso y amigable, pero ordenado, estricto, puntual y resolutivo. Tu frase: «una ardilla a la vez». Cómo respondés: español de Guatemala, de vos. Corto: máximo 5 líneas o 3 pasos. Una cosa a la vez. Sin palabras técnicas. Sin halagos vacíos ni logros falsos: si algo está mal o un precio está bajo, lo decís directo. Siempre cerrá con el siguiente paso concreto y cuándo hacerlo. No inventes datos: si falta algo, hacé una sola pregunta.\n';
+      + 'Personalidad: chistoso y amigable, pero ordenado, estricto, puntual y resolutivo. Tu tono: un explorador de National Geographic documentando el caos creativo, con frases introspectivas al estilo de Carl Jung (la sombra, el inconsciente, darle sentido a lo que hace) y un giro de humor. Cómo respondés: español de Guatemala, de vos. Corto: máximo 5 líneas o 3 pasos. Una cosa a la vez. Sin palabras técnicas. Sin halagos vacíos ni logros falsos: si algo está mal o un precio está bajo, lo decís directo. Siempre cerrá con el siguiente paso concreto y cuándo hacerlo. No inventes datos: si falta algo, hacé una sola pregunta.\n';
   }
   const lineaTarea = (x) => '- ' + (x.titulo || 'Sin título') + ' [' + x.estado + (x.fecha ? ', ' + x.fecha : '') + (x.con_quien ? ', ' + x.con_quien : '') + (x.prioridad === 'alta' ? ', prioridad alta' : '') + ']';
   function memoriaTexto() {
@@ -1579,11 +1719,12 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     } else {
       ctx += '\nPROYECTOS ACTIVOS:\n' + (proyActivos().slice(0, 10).map((p) => '- ' + p.nombre + ' (' + (p.categoria || 'sin categoría') + ', entrega ' + (p.entrega || '—') + ', ' + proyStats(p).done + '/' + proyStats(p).total + ')').join('\n') || '(ninguno)');
     }
+    if (kind !== 'i' && S.servicios.length) ctx += '\n\nSU CATÁLOGO DE SERVICIOS (Precios):\n' + S.servicios.slice(0, 40).map((x) => '- ' + (x.titulo || '') + (x.subtitulo ? ' — ' + x.subtitulo : '') + ' [' + grupoDe(x) + '] ' + money(Number(x.precio) || 0) + ' ' + (x.unidad || '') + (x.formato ? ' · entrega: ' + x.formato : '') + ' (id ' + x.id + ')' + (x.descripcion ? '\n  ' + String(x.descripcion).slice(0, 300) : '\n  (sin descripción)')).join('\n');
     ctx += '\n\nREUNIONES DE HOY (Google Calendar):\n' + (gcalDel(hoy()).map((e) => '- ' + evHora(e) + ' ' + e.titulo + (e.gente.length ? ' con ' + e.gente.join(', ') : '')).join('\n') || '(ninguna o sin acceso)');
     ctx += '\n\nSU FILA DE PENDIENTES:\n' + (pendientesOrden().slice(0, 8).map(lineaTarea).join('\n') || '(nada)');
     ctx += '\nESPERANDO A OTROS:\n' + (trabadas().slice(0, 5).map(lineaTarea).join('\n') || '(nada)');
     ctx += memoriaTexto();
-    if (S.sampleTools) ctx += '\n\nHERRAMIENTAS: podés agregar tareas o pasos; anotar aprendizajes sobre él (errores que repite, áreas de mejora, precios, tiempos, horario, qué lo motiva, pasos repetidos) con anotar_aprendizaje cuando notés algo nuevo y útil (una idea corta); listar, buscar, crear carpetas y mover archivos en su Google Drive; buscar clientes y crear cotizaciones en borrador en Zoho Books (quetzales). Antes de crear o mover algo en Drive o Zoho, la página le pide permiso: si dice que no, respetalo. Nunca borres archivos.';
+    if (S.sampleTools) ctx += '\n\nHERRAMIENTAS: podés agregar tareas o pasos; anotar aprendizajes sobre él (errores que repite, áreas de mejora, precios, tiempos, horario, qué lo motiva, pasos repetidos) con anotar_aprendizaje cuando notés algo nuevo y útil (una idea corta); listar, buscar, crear carpetas y mover archivos en su Google Drive; buscar clientes y crear cotizaciones en borrador en Zoho Books (quetzales); escribir la descripción de un servicio de su catálogo con guardar_descripcion_servicio (para el cliente: de usted, sin inventar). Antes de crear o mover algo en Drive o Zoho, la página le pide permiso: si dice que no, respetalo. Nunca borres archivos.';
     return ctx;
   }
   function chatOf(key) { const [k, id] = key.split(':'); if (k === 'c') return S.curtisChat; const src = k === 'p' ? proyecto(id) : item(id); return src && Array.isArray(src.chat) ? src.chat : []; }
@@ -1652,6 +1793,15 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
         inputSchema: { type: 'object', properties: { nombre: { type: 'string' } }, required: ['nombre'] },
         execute: async (input) => { const r = await zohoClientes(String(input.nombre || '')); note('Buscó clientes en Zoho'); return r; } },
     ];
+    if (kind !== 'i' && S.servicios.length) tools.push({ name: 'guardar_descripcion_servicio', description: 'Guarda la descripción (para el cliente, de usted) de un servicio de su catálogo de Precios. Pide permiso antes mostrando el texto.',
+      inputSchema: { type: 'object', properties: { servicio_id: { type: 'string' }, descripcion: { type: 'string' } }, required: ['servicio_id', 'descripcion'] },
+      execute: async (input) => {
+        const x = servicio(String(input.servicio_id || '')); if (!x) return { ok: false, msg: 'No existe ese servicio.' };
+        const txt = String(input.descripcion || '').trim().slice(0, 1200); if (!txt) return { ok: false, msg: 'Descripción vacía.' };
+        const ok = await pedirPermiso('¿Guardo esta descripción en «' + (x.titulo || 'el servicio') + '»?', [txt, x.descripcion ? 'Reemplaza la que tenías.' : 'No tenía descripción.'], 'Sí, guardala');
+        if (!ok) return { ok: false, msg: 'El usuario dijo que no.' };
+        await enqueue('svc/' + x.id, () => S.db.doc('servicios/' + x.id).update({ descripcion: txt, actualizado: Date.now() })); note('Escribió la descripción de «' + (x.titulo || '') + '»'); return { ok: true };
+      } });
     if (kind === 'i') tools.push({ name: 'agregar_pasos', description: 'Agrega pasos chicos (subtareas) a la tarea actual.',
       inputSchema: { type: 'object', properties: { pasos: { type: 'array', items: { type: 'string' } } }, required: ['pasos'] },
       execute: async (input) => { const it = item(id); if (!it) throw new Error('La tarea ya no existe'); const pasos = (Array.isArray(input.pasos) ? input.pasos : []).slice(0, 15).map((t) => ({ id: uid(), texto: String(t).slice(0, 200), hecho: false })); await patchItem(id, { subtareas: [...(it.subtareas || []), ...pasos] }); note('Agregó ' + pasos.length + ' pasos'); return { agregados: pasos.length }; } });
@@ -1672,7 +1822,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     S.asking.set(key, st); S.chatErr.delete(key); renderChatBox(key);
     try {
       const opts = { cache: false, signal: st.ctl.signal, onText: ({ text }) => { st.text = text; renderChatBox(key); } };
-      const tools = herramientas(key); if (tools) opts.tools = tools;
+      const tools = herramientas(key); if (tools) opts.tools = tools.slice(0, S.sampleToolsMax || 10);
       const { text } = await S.sample(turns, opts);
       const at = Date.now(); const extra = st.tools.length ? '\n\n(' + st.tools.join(' · ') + ')' : '';
       S.asking.delete(key);
@@ -1701,7 +1851,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const st = { text: '', ctl: new AbortController(), tools: [] };
     S.asking.set('frase', st);
     if (manual) renderMain(true);
-    const prompt = 'Escribí UNA frase corta (máximo 18 palabras) en español de Guatemala, de vos, para un diseñador gráfico con TDAH. Que lo motive a crear y avanzar HOY, ligada a lo que está haciendo y a lo que sabés de él. Nada de logros vacíos ni frases de taza; concreta y honesta. Sin comillas, sin autor, sin emojis.\n\nLo que tiene hoy:\n' + (pendientesOrden().slice(0, 5).map(lineaTarea).join('\n') || '(nada)') + '\nPróximas entregas:\n' + (fechasLimite(7).filter((x) => x.kind === 'p').map((x) => '- ' + x.p.nombre + ' ' + x.fecha).join('\n') || '(ninguna)') + memoriaTexto();
+    const prompt = 'Escribí UNA frase corta (máximo 22 palabras) en español de Guatemala, de vos, para un diseñador gráfico e ilustrador con TDAH. Estilo introspectivo, como Carl Jung (la sombra, el inconsciente, darle sentido a lo que hacés), con un giro de humor al final, ligada a lo que está haciendo hoy y a lo que sabés de él. Original: no cites ni atribuyas la frase a nadie. Nada de logros vacíos ni frases de taza. Sin comillas, sin autor, sin emojis.\n\nLo que tiene hoy:\n' + (pendientesOrden().slice(0, 5).map(lineaTarea).join('\n') || '(nada)') + '\nPróximas entregas:\n' + (fechasLimite(7).filter((x) => x.kind === 'p').map((x) => '- ' + x.p.nombre + ' ' + x.fecha).join('\n') || '(ninguna)') + memoriaTexto();
     try {
       const { text } = await S.sample(prompt, { cache: false, modelTier: 'quick', signal: st.ctl.signal });
       const t = String(text).replace(/^["«“]+|["»”]+$/g, '').trim().slice(0, 200);
@@ -1738,7 +1888,9 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     ta.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); send(ta.value); } });
     const sug = key.startsWith('p:') ? SUG_P : key.startsWith('c:') ? SUG_C : SUG_T;
     const hadFocus = prev && document.activeElement === prev;
+    const dondeVive = key.startsWith('c:') ? 'Este chat general se guarda aquí. Curtis recuerda sus últimos 30 mensajes y todo lo de «Lo que recuerdo de vos».' : key.startsWith('p:') ? 'Este chat se guarda en este proyecto: cada vez que volvás, sigue donde lo dejaste (últimos 30 mensajes).' : 'Este chat se guarda en esta tarea: cada vez que volvás, sigue donde lo dejaste (últimos 30 mensajes).';
     put(box, head,
+      h('p', { class: 'hint', style: 'margin-top:-4px', text: dondeVive }),
       chat.length || st ? h('div', { class: 'msgs', 'aria-live': 'polite' }, msgs) : h('p', { class: 'hint', text: key.startsWith('p:') ? 'Curtis ve este proyecto, sus tareas y lo que sabe de vos.' : key.startsWith('c:') ? 'Curtis ve tus proyectos, tus pendientes y lo que aprendió de vos.' : 'Curtis ve esta tarea, su proyecto y tu fila de pendientes.' }),
       !st ? h('div', { class: 'chips' }, sug.map((s) => h('button', { type: 'button', class: 'chip', onclick: () => send(s) }, s))) : null,
       err ? h('p', { class: 'err', role: 'alert', text: err }) : null,
@@ -2156,21 +2308,73 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   const DUR = { '1': ['1 año', 1], '2': ['2 años', 1.4], perpetua: ['Sin vencimiento', 2.5] };
   const TERR = { gt: ['Guatemala', 1], ca: ['Centroamérica', 1.3], mundo: ['Todo el mundo', 2] };
   const TIR = { '1000': ['Hasta 1,000 unidades', 1], '3000': ['Hasta 3,000 unidades', 1.6], libre: ['Sin límite de unidades', 2.5] };
+  const VOL = [['30', 30, 0.45, '30 o más ilustraciones'], ['10', 10, 0.6, '10 a 29 ilustraciones'], ['2', 2, 0.8, '2 a 9 ilustraciones']];
+  // el porqué de cada factor: es para vos, no para el cliente
+  const POR_QUE = {
+    volumen: 'Si te licencian varias juntas, cada una sale más barata. Premia que compren el paquete y no de a una.',
+    exclusividad: { no: 'Podés licenciar las mismas ilustraciones a otros clientes. No perdés nada, por eso no suma.', producto: 'Nadie más las puede usar en este tipo de producto mientras dure. Dejás de vender ese uso a otros, y eso se cobra.', total: 'Nadie más las puede usar en nada mientras dure. Perdés cualquier otro ingreso con ellas, por eso es el que más sube.' },
+    duracion: { '1': 'Es la base: un año para probar si el producto se vende.', '2': 'Más tiempo usándolas, pero no el doble de precio: premia que se queden con vos.', perpetua: 'Lo usan para siempre y nunca volvés a negociar. Cobrás de una vez varios años de uso.' },
+    territorio: { gt: 'Es la base: un solo país.', ca: 'Más países significa más tiendas y más ventas para el cliente con tu trabajo.', mundo: 'Se puede vender en cualquier lado, incluso en línea. El uso vale mucho más.' },
+    tiraje: { '1000': 'Es la base: una primera producción de prueba.', '3000': 'Más unidades vendidas con tu trabajo, pero no tres veces el precio.', libre: 'Producen todo lo que quieran sin volver a pagarte. Este factor cubre esas ventas futuras.' },
+    minimo: 'Abajo de esto no vale tu tiempo: preparar archivos, revisar la prueba de imprenta y el acuerdo cuesta lo mismo aunque sea una sola ilustración.',
+    regalia: 'Lo que ganás por cada unidad vendida, sobre el precio al por mayor. Lo normal: 8% si no es exclusiva, hasta 12% si es exclusiva total. En mixto baja 2 puntos porque ya cobraste un anticipo más alto.',
+  };
+  const FX_KEYS = [['volumen', 'Volumen'], ['exclusividad', 'Exclusividad'], ['duracion', 'Duración'], ['territorio', 'Territorio'], ['tiraje', 'Tiraje']];
+  const MAPA_FX = { exclusividad: EXCL, duracion: DUR, territorio: TERR, tiraje: TIR };
+  function fxBase() {
+    const out = { minimo: 1500, volumen: { off: false, v: Object.fromEntries(VOL.map(([k, , f]) => [k, f])) } };
+    Object.entries(MAPA_FX).forEach(([k, map]) => { out[k] = { off: false, v: Object.fromEntries(Object.entries(map).map(([o, arr]) => [o, k === 'exclusividad' ? arr[2] : arr[1]])) }; });
+    return out;
+  }
+  // capas: los de Curtis ← los que guardaste como «de siempre» ← los de esta propuesta
+  function fxMerge(...capas) {
+    const out = fxBase();
+    capas.filter((c) => c && typeof c === 'object').forEach((c) => {
+      if (c.minimo != null && c.minimo !== '' && Number.isFinite(Number(c.minimo))) out.minimo = Math.max(0, Number(c.minimo));
+      FX_KEYS.forEach(([k]) => {
+        const x = c[k]; if (!x || typeof x !== 'object') return;
+        if (typeof x.off === 'boolean') out[k].off = x.off;
+        if (x.v && typeof x.v === 'object') Object.entries(x.v).forEach(([o, f]) => { const n = Number(f); if (o in out[k].v && Number.isFinite(n) && n > 0) out[k].v[o] = n; });
+      });
+    });
+    return out;
+  }
   function precioLicencia(c) {
+    const fx = fxMerge(ajuste('factoresLicencia', null), c.fx); const def = fxMerge(ajuste('factoresLicencia', null));
     const n = Math.max(1, Math.round(Number(c.n) || 1));
-    const vol = n >= 30 ? 0.45 : n >= 10 ? 0.6 : n >= 2 ? 0.8 : 1;
-    const ex = EXCL[c.exclusividad] || EXCL.no; const du = DUR[c.duracion] || DUR['1']; const te = TERR[c.territorio] || TERR.gt; const ti = TIR[c.tiraje] || TIR['1000'];
+    const kEx = EXCL[c.exclusividad] ? c.exclusividad : 'no'; const kDu = DUR[c.duracion] ? c.duracion : '1'; const kTe = TERR[c.territorio] ? c.territorio : 'gt'; const kTi = TIR[c.tiraje] ? c.tiraje : '1000';
+    const tier = VOL.find(([, min]) => n >= min);
+    const mods = [];
+    const mod = (key, opcion, etiqueta, porque) => {
+      const raw = fx[key].v[opcion]; const f = fx[key].off ? 1 : raw;
+      mods.push({ key, opcion, titulo: FX_KEYS.find(([k]) => k === key)[1], etiqueta, porque, raw, f, off: fx[key].off, cambiado: raw !== def[key].v[opcion] });
+      return f;
+    };
+    const fVol = tier ? mod('volumen', tier[0], tier[3], POR_QUE.volumen) : 1;
+    const fEx = mod('exclusividad', kEx, EXCL[kEx][0], POR_QUE.exclusividad[kEx]);
+    const fDu = mod('duracion', kDu, DUR[kDu][0], POR_QUE.duracion[kDu]);
+    const fTe = mod('territorio', kTe, TERR[kTe][0], POR_QUE.territorio[kTe]);
+    const fTi = mod('tiraje', kTi, TIR[kTi][0], POR_QUE.tiraje[kTi]);
     const base = Math.max(0, Number(c.base) || 600);
-    const bruto = base * n * vol * ex[2] * du[1] * te[1] * ti[1];
-    const unico = Math.max(1500, Math.round(bruto / 50) * 50);
+    const bruto = base * n * fVol * fEx * fDu * fTe * fTi;
+    // cuánto mueve cada factor: lo que bajaría (o subiría) el precio si lo quitás
+    mods.forEach((m) => { m.suma = m.f === 1 ? 0 : bruto - bruto / m.f; });
+    const unico = Math.max(fx.minimo, Math.round(bruto / 50) * 50);
     const diseno = c.diseno ? Math.max(0, Number(c.disenoMonto) || 0) : 0;
-    const pct = ex[3];
+    const pctAuto = c.modelo === 'mixto' ? EXCL[kEx][3] - 2 : EXCL[kEx][3];
+    const pctFinal = c.regaliaPct !== '' && c.regaliaPct != null && Number(c.regaliaPct) >= 0 ? Number(c.regaliaPct) : pctAuto;
     const anticipo = Math.round((c.modelo === 'mixto' ? unico * 0.5 : unico * 0.3) / 50) * 50;
-    const pctFinal = c.modelo === 'mixto' ? pct - 2 : pct;
     const may = Number(c.mayorista) || 0;
     const porUnidad = may ? may * pctFinal / 100 : 0;
     const total = c.modelo === 'unico' ? unico + diseno : anticipo + diseno;
-    return { n, vol, ex, du, te, ti, base, unico, diseno, pct: pctFinal, anticipo, porUnidad, total };
+    return { n, vol: fVol, ex: [EXCL[kEx][0], EXCL[kEx][1], fEx, pctFinal], du: [DUR[kDu][0], fDu], te: [TERR[kTe][0], fTe], ti: [TIR[kTi][0], fTi], base, bruto, minimo: fx.minimo, alMinimo: Math.round(bruto / 50) * 50 < fx.minimo, mods, fx, unico, diseno, pct: pctFinal, pctAuto, anticipo, porUnidad, total };
+  }
+  const fxFmt = (f) => String(Math.round(f * 100) / 100);
+  function efectoFx(m) {
+    if (m.off) return 'Quitado: no cambia el precio.';
+    if (m.f === 1) return '×1: no suma ni resta.';
+    const pct = Math.round(Math.abs(m.f - 1) * 100);
+    return m.f > 1 ? 'Suma ' + pct + '% (+' + money(m.suma) + ').' : 'Descuenta ' + pct + '% (−' + money(Math.abs(m.suma)) + ').';
   }
   function textoPropuesta(p, c, r) {
     const firma = ajuste('firma', '') || 'el ilustrador';
@@ -2207,6 +2411,34 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     const c = Object.assign({ n: (p.ilustraciones || []).length || 1, producto: /naipe/i.test(p.nombre || '') ? 'Naipes' : '', territorio: 'gt', duracion: '1', exclusividad: 'no', tiraje: '1000', modelo: 'unico', base: 600, diseno: true, disenoMonto: 4000, mayorista: '' }, prev);
     let opinion = ''; let pensando = false;
     const sel = (key, map, label) => { const el = h('select', { 'aria-label': label }, Object.entries(map).map(([k, v]) => h('option', { value: k, selected: String(c[key]) === k ? true : null, text: v[0] }))); el.addEventListener('change', () => { c[key] = el.value; draw(); }); return h('label', { class: 'field' }, h('span', { text: label }), el); };
+    const setFx = (key, patch) => {
+      c.fx = Object.assign({}, c.fx);
+      if (key === 'minimo') { c.fx.minimo = patch; return; }
+      const prev = c.fx[key] || {};
+      c.fx[key] = Object.assign({}, prev, patch.off != null ? { off: patch.off } : {}, patch.v ? { v: Object.assign({}, prev.v, patch.v) } : {});
+    };
+    const modRow = (m) => {
+      const inp = h('input', { type: 'number', min: '0.05', step: '0.05', value: fxFmt(m.raw), disabled: m.off ? true : null, 'aria-label': 'Multiplicador de ' + m.titulo.toLowerCase() });
+      inp.addEventListener('change', () => { const v = Number(inp.value); if (v > 0) setFx(m.key, { v: { [m.opcion]: v } }); draw(); });
+      return h('div', { class: 'fx-row' + (m.off ? ' off' : '') },
+        h('button', { type: 'button', class: 'switch', role: 'switch', 'aria-checked': String(!m.off), 'aria-label': (m.off ? 'Volver a usar ' : 'Quitar ') + m.titulo.toLowerCase(), onclick: () => { setFx(m.key, { off: !m.off }); draw(); } }),
+        h('div', { class: 'fx-main' }, h('b', { text: m.titulo + ' · ' + m.etiqueta }), h('p', { text: m.porque }), h('small', { class: m.off ? '' : m.f > 1 ? 'up' : m.f < 1 ? 'down' : '', text: efectoFx(m) + (m.cambiado ? ' Cambiado por vos.' : '') })),
+        h('label', { class: 'fx-x' }, h('span', { text: '×' }), inp));
+    };
+    const minRow = (r) => {
+      const inp = h('input', { type: 'number', min: '0', step: '50', value: String(r.minimo), 'aria-label': 'Mínimo por licencia en quetzales' });
+      inp.addEventListener('change', () => { if (inp.value !== '' && Number(inp.value) >= 0) setFx('minimo', Number(inp.value)); draw(); });
+      return h('div', { class: 'fx-row' }, h('span', { class: 'fx-ico' }, icon('flag', 'sm')),
+        h('div', { class: 'fx-main' }, h('b', { text: 'Mínimo por licencia' }), h('p', { text: POR_QUE.minimo }), h('small', { class: r.alMinimo ? 'up' : '', text: r.alMinimo ? 'Se está usando: el cálculo daba ' + money(Math.round(r.bruto / 50) * 50) + '.' : 'No se usa: el precio ya está arriba del mínimo.' })),
+        h('label', { class: 'fx-x' }, h('span', { text: 'Q' }), inp));
+    };
+    const regRow = (r) => {
+      const inp = h('input', { type: 'number', min: '0', max: '50', step: '0.5', value: String(r.pct), 'aria-label': 'Regalía en porcentaje' });
+      inp.addEventListener('change', () => { c.regaliaPct = inp.value === '' ? '' : Math.max(0, Number(inp.value) || 0); draw(); });
+      return h('div', { class: 'fx-row' }, h('span', { class: 'fx-ico' }, icon('trend', 'sm')),
+        h('div', { class: 'fx-main' }, h('b', { text: 'Regalía por unidad vendida' }), h('p', { text: POR_QUE.regalia }), h('small', { text: r.pct !== r.pctAuto ? 'Cambiada por vos (Curtis sugiere ' + num(r.pctAuto) + '%).' : 'La que sugiere Curtis para esta exclusividad.' })),
+        h('label', { class: 'fx-x' }, inp, h('span', { text: '%' })));
+    };
     const numF = (key, label, step) => { const el = h('input', { type: 'number', min: '0', step: step || '1', value: c[key], 'aria-label': label }); el.addEventListener('change', () => { c[key] = el.value; draw(); }); return h('label', { class: 'field' }, h('span', { text: label }), el); };
     const draw = () => {
       const r = precioLicencia(c);
@@ -2235,11 +2467,19 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
             h('p', { class: 'kicker', text: c.modelo === 'unico' ? 'Precio total' : 'Para arrancar' }),
             h('p', { class: 'price-big', text: money(r.total) }),
             h('div', { class: 'desglose' },
-              h('div', {}, h('span', { text: r.n + ' × ' + money(r.base) + (r.vol < 1 ? ' con descuento por volumen (' + Math.round((1 - r.vol) * 100) + '%)' : '') }), h('span', { text: money(r.base * r.n * r.vol) })),
-              h('div', {}, h('span', { text: r.ex[0] + ' ×' + r.ex[2] + ' · ' + r.du[0] + ' ×' + r.du[1] + ' · ' + r.te[0] + ' ×' + r.te[1] + ' · ' + r.ti[0] + ' ×' + r.ti[1] }), h('span', { text: money(r.unico) })),
+              h('div', {}, h('span', { text: r.n + ' × ' + money(r.base) + ' de base' }), h('span', { text: money(r.base * r.n) })),
+              h('div', {}, h('span', { text: 'Con los factores de abajo' + (r.alMinimo ? ' (sube al mínimo)' : '') }), h('span', { text: money(r.unico) })),
               c.modelo !== 'unico' ? h('div', {}, h('span', { text: 'Anticipo + ' + r.pct + '% por unidad vendida' + (r.porUnidad ? ' (' + money(r.porUnidad) + ' c/u)' : '') }), h('span', { text: money(r.anticipo) })) : null,
               r.diseno ? h('div', {}, h('span', { text: 'Diseño y adaptación' }), h('span', { text: money(r.diseno) })) : null),
-            h('p', { class: 'hint', text: 'Cómo calculo: base por ilustración × cantidad × descuento por volumen × exclusividad × duración × territorio × tiraje. Mínimo Q1,500 por licencia. La regalía va de 8% (no exclusiva) a 12% (exclusiva total) del precio mayorista.' })),
+            h('p', { class: 'hint', text: 'Cómo calculo: base por ilustración × cantidad × cada factor de abajo. Mínimo ' + money(r.minimo) + ' por licencia. Todo se puede cambiar.' })),
+          h('div', { class: 'fx-box' },
+            h('div', { class: 'sec-h', style: 'margin:0' }, h('h4', { text: 'Lo que mueve el precio' }), h('span', { class: 'hint', text: 'Cambiá el número o apagalo' })),
+            r.mods.map(modRow),
+            r.n < 2 ? h('p', { class: 'hint', style: 'margin:0', text: 'Con 2 o más ilustraciones aparece el descuento por volumen.' }) : null,
+            minRow(r), c.modelo !== 'unico' ? regRow(r) : null,
+            (() => { const cambios = !!(c.fx && Object.keys(c.fx).length); const guardados = !!ajuste('factoresLicencia', null); return cambios || guardados ? h('div', { class: 'row-actions' },
+              cambios ? h('button', { type: 'button', class: 'btn soft small', onclick: async () => { const fx = fxMerge(ajuste('factoresLicencia', null), c.fx); S.ajustes = Object.assign({}, S.ajustes, { factoresLicencia: fx }); c.fx = {}; await saveAjustes({ factoresLicencia: fx }); toast('Listo: ahora son tus valores de siempre'); draw(); } }, icon('check', 'sm'), 'Usar siempre estos valores') : null,
+              h('button', { type: 'button', class: 'btn soft small', onclick: async () => { c.fx = {}; if (guardados) { S.ajustes = Object.assign({}, S.ajustes, { factoresLicencia: null }); await saveAjustes({ factoresLicencia: null }); } toast('Volviste a los valores de Curtis'); draw(); } }, 'Volver a los de Curtis')) : null; })()),
           avisos.map((a) => h('p', { class: 'err', text: a })),
           opinion || pensando ? h('div', { class: 'review' }, h('b', {}, icon('sparkle', 'sm'), ' Curtis opina'), h('p', { text: pensando ? 'Pensando…' : opinion })) : null,
           h('label', { class: 'field' }, h('span', { text: 'Propuesta para el cliente (editala y copiala)' }), ta),
@@ -2253,7 +2493,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
             h('button', { type: 'button', class: 'btn soft', onclick: async () => { try { await navigator.clipboard.writeText(ta.value); toast('Propuesta copiada'); } catch (e) { ta.focus(); ta.select(); toast('Seleccionada: copiala con Ctrl/Cmd + C'); } } }, icon('copy', 'sm'), 'Copiar'),
             S.sample && !S.sampleOff ? h('button', { type: 'button', class: 'btn soft', disabled: pensando ? true : null, onclick: async () => {
               pensando = true; draw();
-              try { const { text } = await S.sample(perfil() + '\nRevisá este precio de licencia de ilustraciones para un producto souvenir en Guatemala y decí en máximo 4 líneas si está bajo, bien o alto, por qué, y qué cambiarías. Sé directo.\n\n' + ta.value + memoriaTexto(), { cache: false }); opinion = text; } catch (e) { opinion = sampleErr(e); }
+              try { const { text } = await S.sample(perfil() + '\nRevisá este precio de licencia de ilustraciones para un producto souvenir en Guatemala y decí en máximo 4 líneas si está bajo, bien o alto, por qué, y qué cambiarías (incluí si algún multiplicador está muy alto o muy bajo). Sé directo.\n\n' + ta.value + '\n\nMultiplicadores usados: base ' + money(r.base) + ' por ilustración; ' + r.mods.map((m) => m.titulo + ' ' + m.etiqueta + ' ×' + fxFmt(m.f) + (m.off ? ' (quitado)' : '')).join('; ') + '; mínimo ' + money(r.minimo) + '.' + memoriaTexto(), { cache: false }); opinion = text; } catch (e) { opinion = sampleErr(e); }
               pensando = false; draw();
             } }, icon('sparkle', 'sm'), 'Que Curtis revise el precio') : null,
             S.mcp && S.fileArgs ? h('button', { type: 'button', class: 'btn soft', onclick: async (ev) => {
@@ -2270,6 +2510,375 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     draw();
   }
 
+  // ================= PRECIOS: catálogo de servicios y cotizaciones rápidas =================
+  const UNIDADES = ['por proyecto', 'por pieza', 'por ilustración', 'por hora', 'por mes', 'por página'];
+  const LINEA_TIPOS = { titulo: 'Título', subtitulo: 'Subtítulo', servicio: 'Servicio', nota: 'Nota', descuento: 'Descuento' };
+  const COT_ESTADOS = [['borrador', 'Borrador'], ['enviada', 'Enviada'], ['aceptada', 'Aceptada'], ['rechazada', 'No se dio']];
+  const servicio = (id) => S.servicios.find((x) => x.id === id);
+  const grupoDe = (x) => String(x.grupo || '').trim() || 'Sin grupo';
+  function totalesCot(d) {
+    const ls = (d && d.lineas) || [];
+    const sub = ls.filter((l) => l.tipo === 'servicio').reduce((s, l) => s + (Number(l.cantidad) || 0) * (Number(l.precio) || 0), 0);
+    const desc = Math.min(sub, ls.filter((l) => l.tipo === 'descuento').reduce((s, l) => s + (l.modo === 'pct' ? sub * (Number(l.valor) || 0) / 100 : (Number(l.valor) || 0)), 0));
+    return { sub, desc, total: Math.max(0, sub - desc) };
+  }
+  const montoDesc = (d, l) => { const { sub } = totalesCot(d); return l.modo === 'pct' ? sub * (Number(l.valor) || 0) / 100 : (Number(l.valor) || 0); };
+  function lineaDeServicio(x) { return { id: uid(), tipo: 'servicio', servicioId: x.id, nombre: x.titulo || '', cantidad: 1, precio: Number(x.precio) || 0, unidad: x.unidad || '', formato: x.formato || '', descripcion: x.descripcion || '' }; }
+  function lineasDeServicios(list) {
+    const out = []; let g = null;
+    [...list].sort((a, b) => grupoDe(a).localeCompare(grupoDe(b))).forEach((x) => { if (list.length > 1 && grupoDe(x) !== g) { g = grupoDe(x); out.push({ id: uid(), tipo: 'subtitulo', texto: g }); } out.push(lineaDeServicio(x)); });
+    return out;
+  }
+  async function nuevaCotizacion(pre) {
+    if (!S.db) { toast('Tu registro todavía no abrió.'); return null; }
+    const now = Date.now();
+    const body = Object.assign({ titulo: 'Cotización', cliente: '', proyecto: '', fecha: hoy(), validez: 15, contexto: '', lineas: [], notas: '', estado: 'borrador', total: 0 }, pre || {}, { creado: now, actualizado: now });
+    body.total = totalesCot(body).total;
+    try { const ref = await S.db.collection('cotizaciones').add(body); abrirCot(Object.assign({ id: ref.id }, body)); return ref.id; } catch (e) { toast(dbErr(e)); return null; }
+  }
+  function abrirCot(c) {
+    S.cotId = c.id; S.cotDraft = JSON.parse(JSON.stringify(c)); S.cotVisto = S.cotizaciones.some((x) => x.id === c.id); S.precioTab = 'cotizaciones';
+    if (S.view !== 'precios') go('precios'); else { renderMain(true); window.scrollTo(0, 0); }
+  }
+  let cotTimer = 0;
+  function guardarCot(now) {
+    clearTimeout(cotTimer);
+    const run = () => {
+      const d = S.cotDraft; if (!d || !d.id || !S.db) return Promise.resolve();
+      const body = JSON.parse(JSON.stringify(d)); delete body.id; body.total = totalesCot(d).total; body.actualizado = Date.now();
+      return enqueue('cot/' + d.id, () => S.db.doc('cotizaciones/' + d.id).set(body));
+    };
+    if (now) return run();
+    cotTimer = setTimeout(run, 500); return Promise.resolve();
+  }
+  function cerrarCot() { guardarCot(true); S.cotId = null; S.cotDraft = null; renderMain(true); }
+  function textoCot(d) {
+    const t = totalesCot(d); const firma = ajuste('firma', '');
+    const out = ['COTIZACIÓN — ' + (d.titulo || '').toUpperCase(), 'Para: ' + (d.cliente || '________') + ' · Fecha: ' + fmtDate(isDay(d.fecha) ? d.fecha : hoy(), { day: 'numeric', month: 'long', year: 'numeric' }), ''];
+    (d.lineas || []).forEach((l) => {
+      if (l.tipo === 'titulo') out.push('', String(l.texto || '').toUpperCase());
+      else if (l.tipo === 'subtitulo') out.push('', l.texto || '');
+      else if (l.tipo === 'nota') out.push(l.texto || '');
+      else if (l.tipo === 'descuento') out.push('• ' + (l.texto || 'Descuento') + (l.modo === 'pct' ? ' (' + num(Number(l.valor) || 0) + '%)' : '') + ': −' + money(montoDesc(d, l)));
+      else if (l.tipo === 'servicio') {
+        out.push('• ' + (l.nombre || 'Servicio') + ' — ' + (Number(l.cantidad) !== 1 ? num(Number(l.cantidad) || 0) + ' × ' + money(Number(l.precio) || 0) + ' = ' : '') + money((Number(l.cantidad) || 0) * (Number(l.precio) || 0)));
+        if (l.formato) out.push('  Formato de entrega: ' + l.formato);
+        if (l.descripcion) out.push('  ' + String(l.descripcion).replace(/\n/g, '\n  '));
+      }
+    });
+    out.push('', t.desc ? 'Subtotal: ' + money(t.sub) + '\nDescuento: −' + money(t.desc) + '\nTOTAL: ' + money(t.total) : 'TOTAL: ' + money(t.total));
+    if (d.notas) out.push('', d.notas);
+    out.push('', 'Cotización válida por ' + (Number(d.validez) || 15) + ' días.' + (firma ? '\n' + firma : ''));
+    return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  }
+  async function pdfCot(d) {
+    const { jsPDF } = await loadJsPDF();
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' }); const W = 515; const X = 40; let y = 0; const t = totalesCot(d);
+    const need = (hh) => { if (y + hh > 800) { doc.addPage(); y = 50; } };
+    const txt = (s, size, style, color, x, w) => { doc.setFont('helvetica', style || 'normal'); doc.setFontSize(size); doc.setTextColor(...(color || [26, 31, 27])); const ls = doc.splitTextToSize(String(s || ''), w || W); ls.forEach((ln) => { need(size * 1.35); doc.text(ln, x || X, y); y += size * 1.35; }); };
+    doc.setFillColor(255, 199, 44); doc.rect(36, 36, 523, 8, 'F');
+    y = 76; doc.setFont('times', 'bold'); doc.setFontSize(20); doc.setTextColor(26, 31, 27); doc.splitTextToSize(d.titulo || 'Cotización', W).forEach((ln) => { doc.text(ln, X, y); y += 24; });
+    txt('Para: ' + (d.cliente || '—') + '   ·   ' + fmtDate(isDay(d.fecha) ? d.fecha : hoy(), { day: 'numeric', month: 'long', year: 'numeric' }), 10, 'normal', [103, 107, 98]); y += 10;
+    (d.lineas || []).forEach((l) => {
+      if (l.tipo === 'titulo') { y += 8; need(30); doc.setDrawColor(47, 93, 70); doc.setLineWidth(1.2); doc.line(X, y - 12, X + 30, y - 12); txt(String(l.texto || '').toUpperCase(), 12, 'bold', [47, 93, 70]); y += 2; }
+      else if (l.tipo === 'subtitulo') { y += 4; txt(l.texto, 11, 'bold'); }
+      else if (l.tipo === 'nota') { txt(l.texto, 9.5, 'italic', [103, 107, 98]); y += 4; }
+      else if (l.tipo === 'descuento') { need(16); doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); doc.setTextColor(154, 63, 34); doc.text((l.texto || 'Descuento') + (l.modo === 'pct' ? ' (' + num(Number(l.valor) || 0) + '%)' : ''), X, y); doc.text('- ' + money(montoDesc(d, l)), X + W, y, { align: 'right' }); y += 18; }
+      else if (l.tipo === 'servicio') {
+        need(34); const sub = (Number(l.cantidad) || 0) * (Number(l.precio) || 0);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); doc.setTextColor(26, 31, 27);
+        const nm = doc.splitTextToSize(l.nombre || 'Servicio', W - 130); nm.forEach((ln, i) => { if (i) { need(14); } doc.text(ln, X, y); if (!i) doc.text(money(sub), X + W, y, { align: 'right' }); y += 14; });
+        if (Number(l.cantidad) !== 1) txt(num(Number(l.cantidad) || 0) + ' × ' + money(Number(l.precio) || 0) + (l.unidad ? ' ' + l.unidad : ''), 9, 'normal', [103, 107, 98]);
+        if (l.formato) txt('Formato de entrega: ' + l.formato, 9, 'normal', [103, 107, 98]);
+        if (l.descripcion) txt(l.descripcion, 9.5, 'normal', [60, 64, 58], X, W - 130);
+        y += 8;
+      }
+    });
+    y += 6; need(70); doc.setDrawColor(26, 31, 27); doc.setLineWidth(.6); doc.line(X + W - 220, y, X + W, y); y += 18;
+    const fila = (a, b, bold) => { doc.setFont('helvetica', bold ? 'bold' : 'normal'); doc.setFontSize(bold ? 13 : 10.5); doc.setTextColor(26, 31, 27); doc.text(a, X + W - 220, y); doc.text(b, X + W, y, { align: 'right' }); y += bold ? 20 : 16; };
+    if (t.desc) { fila('Subtotal', money(t.sub)); fila('Descuento', '- ' + money(t.desc)); }
+    fila('Total', money(t.total), true);
+    y += 10; if (d.notas) txt(d.notas, 9.5, 'normal', [60, 64, 58]);
+    y += 6; txt('Cotización válida por ' + (Number(d.validez) || 15) + ' días.' + (ajuste('firma', '') ? '  ' + ajuste('firma', '') : ''), 9, 'normal', [103, 107, 98]);
+    return doc.output('blob');
+  }
+  // Curtis escribe las descripciones de las líneas con el texto del proyecto
+  async function curtisDescribe(d, soloIdx, onDone) {
+    if (!S.sample) { toast('Curtis no está disponible en esta vista.'); return; }
+    const p = proyecto(d.proyecto);
+    const ctxP = String(d.contexto || '').trim() || (p ? String(p.descripcion || '').trim() : '');
+    if (!ctxP) { toast('Primero escribí de qué se trata el proyecto.'); const el = document.getElementById('cot-contexto'); if (el) el.focus(); return; }
+    const objetivo = (d.lineas || []).map((l, i) => [l, i]).filter(([l, i]) => l.tipo === 'servicio' && (soloIdx != null ? i === soloIdx : !String(l.descripcion || '').trim()));
+    if (!objetivo.length) { toast('Todas las líneas ya tienen descripción. Tocá ✨ en una para reescribirla.'); return; }
+    const lista = objetivo.map(([l, i]) => ({ id: i, servicio: l.nombre || '', formato_de_entrega: l.formato || '', descripcion_del_catalogo: (servicio(l.servicioId) || {}).descripcion || '', borrador_actual: l.descripcion || '' }));
+    const prompt = perfil() + '\nAhora escribís para el CLIENTE, no para él: español neutro y profesional, de usted (no de vos). Escribí la descripción de cada servicio de esta cotización: 1 a 3 oraciones, qué incluye y qué recibe el cliente, adaptada a este proyecto. No inventes cantidades, plazos, revisiones ni precios que no estén en los datos. Respondé SOLO con un JSON así: [{"id": 0, "descripcion": "…"}].\n\nDE QUÉ SE TRATA EL PROYECTO:\n' + ctxP.slice(0, 3000) + (d.cliente ? '\nCLIENTE: ' + d.cliente : '') + '\n\nSERVICIOS:\n' + JSON.stringify(lista);
+    toast('Curtis está escribiendo…');
+    try {
+      const { text } = await S.sample(prompt, { cache: false });
+      const m = String(text || '').match(/\[[\s\S]*\]/); const arr = m ? JSON.parse(m[0]) : null;
+      if (!Array.isArray(arr)) throw { code: 'invalid_json' };
+      let n = 0;
+      arr.forEach((x) => { const l = d.lineas[Number(x.id)]; if (l && l.tipo === 'servicio' && x.descripcion) { l.descripcion = String(x.descripcion).trim().slice(0, 900); n++; } });
+      if (!n) throw { code: 'invalid_json' };
+      toast(n === 1 ? 'Descripción lista. Revisala.' : n + ' descripciones listas. Revisalas.');
+      if (onDone) onDone();
+    } catch (e) { toast(sampleErr(e)); }
+  }
+  function viewPrecios() {
+    if (S.cotId && S.cotDraft) return editorCot();
+    const tabs = h('div', { class: 'seg', role: 'group', 'aria-label': 'Ver' }, [['catalogo', 'Catálogo', 'list'], ['cotizaciones', 'Cotizaciones', 'receipt']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.precioTab === k), onclick: () => { S.precioTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
+    const head = h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Tus servicios y lo que cobrás' }), h('h1', { text: 'Precios' })),
+      h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Servicio'), h('button', { type: 'button', class: 'btn forest', onclick: () => nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }] }) }, icon('receipt', 'sm'), 'Cotización rápida')));
+    return [head, tabs, S.precioTab === 'cotizaciones' ? listaCots() : catalogo()];
+  }
+  function catalogo() {
+    const list = [...S.servicios].sort((a, b) => grupoDe(a).localeCompare(grupoDe(b)) || (a.creado || 0) - (b.creado || 0));
+    if (!list.length) return h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Tu catálogo está vacío' }), h('p', { class: 'hint', text: 'Agregá cada cosa que vendés una sola vez: nombre, precio, formato de entrega y descripción. Después armás cotizaciones en segundos, sumando servicios.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Agregar el primer servicio'));
+    const grupos = [...new Set(list.map(grupoDe))];
+    const sel = list.filter((x) => S.catSel.has(x.id));
+    const selTotal = sel.reduce((s, x) => s + (Number(x.precio) || 0), 0);
+    const revisar = S.sample && !S.sampleOff ? h('button', { type: 'button', class: 'btn soft', disabled: S.catRevisando ? true : null, onclick: async () => {
+      S.catRevisando = true; S.catRevision = ''; renderMain(true);
+      const txt = list.map((x) => '- ' + (x.titulo || '') + (x.subtitulo ? ' — ' + x.subtitulo : '') + ' [' + grupoDe(x) + '] ' + money(Number(x.precio) || 0) + ' ' + (x.unidad || '') + (x.formato ? ' · entrega: ' + x.formato : '') + (x.tiempo ? ' · tiempo: ' + x.tiempo : '') + '\n  ' + (x.descripcion || '(sin descripción)')).join('\n');
+      try { const { text } = await S.sample(perfil() + '\nRevisá su catálogo de servicios (precios en quetzales, mercado de Guatemala y Centroamérica). En máximo 8 líneas: qué precio está bajo o alto y por qué, qué descripción no se entiende o promete de más, y qué servicio le falta para vender más. Directo, sin rodeos. Cerrá con el siguiente paso.\n\nCATÁLOGO:\n' + txt + memoriaTexto(), { cache: false }); S.catRevision = text; } catch (e) { S.catRevision = sampleErr(e); }
+      S.catRevisando = false; if (S.view === 'precios') renderMain(true);
+    } }, icon('sparkle', 'sm'), S.catRevisando ? 'Curtis está revisando…' : 'Que Curtis revise mi catálogo') : null;
+    return [h('div', { class: 'row-actions' }, revisar, h('span', { class: 'hint', text: 'Marcá servicios y armá una cotización con ellos.' })),
+      S.catRevision ? h('div', { class: 'review' }, h('b', {}, icon('sparkle', 'sm'), ' Curtis opina'), h('p', { style: 'white-space:pre-wrap;margin:0', text: S.catRevision })) : null,
+      grupos.map((g) => h('section', { class: 'svc-group' }, h('div', { class: 'sec-h' }, h('h2', { text: g })),
+        h('div', { class: 'card svc-list' }, list.filter((x) => grupoDe(x) === g).map((x) => h('div', { class: 'svc' },
+          h('button', { type: 'button', class: 'check', role: 'checkbox', 'aria-checked': String(S.catSel.has(x.id)), 'aria-label': 'Marcar ' + (x.titulo || 'servicio'), onclick: () => { if (S.catSel.has(x.id)) S.catSel.delete(x.id); else S.catSel.add(x.id); renderMain(true); } }, S.catSel.has(x.id) ? icon('check', 'sm') : null),
+          h('button', { type: 'button', class: 'svc-body', onclick: () => abrirServicio(x.id) },
+            h('span', { class: 'svc-top' }, h('b', { text: x.titulo || 'Sin nombre' }), h('span', { class: 'svc-price', text: money(Number(x.precio) || 0) }, x.unidad ? h('small', { text: ' ' + x.unidad }) : null)),
+            x.subtitulo ? h('span', { class: 'svc-sub', text: x.subtitulo }) : null,
+            x.descripcion ? h('span', { class: 'svc-desc', text: x.descripcion }) : h('span', { class: 'svc-desc muted', text: 'Sin descripción: tocá para que Curtis la escriba.' }),
+            h('span', { class: 'chips' }, x.formato ? h('span', { class: 'chip static' }, icon('package', 'sm'), x.formato) : null, x.tiempo ? h('span', { class: 'chip static' }, icon('clock', 'sm'), x.tiempo) : null))))))),
+      sel.length ? h('div', { class: 'sel-bar' }, h('span', {}, h('b', { text: sel.length + (sel.length === 1 ? ' servicio' : ' servicios') }), ' · ' + money(selTotal)),
+        h('button', { type: 'button', class: 'btn soft small', onclick: () => { S.catSel.clear(); renderMain(true); } }, 'Quitar marcas'),
+        h('button', { type: 'button', class: 'btn yellow', onclick: async () => { const l = lineasDeServicios(sel); S.catSel.clear(); await nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }, ...l] }); } }, icon('receipt', 'sm'), 'Armar cotización')) : null];
+  }
+  function abrirServicio(id) {
+    const x = Object.assign({ titulo: '', subtitulo: '', grupo: '', precio: '', unidad: 'por proyecto', formato: '', tiempo: '', descripcion: '' }, id ? servicio(id) : {});
+    let pensando = false;
+    const grupos = [...new Set(S.servicios.map((s) => String(s.grupo || '').trim()).filter(Boolean).concat(['Branding', 'Ilustración', 'Licencias', 'Editorial', 'Digital']))];
+    const draw = () => {
+      const f = (key, label, attrs, hint) => { const el = h('input', Object.assign({ type: 'text', value: x[key] == null ? '' : x[key] }, attrs || {})); el.addEventListener('input', () => { x[key] = el.value; }); return h('label', { class: 'field' }, h('span', { text: label }), el, hint ? h('span', { class: 'hint', text: hint }) : null); };
+      const ta = h('textarea', { rows: '4', placeholder: 'Qué incluye y qué recibe el cliente. Si escribís unas notas sueltas, Curtis las convierte en una descripción clara.' }, x.descripcion || ''); ta.addEventListener('input', () => { x.descripcion = ta.value; });
+      showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+        h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': id ? 'Editar servicio' : 'Servicio nuevo' },
+          h('h3', {}, icon('receipt'), id ? 'Editar servicio' : 'Servicio nuevo'),
+          f('titulo', 'Nombre del servicio', { placeholder: 'Paquete de marca estándar', id: 'svc-titulo' }),
+          f('subtitulo', 'Subtítulo (una línea)', { placeholder: 'Logo, paleta, tipografías y manual corto' }),
+          h('div', { class: 'opt-grid' },
+            f('grupo', 'Grupo (título en el catálogo)', { list: 'svc-grupos', placeholder: 'Branding' }), h('datalist', { id: 'svc-grupos' }, grupos.map((g) => h('option', { value: g }))),
+            f('precio', 'Precio (Q)', { type: 'number', min: '0', step: '50', inputmode: 'decimal' }),
+            f('unidad', 'Se cobra', { list: 'svc-unidades' }), h('datalist', { id: 'svc-unidades' }, UNIDADES.map((u) => h('option', { value: u })))),
+          f('formato', 'Formato de entrega', { placeholder: 'AI, PDF, PNG y SVG en Google Drive' }),
+          f('tiempo', 'Tiempo de entrega (opcional)', { placeholder: '5 días hábiles' }),
+          h('label', { class: 'field' }, h('span', { text: 'Descripción' }), ta),
+          S.sample && !S.sampleOff ? h('button', { type: 'button', class: 'btn soft small', style: 'justify-self:start', disabled: pensando ? true : null, onclick: async () => {
+            if (!String(x.titulo).trim()) { toast('Poné primero el nombre del servicio.'); return; }
+            pensando = true; draw();
+            try { const { text } = await S.sample(perfil() + '\nAhora escribís para el CLIENTE: español neutro y profesional, de usted. Escribí la descripción de este servicio para su catálogo: 2 o 3 oraciones, qué incluye y qué recibe el cliente. Usá sus notas si hay. No inventes cantidades, plazos ni revisiones que no estén en los datos. Devolvé solo la descripción, sin comillas.\n\nServicio: ' + x.titulo + (x.subtitulo ? '\nSubtítulo: ' + x.subtitulo : '') + (x.grupo ? '\nGrupo: ' + x.grupo : '') + (x.formato ? '\nFormato de entrega: ' + x.formato : '') + (x.tiempo ? '\nTiempo: ' + x.tiempo : '') + (x.descripcion ? '\nSus notas: ' + x.descripcion : ''), { cache: false }); x.descripcion = String(text || '').trim(); } catch (e) { toast(sampleErr(e)); }
+            pensando = false; draw();
+          } }, icon('sparkle', 'sm'), pensando ? 'Curtis está escribiendo…' : x.descripcion ? 'Que Curtis la mejore' : 'Que Curtis la escriba') : null,
+          h('div', { class: 'row-actions', style: 'justify-content:space-between' },
+            id ? h('button', { type: 'button', class: 'btn soft', onclick: () => confirmar('¿Borrar «' + (x.titulo || 'este servicio') + '» del catálogo?', 'Las cotizaciones que ya lo usan no cambian.', 'Borrar servicio', () => enqueue('svc/' + id, () => S.db.doc('servicios/' + id).delete()).then(() => toast('Servicio borrado'))) }, icon('trash', 'sm'), 'Borrar') : h('span'),
+            h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: hideModal }, 'Cancelar'),
+              h('button', { type: 'button', class: 'btn forest', onclick: async () => {
+                if (!String(x.titulo).trim()) { toast('Poné el nombre del servicio.'); return; }
+                if (!S.db) { toast('Tu registro todavía no abrió.'); return; }
+                const body = { titulo: String(x.titulo).trim().slice(0, 120), subtitulo: String(x.subtitulo || '').trim().slice(0, 160), grupo: String(x.grupo || '').trim().slice(0, 60), precio: x.precio === '' ? 0 : Math.max(0, Number(x.precio) || 0), unidad: String(x.unidad || '').trim().slice(0, 40), formato: String(x.formato || '').trim().slice(0, 200), tiempo: String(x.tiempo || '').trim().slice(0, 60), descripcion: String(x.descripcion || '').trim().slice(0, 1200), actualizado: Date.now() };
+                hideModal();
+                if (id) await enqueue('svc/' + id, () => S.db.doc('servicios/' + id).update(body));
+                else { try { await S.db.collection('servicios').add(Object.assign(body, { creado: Date.now() })); } catch (e) { toast(dbErr(e)); return; } }
+                toast(id ? 'Servicio guardado' : 'Servicio agregado al catálogo');
+              } }, 'Guardar'))))), hideModal);
+      if (!id && !x.titulo) { const t = document.getElementById('svc-titulo'); if (t) t.focus(); }
+    };
+    draw();
+  }
+  function listaCots() {
+    const list = [...S.cotizaciones].sort((a, b) => (b.actualizado || 0) - (a.actualizado || 0));
+    if (!list.length) return h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Todavía no hay cotizaciones' }), h('p', { class: 'hint', text: 'Una cotización rápida es una suma: títulos, servicios del catálogo o libres, notas y descuentos. Curtis escribe las descripciones con el texto del proyecto.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }] }) }, icon('plus', 'sm'), 'Primera cotización'));
+    return h('div', { class: 'card cot-list' }, list.map((c) => {
+      const p = proyecto(c.proyecto); const est = COT_ESTADOS.find(([k]) => k === c.estado) || COT_ESTADOS[0];
+      return h('button', { type: 'button', class: 'cot-row', onclick: () => abrirCot(c) },
+        h('span', { class: 'cot-main' }, h('b', { text: c.titulo || 'Cotización' }), h('small', { text: [c.cliente, p ? p.nombre : '', isDay(c.fecha) ? fmtDate(c.fecha) : ''].filter(Boolean).join(' · ') || 'Sin cliente' })),
+        h('span', { class: 'pill est-' + est[0], text: est[1] }), h('span', { class: 'cot-total', text: money(Number(c.total) || 0) }));
+    }));
+  }
+  function editorCot() {
+    const d = S.cotDraft; const redraw = () => { guardarCot(); renderMain(true); };
+    const recalc = () => {
+      const t = totalesCot(d);
+      const set = (sel, v) => { const el = document.getElementById(sel); if (el) el.textContent = v; };
+      set('cot-sub', money(t.sub)); set('cot-desc', '−' + money(t.desc)); set('cot-total', money(t.total));
+      ['cot-desc-row', 'cot-desc-row2'].forEach((k) => { const dr = document.getElementById(k); if (dr) dr.hidden = !t.desc; });
+      (d.lineas || []).forEach((l) => { const el = document.getElementById('lt-' + l.id); if (el) el.textContent = l.tipo === 'descuento' ? '−' + money(montoDesc(d, l)) : money((Number(l.cantidad) || 0) * (Number(l.precio) || 0)); });
+      guardarCot();
+    };
+    const bind = (el, obj, key, kind) => { el.addEventListener('input', () => { obj[key] = kind === 'num' ? (el.value === '' ? '' : Number(el.value)) : el.value; recalc(); }); return el; };
+    const field = (label, el) => h('label', { class: 'field' }, h('span', { text: label }), el);
+    const projSel = h('select', {}, h('option', { value: '', text: '— Sin proyecto —' }), S.proyectos.filter((p) => p.estado !== 'terminado' || p.id === d.proyecto).map((p) => h('option', { value: p.id, selected: p.id === d.proyecto ? true : null, text: (p.icono || '') + ' ' + (p.nombre || 'Sin nombre') })));
+    projSel.addEventListener('change', () => { d.proyecto = projSel.value; const p = proyecto(d.proyecto); if (p) { if (!d.cliente && p.cliente) d.cliente = p.cliente; if (!String(d.contexto || '').trim() && p.descripcion) d.contexto = p.descripcion; } redraw(); });
+    const estSel = h('select', {}, COT_ESTADOS.map(([k, l]) => h('option', { value: k, selected: d.estado === k ? true : null, text: l }))); estSel.addEventListener('change', () => { d.estado = estSel.value; guardarCot(); });
+    const ctx = bind(h('textarea', { id: 'cot-contexto', rows: '3', placeholder: 'Pegá el brief o contá en 3 líneas qué necesita el cliente. Curtis lo usa para escribir las descripciones.' }, d.contexto || ''), d, 'contexto');
+    const move = (i, dir) => { const j = i + dir; if (j < 0 || j >= d.lineas.length) return; const tmp = d.lineas[i]; d.lineas[i] = d.lineas[j]; d.lineas[j] = tmp; redraw(); };
+    const lineTools = (i) => h('div', { class: 'cot-tools' },
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Subir línea', title: 'Subir', disabled: i === 0 ? true : null, onclick: () => move(i, -1) }, icon('back', 'sm up')),
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Bajar línea', title: 'Bajar', disabled: i === d.lineas.length - 1 ? true : null, onclick: () => move(i, 1) }, icon('back', 'sm down')),
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Quitar línea', title: 'Quitar', onclick: () => { d.lineas.splice(i, 1); redraw(); } }, icon('x', 'sm')));
+    const lineaEl = (l, i) => {
+      let body;
+      if (l.tipo === 'titulo') body = bind(h('input', { class: 'cot-h1', type: 'text', value: l.texto || '', placeholder: 'Título', 'aria-label': 'Título' }), l, 'texto');
+      else if (l.tipo === 'subtitulo') body = bind(h('input', { class: 'cot-h2', type: 'text', value: l.texto || '', placeholder: 'Subtítulo', 'aria-label': 'Subtítulo' }), l, 'texto');
+      else if (l.tipo === 'nota') body = bind(h('textarea', { class: 'cot-note', rows: '2', placeholder: 'Nota para el cliente', 'aria-label': 'Nota' }, l.texto || ''), l, 'texto');
+      else if (l.tipo === 'descuento') {
+        const modo = h('div', { class: 'seg small', role: 'group', 'aria-label': 'Tipo de descuento' }, [['monto', 'Q'], ['pct', '%']].map(([k, t]) => h('button', { type: 'button', 'aria-pressed': String((l.modo || 'monto') === k), onclick: () => { l.modo = k; redraw(); } }, t)));
+        body = h('div', { class: 'cot-desc-line' }, bind(h('input', { type: 'text', value: l.texto || '', placeholder: 'Descuento', 'aria-label': 'Concepto del descuento' }), l, 'texto'), modo, bind(h('input', { type: 'number', min: '0', step: l.modo === 'pct' ? '1' : '50', value: l.valor == null ? '' : l.valor, 'aria-label': 'Valor del descuento', class: 'num' }), l, 'valor', 'num'), h('span', { class: 'cot-sub', id: 'lt-' + l.id, text: '−' + money(montoDesc(d, l)) }));
+      } else {
+        const desc = bind(h('textarea', { rows: '2', placeholder: 'Descripción para el cliente (o tocá ✨ y Curtis la escribe con el texto del proyecto)', 'aria-label': 'Descripción' }, l.descripcion || ''), l, 'descripcion');
+        body = h('div', { class: 'cot-svc' },
+          h('div', { class: 'cot-svc-top' }, bind(h('input', { class: 'cot-name', type: 'text', value: l.nombre || '', placeholder: 'Servicio', 'aria-label': 'Servicio' }), l, 'nombre'),
+            h('label', { class: 'mini-f' }, h('span', { text: 'Cant.' }), bind(h('input', { type: 'number', min: '0', step: '1', value: l.cantidad, 'aria-label': 'Cantidad', class: 'num' }), l, 'cantidad', 'num')),
+            h('label', { class: 'mini-f' }, h('span', { text: 'Precio Q' }), bind(h('input', { type: 'number', min: '0', step: '50', value: l.precio, 'aria-label': 'Precio', class: 'num' }), l, 'precio', 'num')),
+            h('span', { class: 'cot-sub', id: 'lt-' + l.id, text: money((Number(l.cantidad) || 0) * (Number(l.precio) || 0)) })),
+          h('label', { class: 'mini-f wide' }, icon('package', 'sm'), bind(h('input', { type: 'text', value: l.formato || '', placeholder: 'Formato de entrega: AI, PDF, PNG…', 'aria-label': 'Formato de entrega' }), l, 'formato')),
+          h('div', { class: 'cot-desc-wrap' }, desc, S.sample && !S.sampleOff ? h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Que Curtis escriba la descripción', title: 'Que Curtis la escriba', onclick: () => curtisDescribe(d, i, redraw) }, icon('sparkle', 'sm')) : null));
+      }
+      return h('div', { class: 'cot-line t-' + l.tipo }, h('span', { class: 'cot-type', text: LINEA_TIPOS[l.tipo] || '' }), body, lineTools(i));
+    };
+    const add = (tipo) => { const base = { id: uid(), tipo }; if (tipo === 'servicio') Object.assign(base, { nombre: '', cantidad: 1, precio: 0, formato: '', descripcion: '' }); if (tipo === 'descuento') Object.assign(base, { texto: 'Descuento', modo: 'pct', valor: 10 }); d.lineas.push(base); redraw(); setTimeout(() => { const els = document.querySelectorAll('.cot-line'); const last = els[els.length - 1]; const inp = last && last.querySelector('input,textarea'); if (inp) { inp.focus(); if (inp.select) inp.select(); } }, 30); };
+    const pickCatalogo = () => {
+      if (!S.servicios.length) { toast('Tu catálogo está vacío. Agregá servicios en Precios → Catálogo.'); return; }
+      const elegidos = new Set();
+      const draw = () => showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+        h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Agregar del catálogo' },
+          h('h3', {}, icon('list'), 'Agregar del catálogo'),
+          [...new Set(S.servicios.map(grupoDe))].sort().map((g) => h('div', { class: 'field' }, h('span', { text: g }),
+            S.servicios.filter((x) => grupoDe(x) === g).map((x) => h('label', { class: 'qa' }, h('button', { type: 'button', class: 'check', role: 'checkbox', 'aria-checked': String(elegidos.has(x.id)), onclick: () => { if (elegidos.has(x.id)) elegidos.delete(x.id); else elegidos.add(x.id); draw(); } }, elegidos.has(x.id) ? icon('check', 'sm') : null), h('span', { text: (x.titulo || 'Sin nombre') + ' · ' + money(Number(x.precio) || 0) }))))),
+          h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn soft', onclick: hideModal }, 'Cancelar'),
+            h('button', { type: 'button', class: 'btn forest', disabled: elegidos.size ? null : true, onclick: () => { const sel = S.servicios.filter((x) => elegidos.has(x.id)); d.lineas.push(...(sel.length > 1 ? lineasDeServicios(sel) : sel.map(lineaDeServicio))); hideModal(); redraw(); toast(sel.length === 1 ? 'Servicio agregado' : sel.length + ' servicios agregados'); } }, 'Agregar')))), hideModal);
+      draw();
+    };
+    const t = totalesCot(d); const p = proyecto(d.proyecto);
+    const zohoLineas = () => d.lineas.filter((l) => l.tipo === 'servicio' && String(l.nombre || '').trim()).map((l) => ({ nombre: String(l.nombre).trim(), descripcion: [l.formato ? 'Formato de entrega: ' + l.formato + '.' : '', l.descripcion || ''].filter(Boolean).join(' '), cantidad: Number(l.cantidad) || 0, precio: Number(l.precio) || 0 }));
+    return [
+      h('div', { class: 'page-h' }, h('button', { type: 'button', class: 'btn soft small', onclick: cerrarCot }, icon('back', 'sm'), 'Cotizaciones'), h('span', { class: 'saved', id: 'saved', 'aria-live': 'polite' })),
+      h('div', { class: 'card pad cot-head' },
+        bind(h('input', { class: 'p-title', type: 'text', value: d.titulo || '', placeholder: 'Título de la cotización', 'aria-label': 'Título de la cotización' }), d, 'titulo'),
+        h('div', { class: 'opt-grid' }, field('Cliente', bind(h('input', { type: 'text', value: d.cliente || '', placeholder: 'Nombre del cliente' }), d, 'cliente')), field('Proyecto', projSel),
+          field('Fecha', bind(h('input', { type: 'date', value: isDay(d.fecha) ? d.fecha : hoy() }), d, 'fecha')), field('Válida (días)', bind(h('input', { type: 'number', min: '1', step: '1', value: d.validez == null ? 15 : d.validez }), d, 'validez', 'num')), field('Estado', estSel)),
+        field('De qué se trata el proyecto', ctx),
+        p && p.descripcion && !String(d.contexto || '').trim() ? h('button', { type: 'button', class: 'btn soft small', style: 'justify-self:start', onclick: () => { d.contexto = p.descripcion; redraw(); } }, 'Usar las notas de ' + (p.nombre || 'el proyecto')) : null),
+      h('div', { class: 'cot-lines card pad' }, d.lineas.length ? d.lineas.map(lineaEl) : h('p', { class: 'hint', text: 'Agregá líneas: un título, servicios del catálogo, notas o un descuento.' }),
+        h('div', { class: 'chips cot-add' }, h('button', { type: 'button', class: 'chip strong', onclick: pickCatalogo }, icon('list', 'sm'), 'Del catálogo'), ['servicio', 'titulo', 'subtitulo', 'nota', 'descuento'].map((k) => h('button', { type: 'button', class: 'chip', onclick: () => add(k) }, icon('plus', 'sm'), LINEA_TIPOS[k])))),
+      (() => { const el = bind(h('textarea', { rows: '2', placeholder: 'Condiciones: forma de pago, revisiones incluidas, qué no incluye…' }, d.notas || ''), d, 'notas'); return h('div', { class: 'card pad' }, field('Condiciones y notas finales', el)); })(),
+      h('div', { class: 'cot-sum card pad' },
+        h('div', { class: 'desglose' }, h('div', { id: 'cot-desc-row', hidden: t.desc ? null : true }, h('span', { text: 'Subtotal' }), h('span', { id: 'cot-sub', text: money(t.sub) })), h('div', { id: 'cot-desc-row2', hidden: t.desc ? null : true }, h('span', { text: 'Descuento' }), h('span', { id: 'cot-desc', text: '−' + money(t.desc) }))),
+        h('div', { class: 'cot-sum-total' }, h('span', { class: 'kicker', style: 'margin:0', text: 'Total' }), h('p', { class: 'price-big', id: 'cot-total', text: money(t.total) })),
+        h('div', { class: 'row-actions' },
+          S.sample && !S.sampleOff ? h('button', { type: 'button', class: 'btn yellow', onclick: () => curtisDescribe(d, null, redraw) }, icon('sparkle', 'sm'), 'Curtis escribe las descripciones') : null,
+          h('button', { type: 'button', class: 'btn soft', onclick: async () => { const txt = textoCot(d); try { await navigator.clipboard.writeText(txt); toast('Cotización copiada'); } catch (e) { toast('No se pudo copiar desde aquí.'); } } }, icon('copy', 'sm'), 'Copiar texto'),
+          h('button', { type: 'button', class: 'btn soft', onclick: async () => {
+            const drive = !!(S.mcp && S.fileArgs); const dest = p ? folderIdFrom(p) : '';
+            const nombre = 'Cotización — ' + (d.titulo || 'sin título').replace(/[\\/:*?"<>|]/g, '-') + '.pdf';
+            if (!drive && !S.assets) { toast('Desde esta vista no se puede guardar el PDF.'); return; }
+            if (drive) { const ok = await pedirPermiso('¿Guardo la cotización en PDF en tu Drive?', [dest ? 'En la carpeta de ' + (p.nombre || 'el proyecto') + '.' : 'En «' + BANDEJA + '».', 'Nombre: ' + nombre], 'Sí, guardala'); if (!ok) return; }
+            try {
+              const blob = await pdfCot(d);
+              if (drive) { const fid = dest || await bandejaId(); const f = await subirArchivo(blob, fid, nombre); d.pdfUrl = f.viewUrl || ''; toast('PDF guardado en Drive'); }
+              else { const a = await S.assets.upload(blob, { type: 'application/pdf' }); d.pdfUrl = '/_blob/' + a.id; toast('PDF listo'); }
+              guardarCot(true); renderMain(true);
+            } catch (e) { toast(e && e.code ? mcpErr(e, 'Google Drive') : 'No se pudo generar el PDF.'); }
+          } }, icon('book', 'sm'), 'PDF'),
+          d.pdfUrl ? h('a', { class: 'btn soft', href: d.pdfUrl, target: '_blank', rel: 'noopener' }, icon('external', 'sm'), 'Ver PDF') : null,
+          S.mcp ? h('button', { type: 'button', class: 'btn soft', onclick: () => { const ls = zohoLineas(); if (!ls.length) { toast('Agregá al menos un servicio con nombre.'); return; } guardarCot(true); abrirCotizacion(d.proyecto, ls, { cliente: d.cliente, notas: [d.lineas.filter((l) => l.tipo === 'nota').map((l) => l.texto).join('\n'), d.notas].filter(Boolean).join('\n\n'), descuento: totalesCot(d).desc }); } }, icon('receipt', 'sm'), 'Pasar a Zoho') : null,
+          h('button', { type: 'button', class: 'btn soft', onclick: async () => { guardarCot(true); const copia = JSON.parse(JSON.stringify(d)); delete copia.id; delete copia.pdfUrl; copia.lineas.forEach((l) => { l.id = uid(); }); await nuevaCotizacion(Object.assign(copia, { titulo: (d.titulo || 'Cotización') + ' (copia)', fecha: hoy(), estado: 'borrador' })); toast('Copia lista'); } }, icon('copy', 'sm'), 'Duplicar'),
+          h('button', { type: 'button', class: 'btn soft', onclick: () => confirmar('¿Borrar esta cotización?', '«' + (d.titulo || 'Cotización') + '» se borra de Curtis. Lo que ya está en Zoho o Drive no se toca.', 'Borrar', () => { const id = d.id; clearTimeout(cotTimer); S.cotId = null; S.cotDraft = null; enqueue('cot/' + id, () => S.db.doc('cotizaciones/' + id).delete()).then(() => toast('Cotización borrada')); renderMain(true); }) }, icon('trash', 'sm'), 'Borrar')),
+        h('p', { class: 'hint', text: 'Se guarda sola. El total es la suma de los servicios menos los descuentos.' })),
+    ];
+  }
+
+  // ================= ARCHIVOS: un lugar para subir =================
+  const BANDEJA = 'Curtis · Bandeja';
+  const ASSET_OK = /^(image\/(png|jpeg|gif|webp|avif|svg\+xml)$|video\/|text\/|application\/pdf$|application\/json$)/;
+  const MAX_ASSET = 20 * 1024 * 1024;
+  async function bandejaId() {
+    let id = ajuste('bandejaFolderId', '');
+    if (!id) { const fo = await driveCrearCarpeta(BANDEJA, ''); id = fo.id; S.ajustes = Object.assign({}, S.ajustes, { bandejaFolderId: fo.id, bandejaFolderUrl: fo.url }); await saveAjustes({ bandejaFolderId: fo.id, bandejaFolderUrl: fo.url }); }
+    return id;
+  }
+  const mb = (n) => (n / 1048576 < 0.1 ? '<0.1' : (n / 1048576).toFixed(1)) + ' MB';
+  async function subirArchivos(files, projId) {
+    files = [...(files || [])].filter((f) => f && f.size != null);
+    if (!files.length) return;
+    if (!S.db) { toast('Tu registro todavía no abrió.'); return; }
+    const p = proyecto(projId); const drive = !!(S.mcp && S.fileArgs);
+    if (!drive && !S.assets) { toast('Desde esta vista no se puede subir. Abrí Curtis en claude.ai.'); return; }
+    const lista = files.map((f) => {
+      const type = f.type || MIME[extOf(f.name)] || '';
+      let motivo = '';
+      if (drive && f.size > MAX_FILE) motivo = 'pesa más de 16 MB: subilo directo a Drive';
+      else if (!drive && f.size > MAX_ASSET) motivo = 'pesa más de 20 MB';
+      else if (!drive && !ASSET_OK.test(type)) motivo = 'sin Drive aquí solo se guardan imágenes, PDF, video o texto';
+      return { f, type, motivo };
+    });
+    const sirven = lista.filter((x) => !x.motivo);
+    const destino = drive ? (p && folderIdFrom(p) ? 'la carpeta de «' + (p.nombre || 'el proyecto') + '» en tu Drive' : '«' + BANDEJA + '» en tu Drive' + (p ? ' (el proyecto todavía no tiene carpeta)' : '')) : 'Curtis (en esta vista no hay Drive)';
+    const ok = await pedirPermiso('¿Subo ' + files.length + (files.length === 1 ? ' archivo' : ' archivos') + '?', ['Van a ' + destino + '.', ...lista.slice(0, 8).map((x) => x.f.name + ' · ' + mb(x.f.size) + (x.motivo ? ' — no se sube: ' + x.motivo : '')), lista.length > 8 ? '…y ' + (lista.length - 8) + ' más' : '', 'No se borra ni se reemplaza nada.'].filter(Boolean), sirven.length ? 'Sí, subilos' : 'Entendido');
+    if (!ok || !sirven.length) return;
+    let folderId = drive && p ? folderIdFrom(p) : ''; let n = 0; const errores = []; let i = 0;
+    for (const x of sirven) {
+      i++; toast('Subiendo ' + i + ' de ' + sirven.length + '…');
+      const rec = { nombre: x.f.name.slice(0, 200), tipo: x.type, tamano: x.f.size, proyecto: p ? p.id : '', fecha: hoy(), creado: Date.now() };
+      try {
+        if (drive) {
+          if (!folderId) folderId = await bandejaId();
+          const up = await subirArchivo(x.f, folderId); rec.driveId = up.id; rec.driveUrl = up.viewUrl || '';
+          if (/^image\//.test(x.type) && S.assets) { try { const m = await miniatura(x.f); const a = await S.assets.upload(m.blob, { type: 'image/jpeg' }); rec.thumb = a.id; } catch (e) { /* sin miniatura */ } }
+        } else {
+          const a = await S.assets.upload(x.f, { type: x.type }); rec.asset = a.id; if (/^image\//.test(x.type)) rec.thumb = a.id;
+        }
+        await S.db.collection('archivos').add(rec); n++;
+      } catch (e) { errores.push(x.f.name + ': ' + (e && e.code ? mcpErr(e, 'Google Drive') : 'no se pudo subir')); }
+    }
+    if (errores.length) toast(errores[0] + (errores.length > 1 ? ' (y ' + (errores.length - 1) + ' más)' : ''));
+    else toast(n === 1 ? 'Archivo subido' : n + ' archivos subidos');
+  }
+  function zonaSubir(getProj, texto) {
+    const input = h('input', { type: 'file', multiple: true, hidden: true, onchange: (ev) => { const fs = [...ev.target.files]; ev.target.value = ''; subirArchivos(fs, getProj()); } });
+    const drop = h('div', { class: 'drop' }, icon('upload', 'lg'), h('span', { text: texto }), h('button', { type: 'button', class: 'btn soft small', onclick: () => input.click() }, 'Elegir archivos'), input);
+    drop.addEventListener('dragover', (ev) => { ev.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (ev) => { ev.preventDefault(); drop.classList.remove('over'); subirArchivos([...(ev.dataTransfer && ev.dataTransfer.files ? ev.dataTransfer.files : [])], getProj()); });
+    return drop;
+  }
+  function archivoRow(a, conProyecto) {
+    const url = a.driveUrl || (a.asset ? '/_blob/' + a.asset : '');
+    const p = conProyecto ? proyecto(a.proyecto) : null;
+    return h('div', { class: 'arch-row' },
+      h('span', { class: 'arch-thumb' }, a.thumb ? h('img', { src: '/_blob/' + a.thumb, alt: '', loading: 'lazy', onerror: (ev) => ev.target.replaceWith(icon('image', 'sm')) }) : icon(/^image\//.test(a.tipo || '') ? 'image' : /pdf/.test(a.tipo || '') ? 'book' : 'folder', 'sm')),
+      h('span', { class: 'arch-main' }, url ? h('a', { href: url, target: '_blank', rel: 'noopener', text: a.nombre || 'Archivo' }) : h('b', { text: a.nombre || 'Archivo' }),
+        h('small', { text: [mb(a.tamano || 0), isDay(a.fecha) ? fmtDate(a.fecha) : '', conProyecto ? (p ? p.nombre : 'Bandeja') : '', a.driveId ? 'en Drive' : 'en Curtis'].filter(Boolean).join(' · ') })),
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Quitar ' + (a.nombre || 'archivo') + ' de la lista', title: 'Quitar de la lista', onclick: () => confirmar('¿Quitar «' + (a.nombre || 'el archivo') + '» de la lista?', a.driveId ? 'El archivo sigue en tu Drive: solo se quita de aquí.' : 'Se borra de Curtis.', 'Quitar', async () => {
+        if (S.assets && !a.driveId && a.asset) { try { await S.assets.delete(a.asset); } catch (e) { /* ya no estaba */ } }
+        if (S.assets && a.thumb && a.thumb !== a.asset) { try { await S.assets.delete(a.thumb); } catch (e) { /* ya no estaba */ } }
+        enqueue('ar/' + a.id, () => S.db.doc('archivos/' + a.id).delete());
+      }) }, icon('x', 'sm')));
+  }
+  function viewArchivos() {
+    const list = [...S.archivos].sort((a, b) => (b.creado || 0) - (a.creado || 0));
+    if (S.subirA && !proyActivos().some((p) => p.id === S.subirA)) S.subirA = '';
+    const sel = h('select', { 'aria-label': 'Dónde guardar' }, h('option', { value: '', text: 'Sin proyecto (Bandeja)' }), proyActivos().map((p) => h('option', { value: p.id, selected: S.subirA === p.id ? true : null, text: (p.icono || '') + ' ' + (p.nombre || 'Sin nombre') })));
+    sel.addEventListener('change', () => { S.subirA = sel.value; });
+    const drive = !!(S.mcp && S.fileArgs);
+    return [h('p', { class: 'hint', text: drive ? 'Subí lo que sea: briefs, referencias, fotos, entregables. Si elegís un proyecto con carpeta, va a esa carpeta de Drive; si no, a «' + BANDEJA + '». Curtis lo anota aquí para encontrarlo rápido.' : 'Subí imágenes, PDF, video o texto. Sin Drive en esta vista, se guardan en Curtis (hasta 20 MB cada uno).' }),
+      h('div', { class: 'card pad', style: 'display:grid;gap:10px' }, h('label', { class: 'field' }, h('span', { text: 'Guardar en' }), sel), zonaSubir(() => S.subirA || '', 'Arrastrá aquí tus archivos')),
+      list.length ? h('div', { class: 'card arch-list' }, list.map((a) => archivoRow(a, true))) : h('p', { class: 'empty card', text: 'Todavía no subiste archivos.' })];
+  }
+
   // ================= Zoho =================
   async function zohoClientes(nombre) {
     if (!S.mcp) throw new Error('Zoho no está disponible en esta vista');
@@ -2284,12 +2893,14 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     if (!S.mcp) return { ok: false, msg: 'Zoho no está disponible en esta vista.' };
     const ls = (q.lineas || []).filter((l) => l.nombre && l.cantidad > 0);
     if (!q.clienteId || !ls.length) return { ok: false, msg: 'Falta el cliente o las líneas.' };
-    const total = ls.reduce((s, l) => s + l.cantidad * l.precio, 0);
-    const ok = await pedirPermiso('¿Creo esta cotización en Zoho?', ['Cliente: ' + (q.clienteNombre || q.clienteId), ...ls.map((l) => l.nombre + ' · ' + num(l.cantidad) + ' × ' + money(l.precio)), 'Total: ' + money(total), 'Queda como borrador. No se le manda al cliente.'], 'Sí, creala');
+    const desc = Math.max(0, Number(q.descuento) || 0);
+    const total = Math.max(0, ls.reduce((s, l) => s + l.cantidad * l.precio, 0) - desc);
+    const ok = await pedirPermiso('¿Creo esta cotización en Zoho?', ['Cliente: ' + (q.clienteNombre || q.clienteId), ...ls.map((l) => l.nombre + ' · ' + num(l.cantidad) + ' × ' + money(l.precio)), desc ? 'Descuento: −' + money(desc) : '', 'Total: ' + money(total), 'Queda como borrador. No se le manda al cliente.'].filter(Boolean), 'Sí, creala');
     if (!ok) return { ok: false, msg: 'El usuario dijo que no.' };
     try {
       const body = { customer_id: q.clienteId, date: hoy(), line_items: ls.map((l, i) => ({ name: l.nombre.slice(0, 100), description: l.descripcion || '', quantity: l.cantidad, rate: l.precio, item_order: i + 1 })) };
       if (q.notas) body.notes = q.notas;
+      if (desc) { body.discount = Math.round(desc * 100) / 100; body.discount_type = 'entity_level'; body.is_discount_before_tax = true; }
       const r = await S.mcp.callTool('Zoho Books', 'create_estimate', { body, query_params: { organization_id: ajuste('zohoOrg', ZOHO_ORG), send: false } });
       const pl = r.payload || {}; const data = pl.data || pl;
       if (data.code != null && data.code !== 0) throw { code: 'tool_error', message: data.message || 'Zoho rechazó la cotización.' };
@@ -2301,17 +2912,18 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
       return { ok: true, numero, total: Number(est.total) || total };
     } catch (e) { const msg = mcpErr(e, 'Zoho Books'); toast(msg); return { ok: false, msg }; }
   }
-  function abrirCotizacion(projId, lineasPre) {
-    const p = proyecto(projId); if (!p) return;
+  function abrirCotizacion(projId, lineasPre, extra) {
+    const p = proyecto(projId) || null; const ex = extra || {};
+    if (!p && !(lineasPre && lineasPre.length)) return;
     if (!S.mcp) { toast('Zoho no está disponible en esta vista.'); return; }
-    const st = { clientes: [], clienteId: '', clienteNombre: '', buscando: false, err: '', qtxt: p.cliente || '', lineas: lineasPre && lineasPre.length ? lineasPre : [{ nombre: (p.categoria ? p.categoria + ' — ' : 'Diseño — ') + (p.nombre || ''), descripcion: '', cantidad: 1, precio: Number(p.precio) || 0 }], notas: '' };
+    const st = { clientes: [], clienteId: '', clienteNombre: '', buscando: false, err: '', qtxt: (p && p.cliente) || ex.cliente || '', lineas: lineasPre && lineasPre.length ? lineasPre : [{ nombre: (p.categoria ? p.categoria + ' — ' : 'Diseño — ') + (p.nombre || ''), descripcion: '', cantidad: 1, precio: Number(p.precio) || 0 }], notas: ex.notas || '', descuento: Math.max(0, Number(ex.descuento) || 0) };
     const close = hideModal;
     const buscar = async (t) => { st.buscando = true; st.err = ''; draw(); try { st.clientes = await zohoClientes(t); if (!st.clientes.length) st.err = 'No encontré clientes con ese nombre en Zoho. Crealo primero en Zoho Books.'; } catch (e) { st.err = e.message; } st.buscando = false; if (modalClose === close) draw(); };
     const draw = () => {
       const q = h('input', { type: 'text', placeholder: 'Buscar cliente en Zoho', value: st.qtxt });
       q.addEventListener('input', () => { st.qtxt = q.value; });
       q.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); buscar(q.value); } });
-      const total = st.lineas.reduce((s, l) => s + (Number(l.cantidad) || 0) * (Number(l.precio) || 0), 0);
+      const total = Math.max(0, st.lineas.reduce((s, l) => s + (Number(l.cantidad) || 0) * (Number(l.precio) || 0), 0) - st.descuento);
       showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) close(); } },
         h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Nueva cotización' },
           h('h3', {}, icon('receipt'), 'Cotización en Zoho'),
@@ -2327,12 +2939,13 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
             }),
             h('button', { type: 'button', class: 'btn soft small', style: 'justify-self:start', onclick: () => { st.lineas.push({ nombre: '', descripcion: '', cantidad: 1, precio: 0 }); draw(); } }, icon('plus', 'sm'), 'Línea')),
           (() => { const t = h('textarea', { rows: '2', placeholder: 'Notas para el cliente (opcional)' }, st.notas); t.addEventListener('input', () => { st.notas = t.value; }); return h('label', { class: 'field' }, h('span', { text: 'Notas' }), t); })(),
+          st.descuento ? h('p', { class: 'hint', style: 'margin:0', text: 'Descuento: −' + money(st.descuento) }) : null,
           h('p', { style: 'margin:0;font-weight:700', text: 'Total: ' + money(total) }),
           h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn soft', onclick: close }, 'Cancelar'),
-            h('button', { type: 'button', class: 'btn forest', disabled: st.clienteId ? null : true, onclick: async () => { const data = { clienteId: st.clienteId, clienteNombre: st.clienteNombre, lineas: st.lineas.map((l) => ({ nombre: String(l.nombre).trim(), descripcion: '', cantidad: Number(l.cantidad) || 0, precio: Number(l.precio) || 0 })), notas: st.notas }; close(); const r = await crearCotizacion(projId, data); if (!r.ok && r.msg !== 'El usuario dijo que no.') toast(r.msg); } }, 'Crear en Zoho')))), close);
+            h('button', { type: 'button', class: 'btn forest', disabled: st.clienteId ? null : true, onclick: async () => { const data = { clienteId: st.clienteId, clienteNombre: st.clienteNombre, lineas: st.lineas.map((l) => ({ nombre: String(l.nombre).trim(), descripcion: String(l.descripcion || ''), cantidad: Number(l.cantidad) || 0, precio: Number(l.precio) || 0 })), notas: st.notas, descuento: st.descuento }; close(); const r = await crearCotizacion(projId, data); if (!r.ok && r.msg !== 'El usuario dijo que no.') toast(r.msg); } }, 'Crear en Zoho')))), close);
     };
     draw();
-    if (p.cliente) buscar(p.cliente);
+    if (st.qtxt) buscar(st.qtxt);
   }
 
   // ================= anotar rápido =================
@@ -2380,7 +2993,7 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
   use('permissions').then((pm) => { S.perms = pm || null; quizasFrase(); }).catch(() => {});
   use('sample').then(async (fn) => {
     S.sample = fn || null;
-    if (fn && fn.limits) { try { const l = await fn.limits(); S.sampleTools = !!(l && l.tools); S.sampleImages = (l && l.images) || null; } catch (e) { S.sampleTools = false; } }
+    if (fn && fn.limits) { try { const l = await fn.limits(); S.sampleTools = !!(l && l.tools); S.sampleToolsMax = (l && l.tools && Number(l.tools.maxCount)) || 10; S.sampleImages = (l && l.images) || null; } catch (e) { S.sampleTools = false; } }
     renderMain(); renderDrawer(); quizasFrase();
   }).catch(() => {});
   use('mcp').then(async (m) => {
@@ -2402,6 +3015,11 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
     db.collection('proyectos').onSnapshot((snap) => { S.proyectos = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); S.loadedProy = true; renderAll(); refreshChats(); }, fail);
     db.collection('etiquetas').onSnapshot((snap) => { S.etiquetas = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => (a.creado || 0) - (b.creado || 0)); renderAll(); }, () => {});
     db.collection('ilustraciones').onSnapshot((snap) => { S.ilustraciones = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'proyectos' || S.view === 'proyecto') renderMain(); }, () => {});
+    db.collection('servicios').onSnapshot((snap) => { S.servicios = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'precios' && !S.cotId) renderMain(); }, () => {});
+    db.collection('cotizaciones').onSnapshot((snap) => { S.cotizaciones = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); S.loadedCot = true;
+      if (S.cotId) { if (S.cotizaciones.some((c) => c.id === S.cotId)) S.cotVisto = true; else if (S.cotVisto) { S.cotId = null; S.cotDraft = null; if (S.view === 'precios') renderMain(true); } }
+      if ((S.view === 'precios' && !S.cotId) || S.view === 'proyecto') renderMain(); }, () => {});
+    db.collection('archivos').onSnapshot((snap) => { S.archivos = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'proyectos' || S.view === 'proyecto') renderMain(); }, () => {});
     db.collection('memoria').onSnapshot((snap) => { S.memoria = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'curtis') renderMain(); }, () => {});
     db.doc('ajustes/general').onSnapshot((snap) => { S.ajustes = snap.exists ? snap.data() : {}; renderMain(); }, () => {});
     db.doc('resumen/dia').onSnapshot((snap) => { S.resumen = snap.exists ? snap.data() : null; renderMain(); }, () => {});

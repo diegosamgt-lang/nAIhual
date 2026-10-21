@@ -1,62 +1,55 @@
 # Curtis — traspaso
 
+> Actualizado: 2026-10-21 · versión 6. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
+
 ## Qué existe
-- **Tablero:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
-- **Archivo fuente:** `tablero/curtis.html` (publicar siempre este mismo archivo para no cambiar el link).
-- **Fuente de verdad:** el registro propio del tablero. Se escribe directo desde la página.
-- **Conectores que usa la página (con la cuenta del dueño):** Google Drive (`create_file`, `search_files`, `update_file` para mover, `copy_file` para recopilar), Google Calendar (`list_events`, solo lectura), Zoho Books (`list_contacts`, `create_estimate`), Claude (`sample` con herramientas). Librería jsPDF 2.5.1 (cdnjs) para el PDF de links.
-- **Partes y circuitos:** ver `CURTIS_PARTES.md` (fuente principal de estado).
-- **Zoho:** organización «Creatif» `914134862`, moneda GTQ. Ojo: en Zoho aparece la prueba PREMIUM vencida; crear cotizaciones puede fallar hasta que se active un plan.
-- **Limpieza hecha:** la hoja de Drive «Mi Tablero — registro» está en la papelera (se recupera 30 días). El tablero tipo Dashboard ya no existía.
+- **Panel:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
+- **Archivo fuente:** `tablero/curtis.html`. Publicar siempre este mismo archivo en ese mismo link.
+- **Fuente de verdad:** el registro propio del panel (se escribe directo desde la página).
+- **Capacidades de la página:** registro (`db`), Claude (`sample`, con herramientas e imágenes), conectores del dueño (`mcp`), almacén de archivos (`assets`, miniaturas y archivos sin Drive), permisos (`permissions`).
+- **Conectores que usa (con la cuenta del dueño):**
+  - Google Drive: `create_file` (carpetas y archivos), `search_files`, `update_file` (mover), `copy_file` (recopilar).
+  - Google Calendar: `list_events`, solo lectura.
+  - Zoho Books: `list_contacts`, `create_estimate` (borrador, con descuento a nivel de cotización).
+- **Librería:** jsPDF 2.5.1 (cdnjs) para el PDF de links, la propuesta de licencia y la cotización.
+- **Zoho:** organización «Creatif» `914134862`, moneda GTQ. La prueba PREMIUM está vencida: crear cotizaciones puede fallar hasta activar un plan.
+- **Carpetas que Curtis crea en Drive cuando hace falta:** «Curtis · Ilustraciones», «Curtis · Bandeja» y la de cada proyecto.
 
 ## Datos
-- `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · creado · actualizado · terminado
-- `proyectos/*`: nombre · icono · color · cliente · entrega · estado (activo|pausa|terminado) · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] · chat
-- `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · zohoOrg
-- `resumen/dia`, `frase/dia`: {fecha, texto} por día
+- `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · etiquetas · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · gcalId (reunión de Google Calendar) · creado · actualizado · terminado
+- `proyectos/*`: nombre · icono · color · cliente · categoria · precio · entrega · estado (activo|pausa|terminado) · etiquetas · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] (las de Zoho) · chat · ilustraciones[ids] · licencia{producto,n,exclusividad,duracion,territorio,tiraje,modelo,base,diseno,disenoMonto,mayorista,regaliaPct,fx,total,unico,fecha} · entregado · entregaUrl · entregaFolderId
+- `servicios/*` (v6): titulo · subtitulo · grupo · precio · unidad · formato · tiempo · descripcion · creado · actualizado
+- `cotizaciones/*` (v6): titulo · cliente · proyecto · fecha · validez (días) · contexto (de qué se trata) · lineas[{id, tipo: titulo|subtitulo|servicio|nota|descuento, texto, servicioId, nombre, cantidad, precio, unidad, formato, descripcion, modo: monto|pct, valor}] · notas · estado (borrador|enviada|aceptada|rechazada) · total · pdfUrl · creado · actualizado
+- `archivos/*` (v6): nombre · tipo · tamano · proyecto ('' = Bandeja) · driveId · driveUrl · asset (si se guardó en Curtis) · thumb · fecha · creado
+- `ilustraciones/*`: titulo · thumb · driveId · driveUrl · archivo · ancho · alto · tema · anio · notas · estado
 - `etiquetas/*`: nombre · color · icono
-- `memoria/*`: tipo (precio|tiempo|horario|error|mejora|motivacion|pasos|cliente|otro) · texto · origen (auto|curtis|yo) · fecha
+- `memoria/*`: tipo (precio|tiempo|horario|error|mejora|motivacion|pasos|cliente|otro) · texto · origen (auto|curtis|yo) · fecha · proyecto
+- `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · plantillaEntrega · plantillaLicencia · checklistEntrega · plantillasCat · firma · zohoOrg · ilusFolderId · bandejaFolderId (v6) · factoresLicencia (v6: multiplicadores «de siempre»)
+- `resumen/dia`, `frase/dia`: {fecha, texto}
 - `curtis/chat`: chat general
-- `ilustraciones/*`: titulo · thumb (asset) · driveId · driveUrl · archivo · ancho · alto · tema · anio · notas · estado
-- proyectos además: ilustraciones[ids] · licencia{producto,n,exclusividad,duracion,territorio,tiraje,modelo,base,diseno,disenoMonto,total,fecha}
-- items reunión además: gcalId (evento de Google Calendar)
-- ajustes además: firma · plantillaLicencia · ilusFolderId
-- proyectos además: categoria · precio · etiquetas · entregado · entregaUrl · entregaFolderId
-- ajustes además: plantillaEntrega · checklistEntrega · plantillasCat
 
-## Cómo está armado (ideas tomadas)
-- **Asana:** Mis tareas por fecha (De días anteriores / Hoy / Esta semana / Más adelante / Sin fecha / Listas), proyectos con secciones, vista Lista y Tablero, panel de detalle con subtareas.
-- **Notion:** proyectos en galería con ícono y color de portada, propiedades editables, notas libres, plantillas (secciones y carpetas).
-- **TDAH:** resumen primero; «Ahora» muestra una sola cosa; reloj de foco 15/25/45 que guarda el tiempo dedicado; anotar sin decidir dónde (queda para hoy); «Pasar todo a hoy» sin culpa; pasos chicos; festejo al terminar; colores suaves; todo se guarda solo.
-
-## Circuitos (prueba automática v3: 34 de 34 ✅ con conectores simulados)
-| # | Circuito | Estado |
-|---|---|---|
-| 1 | + anota tarea con fecha de hoy → aparece en Ahora y Hoy | ✅ |
-| 2 | Proyecto nuevo con secciones de plantilla; nombre, cliente, entrega, estado, color, ícono, notas editables | ✅ |
-| 3 | Secciones: renombrar, agregar, borrar (las tareas se mueven, no se borran) | ✅ |
-| 4 | Lista y Tablero (arrastrar entre columnas) en proyecto y en Mis tareas | ✅ |
-| 5 | Detalle de tarea: todo editable y se guarda solo; pasos chicos | ✅ |
-| 6 | Claude en tarea y en proyecto: agrega tareas y pasos | ✅ simulado |
-| 7 | Claude o botón: carpetas de entrega en Drive (pide permiso) y guarda el link | ✅ simulado · ❓ falta prueba real |
-| 8 | Cotización en Zoho en borrador (pide permiso, no la envía) y queda en el proyecto | ✅ simulado · ❓ falta prueba real (prueba de Zoho vencida) |
-| 9 | Reunión → acuerdos a tareas (una sola vez) | ✅ |
-| 10 | Bitácora con horas → suma contra el mínimo | ✅ |
-| 11 | Metas con mes/año actual | ✅ |
-| 12 | Foco con reloj | ✅ |
-| 13 | Resumen local siempre al día + resumen de Claude guardado por día | ✅ |
-| 14 | Borrar con confirmación; Esc cierra | ✅ |
-| 15 | Celular sin scroll lateral en las 5 vistas; modo oscuro | ✅ |
+## Cómo está armado
+- **Asana:** Mis tareas por tiempo, proyectos con secciones, lista y tablero, panel de detalle con pasos.
+- **Notion:** proyectos en galería con ícono y color, propiedades editables, notas libres, plantillas.
+- **TDAH:** resumen primero; «Ahora» muestra una sola cosa; foco con reloj; anotar sin decidir dónde; pasos chicos; festejo; estacionamiento de ardillas; todo se guarda solo.
+- **Precios:** catálogo una sola vez → cotizaciones que se suman solas; Curtis escribe las descripciones.
+- **Licencias:** base por ilustración × cantidad × multiplicadores editables (volumen, exclusividad, duración, territorio, tiraje), con mínimo y regalía editables. Capas: valores de Curtis ← «de siempre» del dueño ← los de esa propuesta.
 
 ## Reglas
 - No se decide la fuente de un dato sin preguntarle al dueño.
-- Nada se crea en Drive o Zoho sin que el dueño apruebe en la ventana de permiso.
-- Lo terminado no se borra.
+- Nada se crea ni se mueve en Drive o Zoho sin que el dueño apruebe en la ventana de permiso. Nunca se borran archivos de Drive.
+- Google Calendar solo se lee.
+- Nada se borra sin confirmación del dueño.
 - Probar antes de publicar; auditar el código antes de entregar.
+
+## Pruebas
+- Automáticas en el navegador con conectores simulados: v6 74/74 y la de v4 31/31 sin regresiones.
+- Falta la primera prueba real con Drive, Calendar y Zoho.
 
 ## Historial
 - v1: escritura directa, estilo graffiti saturado.
 - v2: diseño sobrio, guía, chat con Claude por tarea.
-- v3: rehecho como Asana + Notion pensado para TDAH. Resumen estético primero, proyectos con secciones y tablero, todo editable con guardado automático, foco, Claude con herramientas (tareas, pasos, Drive, Zoho). Errores encontrados en la auditoría y corregidos: secciones y menú que salían como texto roto, pasos que se pisaban al agregar varios seguidos, panel que no abría al crear reunión/bitácora, Esc que no cerraba avisos, resumen que redibujaba toda la página.
-- v4: Curtis (ver CURTIS_PARTES.md).
-- v5: ardilla, Calendar, ilustraciones y licencias (ver CURTIS_PARTES.md).
+- v3: rehecho como Asana + Notion pensado para TDAH.
+- v4: Curtis (estilo NatGeo, memoria, entregas).
+- v5: ardilla, Google Calendar, ilustraciones y licencias.
+- v6: Precios (catálogo y cotizaciones), multiplicadores de licencia editables, archivos, logo minimalista, frases estilo Jung.
