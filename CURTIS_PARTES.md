@@ -1,6 +1,6 @@
 # CURTIS — resumen del proyecto
 
-> Actualizado: 2026-10-21 · versión 7
+> Actualizado: 2026-10-22 · versión 8
 > Panel: https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW (privado, solo vos lo abrís y lo editás)
 > Archivo: `tablero/curtis.html` · Datos y conexiones: `TABLERO_TRASPASO.md` · Personalidad: `CURTIS_PERSONALIDAD.md`
 >
@@ -234,3 +234,14 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
   - Las bitácoras NIHR, si ya no las usás.
 - **Lo que quedó pendiente:** conseguir clientes y LinkedIn, que era la meta del inicio.
 - **Propuesta:** 2 semanas sin funciones nuevas. Usarlo todos los días y después cortar lo que no usaste.
+- 2026-10-22 · **v8 (simplificar, según la auditoría)**:
+  - Google Calendar lee todos tus calendarios, incluido iCloud («Diego - Disart»), menos los feriados; se eligen en Ajustes. Corregido: las citas en hora universal podían caer en el día equivocado de noche. Verificado con tu cuenta real: la lista de calendarios y las citas de iCloud llegan bien.
+  - Inicio con 4 cosas: Ahora, un solo aviso, Citas de hoy y Hoy (los pasos agrupados bajo su tarea). El calendario y las fechas límite viven en Mis tareas → Calendario. La guía y el resumen de Curtis pasaron a la página Curtis.
+  - En el celular, 5 pestañas: la última es «Más» (Registro, Foco, Curtis y Ajustes).
+  - La frase de abajo del nombre ya no se mueve (cambia una vez al día). La frase del día ya no la pide Curtis solo.
+  - Pasos chicos y tareas dentro son ahora una sola cosa: «Pasos (tareas dentro)». Curtis también parte en pasos de esa forma.
+  - Un solo botón para cotizar en el proyecto. La licencia pasa a una cotización de Curtis, y de ahí a Zoho y a la factura.
+  - Las bitácoras NIHR se esconden si no ponés mínimo de horas ni tenés ninguna.
+  - Copia de seguridad: Ajustes → «Guardar copia en Drive» (archivo en «Curtis · Copias»). Si pasan 7 días sin copia, aparece un aviso.
+  - Factura legal: no encontré que Zoho emita la FEL de Guatemala. Curtis lleva el control y cada factura tiene un campo para el número FEL de la SAT.
+  - Pruebas: 124/124 nuevas + 31/31 de v4. Drive: comprobado con una búsqueda real (solo lectura) que responde como el panel espera.

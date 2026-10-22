@@ -504,6 +504,12 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
 .ccard-t { font-family: var(--f-head); font-weight: 650; font-size: 1.25rem; overflow-wrap: anywhere; }
 .nudge-card { display: grid; gap: 10px; border-left: 4px solid var(--yellow); }
 .pcard.pcard-new { border: 2px dashed var(--line); }
+@media (max-width: 560px) { .hero .ring-box { display: none; } }
+.mas-bg { place-items: end stretch; padding: 0; }
+.mas { width: 100%; max-width: none; border-radius: 20px 20px 0 0; padding: 14px 14px calc(18px + env(safe-area-inset-bottom, 0px)); gap: 4px; }
+.mas-row { display: flex; gap: 14px; align-items: center; border: 0; background: none; padding: 12px; border-radius: 12px; text-align: left; color: var(--ink); width: 100%; }
+.mas-row:hover { background: var(--surface-2); }
+.mas-row span { display: grid; gap: 1px; } .mas-row b { font-size: 1.02rem; } .mas-row small { color: var(--muted); }
 /* kpis */
 .kpis { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
 .kpis.small { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); }
@@ -789,12 +795,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     return svg;
   }
   const TAGLINES = ['explorador del caos creativo', 'guía de campo para cerebros inquietos', 'curador de ardillas', 'cartógrafo de pendientes', 'domador de pestañas abiertas', 'expedición al foco', 'editor de tus distracciones', 'especie protegida: tu tiempo', 'hábitat natural: la fecha de entrega', 'avistamiento del día: una tarea terminada', 'documentando lo que sí hiciste', 'temporada de cerrar pendientes'];
-  let tagIdx = Math.floor(Date.now() / 9000) % TAGLINES.length;
-  const tagline = () => h('span', { class: 'tagline', text: TAGLINES[tagIdx] });
-  setInterval(() => {
-    tagIdx = (tagIdx + 1) % TAGLINES.length;
-    document.querySelectorAll('.tagline').forEach((el) => { el.textContent = TAGLINES[tagIdx]; el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia'); });
-  }, 9000);
+  // una por día: cambia, pero no se mueve en la pantalla
+  const tagline = () => h('span', { class: 'tagline', text: TAGLINES[Math.floor(Date.now() / 864e5) % TAGLINES.length] });
   const isoLocal = (d) => d.toLocaleDateString('en-CA');
   const hoy = () => isoLocal(new Date());
   const mesActual = () => hoy().slice(0, 7);
@@ -971,6 +973,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     parts.push(pend.length + hechas.length ? hechas.length + ' de ' + (pend.length + hechas.length) + ' listas hoy.' : 'Nada con fecha de hoy.');
     if (antes.length) parts.push(antes.length + (antes.length === 1 ? ' atrasada.' : ' atrasadas.'));
     if (trab.length) parts.push(trab.length + ' esperando a otros.');
+    const nc = gcalDel(hoy()).length; if (nc) parts.push(nc + (nc === 1 ? ' cita hoy.' : ' citas hoy.'));
     if (prox && isDay(prox.entrega)) { const d = diffDays(prox.entrega); parts.push('Próxima entrega: ' + prox.nombre + (d < 0 ? ' (se pasó la fecha).' : d === 0 ? ', hoy.' : ', ' + countdown(prox.entrega) + '.')); }
     return parts.join(' ');
   }
@@ -1002,19 +1005,38 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     if (!force && S.gcal.range === key) return;
     S.gcal.range = key; S.gcal.cargando = true;
     try {
-      const res = await S.mcp.callTool(GCAL, 'list_events', { startTime: r.from + 'T00:00:00', endTime: r.to + 'T23:59:00', orderBy: 'startTime', pageSize: 250 });
-      const pl = res && res.payload; const list = (pl && (pl.events || pl.items)) || [];
-      S.gcal.events = list.filter((e) => e && e.status !== 'cancelled').map((e) => ({
-        id: String(e.id || ''), titulo: e.summary || '(sin título)',
+      if (!S.gcal.cals) {
+        try { const rc = await S.mcp.callTool(GCAL, 'list_calendars', {}); const pc = (rc && rc.payload) || {}; S.gcal.cals = (pc.calendars || pc.items || []).map((c) => ({ id: String(c.id || ''), nombre: c.summary || c.id || 'Calendario' })).filter((c) => c.id); }
+        catch (e) { S.gcal.cals = [{ id: 'primary', nombre: 'Tu calendario' }]; }
+      }
+      const usar = S.gcal.cals.filter(calActivo);
+      const list = [];
+      for (const c of usar) {
+        const args = { startTime: r.from + 'T00:00:00', endTime: r.to + 'T23:59:00', orderBy: 'startTime', pageSize: 250 };
+        if (c.id !== 'primary') args.calendarId = c.id;
+        try { const res = await S.mcp.callTool(GCAL, 'list_events', args); const pl = (res && res.payload) || {}; (pl.events || pl.items || []).forEach((e) => list.push(Object.assign({ _cal: c.nombre }, e))); }
+        catch (e) { if (e && (e.code === 'not_in_manifest' || e.code === 'needs_reauth' || e.code === 'server_not_connected')) throw e; }
+      }
+      const vistos = new Set();
+      S.gcal.events = list.filter((e) => e && e.status !== 'cancelled' && !vistos.has(e.id) && vistos.add(e.id)).map((e) => ({
+        id: String(e.id || ''), titulo: String(e.summary || '(sin título)').trim(), cal: e._cal || '',
         inicio: (e.start && (e.start.dateTime || e.start.date)) || '', fin: (e.end && (e.end.dateTime || e.end.date)) || '',
         todoDia: !!(e.start && e.start.date && !e.start.dateTime), lugar: e.location || '', link: e.htmlLink || '',
         gente: (e.attendees || []).filter((a) => !a.self).map((a) => a.displayName || a.email).slice(0, 6),
-      })).filter((e) => e.inicio);
+      })).filter((e) => e.inicio).sort((a, b) => String(new Date(a.inicio).getTime() || 0).padStart(15, '0').localeCompare(String(new Date(b.inicio).getTime() || 0).padStart(15, '0')));
       S.gcal.err = ''; S.gcal.ok = true; S.gcal.perm = 'granted';
     } catch (e) { S.gcal.err = mcpErr(e, GCAL); S.gcal.range = ''; if (e && e.code === 'not_in_manifest') S.gcal.perm = 'denied'; }
     S.gcal.cargando = false; renderMain();
   }
-  const evDia = (e) => String(e.inicio).slice(0, 10);
+  // la hora viene en hora universal: el día se calcula en tu hora local
+  const evDia = (e) => (e.todoDia || !/T/.test(String(e.inicio)) ? String(e.inicio).slice(0, 10) : isoLocal(new Date(e.inicio)));
+  const calActivo = (c) => { const m = ajuste('calendarios', null); if (m && typeof m === 'object' && c.id in m) return !!m[c.id]; return !/#holiday@|#contacts@|#weeknum@/.test(c.id); };
+  function calendariosAjuste() {
+    if (!S.mcp) return h('p', { class: 'hint', text: 'Google Calendar no está disponible en esta vista.' });
+    if (!S.gcal.cals) return h('button', { type: 'button', class: 'btn soft small', onclick: async () => { await cargarGcal(true); renderDrawer(true); } }, icon('calendar', 'sm'), 'Buscar mis calendarios');
+    return h('div', { class: 'subs' }, S.gcal.cals.map((c) => h('label', { class: 'qa' }, h('button', { type: 'button', class: 'switch', role: 'switch', 'aria-checked': String(calActivo(c)), 'aria-label': (calActivo(c) ? 'Dejar de leer ' : 'Leer ') + c.nombre, onclick: async () => { const m = Object.assign({}, ajuste('calendarios', {}) || {}); m[c.id] = !calActivo(c); S.ajustes = Object.assign({}, S.ajustes, { calendarios: m }); await saveAjustes({ calendarios: m }); renderDrawer(true); cargarGcal(true); } }), h('span', { text: c.nombre + (/import\.calendar/.test(c.id) ? ' (importado, ej. iCloud)' : '') }))),
+      h('p', { class: 'hint', text: 'Los calendarios importados (como iCloud) los actualiza Google cada cierto tiempo, no al instante.' }));
+  }
   const evHora = (e) => (e.todoDia ? 'Todo el día' : new Date(e.inicio).toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }));
   const gcalDel = (iso) => S.gcal.events.filter((e) => evDia(e) === iso);
   const reunionDe = (e) => S.items.find((it) => it.gcalId && it.gcalId === e.id);
@@ -1022,14 +1044,14 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   function meetRow(e) {
     const ex = reunionDe(e);
     return h('div', { class: 'meet' }, h('span', { class: 'meet-h', text: evHora(e) }),
-      h('span', { class: 'meet-t' }, e.titulo, e.gente.length || e.lugar ? h('small', { text: [e.gente.join(', '), e.lugar].filter(Boolean).join(' · ') }) : null),
+      h('span', { class: 'meet-t' }, e.titulo, e.gente.length || e.lugar || e.cal ? h('small', { text: [e.gente.join(', '), e.lugar, e.cal].filter(Boolean).join(' · ') }) : null),
       h('span', { style: 'display:flex;gap:4px' },
         h('button', { type: 'button', class: 'btn ' + (ex ? 'soft' : 'forest') + ' small', onclick: () => notasDeEvento(e) }, icon(ex ? 'edit' : 'users', 'sm'), ex ? 'Ver notas' : 'Activar notas de reunión'),
         e.link ? h('a', { class: 'icon-btn', href: e.link, target: '_blank', rel: 'noopener', 'aria-label': 'Abrir en Google Calendar', title: 'Abrir en Google Calendar' }, icon('external', 'sm')) : null));
   }
   function gcalEstado() {
     if (!S.mcp) return null;
-    if (S.gcal.ok) return h('span', { class: 'gcal-chip', title: 'Solo lectura' }, icon('calendar', 'sm'), 'Google Calendar');
+    if (S.gcal.ok) return h('span', { class: 'gcal-chip', title: 'Solo lectura: ' + (S.gcal.cals || []).filter(calActivo).map((c) => c.nombre).join(', ') }, icon('calendar', 'sm'), (S.gcal.cals || []).filter(calActivo).length > 1 ? (S.gcal.cals || []).filter(calActivo).length + ' calendarios' : 'Google Calendar');
     if (S.gcal.cargando) return h('span', { class: 'hint', text: 'Leyendo tu calendario…' });
     if (S.gcal.perm === 'denied') return h('span', { class: 'hint', text: 'Google Calendar sin permiso' });
     return h('button', { type: 'button', class: 'btn soft small', onclick: () => cargarGcal(true) }, icon('calendar', 'sm'), 'Conectar Google Calendar');
@@ -1047,6 +1069,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     trabadas().filter((it) => Date.now() - (it.actualizado || 0) > 3 * 864e5).slice(0, 1).forEach((it) => out.push({ icon: 'pause', text: 'Hace ' + Math.floor((Date.now() - it.actualizado) / 864e5) + ' días esperás' + (it.con_quien ? ' a ' + it.con_quien : '') + ' por «' + it.titulo + '». ¿Le escribís hoy?', go: () => openItem(it.id, 'ask') }));
     proyActivos().filter((p) => isDay(p.entrega) && diffDays(p.entrega) >= 0 && diffDays(p.entrega) <= 3 && !p.driveUrl).slice(0, 1).forEach((p) => out.push({ icon: 'package', text: '«' + p.nombre + '» se entrega ' + countdown(p.entrega) + '. Prepará la entrega.', go: () => go('proyecto', p.id) }));
     proyActivos().filter((p) => proyStats(p).total === 0).slice(0, 1).forEach((p) => out.push({ icon: 'sparkle', text: '«' + p.nombre + '» no tiene tareas. ¿Curtis te lo ordena?', go: () => { S.drawer = { kind: 'chat-proyecto', id: p.id, focus: 'ask' }; renderDrawer(true); } }));
+    const uc = ajuste('ultimaCopia', ''); if (S.mcp && S.fileArgs && S.items.length >= 5 && (!uc || diffDays(uc) <= -7)) out.push({ icon: 'package', text: uc ? 'Hace ' + -diffDays(uc) + ' días que no guardás copia de Curtis. Es un toque.' : 'Guardá tu primera copia de Curtis en Drive. Es un toque.', go: () => { guardarCopia(); } });
     const atr = hoyStats().antes; if (atr.length >= 3) out.push({ icon: 'alert', text: 'Tenés ' + atr.length + ' atrasadas. Pasalas a hoy y empezá limpio.', go: () => go('tareas') });
     return out.slice(0, 2);
   }
@@ -1118,7 +1141,15 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       sinArea.map((p) => navP(p, false)),
       S.proyectos.length ? null : h('p', { class: 'hint', style: 'padding:4px 10px', text: 'Todavía no hay proyectos.' }),
       h('div', { class: 'side-foot' }, h('button', { type: 'button', class: 'nav-btn', onclick: abrirAjustes }, icon('sliders'), 'Ajustes')));
-    put($('#tabbar'), NAV.map(([k, l, ic]) => h('button', { type: 'button', class: 'tab-btn', 'aria-current': cur === k ? 'page' : null, onclick: () => go(k) }, icon(ic, 'lg'), l)));
+    const MAS = ['registro', 'foco', 'curtis'];
+    put($('#tabbar'), NAV.filter(([k]) => !MAS.includes(k)).map(([k, l, ic]) => h('button', { type: 'button', class: 'tab-btn', 'aria-current': cur === k ? 'page' : null, onclick: () => go(k) }, icon(ic, 'lg'), l)),
+      h('button', { type: 'button', class: 'tab-btn', 'aria-current': MAS.includes(cur) ? 'page' : null, 'aria-label': 'Más: Registro, Foco, Curtis y Ajustes', onclick: abrirMas }, icon('dots', 'lg'), MAS.includes(cur) ? NAV.find(([k]) => k === cur)[1] : 'Más'));
+  }
+  function abrirMas() {
+    const it = (k, l, ic, sub, fn) => h('button', { type: 'button', class: 'mas-row', onclick: () => { hideModal(); fn ? fn() : go(k); } }, icon(ic, 'lg'), h('span', {}, h('b', { text: l }), h('small', { text: sub })));
+    showModal(h('div', { class: 'modal-bg mas-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+      h('div', { class: 'modal mas', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Más' },
+        it('registro', 'Registro', 'book', 'Reuniones, metas y bitácoras'), it('foco', 'Foco', 'timer', 'Reloj para una sola tarea'), it('curtis', 'Curtis', 'brain', 'Chat, lo que sabe de vos y la guía'), it('', 'Ajustes', 'sliders', 'Calendarios, copia de seguridad, plantillas', abrirAjustes))), hideModal);
   }
   function typingIn(rootSel) { const a = document.activeElement; return a && a.closest && a.closest(rootSel) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName); }
   function renderMain(force) {
@@ -1305,11 +1336,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const saludo = hr < 12 ? 'Buenos días' : hr < 19 ? 'Buenas tardes' : 'Buenas noches';
     const { pend, hechas, antes } = hoyStats();
     const total = pend.length + hechas.length;
-    const now = pendientesOrden()[0]; const trab = trabadas(); const prox = proyActivos()[0];
-    const min = Number(ajuste('horasMin', 0)) || 0; const hm = horasMes();
+    const now = pendientesOrden()[0];
     const loading = !(S.loadedItems && S.loadedProy);
-    const stat = (color, k, v, s, onclick) => h('button', { type: 'button', class: 'stat', onclick }, h('span', { class: 'stat-k' }, h('span', { class: 'dot', style: 'background:' + color }), k), h('span', { class: 'stat-v' }, v), s ? h('span', { class: 'stat-s', text: s }) : null);
-    const proxD = prox && isDay(prox.entrega) ? diffDays(prox.entrega) : null;
     const st = S.asking.get('frase');
     const hero = h('section', { class: 'hero', id: 'resumen', 'aria-label': 'Resumen del día' }, topo(),
       h('div', { class: 'hero-top' },
@@ -1317,13 +1345,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
           h('p', { class: 'hero-date' }, icon(hr >= 6 && hr < 19 ? 'sun' : 'moon', 'sm'), cap(new Date().toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))),
           h('p', { class: 'hero-line', text: loading ? 'Abriendo tu registro…' : resumenLocal() })),
         ring(total ? hechas.length / total : 0, total ? hechas.length + '/' + total : '0', 'hoy')),
-      h('div', { class: 'quote-row' }, h('p', { class: 'quote fade', id: 'frase' }, icon('quote'), h('span', { text: st && st.text ? st.text : fraseHoy() })),
-        S.sample && !S.sampleOff ? h('button', { type: 'button', class: 'icon-btn', title: 'Que Curtis me escriba una frase', 'aria-label': 'Nueva frase de Curtis', disabled: st ? true : null, onclick: () => pedirFrase(true) }, icon('sparkle')) : null),
-      h('div', { class: 'stats' },
-        stat('var(--yellow)', 'Para hoy', String(pend.length), antes.length ? antes.length + ' atrasadas' : 'con fecha de hoy', () => go('tareas')),
-        stat('var(--lake)', 'Esperando', String(trab.length), trab[0] ? 'a ' + (trab[0].con_quien || 'alguien') : 'nada trabado', () => go('tareas')),
-        stat(prox ? colorVar(prox.color) : 'var(--moss)', 'Próxima entrega', proxD == null ? '—' : proxD === 0 ? 'Hoy' : proxD < 0 ? 'Pasó' : [String(proxD), h('small', { text: proxD === 1 ? ' día' : ' días' })], prox ? (prox.icono || '') + ' ' + prox.nombre : 'sin proyectos activos', () => (prox ? go('proyecto', prox.id) : go('proyectos'))),
-        stat('var(--forest)', 'Horas NIHR', [num(hm), h('small', { text: min ? ' / ' + num(min) + ' h' : ' h' })], min ? (hm >= min ? 'Mínimo cumplido' : 'Faltan ' + num(Math.max(0, min - hm)) + ' h') : 'Poné tu mínimo', () => { S.registroTab = 'bitacoras'; go('registro'); })),
+      h('p', { class: 'quote fade', id: 'frase' }, icon('quote'), h('span', { text: st && st.text ? st.text : fraseHoy() })),
+      loading ? null : (() => { const inv = invitaciones(); return inv.length ? h('div', { class: 'nudges' }, inv.slice(0, 1).map((n) => h('button', { type: 'button', class: 'nudge', onclick: n.go }, icon(n.icon), n.text, icon('right', 'sm go')))) : null; })(),
       now ? h('div', { class: 'now-strip', id: 'ahora' },
         h('span', { class: 'now-label' }, icon('arrow', 'sm'), 'Ahora'),
         h('p', { class: 'now-title', text: now.titulo || 'Sin título' }),
@@ -1334,19 +1357,17 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
           h('button', { type: 'button', class: 'btn soft', onclick: () => { patchItem(now.id, { estado: 'esperando' }); openItem(now.id, 'con_quien'); } }, icon('pause', 'sm'), 'Me trabé'),
           h('button', { type: 'button', class: 'btn soft', onclick: () => openItem(now.id, 'ask') }, icon('sparkle', 'sm'), 'Preguntarle a Curtis')))
         : (loading ? null : h('div', { class: 'now-strip' }, h('span', { class: 'now-label' }, icon('arrow', 'sm'), 'Ahora'), h('p', { class: 'muted', style: 'margin:0', text: 'Nada pendiente. Tocá + para anotar lo próximo.' }))),
-      loading ? null : (() => { const inv = invitaciones(); return inv.length ? h('div', { class: 'nudges' }, inv.map((n) => h('button', { type: 'button', class: 'nudge', onclick: n.go }, icon(n.icon), n.text, icon('right', 'sm go')))) : null; })(),
-      aiSummary());
+    );
     const hoyList = [...antes, ...pend.filter((x) => x.fecha === hoy())];
+    const citas = gcalDel(hoy());
+    const manana = gcalDel(addDays(hoy(), 1));
     return [
       hero,
-      h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Tu tiempo' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => { S.tareasModo = 'calendario'; go('tareas'); } }, 'Calendario grande')),
-        h('div', { class: 'two' }, calendario(), fechasLimiteCard(21))),
-      gcalDel(hoy()).length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Reuniones de hoy' }), h('span', { class: 'gcal-chip' }, icon('calendar', 'sm'), 'Google Calendar')), h('div', { class: 'card pad', style: 'padding-block:6px' }, gcalDel(hoy()).map(meetRow))) : null,
+      h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Citas de hoy' }), gcalEstado()),
+        citas.length ? h('div', { class: 'card pad', style: 'padding-block:6px' }, citas.map(meetRow))
+          : h('p', { class: 'empty card', text: S.gcal.ok ? 'Hoy no tenés citas.' + (manana.length ? ' Mañana: ' + manana.map((e) => evHora(e) + ' ' + e.titulo).join(' · ') + '.' : '') : S.gcal.err || 'Conectá Google Calendar para ver tus citas aquí.' })),
       h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Hoy' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('tareas') }, 'Ver todas')),
-        h('ul', { class: 'rows' }, hoyList.slice(0, 7).flatMap((it) => taskRow(it, { showProj: true })), addRow('Agregar tarea para hoy', { fecha: hoy() }))),
-      proyActivos().length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Proyectos activos' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('proyectos') }, 'Ver todos')),
-        h('div', { class: 'gallery' }, proyActivos().slice(0, 3).map(pcard))) : null,
-      guia(),
+        h('ul', { class: 'rows' }, filasAnidadas(hoyList.slice(0, 9), { showProj: true }), addRow('Agregar tarea para hoy', { fecha: hoy() }))),
     ];
   }
   function aiSummary() {
@@ -1531,8 +1552,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const tools = h('div', { class: 'tools-row' },
       p.estado !== 'terminado' ? h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Entregar proyecto') : h('button', { type: 'button', class: 'btn soft', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Volver a entregar'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => crearCarpetasBoton(p.id) }, icon('folder', 'sm'), p.driveFolderId ? 'Agregar carpetas de trabajo' : 'Carpetas de trabajo en Drive'),
-      h('button', { type: 'button', class: 'btn soft', onclick: () => { const ya = S.cotizaciones.filter((c) => c.proyecto === p.id).sort((a, b) => (b.actualizado || 0) - (a.actualizado || 0))[0]; if (ya) abrirCot(ya); else nuevaCotizacion({ titulo: 'Cotización — ' + (p.nombre || 'proyecto'), cliente: p.cliente || '', proyecto: p.id, contexto: p.descripcion || '', lineas: [{ id: uid(), tipo: 'titulo', texto: p.nombre || 'Propuesta' }] }); } }, icon('receipt', 'sm'), S.cotizaciones.some((c) => c.proyecto === p.id) ? 'Ver cotización' : 'Cotización rápida'),
-      h('button', { type: 'button', class: 'btn soft', onclick: () => abrirCotizacion(p.id) }, icon('receipt', 'sm'), 'Cotización en Zoho'),
+      h('button', { type: 'button', class: 'btn soft', onclick: () => { const ya = S.cotizaciones.filter((c) => c.proyecto === p.id).sort((a, b) => (b.actualizado || 0) - (a.actualizado || 0))[0]; if (ya) abrirCot(ya); else nuevaCotizacion({ titulo: 'Cotización — ' + (p.nombre || 'proyecto'), cliente: p.cliente || '', proyecto: p.id, contexto: p.descripcion || '', lineas: [{ id: uid(), tipo: 'titulo', texto: p.nombre || 'Propuesta' }] }); } }, icon('receipt', 'sm'), S.cotizaciones.some((c) => c.proyecto === p.id) ? 'Ver cotización' : 'Cotizar'),
       !esLicencia(p) && !ilusIds.length ? h('button', { type: 'button', class: 'btn soft', onclick: () => abrirLicencia(p.id) }, icon('image', 'sm'), 'Licenciar ilustraciones') : null,
       h('button', { type: 'button', class: 'btn soft', onclick: () => { S.drawer = { kind: 'chat-proyecto', id: p.id, focus: 'ask' }; renderDrawer(true); } }, icon('sparkle', 'sm'), 'Curtis del proyecto'),
       plantillaCat && !ts.length ? h('button', { type: 'button', class: 'btn ok', onclick: async () => { for (const l of lines(plantillaCat)) await addItem({ titulo: l, proyecto: p.id, seccion: secs[0].id }); toast('Pasos de ' + p.categoria + ' cargados'); } }, icon('list', 'sm'), 'Cargar pasos de ' + p.categoria) : null);
@@ -1578,6 +1598,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   }
 
   // ================= REGISTRO =================
+  const usaBitacoras = () => Number(ajuste('horasMin', 0)) > 0 || S.items.some((it) => it.tipo === 'bitacora');
   async function nuevoRegistro(tipo) {
     const defaults = { reunion: { fecha: hoy(), estado: 'listo' }, bitacora: { fecha: hoy(), estado: 'listo' }, 'meta-mes': { fecha: mesActual() }, 'meta-año': { fecha: anioActual() } };
     const id = await addItem(Object.assign({ tipo }, defaults[tipo] || {}));
@@ -1595,7 +1616,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   }
   function viewRegistro() {
     const tab = S.registroTab;
-    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Registro' }, [['reuniones', 'Reuniones', 'users'], ['bitacoras', 'Bitácoras NIHR', 'book'], ['metas', 'Metas', 'target']].map(([k, l, ic]) =>
+    const conBit = usaBitacoras(); if (!conBit && tab === 'bitacoras') S.registroTab = 'reuniones';
+    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Registro' }, [['reuniones', 'Reuniones', 'users'], conBit ? ['bitacoras', 'Bitácoras NIHR', 'book'] : null, ['metas', 'Metas', 'target']].filter(Boolean).map(([k, l, ic]) =>
       h('button', { type: 'button', 'aria-pressed': String(tab === k), onclick: () => { S.registroTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
     const byDate = (a, b) => (b.fecha || '').localeCompare(a.fecha || '') || (b.creado || 0) - (a.creado || 0);
     let body;
@@ -1698,6 +1720,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     return [
       h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Tu asistente' }), h('h1', { text: 'Curtis' })), h('button', { type: 'button', class: 'btn soft small', onclick: abrirAjustes }, icon('sliders', 'sm'), 'Ajustes y etiquetas')),
       h('p', { class: 'quote', style: 'max-width:46ch' }, icon('quote'), h('span', { text: 'Voy aprendiendo cómo trabajás para ayudarte a hacer menos de lo repetitivo y cobrar mejor lo que hacés.' })),
+      aiSummary(),
+      guia(),
       h('section', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, icon('brain'), 'Así trabajás'), h('span', { class: 'hint', text: 'Calculado de tus datos' })),
         ins.map((x) => h('div', { class: 'insight' }, icon(x.icon), h('div', { style: 'display:grid;gap:6px' }, h('span', { text: x.text }), x.action ? h('button', { type: 'button', class: 'btn soft small', style: 'justify-self:start', onclick: x.action.fn }, x.action.label) : null)))),
       h('section', { class: 'card pad' },
@@ -1794,21 +1818,21 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     if (tipo === 'bitacora') extra.push(h('div', {}, h('p', { class: 'block-h' }, icon('arrow', 'sm'), 'Qué sigue'), bindField(autosize(h('textarea', { class: 'desc', placeholder: 'Lo próximo que toca' }, it.que_sigue || '')), id, 'que_sigue')));
     if (tipo === 'reunion') extra.push(h('button', { type: 'button', class: 'btn soft', style: 'justify-self:start', onclick: () => (it.notasHtml ? pendientesATareas(id, it.notasHtml) : acuerdosATareas(id)) }, icon('check', 'sm'), 'Pasar pendientes a tareas'));
     if (task && !it.padre) extra.push(tareasDentro(it));
-    if (task) extra.push(subtareas(it));
+    if (task && (it.subtareas || []).length) extra.push(subtareas(it));
     if (task) { const r = reunionDeTarea(it); extra.push(h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => { const ta = document.querySelector('.drawer textarea[data-f="notas"]'); const cur = Object.assign({}, item(it.id) || it); if (ta) cur.notas = ta.value; closeDrawer(); notasDeTarea(cur); } }, icon('users', 'sm'), r ? 'Abrir notas de la reunión' : 'Activar notas de reunión'), !r ? h('span', { class: 'hint', text: 'Si esta tarea es una reunión: abrí notas grandes y queda en Registro, conectada.' }) : null)); }
     if (task && it.minutosFoco) extra.push(h('p', { class: 'hint', text: 'Tiempo de foco: ' + it.minutosFoco + ' min' }));
     return h('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Detalle' }, top, confirmDel, titleEl, h('div', { class: 'props' }, props), notes, extra, chatBox('i:' + id));
   }
   function tareasDentro(it) {
     const hs = hijos(it.id).sort((a, b) => (a.estado === 'listo') - (b.estado === 'listo') || (a.creado || 0) - (b.creado || 0));
-    const add = h('input', { type: 'text', placeholder: 'Agregar tarea dentro y Enter', 'aria-label': 'Agregar tarea dentro' });
+    const add = h('input', { type: 'text', placeholder: 'Agregar paso y Enter', 'aria-label': 'Agregar tarea dentro' });
     add.addEventListener('keydown', async (ev) => {
       if (ev.key !== 'Enter') return; ev.preventDefault(); const t = add.value.trim(); if (!t) return; add.value = '';
       await addItem({ titulo: t, proyecto: it.proyecto || '', seccion: it.seccion || '', padre: it.id });
       setTimeout(() => { renderDrawer(true); const n = document.querySelector('input[aria-label="Agregar tarea dentro"]'); if (n) n.focus(); }, 60);
     });
-    return h('div', {}, h('p', { class: 'block-h' }, icon('list', 'sm'), 'Tareas dentro', hs.length ? h('span', { text: '· ' + hs.filter((x) => x.estado === 'listo').length + '/' + hs.length }) : null),
-      h('p', { class: 'hint', style: 'margin:-2px 0 6px', text: 'Tareas completas (con fecha, estado y chat) que viven dentro de esta. Los pasos chicos van abajo.' }),
+    return h('div', {}, h('p', { class: 'block-h' }, icon('list', 'sm'), 'Pasos (tareas dentro)', hs.length ? h('span', { text: '· ' + hs.filter((x) => x.estado === 'listo').length + '/' + hs.length }) : null),
+      h('p', { class: 'hint', style: 'margin:-2px 0 6px', text: 'Partí esta tarea en pasos chicos. Cada paso es una tarea con su fecha y estado.' }),
       h('div', { class: 'subs' }, hs.map((c) => h('div', { class: 'sub' + (c.estado === 'listo' ? ' done' : '') },
         h('button', { type: 'button', class: 'check', role: 'checkbox', 'aria-checked': String(c.estado === 'listo'), 'aria-label': 'Lista', onclick: (ev) => setEstado(c.id, c.estado === 'listo' ? 'por hacer' : 'listo', ev) }, c.estado === 'listo' ? icon('check', 'sm') : null),
         h('button', { type: 'button', class: 'sub-link', onclick: () => openItem(c.id) }, h('span', { text: c.titulo || 'Sin título' }), isDay(c.fecha) ? urgPill(c.fecha, c.estado) : null))),
@@ -1877,7 +1901,9 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       h('div', { class: 'drawer-top' }, h('b', { style: 'font-family:var(--f-head);font-size:1.4rem', text: 'Ajustes' }), h('span', { class: 'saved', id: 'saved' }), h('span', { class: 'spacer' }), h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Cerrar', onclick: closeDrawer }, icon('x'))),
       h('p', { class: 'hint', text: 'Aquí le enseñás a Curtis cómo te gusta trabajar. Lo cambiás una vez y se usa siempre. Todo se guarda solo cuando salís de cada campo.' }),
       sec('tag', 'Etiquetas', 'Sirven para agrupar cosas que no son del mismo proyecto. Ejemplo: «Freelance», «Ilustración», «Cliente difícil». Después filtrás Mis tareas y Proyectos por etiqueta. También las creás desde cualquier tarea.', tagRows, newTag),
-      sec('clock', 'Horas NIHR al mes', 'Tu mínimo de horas. Con esto Curtis te dice cuánto te falta cada mes.', minI),
+      sec('calendar', 'Calendarios que leo', 'Curtis lee (nunca cambia) los calendarios de tu Google. Si agregaste iCloud a Google, aparece aquí. Apagá los que no querés ver.', calendariosAjuste()),
+      sec('package', 'Copia de seguridad', 'Guarda todo lo de Curtis (tareas, proyectos, reuniones, dinero, clientes) en un archivo en tu Drive, en «' + COPIAS_FOLDER + '». Si algo se pierde, con esa copia se recupera.', copiaAjuste()),
+      sec('clock', 'Horas NIHR al mes', 'Solo si llevás bitácoras de horas. Si lo dejás vacío, las bitácoras se esconden.', minI),
       sec('edit', 'Tu firma', 'Tu nombre como ilustrador. Va en el crédito de las licencias y en las propuestas.', firmaI),
       sec('list', 'Columnas de cada proyecto nuevo', 'Las secciones con las que nace cada proyecto. Una por línea. Ejemplo: Brief, Diseño, Revisión, Entrega.', ta('plantillaSecciones', SECCIONES_BASE.join('\n'), 4)),
       sec('folder', 'Carpetas de trabajo en Drive', 'Lo que Curtis crea en Drive cuando tocás «Carpetas de trabajo» en un proyecto: donde guardás bocetos y versiones mientras trabajás. Una por línea.', ta('plantillaCarpetas', CARPETAS_BASE.join('\n'), 6)),
@@ -2005,9 +2031,9 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         if (!ok) return { ok: false, msg: 'El usuario dijo que no.' };
         await enqueue('svc/' + x.id, () => S.db.doc('servicios/' + x.id).update({ descripcion: txt, actualizado: Date.now() })); note('Escribió la descripción de «' + (x.titulo || '') + '»'); return { ok: true };
       } });
-    if (kind === 'i') tools.push({ name: 'agregar_pasos', description: 'Agrega pasos chicos (subtareas) a la tarea actual.',
+    if (kind === 'i') tools.push({ name: 'agregar_pasos', description: 'Parte la tarea actual en pasos chicos: cada paso queda como tarea dentro de ella.',
       inputSchema: { type: 'object', properties: { pasos: { type: 'array', items: { type: 'string' } } }, required: ['pasos'] },
-      execute: async (input) => { const it = item(id); if (!it) throw new Error('La tarea ya no existe'); const pasos = (Array.isArray(input.pasos) ? input.pasos : []).slice(0, 15).map((t) => ({ id: uid(), texto: String(t).slice(0, 200), hecho: false })); await patchItem(id, { subtareas: [...(it.subtareas || []), ...pasos] }); note('Agregó ' + pasos.length + ' pasos'); return { agregados: pasos.length }; } });
+      execute: async (input) => { const it = item(id); if (!it) throw new Error('La tarea ya no existe'); const pasos = (Array.isArray(input.pasos) ? input.pasos : []).slice(0, 15).map((t) => String(t).slice(0, 200)).filter(Boolean); const raiz = it.padre && item(it.padre) ? item(it.padre) : it; for (const t of pasos) await addItem({ titulo: t, proyecto: raiz.proyecto || '', seccion: raiz.seccion || '', padre: raiz.id }); note('Agregó ' + pasos.length + ' pasos'); return { agregados: pasos.length }; } });
     if (projId) tools.push(
       { name: 'crear_carpetas_de_trabajo', description: 'Crea la carpeta del proyecto actual en Drive («Cliente — Proyecto (año-mes)») con sus subcarpetas de trabajo. Pide permiso antes.',
         inputSchema: { type: 'object', properties: { carpetas: { type: 'array', items: { type: 'string' } } } },
@@ -2707,7 +2733,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
               draw();
             } }, icon('book', 'sm'), 'PDF en Drive') : null,
             c.pdfUrl ? h('a', { class: 'btn soft', href: c.pdfUrl, target: '_blank', rel: 'noopener' }, icon('external', 'sm'), 'Ver PDF') : null,
-            S.mcp ? h('button', { type: 'button', class: 'btn soft', onclick: () => { hideModal(); abrirCotizacion(projId, [{ nombre: 'Licencia de ' + r.n + ' ilustraciones — ' + (c.producto || 'producto'), descripcion: r.ex[0] + ', ' + r.du[0] + ', ' + r.te[0] + ', ' + r.ti[0].toLowerCase(), cantidad: 1, precio: c.modelo === 'unico' ? r.unico : r.anticipo }].concat(r.diseno ? [{ nombre: 'Diseño y adaptación — ' + (c.producto || 'producto'), descripcion: '', cantidad: 1, precio: r.diseno }] : [])); } }, icon('receipt', 'sm'), 'Pasar a Zoho') : null),
+            h('button', { type: 'button', class: 'btn soft', onclick: () => { hideModal(); nuevaCotizacion({ titulo: 'Licencia — ' + (c.producto || p.nombre || 'producto'), cliente: p.cliente || '', proyecto: projId, contexto: ta.value.slice(0, 1500), lineas: [{ id: uid(), tipo: 'titulo', texto: 'Licencia de ilustraciones' }, { id: uid(), tipo: 'servicio', nombre: 'Licencia de ' + r.n + ' ilustraciones — ' + (c.producto || 'producto'), cantidad: 1, precio: c.modelo === 'unico' ? r.unico : r.anticipo, formato: 'Archivos en alta resolución para imprenta', descripcion: r.ex[0] + ', ' + r.du[0] + ', ' + r.te[0] + ', ' + r.ti[0].toLowerCase() + '.' }].concat(r.diseno ? [{ id: uid(), tipo: 'servicio', nombre: 'Diseño y adaptación — ' + (c.producto || 'producto'), cantidad: 1, precio: r.diseno, formato: '', descripcion: '' }] : []) }); } }, icon('receipt', 'sm'), 'Pasar a cotización')),
           h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn', onclick: hideModal }, 'Cerrar')))), hideModal);
     };
     draw();
@@ -3082,6 +3108,35 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     return [h('p', { class: 'hint', text: drive ? 'Subí lo que sea: briefs, referencias, fotos, entregables. Si elegís un proyecto con carpeta, va a esa carpeta de Drive; si no, a «' + BANDEJA + '». Curtis lo anota aquí para encontrarlo rápido.' : 'Subí imágenes, PDF, video o texto. Sin Drive en esta vista, se guardan en Curtis (hasta 20 MB cada uno).' }),
       h('div', { class: 'card pad', style: 'display:grid;gap:10px' }, h('label', { class: 'field' }, h('span', { text: 'Guardar en' }), sel), zonaSubir(() => S.subirA || '', 'Arrastrá aquí tus archivos')),
       list.length ? h('div', { class: 'card arch-list' }, list.map((a) => archivoRow(a, true))) : h('p', { class: 'empty card', text: 'Todavía no subiste archivos.' })];
+  }
+
+  // ================= COPIA DE SEGURIDAD =================
+  const COPIAS_FOLDER = 'Curtis · Copias';
+  const COLECCIONES = ['items', 'proyectos', 'areas', 'clientes', 'cotizaciones', 'facturas', 'suscripciones', 'movimientos', 'servicios', 'memoria', 'etiquetas', 'ilustraciones', 'archivos'];
+  async function guardarCopia() {
+    if (!S.db) { toast('Tu registro todavía no abrió.'); return; }
+    if (!(S.mcp && S.fileArgs)) { toast('Desde esta vista no se puede guardar en Drive.'); return; }
+    const ok = await pedirPermiso('¿Guardo una copia de todo en tu Drive?', ['Carpeta: «' + COPIAS_FOLDER + '»', 'Archivo: Curtis copia ' + hoy() + '.json', 'Incluye tareas, proyectos, áreas, reuniones, clientes, cotizaciones, facturas, gastos y lo que Curtis recuerda.', 'No se borra ni se reemplaza nada.'], 'Sí, guardala');
+    if (!ok) return;
+    toast('Armando la copia…');
+    try {
+      const datos = { app: 'Curtis', version: 8, fecha: hoy(), creado: Date.now(), colecciones: {} };
+      // lo que el panel ya tiene abierto, al día
+      const enS = { items: S.items, proyectos: S.proyectos, areas: S.areas, clientes: S.clientes, cotizaciones: S.cotizaciones, facturas: S.facturas, suscripciones: S.suscripciones, movimientos: S.movimientos, servicios: S.servicios, memoria: S.memoria, etiquetas: S.etiquetas, ilustraciones: S.ilustraciones, archivos: S.archivos };
+      COLECCIONES.forEach((c) => { datos.colecciones[c] = JSON.parse(JSON.stringify(enS[c] || [])); });
+      datos['ajustes/general'] = JSON.parse(JSON.stringify(S.ajustes || {})); datos['curtis/chat'] = { chat: S.curtisChat || [] };
+      const blob = new Blob([JSON.stringify(datos, null, 1)], { type: 'application/json' });
+      const fo = await ensurePath('', COPIAS_FOLDER, {});
+      const f = await subirArchivo(blob, fo.id, 'Curtis copia ' + hoy() + '.json');
+      S.ajustes = Object.assign({}, S.ajustes, { ultimaCopia: hoy(), ultimaCopiaUrl: f.viewUrl || '' });
+      await saveAjustes({ ultimaCopia: hoy(), ultimaCopiaUrl: f.viewUrl || '' });
+      toast('Copia guardada en Drive'); renderDrawer(true);
+    } catch (e) { toast(e && e.code ? mcpErr(e, 'Google Drive') : 'No se pudo guardar la copia.'); }
+  }
+  function copiaAjuste() {
+    const u = ajuste('ultimaCopia', '');
+    return h('div', { class: 'row-actions', style: 'align-items:center' }, h('button', { type: 'button', class: 'btn forest small', onclick: guardarCopia }, icon('package', 'sm'), 'Guardar copia en Drive'),
+      u ? h('span', { class: 'hint' }, 'Última: ' + fmtDate(u, { day: 'numeric', month: 'long' }) + ' ', ajuste('ultimaCopiaUrl', '') ? h('a', { href: ajuste('ultimaCopiaUrl', ''), target: '_blank', rel: 'noopener', text: 'ver' }) : null) : h('span', { class: 'hint', text: 'Todavía no hay copia.' }));
   }
 
   // ================= NOTAS DE REUNIÓN (una sola reunión conectada a la cita o a la tarea) =================
@@ -3462,18 +3517,20 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         field('Concepto', 'concepto'), field('Cliente', 'cliente', { list: 'cli-list-m' }), h('datalist', { id: 'cli-list-m' }, S.clientes.map((c) => h('option', { value: c.nombre }))),
         h('label', { class: 'field' }, h('span', { text: 'Proyecto' }), pSel),
         h('div', { class: 'opt-grid' }, field('Fecha', 'fecha', { type: 'date' }), field('Vence', 'vence', { type: 'date' }), h('label', { class: 'field' }, h('span', { text: 'Estado' }), est), field('Pagada el', 'pagadoEl', { type: 'date' })),
+        field('Número FEL (SAT)', 'fel', { placeholder: 'Número de autorización de tu factura electrónica' }),
+        h('p', { class: 'hint', style: 'margin-top:-6px', text: 'Curtis lleva el control. La factura legal en Guatemala es la FEL de la SAT, que emitís con tu certificador; anotá aquí su número.' }),
         field('Notas', 'notas'),
         h('div', { class: 'row-actions', style: 'justify-content:space-between' },
           h('button', { type: 'button', class: 'btn soft', onclick: () => confirmar('¿Borrar la factura ' + (x.numero || '') + '?', x.zohoId ? 'Se borra de Curtis. En Zoho queda como está.' : 'Se borra de Curtis.', 'Borrar factura', () => enqueue('fac/' + id, () => S.db.doc('facturas/' + id).delete()).then(() => toast('Factura borrada'))) }, icon('trash', 'sm'), 'Borrar'),
           h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: hideModal }, 'Cancelar'),
-            h('button', { type: 'button', class: 'btn forest', onclick: () => { const c = clientePorNombre(x.cliente); patchFactura(id, { numero: String(x.numero || '').trim(), total: Math.max(0, Number(x.total) || 0), concepto: String(x.concepto || '').trim(), cliente: String(x.cliente || '').trim(), clienteId: c ? c.id : '', proyecto: x.proyecto || '', fecha: x.fecha || '', vence: x.vence || '', estado: x.estado, pagadoEl: x.estado === 'pagada' ? (x.pagadoEl || hoy()) : '', notas: String(x.notas || '').trim() }); hideModal(); toast('Factura guardada'); } }, 'Guardar'))))), hideModal);
+            h('button', { type: 'button', class: 'btn forest', onclick: () => { const c = clientePorNombre(x.cliente); patchFactura(id, { numero: String(x.numero || '').trim(), total: Math.max(0, Number(x.total) || 0), concepto: String(x.concepto || '').trim(), cliente: String(x.cliente || '').trim(), clienteId: c ? c.id : '', proyecto: x.proyecto || '', fecha: x.fecha || '', vence: x.vence || '', estado: x.estado, pagadoEl: x.estado === 'pagada' ? (x.pagadoEl || hoy()) : '', fel: String(x.fel || '').trim().slice(0, 80), notas: String(x.notas || '').trim() }); hideModal(); toast('Factura guardada'); } }, 'Guardar'))))), hideModal);
   }
   function facRow(f, conProyecto) {
     const p = proyecto(f.proyecto); const vencida = f.estado === 'pendiente' && isDay(f.vence) && diffDays(f.vence) < 0;
     return h('div', { class: 'fac-row' },
       h('button', { type: 'button', class: 'fac-main', onclick: () => abrirFactura(f.id) },
         h('b', { text: (f.numero || 'Factura') + ' · ' + (f.concepto || 'Sin concepto') }),
-        h('small', { text: [f.cliente, conProyecto && p ? p.nombre : '', isDay(f.fecha) ? 'emitida ' + fmtDate(f.fecha, { day: 'numeric', month: 'short' }) : '', f.estado === 'pagada' && f.pagadoEl ? 'pagada ' + fmtDate(f.pagadoEl, { day: 'numeric', month: 'short' }) : isDay(f.vence) ? 'vence ' + fmtDate(f.vence, { day: 'numeric', month: 'short' }) : '', f.zohoId ? 'Zoho ' + (f.zohoNumero || '') : ''].filter(Boolean).join(' · ') })),
+        h('small', { text: [f.cliente, conProyecto && p ? p.nombre : '', isDay(f.fecha) ? 'emitida ' + fmtDate(f.fecha, { day: 'numeric', month: 'short' }) : '', f.estado === 'pagada' && f.pagadoEl ? 'pagada ' + fmtDate(f.pagadoEl, { day: 'numeric', month: 'short' }) : isDay(f.vence) ? 'vence ' + fmtDate(f.vence, { day: 'numeric', month: 'short' }) : '', f.zohoId ? 'Zoho ' + (f.zohoNumero || '') : '', f.fel ? 'FEL ✓' : ''].filter(Boolean).join(' · ') })),
       h('span', { class: 'pill fac-' + (vencida ? 'vencida' : f.estado), text: vencida ? 'Vencida' : FAC_ESTADOS[f.estado] || f.estado }),
       h('span', { class: 'cot-total', text: money(f.total) }),
       f.estado === 'pendiente' ? h('button', { type: 'button', class: 'btn ok small', onclick: (ev) => marcarPagada(f.id, ev) }, icon('check', 'sm'), 'Pagada') : h('span'));
@@ -3547,6 +3604,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         S.mcp ? h('button', { type: 'button', class: 'btn soft', disabled: S.zohoLeyendo ? true : null, onclick: leerFacturasZoho }, icon('receipt', 'sm'), S.zohoLeyendo ? 'Leyendo Zoho…' : 'Leer facturas de Zoho') : null,
         h('button', { type: 'button', class: 'btn soft', onclick: async () => { const id = await crearFactura({ concepto: 'Factura' }); if (id) setTimeout(() => abrirFactura(id), 300); } }, icon('plus', 'sm'), 'Factura sin cotización'),
         S.zohoLeido ? h('span', { class: 'hint', text: 'Leído de Zoho a las ' + new Date(S.zohoLeido).toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }) }) : null),
+      h('p', { class: 'hint', text: 'Curtis lleva el control de lo que facturás y cobrás. La factura legal (FEL de la SAT) la emitís con tu certificador; abrí cada factura y anotá su número FEL.' }),
       list.length ? h('div', { class: 'card pad fac-list' }, list.map((f) => facRow(f, true))) : h('div', { class: 'card pad empty-state' }, icon('book', 'lg'), h('h3', { text: 'Todavía no hay facturas' }), h('p', { class: 'hint', text: 'Abrí una cotización y tocá «Crear factura». Cuando te paguen, la marcás como pagada y entra a tus números.' })),
       sueltas.length ? h('section', { class: 'card pad' }, h('div', { class: 'sec-h', style: 'margin:0' }, h('h2', { text: 'En Zoho y no en Curtis' }), h('span', { class: 'hint', text: sueltas.length + ' facturas' })),
         h('div', { class: 'fac-list' }, sueltas.map((z) => h('div', { class: 'fac-row' }, h('span', { class: 'fac-main' }, h('b', { text: z.numero + ' · ' + z.cliente }), h('small', { text: [z.fecha ? fmtDate(z.fecha, { day: 'numeric', month: 'short' }) : '', z.estado].filter(Boolean).join(' · ') })), h('span', { class: 'pill', text: z.estado }), h('span', { class: 'cot-total', text: money(z.total) }), h('button', { type: 'button', class: 'btn soft small', onclick: () => traerFacturaZoho(z) }, 'Traer'))))) : null,
@@ -3812,13 +3870,13 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         if (tipo === 'tarea') { if (!t) { toast('Escribí algo primero.'); return; } close(); const pid = S.view === 'proyecto' ? S.proyectoId : ''; const p = proyecto(pid); await addItem({ titulo: t, proyecto: pid, seccion: p && p.secciones && p.secciones[0] ? p.secciones[0].id : '', etiquetas: S.filtroTag ? [S.filtroTag] : [] }); toast(pid ? 'Anotado en ' + (p.nombre || 'el proyecto') : 'Anotado para hoy'); return; }
         close();
         const defaults = { reunion: { fecha: hoy(), estado: 'listo' }, bitacora: { fecha: hoy(), estado: 'listo' }, 'meta-mes': { fecha: mesActual() }, 'meta-año': { fecha: anioActual() } };
-        const id = await addItem(Object.assign({ tipo, titulo: t }, defaults[tipo])); if (id) openItem(id, t ? (tipo === 'bitacora' ? 'horas' : tipo === 'reunion' ? 'con_quien' : 'notas') : 'titulo');
+        const id = await addItem(Object.assign({ tipo, titulo: t }, defaults[tipo])); if (id) { if (tipo === 'reunion') abrirNotas(id); else openItem(id, t ? (tipo === 'bitacora' ? 'horas' : 'notas') : 'titulo'); }
       };
       inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); submit(); } });
       showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) close(); } },
         h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Anotar' },
           h('h3', {}, icon('plus'), 'Anotar'),
-          h('div', { class: 'chips' }, [['tarea', 'Tarea'], ['proyecto', 'Proyecto'], ['reunion', 'Reunión'], ['bitacora', 'Bitácora NIHR'], ['meta-mes', 'Meta del mes'], ['meta-año', 'Meta del año']].map(([k, l]) => h('button', { type: 'button', class: 'chip', 'aria-pressed': String(tipo === k), onclick: () => { tipo = k; draw(); } }, l))),
+          h('div', { class: 'chips' }, [['tarea', 'Tarea'], ['proyecto', 'Proyecto'], ['reunion', 'Reunión'], usaBitacoras() ? ['bitacora', 'Bitácora NIHR'] : null, ['meta-mes', 'Meta del mes'], ['meta-año', 'Meta del año']].filter(Boolean).map(([k, l]) => h('button', { type: 'button', class: 'chip', 'aria-pressed': String(tipo === k), onclick: () => { tipo = k; draw(); } }, l))),
           h('div', { class: 'field' }, inp, tipo === 'tarea' ? h('span', { class: 'hint', text: 'Queda con fecha de hoy' + (S.view === 'proyecto' && proyecto(S.proyectoId) ? ' en ' + proyecto(S.proyectoId).nombre : '') + '. Después lo cambiás.' }) : null),
           h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn soft', onclick: close }, 'Cancelar'), h('button', { type: 'button', class: 'btn forest', onclick: submit }, 'Anotar')))), close);
       inp.focus();
@@ -3838,6 +3896,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   const use = (n) => (window.claude && window.claude.use ? window.claude.use(n) : Promise.resolve(null));
   let fraseIntentada = false;
   function quizasFrase() {
+    return; // v8: la frase sale de las 30 propias; Curtis solo escribe una si se lo pedís
     if (fraseIntentada || !S.sample || !S.perms || !S.db || !S.loadedItems) return;
     if (S.frase && S.frase.fecha === hoy()) return;
     fraseIntentada = true;
