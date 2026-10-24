@@ -115,7 +115,16 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 - ✅ Orden del turno: **No'j → Iq' → Kej → E'** (empieza por Oriente). Empieza No'j y sigue guiando hasta que el turista pide otro.
 - ✅ Artesanos, talleres y comunidades: los recomienda **E'** (el camino).
 - ✅ Rumbo y color de cada guardián van en la app, con \*.
-- ⬜ La app todavía no cambia: falta CONSTRUYE.
+- ✅ **Iq'** (Norte · blanco · comunicar) recomienda: pausas y aire libre · qué contar del viaje · hablar con la gente · primeros pasos. Habla **fresco, directo, renovador**.
+  - ⚠️ Las frases en kaqchikel necesitan fuente y validación: no se inventan.
+- ✅ **E'** (Sur · amarillo · el camino) recomienda: artesanos y talleres · la mejor opción, directo · comida con carácter · comunidades cercanas (Antigua y Atitlán) · aventura y retos (cuando haya datos). Habla **alentador, orador, guía**.
+- **Kej** (Poniente · negro): rutas a pie, naturaleza, mercados. Las pausas pasan a Iq'.
+- **No'j** (Oriente · rojo): sin cambios.
+- ⏸️ PAUSA (24-oct). **Lista para el próximo CONSTRUYE:**
+  1. Cambiar los guardianes en la app (nombres, colores por rumbo, voces y respuestas).
+  2. Nuevo orden y arranque: empieza No'j.
+  3. Actualizar la tabla de los 20 nawales con la de NotebookLM (nombre clásico, símbolo, animal).
+  4. Actualizar el documento rector (v1.2) y el contexto para NotebookLM.
 
 ## 4. Producto (lo que existe)
 
