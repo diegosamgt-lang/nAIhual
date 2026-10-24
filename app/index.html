@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* =====================================================================
-   nAIhual 3.1 · sistema visual (tokens). Cambiar un token cambia toda la app.
+   nAIhual 3.2 · sistema visual (tokens). Cambiar un token cambia toda la app.
    Concepto: Antigua en piedra, cal y basalto. Muros encalados (fondo), basalto volcánico (tinta),
    añil de fachada (acento de rutas y enlaces) y los cuatro colores de los guardianes por rumbo*.
    Layout: app de celular en una columna (máx. 560px). Cada pantalla abre con una imagen, un mapa o una ilustración.
@@ -202,6 +202,9 @@ details.info[open] { flex-basis: 100%; }
 .brujula .art { background: var(--papel); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 8px; }
 .brujula .art > svg { display: block; width: 100%; height: auto; max-width: 420px; margin: 0 auto; }
 .brujula .note { font-size: 12.5px; }
+.bru-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.bru-test { width: 100%; border-collapse: collapse; font-size: 13px; }
+.bru-test th, .bru-test td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); }
 .beta-card { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: var(--r-md); border: 1.5px dashed var(--line-2); background: var(--papel); }
 .beta-card .row { display: flex; flex-wrap: wrap; gap: 8px; }
 .bform { display: flex; flex-direction: column; gap: 10px; }
@@ -435,7 +438,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.1 · 24-oct-2026';
+var VERSION = 'nAIhual 3.2 · 24-oct-2026';
 var INSTR_VERSION = 'reglas-fijas 3.1';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -644,8 +647,12 @@ var X3 = {
     introKicker: 'Qué es nAIhual', introTitle: 'La riqueza de Guatemala está en sus paisajes, y es gracias a su gente.',
     introBody: 'nAIhual te da contexto para que elijás con conciencia: de quién es, desde cuándo, qué lo hace especial. No impone y no pone a uno encima de otro.',
     compass: 'Brújula del paisaje', compassBody: 'Mirá hacia dónde está cada cosa y vas a saber dónde estás.',
-    compassNote: 'Fuentes: Lonely Planet y OK Antigua (24-oct-2026). * Rumbos y colores de los guardianes, por validar con un tata (Ajq’ij).',
-    north: 'Cerro de la Cruz', south: 'Volcán de Agua', west: 'Fuego · Acatenango', east: 'Sale el sol',
+    compassNote: 'Ángulos medidos desde el centro de Antigua con las coordenadas de Wikipedia (24-oct-2026). Si estás lejos del centro, cambian unos grados. El Cerro de la Cruz (≈) no tiene coordenadas publicadas: se mide con la prueba. * Rumbos y colores de los guardianes, por validar con un tata (Ajq’ij).',
+    north: 'Cerro de la Cruz', south: 'Volcán de Agua', west: 'Fuego · Acatenango', east: 'Sale el sol', fuego: 'Fuego', acate: 'Acatenango',
+    seeing: '¿Qué estás viendo enfrente?', seeingBody: 'Tocá el volcán que tenés enfrente y la brújula gira para que quede arriba.', northUp: 'Norte arriba',
+    sensorOn: 'Mover con el teléfono', sensorOff: 'Dejar quieta', sensorWait: 'Esperando el sensor del teléfono…', sensorCal: 'Apuntá la parte de arriba del teléfono a un volcán y tocá su nombre.', sensorLive: 'Se mueve con el teléfono.', sensorNo: 'Este teléfono no deja usar el sensor aquí. Tocá el volcán que ves y la brújula gira.',
+    testTitle: 'Probar la brújula (beta)', testBody: 'Parate en un lugar donde veás los volcanes. Teléfono derecho, con la parte de arriba apuntando a cada uno. Tocá su nombre cuando lo tengás enfrente. Primero el Volcán de Agua.', testNeed: 'Para medir, primero tocá «Mover con el teléfono».',
+    testFirst: 'Primero apuntá al Volcán de Agua.', expected: 'Esperado', measured: 'Medido', diff: 'Diferencia', testSave: 'Guardar la prueba', testSaved: 'Prueba guardada. Claude la puede leer.', match: '¿La brújula coincide con lo que ves?', yes: 'Sí', more: 'Más o menos', no: 'No', cerroMeasured: 'Cerro de la Cruz, medido:',
     betaKicker: 'Beta del fundador', betaTitle: 'Alimentá nAIhual', betaBody: 'Marcá lo que te gustó, avisá si un dato está mal o agregá un lugar. Claude lo lee, lo verifica y lo pasa al catálogo.',
     betaOpen: 'Abrir la beta', betaCount: function (n) { return n === 1 ? '1 anotación' : n + ' anotaciones'; },
     liked: 'Te gustó', like: 'Me gustó', likedTag: 'Le gustó al fundador', wrong: 'Dato mal', note: 'Nota',
@@ -654,7 +661,7 @@ var X3 = {
     moments: [['llegue', 'Llegué'], ['transporte', 'Transporte'], ['hotel', 'Hotel'], ['comida', 'Comida'], ['cerca', 'Qué hay cerca'], ['otro', 'Otro']],
     list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
     savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
-    kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo' },
+    kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo', brujula: 'Prueba de la brújula' },
     iaTag: 'Según la IA · confirmá en Google', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
     confirm: 'Confirmar', remove: 'Borrar', confirmed: 'Confirmado', toConfirm: 'Por confirmar', noLearned: 'Todavía no aprendió nada. Platicá con un guía.',
     notebooks: 'Libretas cargadas', notebooksBody: function (n) { return n ? n + (n === 1 ? ' libreta de tu Drive, cargada por Claude.' : ' libretas de tu Drive, cargadas por Claude.') : 'Todavía no hay libretas. Cuando tengás una en tu Drive, Claude la lee y la carga aquí.'; }
@@ -663,8 +670,12 @@ var X3 = {
     introKicker: 'What nAIhual is', introTitle: 'Guatemala’s wealth is in its landscapes, and it is thanks to its people.',
     introBody: 'nAIhual gives you context so you choose consciously: whose it is, since when, what makes it special. It does not impose and does not rank one over another.',
     compass: 'Landscape compass', compassBody: 'See where each landmark is and you will know where you are.',
-    compassNote: 'Sources: Lonely Planet and OK Antigua (Oct 24, 2026). * Guardians’ directions and colors, pending validation by a tata (Ajq’ij).',
-    north: 'Cerro de la Cruz', south: 'Agua volcano', west: 'Fuego · Acatenango', east: 'Sunrise',
+    compassNote: 'Angles measured from the center of Antigua with Wikipedia coordinates (Oct 24, 2026). Far from the center they shift a few degrees. Cerro de la Cruz (≈) has no published coordinates: the test measures it. * Guardians’ directions and colors, pending validation by a tata (Ajq’ij).',
+    north: 'Cerro de la Cruz', south: 'Agua volcano', west: 'Fuego · Acatenango', east: 'Sunrise', fuego: 'Fuego', acate: 'Acatenango',
+    seeing: 'What do you see in front of you?', seeingBody: 'Tap the volcano in front of you and the compass turns so it is on top.', northUp: 'North up',
+    sensorOn: 'Move with the phone', sensorOff: 'Keep still', sensorWait: 'Waiting for the phone sensor…', sensorCal: 'Point the top of the phone at a volcano and tap its name.', sensorLive: 'It moves with the phone.', sensorNo: 'This phone does not allow the sensor here. Tap the volcano you see and the compass turns.',
+    testTitle: 'Test the compass (beta)', testBody: 'Stand where you can see the volcanoes. Phone upright, top pointing at each one. Tap its name when it is in front of you. Agua volcano first.', testNeed: 'To measure, first tap «Move with the phone».',
+    testFirst: 'First point at Agua volcano.', expected: 'Expected', measured: 'Measured', diff: 'Difference', testSave: 'Save the test', testSaved: 'Test saved. Claude can read it.', match: 'Does the compass match what you see?', yes: 'Yes', more: 'Sort of', no: 'No', cerroMeasured: 'Cerro de la Cruz, measured:',
     betaKicker: 'Founder beta', betaTitle: 'Feed nAIhual', betaBody: 'Mark what you liked, flag wrong data or add a place. Claude reads it, checks it and adds it to the catalog.',
     betaOpen: 'Open the beta', betaCount: function (n) { return n === 1 ? '1 note' : n + ' notes'; },
     liked: 'You liked it', like: 'I liked it', likedTag: 'The founder liked it', wrong: 'Wrong data', note: 'Note',
@@ -673,7 +684,7 @@ var X3 = {
     moments: [['llegue', 'Just arrived'], ['transporte', 'Getting around'], ['hotel', 'Hotel'], ['comida', 'Food'], ['cerca', 'Nearby'], ['otro', 'Other']],
     list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
     savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
-    kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place' },
+    kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place', brujula: 'Compass test' },
     iaTag: 'From the AI · check on Google', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
     confirm: 'Confirm', remove: 'Delete', confirmed: 'Confirmed', toConfirm: 'To confirm', noLearned: 'Nothing learned yet. Chat with a guide.',
     notebooks: 'Loaded notebooks', notebooksBody: function (n) { return n ? n + (n === 1 ? ' notebook from your Drive, loaded by Claude.' : ' notebooks from your Drive, loaded by Claude.') : 'No notebooks yet. When you have one in your Drive, Claude reads it and loads it here.'; }
@@ -839,28 +850,118 @@ function compassArt() {
     ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 32) + ' ' + (q[1] - 32) + ')">' + portrait(g, 64) + '</g><text class="lbl" x="' + (q[0] + (g === 'noj' ? -42 : g === 'kej' ? 42 : 0)) + '" y="' + (q[1] + (g === 'iq' ? 44 : g === 'e' ? -38 : 4)) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
     '<text x="150" y="155" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text></svg>';
 }
-// Brújula del paisaje (idea del fundador, 24-oct): los rumbos de los guardianes* apuntan a lo que se ve desde Antigua.
-// Fuentes: Lonely Planet y OK Antigua (Cerro de la Cruz al norte; Agua al sur; Fuego y Acatenango al poniente). El oriente: por donde sale el sol.
+// Brújula del paisaje (idea del fundador, 24-oct): los rumbos de los guardianes* y lo que se ve desde Antigua.
+// Ángulos (grados desde el norte, en el sentido del reloj) calculados desde el Parque Central (14.55689, -90.73368)
+// con las coordenadas de Wikipedia: Agua 14°27′54″N 90°44′35″W · Fuego 14°28′29″N 90°52′51″W · Acatenango 14°30′03″N 90°52′33″W.
+// El Cerro de la Cruz no tiene coordenadas publicadas: va con ≈ y se mide con la prueba de la brújula.
+var LANDMARKS = [
+  { id: 'agua', b: 185.6, km: 10.3 },
+  { id: 'fuego', b: 240.0, km: 18.3 },
+  { id: 'acate', b: 247.9, km: 16.5 },
+  { id: 'cerro', b: 10, aprox: true }
+];
+function lmName(id) { var x = X(); return id === 'agua' ? x.south : id === 'fuego' ? x.fuego : id === 'acate' ? x.acate : x.north; }
+function lmBearing(id) { return LANDMARKS.filter(function (l) { return l.id === id; })[0].b; }
+var BRU = { heading: 0, sensor: 'off', raw: null, offset: null, absolute: false, test: {}, fb: '', saved: false, timer: null };
+function angNorm(a) { a = a % 360; return a < 0 ? a + 360 : a; }
+function angDiff(a, b) { var d = angNorm(a - b); return d > 180 ? d - 360 : d; }
 function paisajeArt() {
-  var x = X(), en = S.lang === 'en';
-  var pos = { iq: [180, 92], noj: [268, 180], e: [180, 268], kej: [92, 180] };
-  var lbl = { iq: 'N', noj: en ? 'E' : 'E', e: 'S', kej: en ? 'W' : 'O' };
-  var vol = function (cx, by, w, h) { return '<path d="M' + (cx - w) + ' ' + by + ' L' + (cx - 4) + ' ' + (by - h) + ' Q' + cx + ' ' + (by - h - 4) + ' ' + (cx + 4) + ' ' + (by - h) + ' L' + (cx + w) + ' ' + by + ' Z" style="fill:var(--volcan)"/>'; };
-  return '<svg viewBox="0 0 360 380" role="img" aria-label="' + esc(x.compass + ': ' + x.north + ' (N), ' + x.east + ' (E), ' + x.south + ' (S), ' + x.west + ' (' + lbl.kej + ')') + '">' +
-    '<circle cx="180" cy="180" r="96" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M180 70 V290 M70 180 H290" style="stroke:var(--line-2)" stroke-width="1.5"/>' +
-    // Norte: Cerro de la Cruz (cerro con cruz)
-    '<path d="M130 52 Q180 14 230 52 Z" style="fill:var(--piedra-2)"/><path d="M180 16 V36 M172 23 H188" style="stroke:var(--basalto)" stroke-width="2.5" stroke-linecap="round"/>' +
-    '<text x="180" y="66" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:13px;fill:var(--basalto)">' + esc(x.north) + '</text>' +
-    // Sur: Volcán de Agua
-    vol(180, 350, 58, 38) + '<text x="180" y="372" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:13px;fill:var(--basalto)">' + esc(x.south) + '</text>' +
-    // Poniente: Fuego y Acatenango
-    vol(30, 214, 24, 28) + vol(58, 214, 20, 22) + '<text x="44" y="232" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.west.split(' · ')[0]) + '</text><text x="44" y="246" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.west.split(' · ')[1]) + '</text>' +
-    // Oriente: sale el sol
-    '<circle cx="322" cy="176" r="15" style="fill:var(--g-e)"/><text x="322" y="214" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.east) + '</text>' +
-    ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 22) + ' ' + (q[1] - 22) + ')">' + portrait(g, 44) + '</g>'; }).join('') +
-    '<text x="180" y="185" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text>' +
-    ['iq', 'noj', 'e', 'kej'].map(function (g) { var q = pos[g], dx = g === 'noj' ? -34 : g === 'kej' ? 34 : 0, dy = g === 'iq' ? 36 : g === 'e' ? -30 : 4; return '<text x="' + (q[0] + dx) + '" y="' + (q[1] + dy) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
-    '</svg>';
+  var x = X(), h = BRU.heading, C = 180, CY = 192;
+  var at = function (b, r) { var a = (b - h) * Math.PI / 180; return [C + r * Math.sin(a), CY - r * Math.cos(a)]; };
+  var txt = function (q, str, size, weight, fill) { return '<text x="' + q[0].toFixed(1) + '" y="' + q[1].toFixed(1) + '" text-anchor="middle" style="font-family:var(--f-body);font-weight:' + (weight || 700) + ';font-size:' + (size || 12.5) + 'px;fill:' + (fill || 'var(--basalto)') + ';paint-order:stroke;stroke:var(--papel);stroke-width:3px;stroke-linejoin:round">' + esc(str) + '</text>'; };
+  var vol = function (q, w, hh) { var cx = q[0], by = q[1] + hh / 2; return '<path d="M' + (cx - w).toFixed(1) + ' ' + by.toFixed(1) + ' L' + (cx - 3).toFixed(1) + ' ' + (by - hh).toFixed(1) + ' Q' + cx.toFixed(1) + ' ' + (by - hh - 3).toFixed(1) + ' ' + (cx + 3).toFixed(1) + ' ' + (by - hh).toFixed(1) + ' L' + (cx + w).toFixed(1) + ' ' + by.toFixed(1) + ' Z" style="fill:var(--volcan)"/>'; };
+  var out = '<svg viewBox="0 0 360 384" role="img" data-heading="' + h.toFixed(1) + '" aria-label="' + esc(x.compass + ': ' + x.south + ' ' + Math.round(lmBearing('agua')) + '°, ' + x.fuego + ' ' + Math.round(lmBearing('fuego')) + '°, ' + x.acate + ' ' + Math.round(lmBearing('acate')) + '°, ' + x.north + ' ≈') + '">' +
+    '<circle cx="180" cy="192" r="92" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/>' +
+    // Marca fija arriba: hacia donde apunta el teléfono.
+    '<path d="M180 16 l-8 -12 h16 z" style="fill:var(--anil)"/>';
+  // Ejes N-S y E-O que giran.
+  var n1 = at(0, 92), n2 = at(180, 92), e1 = at(90, 92), e2 = at(270, 92);
+  out += '<path d="M' + n1[0].toFixed(1) + ' ' + n1[1].toFixed(1) + ' L' + n2[0].toFixed(1) + ' ' + n2[1].toFixed(1) + ' M' + e1[0].toFixed(1) + ' ' + e1[1].toFixed(1) + ' L' + e2[0].toFixed(1) + ' ' + e2[1].toFixed(1) + '" style="stroke:var(--line-2)" stroke-width="1.5"/>';
+  // Guardianes* en los cuatro rumbos.
+  var gpos = { iq: 0, noj: 90, e: 180, kej: 270 };
+  ORDER.forEach(function (g) { var q = at(gpos[g], 92); out += '<g transform="translate(' + (q[0] - 18).toFixed(1) + ' ' + (q[1] - 18).toFixed(1) + ')">' + portrait(g, 36) + '</g>'; });
+  // Volcanes y cerro, en su ángulo real.
+  // Fuego y Acatenango están a solo 8° uno del otro: dos volcanes juntos con un solo nombre.
+  var qa = at(185.6, 138), qf = at(240, 140), qc = at(247.9, 140), qp = at(243.95, 140), qr = at(10, 140), qs = at(90, 140);
+  out += vol(qa, 26, 24) + txt([qa[0], qa[1] + 26], x.south, 12);
+  out += vol(qc, 16, 22) + vol(qf, 15, 18) + txt([qp[0], qp[1] + 24], x.fuego + ' · ' + x.acate, 11);
+  out += '<path d="M' + (qr[0] - 22).toFixed(1) + ' ' + (qr[1] + 8).toFixed(1) + ' Q' + qr[0].toFixed(1) + ' ' + (qr[1] - 16).toFixed(1) + ' ' + (qr[0] + 22).toFixed(1) + ' ' + (qr[1] + 8).toFixed(1) + ' Z" style="fill:var(--piedra-2)"/><path d="M' + qr[0].toFixed(1) + ' ' + (qr[1] - 20).toFixed(1) + ' v12 M' + (qr[0] - 5).toFixed(1) + ' ' + (qr[1] - 15).toFixed(1) + ' h10" style="stroke:var(--basalto)" stroke-width="2.2" stroke-linecap="round"/>' + txt([qr[0], qr[1] + 22], x.north + ' ≈', 11.5);
+  out += '<circle cx="' + qs[0].toFixed(1) + '" cy="' + (qs[1] - 6).toFixed(1) + '" r="11" style="fill:var(--g-e)"/>' + txt([qs[0], qs[1] + 20], x.east, 11);
+  var lbl = { 0: 'N', 90: 'E', 180: 'S', 270: S.lang === 'en' ? 'W' : 'O' };
+  [0, 90, 180, 270].forEach(function (b) { var q = at(b, 64); out += '<text x="' + q[0].toFixed(1) + '" y="' + (q[1] + 4).toFixed(1) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[b] + '</text>'; });
+  out += '<text x="180" y="197" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:14px;fill:var(--basalto)">Antigua</text></svg>';
+  return out;
+}
+function bruStatus() { var x = X(); return BRU.sensor === 'esperando' ? x.sensorWait : BRU.sensor === 'no' ? x.sensorNo : BRU.sensor === 'on' ? (BRU.offset === null ? x.sensorCal : x.sensorLive) : x.seeingBody; }
+function bruTestHTML() {
+  var x = X(), t = BRU.test, rows = '';
+  if (BRU.sensor !== 'on') return '<p class="note">' + esc(x.testNeed) + '</p>';
+  if (t.agua == null) return '<p class="note">' + esc(x.testFirst) + '</p>';
+  ['fuego', 'acate'].forEach(function (id) {
+    if (t[id] == null) return;
+    var exp = angDiff(lmBearing(id), lmBearing('agua')), med = angDiff(t[id], t.agua);
+    rows += '<tr data-test-row="' + id + '"><td>' + esc(lmName(id)) + '</td><td>' + exp.toFixed(1) + '°</td><td>' + med.toFixed(1) + '°</td><td>' + Math.abs(med - exp).toFixed(1) + '°</td></tr>';
+  });
+  var cerro = t.cerro != null ? '<p data-test-cerro><b>' + esc(x.cerroMeasured) + '</b> ' + angNorm(lmBearing('agua') + angDiff(t.cerro, t.agua)).toFixed(1) + '°</p>' : '';
+  return (rows ? '<table class="bru-test"><thead><tr><th></th><th>' + esc(x.expected) + '</th><th>' + esc(x.measured) + '</th><th>' + esc(x.diff) + '</th></tr></thead><tbody>' + rows + '</tbody></table>' : '') + cerro;
+}
+function brujulaHTML() {
+  var x = X(), on = BRU.sensor === 'on' || BRU.sensor === 'esperando';
+  return '<section class="sec brujula" data-brujula><div class="sec-head"><h2>' + esc(x.compass) + '</h2>' + infoHTML('guard') + '</div>' +
+    '<div class="art" id="bru-art">' + paisajeArt() + '</div>' +
+    '<p class="muted" id="bru-status" role="status">' + esc(bruStatus()) + '</p>' +
+    '<span class="eyebrow">' + esc(x.seeing) + '</span>' +
+    '<div class="row bru-row">' + ['agua', 'fuego', 'acate'].map(function (id) { return '<button type="button" class="btn" data-bru-land="' + id + '">' + esc(lmName(id)) + '</button>'; }).join('') + '<button type="button" class="btn ghost" data-bru-north>' + esc(x.northUp) + '</button></div>' +
+    '<div class="row bru-row"><button type="button" class="btn ' + (on ? '' : 'primary') + '" data-bru-sensor aria-pressed="' + on + '">' + icon('compass', 'sm') + esc(on ? x.sensorOff : x.sensorOn) + '</button></div>' +
+    (BETA_ON ? '<details class="beta-card" data-bru-test' + (BRU.testOpen ? ' open' : '') + '><summary><b>' + esc(x.testTitle) + '</b></summary><p>' + esc(x.testBody) + '</p>' +
+      '<div class="row bru-row">' + ['agua', 'fuego', 'acate', 'cerro'].map(function (id) { return '<button type="button" class="btn" data-bru-test-at="' + id + '"' + (BRU.test[id] != null ? ' aria-pressed="true"' : '') + '>' + esc(lmName(id)) + '</button>'; }).join('') + '</div>' +
+      '<div id="bru-test-out">' + bruTestHTML() + '</div>' +
+      '<p><b>' + esc(x.match) + '</b></p><div class="row bru-row">' + [['si', x.yes], ['mas', x.more], ['no', x.no]].map(function (o) { return '<button type="button" class="chip" data-bru-fb="' + o[0] + '" aria-pressed="' + (BRU.fb === o[0]) + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>' +
+      '<div class="row bru-row"><button type="button" class="btn primary" data-bru-save>' + esc(x.testSave) + '</button></div>' + (BRU.saved ? '<p class="note" role="status" data-bru-saved>' + esc(x.testSaved) + '</p>' : '') + '</details>' : '') +
+    '<p class="note">' + esc(x.compassNote) + '</p></section>';
+}
+// Solo se redibuja la brújula (no toda la pantalla) cuando se mueve el teléfono.
+function bruPaint() { var a = document.getElementById('bru-art'); if (a) a.innerHTML = paisajeArt(); var st = document.getElementById('bru-status'); if (st) st.textContent = bruStatus(); }
+var bruFrame = 0;
+function bruOnOrient(e) {
+  var raw = typeof e.webkitCompassHeading === 'number' ? e.webkitCompassHeading : (typeof e.alpha === 'number' ? angNorm(360 - e.alpha) : null);
+  if (raw === null) return;
+  if (e.type === 'deviceorientationabsolute') BRU.absolute = true; else if (BRU.absolute) return;
+  BRU.raw = raw;
+  if (BRU.sensor !== 'on') { BRU.sensor = 'on'; clearTimeout(BRU.timer); render({ keep: true }); }
+  if (BRU.offset !== null) BRU.heading = angNorm(raw + BRU.offset);
+  if (!bruFrame) bruFrame = requestAnimationFrame(function () { bruFrame = 0; bruPaint(); });
+}
+function bruStart() {
+  BRU.sensor = 'esperando'; BRU.offset = null; render({ keep: true });
+  var go = function () {
+    window.addEventListener('deviceorientationabsolute', bruOnOrient);
+    window.addEventListener('deviceorientation', bruOnOrient);
+    BRU.timer = setTimeout(function () { if (BRU.sensor === 'esperando') { bruStop(); BRU.sensor = 'no'; render({ keep: true }); } }, 3000);
+  };
+  var D = window.DeviceOrientationEvent;
+  if (D && typeof D.requestPermission === 'function') D.requestPermission().then(function (r) { if (r === 'granted') go(); else { BRU.sensor = 'no'; render({ keep: true }); } }, function () { BRU.sensor = 'no'; render({ keep: true }); });
+  else if (D) go(); else { BRU.sensor = 'no'; render({ keep: true }); }
+}
+function bruStop() { window.removeEventListener('deviceorientationabsolute', bruOnOrient); window.removeEventListener('deviceorientation', bruOnOrient); clearTimeout(BRU.timer); BRU.sensor = 'off'; BRU.offset = null; }
+// «Estoy viendo X»: con sensor, calibra (X queda arriba y después sigue al teléfono); sin sensor, gira el dibujo.
+function bruSee(id) { var b = lmBearing(id); if (BRU.sensor === 'on' && BRU.raw !== null) BRU.offset = angDiff(b, BRU.raw); BRU.heading = b; bruPaint(); }
+function bruTestAt(id) {
+  BRU.testOpen = true;
+  if (BRU.sensor !== 'on' || BRU.raw === null) { render({ keep: true }); return; }
+  if (id !== 'agua' && BRU.test.agua == null) { render({ keep: true }); return; }
+  BRU.test[id] = BRU.raw; BRU.saved = false;
+  if (id === 'agua') bruSee('agua');
+  render({ keep: true });
+}
+function bruSave() {
+  var t = BRU.test, res = { tipo: 'brujula', nombre: 'Prueba de la brújula', coincide: BRU.fb || null, sensor: BRU.sensor, absoluto: BRU.absolute };
+  ['fuego', 'acate'].forEach(function (id) { if (t[id] != null && t.agua != null) { res[id + '_esperado'] = +angDiff(lmBearing(id), lmBearing('agua')).toFixed(1); res[id + '_medido'] = +angDiff(t[id], t.agua).toFixed(1); } });
+  if (t.cerro != null && t.agua != null) res.cerro_medido = +angNorm(lmBearing('agua') + angDiff(t.cerro, t.agua)).toFixed(1);
+  if (t.agua != null && BRU.absolute) res.agua_brujula_del_telefono = +t.agua.toFixed(1);
+  res.texto = 'Resultado de la prueba de la brújula' + (BRU.fb ? ' · coincide: ' + BRU.fb : '');
+  BRU.saved = true; BRU.testOpen = true;
+  betaAdd(res);
 }
 // El Cholq'ij en una imagen: 260 días = 13 números × 20 nawales (dato del consejo «cholqij»).
 function cholqijArt() {
@@ -1430,7 +1531,7 @@ function inicioHTML() {
     '<section class="intro-card" data-intro><span class="eyebrow" style="color:inherit;opacity:.75">' + esc(X().introKicker) + '</span><h2>' + esc(X().introTitle) + '</h2><p>' + esc(X().introBody) + '</p></section>' +
     (BETA_ON ? betaCard() : '') +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.todayGuide) + '</h2>' + infoHTML('guard') + '</div>' + guardStrip(S.guide) + '</section>' +
-    '<section class="sec brujula" data-brujula><div class="sec-head"><h2>' + esc(X().compass) + '</h2>' + infoHTML('guard') + '</div><p class="muted">' + esc(X().compassBody) + '</p><div class="art">' + paisajeArt() + '</div><p class="note">' + esc(X().compassNote) + '</p></section>' +
+    brujulaHTML() +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.routes) + '</h2>' + (rids.length ? '<button type="button" class="linkish" data-go="rutas">' + esc(t.seeAll) + '</button>' : '') + '</div>' + routes + '</section>' +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.explore) + '</h2></div><div class="tiles">' + tiles.map(function (x) {
       return '<button type="button" class="tile" data-go="' + x[0] + '">' + icon(x[1]) + '<span><b>' + esc(t.tiles[x[2]][0]) + '</b><small>' + esc(t.tiles[x[2]][1]) + '</small></span></button>'; }).join('') + '</div></section>' +
@@ -1719,9 +1820,15 @@ function openKey(key) {
 
 document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); var i = document.getElementById('q'); ask(i.value); i.value = ''; });
 document.addEventListener('click', function (e) {
-  var el = e.target.closest('[data-toggle],[data-open],[data-route],[data-selroute],[data-filter],[data-tab],[data-go],[data-back],[data-lang],[data-chip],[data-ask],[data-next],[data-g],[data-guide],[data-sos],[data-close],[data-sec],[data-demo-fb],[data-say],[data-stop],[data-nawal],[data-beta-like],[data-learn-ok],[data-learn-del]');
+  var el = e.target.closest('[data-toggle],[data-open],[data-route],[data-selroute],[data-filter],[data-tab],[data-go],[data-back],[data-lang],[data-chip],[data-ask],[data-next],[data-g],[data-guide],[data-sos],[data-close],[data-sec],[data-demo-fb],[data-say],[data-stop],[data-nawal],[data-beta-like],[data-learn-ok],[data-learn-del],[data-bru-land],[data-bru-north],[data-bru-sensor],[data-bru-test-at],[data-bru-fb],[data-bru-save]');
   if (!el) return;
   var a = function (n) { return el.getAttribute(n); };
+  if (el.hasAttribute('data-bru-land')) { bruSee(a('data-bru-land')); return; }
+  if (el.hasAttribute('data-bru-north')) { BRU.offset = null; if (BRU.sensor === 'on') bruStop(); BRU.heading = 0; render({ keep: true }); return; }
+  if (el.hasAttribute('data-bru-sensor')) { if (BRU.sensor === 'on' || BRU.sensor === 'esperando') { bruStop(); render({ keep: true }); } else bruStart(); return; }
+  if (el.hasAttribute('data-bru-test-at')) { bruTestAt(a('data-bru-test-at')); return; }
+  if (el.hasAttribute('data-bru-fb')) { BRU.fb = a('data-bru-fb'); BRU.testOpen = true; render({ keep: true }); return; }
+  if (el.hasAttribute('data-bru-save')) { bruSave(); return; }
   if (el.hasAttribute('data-learn-ok')) { learnSet(a('data-learn-ok'), 'confirmado'); return; }
   if (el.hasAttribute('data-learn-del')) { learnSet(a('data-learn-del'), null); return; }
   if (el.hasAttribute('data-beta-like')) { betaToggleLike(a('data-beta-like')); return; }
@@ -1748,6 +1855,7 @@ document.addEventListener('click', function (e) {
   if (el.hasAttribute('data-close')) document.getElementById('dlg').close();
 });
 document.addEventListener('submit', function (e) { var f = e.target.closest && e.target.closest('[data-bform]'); if (!f) return; e.preventDefault(); betaSubmit(f); });
+document.addEventListener('toggle', function (e) { if (e.target && e.target.matches && e.target.matches('[data-bru-test]')) BRU.testOpen = e.target.open; }, true);
 document.addEventListener('focusout', function () { setTimeout(function () { if (BETA.dirty && !betaTyping()) { BETA.dirty = false; render({ keep: true }); } }, 0); });
 document.addEventListener('input', function (e) { if (e.target.id === 'fq') { S.query = e.target.value; render({ keep: true }); } });
 

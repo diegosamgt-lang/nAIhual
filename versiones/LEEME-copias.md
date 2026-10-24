@@ -6,3 +6,4 @@
 Para volver a una de estas versiones: copiar su contenido sobre `app/` (y, si hace falta, volver a publicarla en el visor).
 - `app-2.0/`: nAIhual 2.0 (23-oct-2026), tal como quedó antes de la 3.0 (24-oct-2026).
 - `app-3.0/`: nAIhual 3.0 (24-oct-2026), antes de la 3.1.
+- `app-3.1/`: nAIhual 3.1 (24-oct-2026), antes de la brújula que gira (3.2).
