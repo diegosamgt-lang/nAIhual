@@ -110,7 +110,12 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
   - las citas «[cite: …]», que remiten a fuentes del cuaderno que Claude no ve.
 - Todo sigue con \* hasta que lo valide un Ajq'ij (regla del fundador).
 
-**Pendiente de decisión del fundador:** adoptar o no la nueva tétrada (ver la sección 3 vigente). Hasta que el fundador diga CONSTRUYE, la app sigue con B'atz', Kej, Ajpu y No'j.
+**Decisiones del fundador (24-oct-2026):**
+- ✅ Se adoptan los 4 cargadores del año como guardianes: **No'j, Iq', Kej y E'**. ❌ Salen B'atz' y Ajpu como guardianes; siguen como 2 de los 20 nawales.
+- ✅ Orden del turno: **No'j → Iq' → Kej → E'** (empieza por Oriente). Empieza No'j y sigue guiando hasta que el turista pide otro.
+- ✅ Artesanos, talleres y comunidades: los recomienda **E'** (el camino).
+- ✅ Rumbo y color de cada guardián van en la app, con \*.
+- ⬜ La app todavía no cambia: falta CONSTRUYE.
 
 ## 4. Producto (lo que existe)
 
