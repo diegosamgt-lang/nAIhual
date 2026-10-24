@@ -249,6 +249,30 @@ Fuentes:
 | 6 | Vender el Plan Fundador a los primeros 5 negocios | C12 | Fundador |
 | 7 | Gemini como voz de los guardianes | C11 | Cuando haya uso real y presupuesto |
 
+## 12b. Proyección a 1 año (24-oct-2026 → oct-2027) · ❓ TODO es supuesto, no predicción
+
+**Supuestos base:**
+- El fundador sigue la ruta, con ~80 % de su tiempo, y hace el contenido (arte y redes).
+- Costos: Q500 al mes + $40 al mes de IA (≈ Q310 ❓, a ~Q7.7 por dólar) ≈ **Q9,700 al año**.
+- La API de Gemini cabe en su versión gratis al principio (❓ por verificar).
+
+| | Pesimista | Base | Optimista |
+|---|---|---|---|
+| Turistas al mes (mes 12) | 50 | 300 | 1,500 |
+| Negocios en nAIhual | 2 | 6–8 | 15 |
+| Ingreso Plan Fundador y renovaciones (año) | ≈ Q4,000 | ≈ Q15,000 | ≈ Q30,000 |
+| Comisión por experiencias (desde el mes 6) | Q0 | ≈ Q2,700 | ≈ Q8,000 |
+| Aliado institucional | No | No | 1 piloto posible |
+| Resultado del año | ≈ −Q5,700 | ≈ +Q8,000 | ≈ +Q28,000 |
+| Calificación (5 áreas) | 20/50 (40 %) | 31/50 (62 %) | 39/50 (78 %) |
+
+**Viabilidad:** viable como proyecto que se paga solo en el escenario base. Todavía no da un sueldo: para eso hacen falta el escalón 2 (experiencias) y el 3 (aliados), o crecer fuera de Antigua.
+
+**Lo que decide el escenario:**
+1. Conseguir turistas (contenido del fundador + QR en hostales y cafés aliados).
+2. Validación cultural (Ajq'ij).
+3. Que los negocios renueven después de los 3 meses.
+
 ## 13. Historial de versiones
 
 **Rector v1.1 — 24-oct-2026**: norte, objetivo al 30-nov (1 turista + 1 negocio), FODA, calificación 16/50 (32 %), 4 reglas contra la gentrificación, ruta de 5 semanas. PDF y Google Doc editable.
