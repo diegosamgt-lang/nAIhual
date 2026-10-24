@@ -112,14 +112,20 @@ Actualizado: 24-oct-2026 (hora de Guatemala). Es **el único documento vivo**. S
 ## B6. Cómo sabe nAIhual lo que sabe
 | Tipo | Ejemplos | Quién lo pone | Regla |
 |---|---|---|---|
-| **Datos** | Historia de Antigua, Capuchinas, Catedral, La Merced, museos, cafés, direcciones, transporte, eventos | La IA investiga | Fuentes públicas citadas, con fecha. Google Maps para ubicar y llegar. |
+| **Datos** | Historia de Antigua, Capuchinas, Catedral, La Merced, museos, cafés, direcciones, transporte, eventos | La IA investiga | Orden de búsqueda (abajo). Google Maps para ubicar, llegar y confirmar. |
 | **Experiencias** | Me gustó, reseñas, etiquetas | El fundador (beta), los agentes y los visitantes | Ver B7. |
 | **Cultura maya** | Nahuales, Cholq'ij, cargadores, cuatro elementos, cosmovisión | Un tata | \* hasta que él la valide. Él escribe su propio límite y nadie lo altera. |
 
 - ✅ **Google:** mapa de Google (el fundador hace los mapas personalizados, gratis). Cada ficha lleva el enlace **«Ver en Google Maps»**, donde la persona ve las estrellas y reseñas de Google si quiere.
 - ✅ **Sin estrellas dentro de nAIhual**: ni de Google, ni de nAIhual, ni de la comunidad. Así no se paga a Google por las estrellas y no se castiga a los lugares nuevos.
 - ✅ Los cuatro elementos (fuego, aire, tierra, agua): el fundador dice que los mayas sí los usan. Se quedan con \* y los valida el tata.
-- ✅ NotebookLM es mesa de investigación del fundador; no se conecta a la app.
+- ✅ **Orden de búsqueda** (FIJA del fundador, 24-oct):
+  1. **Lo que nAIhual ya sabe y está verificado:** el catálogo y lo que trae la investigación del fundador en NotebookLM.
+  2. **Si no está ahí:** la IA responde con lo que sabe, como un agente de verdad. Cada lugar sale con «Ver en Google Maps» para confirmarlo. Lo que cambia seguido (horario, precio, si abre hoy) no se afirma: «confirmalo en Google Maps». Etiqueta: «Según la IA · confirmá en Google».
+  3. **Google en vivo:** más adelante; pide un servidor y pagar a Google.
+- ✅ No se construye Antigua negocio por negocio a mano: la IA busca; el fundador da criterio.
+- ✅ NotebookLM es la mesa de investigación del fundador. No se conecta a la app: el fundador exporta su investigación y Claude la carga al catálogo, para no buscar cada vez.
+- Rutas y planes a pie: solo con lugares de dirección verificada (necesitan el punto exacto).
 
 ## B7. Cómo se muestran las experiencias
 - ✅ **Como un «me gusta»:** «A [nombre] le gustó» y cuántas personas más. Y las reseñas en general.
@@ -179,6 +185,8 @@ Orden fijo: **No'j → Iq' → Kej → E'**. Empieza No'j y sigue hasta que el v
 5. Una persona revisa: el fundador, un agente o una fuente oficial.
 6. Entra al conocimiento de nAIhual y mejora la siguiente respuesta.
 - La IA no «dice todo y ya»: crece con lo verificado y lo vivido.
+- ✅ **Aprende de cada plática** (FIJA del fundador, 24-oct): de sí misma y del fundador. Cada pregunta y cada respuesta le enseñan algo nuevo, y lo anota para la próxima vez. ❓ Claude entiende «y si no preguntás» como: si no sabe algo, pregunta.
+- Las pláticas del fundador se pueden guardar ya (vista previa). Las de los visitantes necesitan aviso de privacidad y su permiso antes de guardarse.
 
 ## B11. El viaje del visitante
 - ✅ **Primera ola:** Llegué → Transporte → Hotel → Comida → Qué hay cerca.
@@ -277,8 +285,6 @@ Tata (cultura)                                accesibilidad            playlists
 | A9 | Reglas para las reseñas de visitantes: qué no se publica, quién revisa, cómo responde un negocio. | Antes de la capa 3. |
 | A10 | Figura legal para el retorno a familias. | Contador o abogado, cuando haya ingresos. |
 | A11 | Fuentes externas viejas: el resumen de NotebookLM dice que nAIhual se financia con el Plan Fundador, trae «luz» y «sombra» de los nawales y «limpieza energética». | Limpiar con el prompt `docs/prompts/prompt-notebooklm-limpieza.md`. |
-| A12 | ⚠️ **Choque (fundador, 24-oct, PAUSA):** «no tiene sentido que me digás que todo lo tenés que verificar; usá Google y tu inteligencia para dar contexto; construir toda Antigua negocio por negocio es eterno». La app 3.0 **contradice B6** (que ya dice «la IA investiga»): el chat solo usa los 21 lugares del catálogo, y como ninguno está «publicado», no nombra nada. Además, en `CLAUDE.md` está la regla «lugares sin dirección verificada no entran en respuestas del chat», que choca con lo que pide el fundador. Error de Claude: armó la beta para que el fundador suba datos, cuando el que tiene que buscar es la IA. | **Regla nueva propuesta:** la IA responde con todo lo que sabe y encuentra de Antigua, como un agente de verdad. Cada lugar sale con «Ver en Google Maps» para confirmar ahí. Lo que cambia seguido (horario, precio, si abre hoy) no se afirma: «confirmalo en Google Maps». Dos etiquetas: «Según la IA · confirmá en Google» y «Le gustó a [nombre]». Lo maya y las emergencias siguen estrictos. Claude arma el catálogo base investigando en la web, empezando por la primera ola. La beta del fundador pasa a ser solo criterio («me gustó», «esto no»). ❓ La IA del visor no busca en Google en vivo: responde con lo que sabe y puede estar desactualizada; buscar en vivo pide un servidor y pagar a Google (capa futura). |
-| A12b | **Corrección del fundador (24-oct):** «el orden es: primero busca con lo que ya sabe y está verificado (aquí o en NotebookLM); luego, si no lo encuentra, en Google». El fundador hará una investigación intensa en NotebookLM para alimentarlo sin buscar siempre. El modelo anota lo aprendido en las pláticas. | Orden propuesto en 3 pasos: **1** lo verificado de nAIhual (catálogo + lo que trae NotebookLM) · **2** si no está, lo que sabe la IA, con «Ver en Google Maps» para confirmar · **3** Google en vivo (futuro). Límites: NotebookLM normal no se conecta a la app (el fundador exporta la investigación y Claude la carga al catálogo); el paso 3 pide servidor y pago a Google; guardar lo que se aprende de las pláticas de visitantes pide aviso de privacidad y permiso (las del fundador sí se pueden guardar ya, en la beta). ❓ Esperando FIJA. |
 
 ---
 
@@ -365,6 +371,8 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 ---
 
 # PARTE 5 · HISTORIAL
+
+**FIJA · 24-oct-2026 · orden de búsqueda:** reemplaza «solo se usa el catálogo publicado» en el chat. Orden: 1 lo verificado (catálogo y NotebookLM) · 2 lo que sabe la IA, con Google Maps para confirmar · 3 Google en vivo, más adelante. Y nAIhual aprende de cada plática (B6, B10). Venía del choque: la app 3.0 no nombraba ningún lugar.
 
 **FIJA · 24-oct-2026:** el fundador leyó el PDF final y fijó las bases 3.0 tal como están. Solo cambian con otro FIJA.
 

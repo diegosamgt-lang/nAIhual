@@ -25,7 +25,8 @@
 ## Reglas que más se rompen
 - Nunca inventes lugares, horarios, precios ni significados culturales.
 - Lo maya pasa por un tata (Ajq'ij): lleva \* hasta que él lo valide. Historia lleva † hasta tener fuente oficial.
-- Lugares sin dirección verificada no entran en rutas, planes ni respuestas del chat.
+- Rutas y planes a pie: solo lugares con dirección verificada. En el chat, el orden de búsqueda de B6: 1 lo verificado (catálogo y NotebookLM) · 2 lo que sabe la IA, con «Ver en Google Maps» para confirmar · 3 Google en vivo, más adelante. Horario, precio y «abre hoy» nunca se afirman sin fuente del día.
+- La IA busca; el fundador da criterio. No le pidás que suba lo que vos podés investigar.
 - El repositorio es público: no escribás nombres ni datos personales de agentes u otras personas.
 - Antes de construir: «¿qué circuito cierra esto?». Una capa a la vez (regla 4: terminar antes de abrir).
 - «Listo» solo con prueba de punta a punta.
