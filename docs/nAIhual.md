@@ -14,6 +14,20 @@ Actualizado: 18-oct-2026 · Este es **el único documento vivo**: concepto, esta
 
 ---
 
+## 0. Norte, objetivo y FODA (definido con el fundador, 24-oct-2026)
+
+**Norte (palabras del fundador):** «Lo que sea conscientemente correcto, donde pueda recibir la abundancia que merezco pero también donde pueda servir a las culturas de mi país, donde pueda ofrecer un turismo consciente y no gentrificado. Siempre apoyando y enfocado al turismo local y artesanos locales y sobre todo comunidades ancestrales.»
+
+**Objetivo de esta etapa (al 30-nov-2026):** 1 turista real usa nAIhual sin ayuda y visita 1 lugar local + 1 negocio o artesano local acepta estar en nAIhual.
+
+**Recursos:** menos de 5 horas por semana · hasta Q500 al mes + dos planes de IA de $20 (uno ya existe; el otro, ChatGPT o Gemini, por decidir).
+
+**FODA**
+- **Fortalezas:** artista y diseñador (hace la marca y el arte) · red de contactos local · concepto propio (los 4 guardianes).
+- **Debilidades:** trabaja solo · cultura sin validar.
+- **Oportunidades:** ❓ no se encontró app oficial de Antigua · artesanos sin presencia digital · turismo consciente en auge.
+- **Amenazas:** acusación de apropiación cultural · apps grandes (Google Maps, TripAdvisor, IAs) · gentrificación.
+
 ## 1. Qué es
 
 - ✅ Agente de IA **artesanal** turístico-cultural: un puente entre viajeros y comunidades de Guatemala.
