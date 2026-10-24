@@ -1,3 +1,5 @@
+> ⚠️ **Versión vieja (2.0, 23-oct-2026).** Para la 3.0, primero `prompt-gemini-actualizacion.md` (Gemini) o `prompt-claude-continuacion.md` (Claude). Donde choquen, mandan esos y `docs/nAIhual.md` (Bases).
+
 # PROMPT PARA GEMINI · CONSTRUIR nAIhual DESDE CERO
 
 > **Cómo usar este prompt (instrucciones para el fundador, no para Gemini)**

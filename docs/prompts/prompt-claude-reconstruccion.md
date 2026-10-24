@@ -1,3 +1,5 @@
+> ⚠️ **Versión vieja (2.0, 23-oct-2026).** Para la 3.0, primero `prompt-gemini-actualizacion.md` (Gemini) o `prompt-claude-continuacion.md` (Claude). Donde choquen, mandan esos y `docs/nAIhual.md` (Bases).
+
 # CONSTRUYE · nAIhual 2.0 — reconstrucción total en 4 ciclos
 
 Claude: esta instrucción autoriza reconstruir la app por completo, ejecutar pruebas, actualizar el visor privado de Claude (artifact «nAIhual»: https://claude.ai/artifact/NJt1c96dAwFtpTki932Ded) y guardar en la rama de trabajo `claude/awesome-carson-sz5k9i` al final de cada ciclo. No autoriza hacer pública la app, compartir enlaces, abrir pull requests, contratar servicios, generar gastos ni contactar personas o negocios.
