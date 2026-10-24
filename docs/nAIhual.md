@@ -282,6 +282,7 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 | Diseño editable | Figma: «nAIhual · App 1.0» https://www.figma.com/design/K67raFNTRvhkSOAEpWtByE · 3 páginas (Leeme y fundamentos · Componentes · Pantallas y textos). Capas «#…» = textos que usa la app | Fundador (diseño) + Claude (lee y pasa a la app) | Sí. El fundador rediseña; Claude copia los cambios a la app |
 | Línea gráfica | Figma: 6 pantallas para que el fundador las rediseñe (Entrar, Inicio, Guardianes, Chat, Muro, Ficha) https://www.figma.com/design/tw3f3T31gReovmpb5bGcxi | Fundador | Sí. Lo que el fundador dibuje aquí define el estilo visual (fase 10) |
 | Documento rector v1.1 (mapa + bitácora + siguiente paso) | PDF: `docs/rector/nAIhual-documento-rector-v1.1.pdf` · editable en Google Docs: https://docs.google.com/document/d/11U_14dNKDtvNfnaRlNlOu-O1OSUYLhEEd7iHesewS9w | Claude con el fundador | Sí, una versión nueva por etapa |
+| Prompts de reconstrucción (23-oct) | `docs/prompts/prompt-gemini-nAIhual.md` (Gemini, 9 partes + datos exactos) · `docs/prompts/prompt-claude-reconstruccion.md` (Claude, 4 ciclos) | Claude | Sí, cuando cambien decisiones o datos |
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md`. Se sube al cuaderno como fuente; NotebookLM revisa los nawales contra sus 46 fuentes | Claude | Sí, cuando cambie la app |
 | Web C0 vieja | Netlify (gregarious-tulumba-42cb05) | — | No tocar |
 
@@ -428,6 +429,8 @@ Fuentes:
 3. Que los negocios renueven después de los 3 meses.
 
 ## 13. Historial de versiones
+
+**Crítica del fundador — 23-oct-2026:** «parece un chatbot», demasiado texto, sin parte gráfica ni rutas visibles, textos como «tips para caminar con respeto» = malísimo. Se pide reconstrucción total. Prompts listos en `docs/prompts/`.
 
 **App 1.2 + «Claude responde» — 23-oct-2026** (visor privado, versión 3) · pedido del fundador: «quiero que vos Claude respondas en esta versión de prueba»
 - En el visor privado, Claude contesta las preguntas libres como el guardián de turno, con la cuenta del fundador (función oficial del visor; sin llaves ni servidor). Se apaga con `claude_responde: false` en `config.js`; fuera del visor responden las reglas fijas.
