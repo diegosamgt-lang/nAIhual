@@ -1,6 +1,6 @@
 # nAIhual — Documento único del proyecto
 
-Actualizado: 23-oct-2026 (hora de Guatemala), nAIhual 2.0 · Este es **el único documento vivo**: concepto, estado, circuitos, fuentes, decisiones e historial. Se actualiza este mismo archivo; no se crean otros.
+Actualizado: 24-oct-2026 (hora de Guatemala), nAIhual 2.0 · **Empieza por las BASES DEL MODELO (borrador)** · Este es **el único documento vivo**: concepto, estado, circuitos, fuentes, decisiones e historial. Se actualiza este mismo archivo; no se crean otros.
 
 **Marcas**
 - ✅ = lo dijo el fundador / verificado.
@@ -11,6 +11,143 @@ Actualizado: 23-oct-2026 (hora de Guatemala), nAIhual 2.0 · Este es **el único
 - † = histórico, por confirmar con fuente oficial.
 
 **Método (intocable, del fundador):** `0_PROMPT_MAESTRO.md` · `1_PROCESO.md` · `2_REGLAS.md` · `3_PREGUNTAS.md` · `4_LECCIONES.md`. Comandos: PAUSA = solo responder y anotar · CONSTRUYE = ejecutar.
+
+---
+
+## BASES DEL MODELO · borrador 24-oct-2026 para revisión del fundador
+
+> Armado con todo lo que el fundador entregó: sus mensajes (15 al 24-oct), el resumen de NotebookLM, la guía de apps exitosas (ChatGPT), la guía de producto v2, el Documento Consolidado y el método 0_ a 4_. Cuando el fundador lo apruebe, esta sección queda fija y todo lo demás se ordena debajo de ella. Si algo de abajo la contradice, manda esta.
+
+### B1. Qué es nAIhual
+- ✅ **Un modelo, no solo una app.** Un modelo de turismo consciente y comunitario que nace en Antigua Guatemala y se puede llevar a otros pueblos.
+- ✅ La app es la herramienta del visitante. El modelo es todo lo que la sostiene: la red de personas que prueban y opinan, las reglas para saber qué es verdad, y lo que vuelve a las familias y comunidades.
+- ✅ Frase: **«Viaja directo a la raíz.»**
+
+### B2. Para qué existe
+- ✅ Norte del fundador: «Lo que sea conscientemente correcto, donde pueda recibir la abundancia que merezco pero también donde pueda servir a las culturas de mi país, donde pueda ofrecer un turismo consciente y no gentrificado. Siempre apoyando y enfocado al turismo local y artesanos locales y sobre todo comunidades ancestrales.»
+- ✅ Que quien viene a Guatemala **entienda por qué es tan especial** y la viva de forma consciente.
+- ✅ Que su visita sostenga a quienes hacen especial a Guatemala: el comedor que lleva años, el artesano, la panadería de tradición, los niños de las bandas, las raíces y tradiciones. No al que ya factura miles.
+- ✅ Que **más turismo consciente = más oportunidades para niños y familias**: educación, celulares e internet, trabajo para más comunidades.
+- ✅ Que nAIhual **no sea «otro Google»**: «si nAIhual lo recomienda es porque alguien ya lo probó».
+
+### B3. A quién sirve (cinco lados)
+| Quién | Qué recibe |
+|---|---|
+| Visitante (nacional y extranjero, por igual) | Opciones con contexto, para elegir con conciencia. Gratis. |
+| Familias, niños y comunidades | Visibilidad justa, una guía para crear sus propias experiencias, y un retorno del modelo. |
+| Negocios locales y de tradición | Aparecer con su historia al lado de las cadenas, sin que el que paga quede arriba. |
+| La cultura | Se cuenta con respeto; lo maya solo con validación de un Ajq'ij. |
+| Los agentes y quienes opinan | Su experiencia enseña a nAIhual y ayuda a otros. |
+
+### B4. Las tres capas del modelo
+1. **La guía** (para el visitante): la app con los momentos del viaje y los 4 guardianes.
+2. **La red de confianza** (de dónde sale el criterio): agentes y visitantes reales que prueban, opinan y arman playlists. nAIhual aprende de ellos.
+3. **La comunidad** (a dónde va el beneficio): visibilidad justa, guía para crear experiencias, retorno a familias y niños, y llevar el modelo a otros pueblos.
+- Lo que une las tres: **nAIhual, el agente que aprende** con información verificada, honesta y consciente, cuidando la cultura.
+
+### B5. Principios (no se negocian)
+1. Comunidad primero, antes que las cadenas.
+2. **Opciones con contexto, no ranking.** nAIhual no pone a uno encima de otro: muestra cadena, nacional, familiar, de tradición, desde cuándo, y la persona elige.
+3. **«Recomendado» = una persona real lo probó.** Se ve quién es y qué dijo.
+4. Lo maya y los nahuales no se inventan: llevan \* hasta que los valide un Ajq'ij. Nunca se calcula ni se dice «tu nawal». No se venden ceremonias.
+5. Todo lo demás se investiga en fuentes públicas y se cita con fecha.
+6. Lo pagado siempre dice «Patrocinado» y nunca cambia el orden.
+7. Emergencias, salud y seguridad: solo con fuente oficial y fecha visible.
+8. Sin gentrificar y sin masificar lugares naturales frágiles.
+9. Si no se sabe, se dice que no se sabe.
+
+### B6. Cómo sabe nAIhual lo que sabe (tres tipos de conocimiento)
+| Tipo | Ejemplos | Quién lo pone | Regla |
+|---|---|---|---|
+| **Datos** | Historia de Antigua, Capuchinas, Catedral, La Merced, museos, cafés, direcciones, transporte, eventos | La IA, investigando | ✅ Google es la fuente principal (Maps, reseñas, NotebookLM), más fuentes oficiales. Siempre con fuente y fecha. |
+| **Experiencias** | «Aquí sí», «aquí no», típico o cadena, para quién sirve | Agentes y visitantes | Opiniones firmadas, con un perfil corto de quien opina («ama el pan», «viaja con niños»). |
+| **Cultura maya** | Nahuales, Cholq'ij, cargadores, cosmovisión | Ajq'ij | \* hasta validar. Nada se inventa. |
+- ✅ Los agentes también aportan desde Google: lo que ellos usan y publican allí.
+- ✅ Lugares de Google Maps con más de 3 estrellas entran como candidatos; se curan poco a poco, sacando y metiendo.
+- ✅ Un lugar nuevo o con nuevo dueño lleva su etiqueta para no castigarlo por tener pocas reseñas.
+- ✅ Las estrellas no son lo principal: lo principal es quién lo probó. Un filtro puede mostrar 3, 4 o 5 estrellas.
+
+### B7. Los 4 guardianes (las voces de nAIhual) \*
+Orden fijo: **No'j → Iq' → Kej → E'**. Empieza No'j y sigue hasta que el visitante pide otro.
+| Guardián \* | Rumbo y color \* | Voz | Recomienda | Su tarea en el modelo |
+|---|---|---|---|---|
+| **No'j** | Oriente · rojo | Maestro cercano | Historia, cosmovisión, respeto, lugares para aprender | Califica, pone límites, el más consciente; dice la verdad sobre precios altos o muy bajos |
+| **Iq'** | Norte · blanco | Fresco, directo | Pausas, aire libre, hablar con la gente, primeros pasos | Investiga eventos, fiestas de los pueblos, actividades y conciertos |
+| **Kej** | Poniente · negro | Práctico, firme | Rutas a pie, naturaleza, mercados | Seguridad, salud y emergencias: contactos útiles, sin política ni amarillismo |
+| **E'** | Sur · amarillo | Alentador, guía | Artesanos, talleres, comida con carácter, comunidades, aventura | El camino hacia los artesanos y las comunidades |
+- ✅ Pueden recomendar lo mismo desde enfoques distintos; a veces, opciones distintas.
+
+### B8. Los agentes (la red de confianza)
+- ✅ Personas reales, casi todas locales, también extranjeros que viven en Guatemala y quieren aportar a la cultura y la economía **sin gentrificar**.
+- ✅ Cómo trabajan: usan nAIhual con lo que necesitan → van a lo que un guardián les recomendó → dejan su opinión → arman su **playlist** (su propia ruta, comparada con la de nAIhual).
+- ✅ nAIhual aprende de cada agente en 4 roles: **alumno** (pregunta qué le gusta) · **receptor** (guarda opiniones y playlists) · **guía** (acompaña la siguiente salida) · **maestro** (recomienda mejor a otros). Con eso arma el **arquetipo** de cada agente, visto desde cada guardián.
+- ✅ Los primeros 9 y lo que mira cada uno: Gaby (comida, cafés, vida diaria) · Yeyo (cultura, amor por Guatemala) · Dani (gastronomía de primer nivel) · Sam (hostales con mirada local, viaje por el país) · David (foodie, la mecánica del turismo) · Grace (fotografía, otras formas de caminar Antigua) · Juan (rutas, logística, visados) · Meg (bienestar, contenido) · Ale (calidad, comodidad, inclusión). Esto puede crecer mucho.
+- ✅ Espacios abiertos que faltan: una persona con discapacidad o en silla de ruedas · alguien de una comunidad indígena o un artesano · un guatemalteco que viene de la capital el fin de semana · una familia con niños o un adulto mayor.
+- Cuidados: si un agente tiene relación comercial con lo que recomienda, se dice · las miradas personales esotéricas no se mezclan con la cosmovisión maya.
+
+### B9. Cómo aprende nAIhual (el ciclo)
+1. El visitante pregunta.
+2. nAIhual da opciones con contexto (datos con fuente + opiniones firmadas).
+3. El visitante va.
+4. Deja su opinión. Las preguntas van cambiando para sacar algo nuevo cada vez.
+5. Una persona revisa (fundador, agente o fuente oficial).
+6. Entra al conocimiento de nAIhual y mejora la siguiente respuesta.
+- ✅ La IA no «dice todo y ya»: crece con lo verificado y lo vivido.
+
+### B10. El viaje del visitante (los momentos de la guía)
+- ✅ **Primera ola:** Llegué → Transporte → Hotel → Comida → Qué hay cerca.
+- Después: ¿Qué está pasando? (eventos, fiestas, el partido) · ¿Qué estoy viendo? (ruinas e historia) · Necesito algo (farmacia, tecnología) · De noche (tranquilo o encendido) · Tours distintos (experiencias culturales que no ofrece todo el mundo).
+- ✅ **Siempre visibles:** Emergencia y accesibilidad.
+- ✅ Primera pantalla: «Ir» sin cuenta y gratis · entrar con Google · playlists guardadas · reportar algo · emergencia · contexto de qué es nAIhual y quiénes son los guardianes.
+
+### B11. Accesibilidad y emergencias (atraviesa todo)
+- ✅ Hoteles y lugares con acceso para silla de ruedas, para personas ciegas, parqueos, espacios seguros, banquetas o rutas con guía táctil.
+- ✅ Dónde ir en una emergencia: Hospital Hermano Pedro y más opciones que el fundador va sumando.
+- Regla: cada dato se comprueba en el lugar o con fuente oficial, con fecha. Un error aquí puede poner en riesgo a alguien.
+
+### B12. La comunidad: cómo el modelo ayuda a niños y familias (idea desarrollada · ❓ propuesta de Claude)
+Cuatro piezas, de la más cercana a la más lejana:
+1. **Visibilidad justa (desde el día uno, sin dinero).** El comedor de años, el artesano y la panadería de tradición aparecen con su historia al lado de las cadenas. El visitante elige con contexto, y eso ya mueve gasto hacia las familias.
+2. **Guía para comunidades.** Un apéndice de nAIhual, escrito **con** cada comunidad: cómo crear una experiencia, cómo recibir visitantes, cómo ayudarse entre sí, cómo organizarse para aparecer en nAIhual. Con talleres gratis para que las familias aprendan a usar la herramienta.
+3. **Retorno a niños y familias.** Cuando el modelo tenga ingresos reales, una parte fija va a educación, celulares e internet para familias de las comunidades aliadas. El porcentaje se publica, cada gasto se muestra con su recibo y la comunidad decide en qué se usa. No se promete antes de que exista. (Falta confirmar con un contador o abogado si necesita asociación o fundación.)
+4. **Exportar el modelo.** Las tres capas (guía, red de confianza, comunidad) y sus reglas se llevan a otro pueblo. Antigua es el primero.
+- Cómo se cuida: el impacto se cuenta con lo que de verdad pasó (quién apareció, quién recibió, en qué se usó), nunca con promesas.
+
+### B13. Sostener el modelo (⏸️ en espera, no es el foco ahora)
+- ✅ El visitante usa nAIhual gratis.
+- ❌ El Plan Fundador de Q250 fue solo una idea; no es base del modelo.
+- ⏸️ Sin dinero en Maps por ahora.
+- Ideas sobre la mesa, sin orden ni fecha: hotel socio con QR (3 horas de Pro para sus huéspedes) · patrocinio siempre marcado · comisión en experiencias · licencia del modelo a otros destinos. Se piensan cuando el modelo esté armado.
+
+### B14. Arquitectura (cómo encaja todo)
+```
+FUENTES ──────────► CEREBRO ──────────► GUÍA (app) ──────────► PERSONAS
+Google: Maps,         Reglas B5-B6         Momentos del viaje      Visitantes y agentes
+reseñas, NotebookLM   4 guardianes         Emergencia y            opinan y arman playlists
+Fuentes oficiales     Lo aprendido (B9)    accesibilidad                  │
+Ajq'ij (cultura)                                                          ▼
+      ▲                                                            COMUNIDAD
+      └────────────── lo verificado vuelve al conocimiento ◄────── visibilidad, guía,
+                                                                   retorno, exportar
+```
+- Un solo lugar por dato (una fuente de verdad).
+- La voz de los guardianes: hoy Claude en el visor privado; mañana Gemini u otra IA detrás de un servidor propio, nunca con la llave en el teléfono.
+- Curtis (el asistente IA del fundador, otro proyecto) se puede conectar si ayuda; no es necesario.
+
+### B15. Orden para construir el modelo (etapas, no ventas)
+1. **Bases** (esto) aprobadas por el fundador.
+2. **Conocimiento:** catálogo desde Google con fuente y fecha · la primera ola del viaje.
+3. **Red de confianza:** agentes con su permiso, playlists, opiniones firmadas, el ciclo de aprendizaje.
+4. **Cuidado:** accesibilidad, emergencias y eventos, todo comprobado.
+5. **Comunidad:** visibilidad justa, guía para comunidades, talleres.
+6. **Crecer:** retorno a familias cuando haya ingresos · llevar el modelo a otros pueblos · red social con perfiles y logros por apoyar lo local.
+
+### B16. Huecos que veo (para cuando vos decidás, sin apuro)
+- Permiso de cada agente para aparecer y qué datos suyos se guardan.
+- Contacto con un Ajq'ij para validar lo cultural.
+- Reglas para las opiniones de visitantes: qué no se publica, quién revisa, cómo responde un negocio.
+- Privacidad: qué se guarda de cada persona y quién lo ve.
+- Figura legal para el retorno a familias (contador o abogado).
 
 ---
 
@@ -380,13 +517,13 @@ Guardianes de los lugares: B'atz' pasó a Iq' y Ajpu a E', siguiendo el reparto 
 
 - ✅ Turista: nacional y extranjero, por igual. Usa nAIhual **gratis**; premium (WhatsApp, voz, alertas) **después**, sin precios.
 - ❌ «Plan Fundador» Q250 × 3 meses, 5 lugares (18-oct): fue una idea, nunca se vendió ni se probó. La reemplaza la propuesta de abajo (23-oct).
-- ❓ **Círculo de Aliados Fundadores** (propuesta piloto, pendiente de aprobación antes de contratar · en la app desde 1.2):
+- ⏸️ **En espera (fundador, 24-oct: «era una idea»; no es base del modelo, ver B13).** Se conserva solo como registro: **Círculo de Aliados Fundadores** (propuesta piloto, en la app desde 1.2):
   - Inscripción solo durante los primeros 3 meses desde el lanzamiento público. El reloj no corre mientras la app sea vista previa o no tenga fecha (`config.js`).
   - Q250 al mes propuestos, fijos durante los primeros 6 meses desde la fecha de ingreso. Renovación: por decidir.
   - Beneficios propuestos: ficha verificada con permiso · distintivo «Aliado Fundador» · diseño digital de un QR (impresión no incluida, costo por definir) · una pieza de contenido en 6 meses (reel vertical o carrusel, no ambas) · activaciones grupales según disponibilidad · reporte de señales (vistas, «Cómo llegar»; no prueban visitas ni ventas; hoy no se mide nada).
   - El negocio confirma su ficha y autoriza por escrito nombre, espacio, imagen, logo y contenido. Todo lo pagado dice «Patrocinado». El pago no cambia el orden.
   - No es inversión: sin acciones ni participación. No promete ventas. Sin formulario, cobro ni contacto hasta tener canal, condiciones finales y reglas de privacidad.
-- ❓ **Cuatro etapas de ingreso (todas hipótesis, en la vista interna):** 1 Aliados Fundadores · 2 contenido y activaciones (una pieza incluida; lo adicional se cotiza aparte en el futuro) · 3 comisión por reservas completadas de experiencias (enlace, código o confirmación del proveedor; porcentaje sin definir; nunca para cafés) · 4 guía o QR para alojamientos (se prueba con datos de uso y un alojamiento interesado). Cada una lista la evidencia que necesita.
+- ⏸️ **En espera (ver B13).** Cuatro etapas de ingreso (todas hipótesis, en la vista interna): 1 Aliados Fundadores · 2 contenido y activaciones (una pieza incluida; lo adicional se cotiza aparte en el futuro) · 3 comisión por reservas completadas de experiencias (enlace, código o confirmación del proveedor; porcentaje sin definir; nunca para cafés) · 4 guía o QR para alojamientos (se prueba con datos de uso y un alojamiento interesado). Cada una lista la evidencia que necesita.
 - ✅ Solo negocios locales. ❌ Afiliados de Booking, Expedia u OpenTable. ❌ Paywall desde el inicio.
 - ❓ Criterios para aceptar un fundador (propuesta: local, de dueños guatemaltecos, sin cadenas). ❓ Falta el número de WhatsApp para el botón.
 - Idea vigente: publicidad ética, «destacado» siempre marcado.
