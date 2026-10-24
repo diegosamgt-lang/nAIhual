@@ -142,6 +142,7 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
   4. **Maestro:** con lo aprendido, recomienda mejor a otros.
 - Con eso se arma un **arquetipo** de cada agente («a Gaby le gusta…»), visto desde los ojos de cada guardián.
 - **Para qué:** un criterio sincero, que no sale de la IA sola, sino de 8 miradas confiables.
+- ✅ El primer agente es **otra persona**, no el amigo de la prueba de noviembre.
 - ❓ Por definir: las 8 «líneas» de agentes, y qué datos de cada agente se guardan y quién los ve (pregunta T13 del método).
 
 ### B. Reviews de la comunidad
@@ -173,9 +174,10 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
   4. Arranca solo cuando haya ingresos reales; no se promete antes.
 - **Por qué así:** cumple «no prometer lo que no se puede medir» y evita que se vea como caridad o como marketing.
 - **Además, sin dinero:** talleres gratis para que las familias aprendan a usar nAIhual y a ofrecer sus experiencias (conecta con E).
-- ❓ Falta decidir el porcentaje y averiguar si hace falta una figura legal (asociación o fundación) para recibir y entregar fondos. Regla 7: verificar con fuente oficial y con un contador o abogado.
+- ✅ El porcentaje se decide después, con ingresos reales y con un contador.
+- ❓ Falta averiguar si hace falta una figura legal (asociación o fundación) para recibir y entregar fondos. Regla 7: verificar con fuente oficial y con un contador o abogado.
 
-### G. Nuevas tareas de los guardianes (propuesta de Claude, por confirmar)
+### G. Nuevas tareas de los guardianes (propuesta de Claude · ✅ el fundador confía en este reparto, 24-oct)
 | Tarea | Guardián propuesto | Por qué |
 |---|---|---|
 | Investigar eventos culturales, fiestas de pueblos cercanos, actividades y conciertos | **Iq'** (comunicar, aire) | Es el que trae las novedades |
