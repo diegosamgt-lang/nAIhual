@@ -364,6 +364,8 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 
 # PARTE 5 · HISTORIAL
 
+**FIJA · 24-oct-2026:** el fundador leyó el PDF final y fijó las bases 3.0 tal como están. Solo cambian con otro FIJA.
+
 **nAIhual 3.0 — 24-oct-2026 · bases fijadas**
 - Bases del modelo escritas con todo lo que entregó el fundador: sus mensajes, NotebookLM, la guía de apps exitosas, la guía v2 y el método.
 - Examen del fundador en 3 rondas. Ronda 1: 2 alineadas, 1 a medias, 1 que chocaba. Ronda 2: 3 de 4 completas. Ronda 3: 1 completa, 3 con huecos que después cerró.
