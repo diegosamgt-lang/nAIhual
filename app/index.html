@@ -110,6 +110,7 @@ main { flex: 1; display: flex; flex-direction: column; gap: var(--s-6); padding-
 main.chat { padding-bottom: 230px; gap: var(--s-4); }
 @media (prefers-reduced-motion: no-preference) { main.enter > * { animation: rise var(--dur-2) var(--ease) both; } main.enter > *:nth-child(2) { animation-delay: .04s; } main.enter > *:nth-child(3) { animation-delay: .08s; } main.enter > *:nth-child(n+4) { animation-delay: .12s; } }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: no-preference) { .msg.new { animation: rise var(--dur-2) var(--ease) both; } }
 
 /* ---------- navegación inferior ---------- */
 nav.tabs { position: fixed; z-index: 9; left: 50%; transform: translateX(-50%); bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: min(480px, calc(100% - 24px));
@@ -611,7 +612,7 @@ var STR = {
     tabs: { inicio: 'Inicio', rutas: 'Rutas', guia: 'Guía', guardados: 'Guardados' },
     coffee: 'Quiero un café', arrived: 'Recién llegué',
     todayGuide: 'Elegí quién te guía', routes: 'Rutas a pie', seeAll: 'Ver todas', explore: 'Explorar Antigua',
-    tiles: { lugares: ['Lugares', 'Cafés, comida y monumentos'], cultura: ['Cultura maya', 'El tiempo maya y los 20 nawales'], costumbres: ['Costumbres de aquí', 'Lo práctico para moverte'], guardianes: ['Los guardianes', 'Quiénes son los cuatro'] },
+    tiles: { lugares: ['Explorar', 'Cafés, comida, monumentos y rutas'], cultura: ['Cultura maya', 'El tiempo maya y los 20 nawales'], costumbres: ['Costumbres de aquí', 'Lo práctico para moverte'], guardianes: ['Los guardianes', 'Quiénes son los cuatro'] },
     routesSoon: 'Las rutas vienen en camino', routesSoonBody: 'Estoy terminando de probar cada parada.',
     stops: 'paradas', openRoute: 'Abrir ruta a pie en Google Maps', mapNote: 'Esquema · no a escala', aprox: 'posición aproximada',
     chips: [['cafe', 'Quiero un café'], ['empezar', 'Recién llegué'], ['horas', 'Tengo 3 horas'], ['comida', 'Dónde comer'], ['dia', 'Un día completo'], ['cultura', 'Cultura maya'], ['costumbres', 'Costumbres de aquí']],
@@ -653,7 +654,7 @@ var STR = {
     tabs: { inicio: 'Home', rutas: 'Routes', guia: 'Guide', guardados: 'Saved' },
     coffee: 'I want a coffee', arrived: 'Just arrived',
     todayGuide: 'Choose your guide', routes: 'Walking routes', seeAll: 'See all', explore: 'Explore Antigua',
-    tiles: { lugares: ['Places', 'Cafés, food and monuments'], cultura: ['Maya culture', 'Maya time and the 20 nawales'], costumbres: ['Local customs', 'Practical tips to get around'], guardianes: ['The guardians', 'Who the four are'] },
+    tiles: { lugares: ['Explore', 'Cafés, food, monuments and routes'], cultura: ['Maya culture', 'Maya time and the 20 nawales'], costumbres: ['Local customs', 'Practical tips to get around'], guardianes: ['The guardians', 'Who the four are'] },
     routesSoon: 'Routes are on their way', routesSoonBody: 'I’m still testing every stop.',
     stops: 'stops', openRoute: 'Open walking route in Google Maps', mapNote: 'Schematic · not to scale', aprox: 'approximate position',
     chips: [['cafe', 'I want a coffee'], ['empezar', 'Just arrived'], ['horas', 'I have 3 hours'], ['comida', 'Where to eat'], ['dia', 'A full day'], ['cultura', 'Maya culture'], ['costumbres', 'Local customs']],
@@ -896,7 +897,7 @@ function mapsBtn(p, cls, label) {
 }
 function catTags(p) {
   var t = T();
-  return '<div class="tags"><span class="tag">' + esc(t.place[p.cat]) + '</span>' + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + (!isPub(p) ? '<span class="tag check">' + esc(t.toCheck) + '</span>' : '') + '</div>';
+  return '<div class="tags"><span class="tag">' + esc(t.place[p.cat]) + '</span>' + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + '</div>';
 }
 function placeCard(p) {
   var t = T();
@@ -1482,7 +1483,7 @@ function render(opts) {
   var sos = document.getElementById('sos'); sos.hidden = !PREVIEW; sos.innerHTML = icon('alert', 'sm') + esc(t.sos);
   var onGuia = v === 'guia';
   document.getElementById('dock').hidden = !onGuia;
-  main.className = (onGuia ? 'chat' : '') + (opts.keep ? '' : ' enter');
+  main.className = (onGuia ? 'chat' : '') + (opts.keep || opts.scroll ? '' : ' enter');
   var tab = TAB_OF[v] === undefined ? null : TAB_OF[v];
   if (v === 'ficha') tab = TAB_OF[S.stack.length ? S.stack[S.stack.length - 1].view : 'inicio'] || 'inicio';
   var n = savedShown().length;

@@ -210,7 +210,7 @@ def main():
         m = page.locator('.msg').last
         cards = m.locator('.cards.pilot [data-place]')
         check(M + ' «Quiero un café» en 1 toque: abre la Guía con 3 cafés', page.locator('.guide-head').count() == 1 and cards.count() == 3)
-        check(M + ' Cafés por verificar marcados como tal (sello y etiqueta)', m.locator('details.seal[data-seal="pending"]').count() == 3 and m.locator('.tag.check').count() == 3)
+        check(M + ' Cafés por verificar marcados una sola vez, con su sello', m.locator('details.seal[data-seal="pending"]').count() == 3 and m.locator('.tag.check').count() == 0)
         hrefs = [cards.nth(i).locator('a.btn').get_attribute('href') for i in range(3)]
         check(M + ' «Cómo llegar» de cada café es un enlace de Google Maps', all(h.startswith('https://www.google.com/maps/search/?api=1&query=') for h in hrefs), hrefs)
         check(M + " La bienvenida la da No'j, sin autopresentación", "No'j · te cuenta el porqué" in page.locator('.msg').first.inner_text() and '¿Qué tenés ganas de hacer en Antigua?' in page.locator('.msg').first.inner_text())
@@ -522,6 +522,52 @@ def main():
             vals['chip café'] = contrast(p2, '#chips .chip.pilot')
             check('Contraste ≥ 4.5 en botones y etiquetas (%s)' % scheme, all(v >= 4.5 for v in vals.values()), {k: round(v, 2) for k, v in vals.items()})
             c2.close()
+
+        # =============== H. Recorridos de turista (toques desde Inicio) y enlaces ===============
+        ctx, page, errors = new_page(browser, url)
+        check('Recorrido 1 · llegar sin saber nada: Inicio explica qué es, quién guía y qué hacer (0 toques)', page.locator('.hero h1').count() == 1 and page.locator('.guard-strip .gbtn').count() == 4 and page.locator('#cta-cafe').is_visible())
+        page.click('#cta-cafe')
+        check('Recorrido 2 · café en 1 toque', page.locator('.cards.pilot [data-place]').count() >= 1)
+        page.click('[data-tab="inicio"]')
+        page.locator('.route-card').first.click()
+        link = page.locator('[data-route-detail] a.btn.anil')
+        check('Recorrido 3 · ruta y Google Maps en 2 toques', link.count() == 1 and '/maps/dir/' in link.get_attribute('href'))
+        page.click('[data-tab="guia"]')
+        page.fill('#q', '¿Qué hago hoy?')
+        page.press('#q', 'Enter')
+        page.wait_for_timeout(100)
+        check('Recorrido 4 · pregunta libre en 2 toques (pestaña y enviar)', page.locator('.msg').count() >= 3)
+        page.click('[data-tab="inicio"]')
+        page.locator('.route-card').first.click()
+        page.click('[data-route-detail] [data-toggle]')
+        page.click('[data-tab="guardados"]')
+        check('Recorrido 5 · guardar y ver el plan en 3 toques', page.locator('.minimap .stop').count() >= 2)
+        # Cada «Cómo llegar» y cada «Abrir ruta» se arma con el nombre, la dirección y Antigua Guatemala.
+        datos = page.evaluate("window.NAIHUAL_LUGARES.map(p => [p.id, p.nombre, p.direccion])")
+        page.click('[data-tab="inicio"]')
+        page.click('[data-go="explorar"]')
+        malos = []
+        for pid, nombre, dire in datos:
+            page.locator('.grid [data-open="p:%s"]' % pid).click()
+            a = page.locator('.actions a.btn[href*="maps"]')
+            if dire:
+                href = unquote(a.get_attribute('href')) if a.count() else ''
+                if not (nombre in href and dire in href and 'Antigua Guatemala' in href):
+                    malos.append(pid)
+            elif a.count():
+                malos.append(pid + ' (sin dirección y con botón)')
+            page.click('[data-back]')
+        check('Enlaces · los 21 «Cómo llegar» bien armados; sin dirección, sin botón', not malos, malos)
+        page.click('[data-tab="rutas"]')
+        bad = []
+        for rid, n in [('centro', 6), ('conventos', 5), ('norte', 5)]:
+            page.click('[data-selroute="%s"]' % rid)
+            h = unquote(page.locator('[data-route-detail] a.btn.anil').get_attribute('href'))
+            if h.count('Antigua Guatemala') != n or h.split('waypoints=')[1].count('|') != n - 3:
+                bad.append(rid)
+        check('Enlaces · las 3 rutas llevan origen, destino y todas sus paradas', not bad, bad)
+        check('Recorridos · consola sin errores', not errors, errors)
+        ctx.close()
 
         # =============== G. Abrir el archivo directo ===============
         ctx = browser.new_context(viewport={'width': 390, 'height': 844})
