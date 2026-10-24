@@ -191,7 +191,50 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 7. Revisión del inglés por un hablante nativo → red de contactos.
 8. Si NotebookLM se puede conectar a una app → Claude, con fuente oficial de Google.
 
-## 11. Historial de versiones
+## 11. Comparación con apps parecidas (investigado 24-oct-2026)
+
+| App | Qué hace | Cómo gana dinero | Qué le sirve a nAIhual |
+|---|---|---|---|
+| **Withlocals** | Experiencias con anfitriones locales verificados | Comisión por reserva completada; el anfitrión pone su precio (tasa no publicada). 2022: más de €8.1M para anfitriones y negocios locales | El modelo más cercano a «comunidad primero»: cobrar solo cuando el local gana |
+| **Spotted by Locals** | Guías de ciudad escritas por locales | Guía pagada por ciudad (≈ $3.99 al inicio) y licencia de contenido a medios. Los locales escriben sin cobrar. Sin inversionistas | La curaduría de locales es el producto; el contenido se puede licenciar |
+| **Mindtrip** | Planificador de viajes con IA | Comisión por reservas + vende su IA a oficinas de turismo para ponerla en sus webs | Cliente B2B posible: entes de turismo (❓ INGUAT, Municipalidad, Observatorio de Antigua) |
+| **GPSmyCity / Visit A City** | Caminatas e itinerarios | App gratis + pago anual (GPSmyCity $14.99/año) o contenido premium | Confirma el «gratis ahora, premium después» |
+| **GetYourGuide** | Gran vendedor de tours | Cobra 20–30 % al proveedor | ❌ Lo que nAIhual no quiere ser: plataforma grande que se queda con el margen |
+
+**Hallazgo:** no se encontró una app oficial de guía de Antigua Guatemala. INGUAT tiene audioguía en la Catedral, guías de Semana Santa, Guatemala 360° y la línea 1500. ❓ Hueco posible, falta confirmarlo en las tiendas de apps.
+
+**Modelo propuesto (por decidir con el fundador), en 3 escalones:**
+1. **Ahora:** Plan Fundador (negocios locales pagan, siempre marcado). Ya decidido.
+2. **Después:** experiencias con locales (talleres, caminatas guiadas) con una comisión baja y transparente, como Withlocals. ❓
+3. **Después:** licencia del agente o de su contenido curado a entes de turismo, como Mindtrip y Spotted by Locals. ❓
+
+Turista: gratis siempre en lo básico; premium (WhatsApp, voz, sin conexión) cuando haya uso real.
+
+Fuentes:
+- [Withlocals: centro de ayuda para anfitriones](https://helpcenter.withlocals.com/en/articles/627960-what-is-withlocals-for-hosts)
+- [Withlocals: reporte de impacto 2023](https://withlocals-com-res.cloudinary.com/image/upload/v1686227144/sustainability/impact_report_2023.pdf)
+- [PhocusWire: Spotted by Locals](https://www.phocuswire.com/Spotted-by-Locals-celebrates-a-decade-without-outside-investors)
+- [Skift: Mindtrip](https://skift.com/?p=707391)
+- [GPSmyCity en App Store](https://apps.apple.com/app/id417207307)
+- [GetYourGuide: comisión a proveedores](https://www.getyourguide.supply/join/how-much-does-getyourguide-charge)
+- [Emisoras Unidas: INGUAT](https://emisorasunidas.com/nacional/2025/04/03/inguat-presenta-pregon-con-guias-de-cortejos-procesionales/)
+- [La Hora: Catedral de San José](https://lahora.gt/?p=466398)
+
+## 12. Ruta actualizada (24-oct-2026)
+
+**Fase actual:** 7 · Construcción (App 1.0). La **fase 5 · Acceso** sigue bloqueada: nadie más ha abierto la app. La fase 10 (diseño) empezó con las 6 pantallas de Figma.
+
+| Paso | Qué | Circuito | Quién |
+|---|---|---|---|
+| 1 | Enlace público gratis para la app (propuesta: GitHub Pages) y que 1 persona la abra en su celular | C1, C4 | Claude publica · fundador consigue a la persona |
+| 2 | Registrar cada pregunta que hacen los turistas | C10 | Claude |
+| 3 | Lugares en una hoja de Google Sheets | C9 | Claude arma · fundador llena |
+| 4 | Respuesta de NotebookLM → corregir nawales y guardianes | C8 | Fundador pega · Claude corrige |
+| 5 | Rediseño del fundador en Figma → pasar a la app | fase 10 | Fundador · Claude |
+| 6 | Vender el Plan Fundador a los primeros 5 negocios | C12 | Fundador |
+| 7 | Gemini como voz de los guardianes | C11 | Cuando haya uso real y presupuesto |
+
+## 13. Historial de versiones
 
 **App 1.0 — 18-oct-2026** (`app/index.html`)
 - Junta todo en una app con 3 pestañas: Guía (chat de guardianes), Explorar (muro) y Para vos.
@@ -207,6 +250,6 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 - v2.1, v2 y v1 en Claude Design (17-oct): muro tipo Pinterest, Para vos y ES/EN.
 - C0 y 0.1.x en ChatGPT/Codex (15–17 oct): mapa OpenStreetMap; diseño rechazado por el fundador.
 
-## 12. Para quien siga (prompt de continuación)
+## 14. Para quien siga (prompt de continuación)
 
 > Leé `CLAUDE.md` y este documento completo, y respetá el método `0_…`–`4_….md`. La app vigente es `app/index.html`; no rehagás desde cero ni toqués lo que funciona. Antes de construir, preguntá «¿qué circuito cierra esto?». Nunca inventes datos ni significados culturales. Reportá con ✅ 🟡 ❓. Esperá CONSTRUYE. Siguiente paso: C1, que una persona que no sea el fundador abra la app en su celular.
