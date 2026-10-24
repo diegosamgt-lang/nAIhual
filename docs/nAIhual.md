@@ -143,7 +143,8 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 - Con eso se arma un **arquetipo** de cada agente («a Gaby le gusta…»), visto desde los ojos de cada guardián.
 - **Para qué:** un criterio sincero, que no sale de la IA sola, sino de 8 miradas confiables.
 - ✅ El primer agente es **otra persona**, no el amigo de la prueba de noviembre.
-- ❓ Por definir: las 8 «líneas» de agentes, y qué datos de cada agente se guardan y quién los ve (pregunta T13 del método).
+- ✅ El fundador ya sabe quiénes son los 8 (24-oct). Entre ellos tiene que haber estos tipos: comida y café · arte y artesanos · naturaleza y caminatas · accesibilidad y familias.
+- ❓ Por definir: los nombres de los 8 y qué mira cada uno, y qué datos de cada agente se guardan y quién los ve (pregunta T13 del método).
 
 ### B. Reviews de la comunidad
 - Cualquier persona puede comentar y calificar las playlists. Las reviews que funcionan mueven a la comunidad hacia el local de verdad.
