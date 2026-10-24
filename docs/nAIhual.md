@@ -298,13 +298,16 @@ Tata (cultura)                                accesibilidad            playlists
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
-**App vigente: nAIhual 3.0** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
+**App vigente: nAIhual 3.1** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
 - **Dos modos** (`modo` en `app/data/config.js`):
   - **Vista previa** (hoy): todo el catálogo con sello «Por verificar», vista interna del equipo, beta del fundador y Claude respondiendo lo que se escribe libre.
   - **Pública**: solo lo verificado, sin vista interna, sin beta y sin Claude.
 - **Pestañas:** Inicio (portada, qué es nAIhual, brújula del paisaje, guardianes, rutas, accesos) · Rutas (mapa esquemático y Google Maps a pie) · Guía (chat con el guardián de turno) · Guardados (♥ y plan a pie).
+- **Chat con el orden de búsqueda (nuevo en 3.1):** primero el catálogo, tus notas, tus libretas y lo aprendido confirmado. Si no está ahí, lo que sabe la IA, en una tarjeta «Según la IA · confirmá en Google». Cada lugar trae «Vamos» (Google Maps) e «Info». Los guías resumen lo que dijeron las personas, sin opinar. No repite consejos. Solo en el visor privado: en la versión pública responden las reglas fijas.
+- **Lo aprendido (nuevo en 3.1):** después de cada respuesta de Claude, nAIhual anota hasta 2 cosas nuevas como «por confirmar». En la beta las confirmás o las borrás; solo lo confirmado se usa.
+- **Libretas (nuevo en 3.1):** `app/data/libretas.js`. Claude copia ahí tus libretas de Google Docs; todavía no hay ninguna.
 - **Beta del fundador (nueva en 3.0):** «me gustó», «dato mal» y «nota» en cada ficha, y «agregar un lugar» con su enlace de Google Maps y su momento del viaje.
-- **Copias para volver atrás:** `versiones/visor-app-1.0`, `versiones/app-1.1-piloto`, `versiones/app-1.2`, `versiones/app-2.0`.
+- **Copias para volver atrás:** `versiones/visor-app-1.0`, `versiones/app-1.1-piloto`, `versiones/app-1.2`, `versiones/app-2.0`, `versiones/app-3.0`.
 
 ## Circuitos
 Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qué circuito cierra esto?»**
@@ -312,7 +315,8 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | Capa | Circuito | Algo pasa → resultado | Estado |
 |---|---|---|---|
 | 2 | Alimentar (beta) | El fundador marca «me gustó», «dato mal» o una nota, o agrega un lugar → queda guardado → Claude lo lee, lo verifica y lo pasa al catálogo | 🟡 nuevo en 3.0 |
-| 2 | Preguntar | Escribe o toca una pregunta → el guardián responde con lugares reales y su tono | 🟡 |
+| 2 | Preguntar | Escribe una pregunta → el guía responde en 3 pasos (lo verificado, después lo que sabe la IA) con «Vamos» e «Info» | 🟡 nuevo en 3.1; 176 pruebas con Claude simulado, falta tu prueba real |
+| 2 | Aprender | Cada plática deja algo «por confirmar» → el fundador lo confirma → entra en la siguiente respuesta | 🟡 nuevo en 3.1 |
 | 2 | Cambiar de guardián | Pide otro → cambia y ese sigue | 🟡 |
 | 2 | Llegar | Toca «Cómo llegar» → Google Maps abre el lugar o la ruta a pie | 🟡 sin celular real |
 | 2 | Ubicarse | Ve la brújula del paisaje → sabe dónde está el norte por lo que ve | 🟡 nuevo en 3.0 |
@@ -337,7 +341,8 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | Método | `0_…` a `4_….md` | Fundador · no se toca |
 | Bases, estado, decisiones | Este documento | Claude con el fundador (cambios de bases solo con FIJA) |
 | Lugares y fuentes | `app/data/lugares.js`, `app/data/fuentes.js` | Claude, con lo que verifica el fundador |
-| Notas de la beta | Base de datos del visor privado («nAIhual») | Fundador; Claude las lee |
+| Notas de la beta y lo aprendido | Base de datos del visor privado («nAIhual»), colecciones «beta» y «aprendido» | Fundador; Claude las lee |
+| Libretas de conocimiento | Google Docs del fundador (fuente) → copia en `app/data/libretas.js` | Fundador escribe; Claude copia |
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md` | Claude |
 | Prompts | `docs/prompts/` | Claude |
 | PDF final 3.0 (bases, abierto, cómo alimentar, prompts) | `docs/nAIhual-3.0-bases-finales.pdf` | Claude · se rehace con cada FIJA grande |
@@ -378,6 +383,8 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 ---
 
 # PARTE 5 · HISTORIAL
+
+**nAIhual 3.1 — 24-oct-2026 (CONSTRUYE):** chat con el orden de búsqueda en 3 pasos, guías que resumen sin opinar, «Vamos» e «Info» en cada lugar, lugares que sabe la IA marcados «Según la IA · confirmá en Google», lo aprendido «por confirmar» en la beta y lugar para las libretas. Ya no descarta respuestas que nombran lugares por verificar. ✅ 176/176 pruebas automáticas (con Claude simulado). 🟡 Falta probarlo con Claude de verdad en tu visor.
 
 **FIJA · 24-oct-2026 · orden de búsqueda:** reemplaza «solo se usa el catálogo publicado» en el chat. Orden: 1 lo verificado (catálogo y NotebookLM) · 2 lo que sabe la IA, con Google Maps para confirmar · 3 Google en vivo, más adelante. Y nAIhual aprende de cada plática (B6, B10). Venía del choque: la app 3.0 no nombraba ningún lugar.
 

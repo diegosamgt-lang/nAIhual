@@ -353,7 +353,7 @@ def main():
         t = page.inner_text('main')
         check(M + ' Vista interna: aviso y revisión de las 21 fichas', 'no la ve el visitante' in t and 'Publicadas hoy: 0 de 21' in t and page.locator('[data-review]').count() == 21)
         check(M + ' Revisión: Coffea sin la frase sin fuente', 'Afirmación retirada hasta tener fuente' in t and 'Entre las 100 mejores coffee shops del mundo.' not in page.inner_text('body').replace('«Entre las 100 mejores coffee shops del mundo».', ''))
-        for sec, sel, n in [('textos', '[data-copy]', 13), ('modelo', '[data-capa]', 6), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 8), ('sistema', '.sw', 18)]:
+        for sec, sel, n in [('textos', '[data-copy]', 13), ('modelo', '[data-capa]', 6), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 9), ('sistema', '.sw', 18)]:
             page.click('[data-sec="%s"]' % sec)
             check(M + ' Vista interna · %s' % sec, page.locator(sel).count() >= n and no_hscroll(page), page.locator(sel).count())
         page.click('[data-sec="modelo"]')
@@ -363,10 +363,10 @@ def main():
         a = page.inner_text('main')
         check(M + ' Aprendizaje: «Diseño futuro / no activo» y «Datos ficticios de demostración»', 'Diseño futuro / no activo' in a and 'Datos ficticios de demostración' in a)
         page.click('[data-demo-fb="si"]')
-        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta")'))
+        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta" || k === "naihual.aprendido")'))
         page.click('[data-sec="arquitectura"]')
         r = page.inner_text('main')
-        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.0' in r and 'Beta del fundador' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
+        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.1' in r and 'Beta del fundador' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
         code = open(os.path.join(APP, 'index.html'), encoding='utf-8').read()
         check(M + ' Sin llaves de API ni conexiones a servicios en el código', not any(x in code for x in ['AIza', 'generativelanguage.googleapis', 'apiKey', 'api_key=']))
         check(M + ' Sin datos de lugares escritos dentro del programa', 'Coffea Cafés Especiales' not in code.split('<script>')[1].split('// ===================== CLAUDE')[0] and "name: '12 Onzas'" not in code)
@@ -462,11 +462,13 @@ def main():
         check('[vista previa] Los por verificar llevan su sello; el publicado, «Verificado»', m.locator('details.seal[data-seal="ok"]').count() == 1 and m.locator('details.seal[data-seal="pending"]').count() == 2)
         ctx.close()
 
-        # =============== D. Claude responde (vista previa, simulado) ===============
-        ok_reply = {'texto': 'Te cuento algo para empezar con calma.', 'consejos': ['foto', 'inventado'], 'lugares': ['doce'], 'cultural': False, 'suficiente': True, 'opciones': ['Contame más']}
+        # =============== D. Claude responde (vista previa, simulado) · orden de búsqueda en 3 pasos ===============
+        ok_reply = {'texto': 'Te cuento algo para empezar con calma.', 'consejos': ['foto', 'inventado'], 'lugares': ['doce', 'inventado'],
+                    'otros': [{'nombre': 'Lugar que conoce la IA', 'porque': 'Lo que se sabe de él.'}], 'cultural': False, 'suficiente': True,
+                    'opciones': ['Contame más'], 'aprendido': ['La gente quiere empezar con calma.']}
         ctx, page, errors = new_page(browser, url, None, 'light', None, '', ok_reply)
         page.wait_for_selector('[data-ai="listo"]')
-        check('[Claude] Avisa la prueba privada y que nAIhual no guarda nada', 'nAIhual no lo guarda' in page.inner_text('main'))
+        check('[Claude] Avisa la prueba privada y que solo guarda lo que aprende, por confirmar', 'solo guarda lo que aprende' in page.inner_text('main'))
         page.click('[data-tab="guia"]')
         page.fill('#q', '¿Qué me recomendás hacer hoy?')
         page.press('#q', 'Enter')
@@ -474,21 +476,39 @@ def main():
         page.wait_for_selector('[data-kind="ai"]')
         last = page.locator('.msg').last
         check('[Claude] Responde el guardián de turno, marcado «con Claude»', 'Te cuento algo para empezar con calma.' in last.inner_text() and 'con Claude' in last.inner_text())
-        check('[Claude] Muestra el consejo pedido y descarta ids inventados', last.locator('.tipcard').count() == 1)
-        check('[Claude] Un lugar no publicado nunca se muestra aunque Claude lo pida', last.locator('[data-place]').count() == 0)
+        check('[Claude] Muestra un solo consejo y descarta ids inventados', last.locator('.tipcard').count() == 1)
+        check('[Claude] Paso 1: muestra la ficha del catálogo con «Vamos» e «Info»', last.locator('[data-place="doce"]').count() == 1 and last.locator('[data-place="doce"] a.btn').inner_text().strip() == 'Vamos' and last.locator('[data-place="doce"] button.btn[data-open="p:doce"]').count() == 1)
+        ia = last.locator('[data-ia-place]')
+        hrefs = [ia.locator('a').nth(k).get_attribute('href') for k in range(ia.locator('a').count())] if ia.count() else []
+        check('[Claude] Paso 2: lugar que sabe la IA, marcado «Según la IA · confirmá en Google», con «Vamos» (ruta) e «Info» (Google Maps)', ia.count() == 1 and 'Según la IA · confirmá en Google' in ia.inner_text() and len(hrefs) == 2 and hrefs[0].startswith('https://www.google.com/maps/dir/?api=1&destination=') and hrefs[1].startswith('https://www.google.com/maps/search/?api=1&query='), hrefs)
         check('[Claude] Ofrece sus opciones', last.locator('[data-say="Contame más"]').count() == 1)
         calls = page.evaluate('window.__calls')
         first = calls[0][0]['content'] if calls else ''
-        check('[Claude] Recibe reglas, datos y la lista de lugares que no puede nombrar', 'Usá SOLO los DATOS' in first and 'en_revision_no_nombrar' in first and calls[0][-1]['content'] == '¿Qué me recomendás hacer hoy?')
+        check('[Claude] Recibe el orden de búsqueda, «guía, no juez» y los datos', all(x in first for x in ['Orden para buscar', 'Sos guía, no juez', '"catalogo"', '"libretas"', '"aprendido_confirmado"', 'Nunca afirmes horarios, precios']) and 'en_revision_no_nombrar' not in first and calls[0][-1]['content'] == '¿Qué me recomendás hacer hoy?')
+        check('[Claude] Lo aprendido queda «por confirmar»', page.evaluate('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]").some(x => x.estado === "por_confirmar" && x.texto === "La gente quiere empezar con calma.")'))
         n = len(calls)
         pedir_cafe(page)
         page.wait_for_timeout(250)
         check('[Claude] «Quiero un café» sigue con reglas fijas', len(page.evaluate('window.__calls')) == n)
-        page.evaluate("window.__reply = {texto: 'Andá a Coffea, es buenísimo.', lugares: [], consejos: [], cultural: false, suficiente: true, opciones: []}")
+        coffea = page.evaluate("window.NAIHUAL_LUGARES.find(x => x.id === 'coffea').nombre")
+        page.evaluate("n => { window.__reply = {texto: 'Otra opción con contexto.', lugares: [], otros: [{nombre: n, porque: 'x'}], consejos: ['foto'], cultural: false, suficiente: true, opciones: [], aprendido: []}; }", coffea)
         page.fill('#q', 'Recomendame algo bonito para visitar')
         page.press('#q', 'Enter')
         page.wait_for_timeout(500)
-        check('[Claude] Si nombra un lugar por verificar, se descarta', 'Coffea' not in page.locator('.msg').last.inner_text() and 'por verificar; respondí con las reglas fijas' in page.locator('.msg').last.inner_text())
+        last = page.locator('.msg').last
+        check('[Claude] Si la IA nombra un lugar del catálogo, sale su ficha (no una tarjeta suelta)', last.locator('[data-place="coffea"]').count() == 1 and last.locator('[data-ia-place]').count() == 0)
+        check('[Claude] Un consejo que ya salió no se repite', last.locator('.tipcard').count() == 0)
+        page.click('[data-tab="inicio"]')
+        page.click('[data-beta-card] [data-go="beta"]')
+        check('[Claude] La beta muestra lo aprendido por confirmar', page.locator('[data-learn="por_confirmar"]').count() == 1)
+        page.click('[data-learn-ok]')
+        check('[Claude] Confirmar lo pasa a «Confirmado»', page.locator('[data-learn="confirmado"]').count() == 1)
+        page.click('[data-tab="guia"]')
+        page.fill('#q', 'Contame qué aprendiste')
+        page.press('#q', 'Enter')
+        page.wait_for_timeout(500)
+        calls = page.evaluate('window.__calls')
+        check('[Claude] Lo confirmado entra en el paso 1 de la siguiente respuesta', 'La gente quiere empezar con calma.' in calls[-1][0]['content'])
         page.evaluate("window.__reply = {__error: 'not_granted'}")
         page.fill('#q', 'hola de nuevo, contame algo')
         page.press('#q', 'Enter')

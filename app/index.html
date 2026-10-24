@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* =====================================================================
-   nAIhual 3.0 · sistema visual (tokens). Cambiar un token cambia toda la app.
+   nAIhual 3.1 · sistema visual (tokens). Cambiar un token cambia toda la app.
    Concepto: Antigua en piedra, cal y basalto. Muros encalados (fondo), basalto volcánico (tinta),
    añil de fachada (acento de rutas y enlaces) y los cuatro colores de los guardianes por rumbo*.
    Layout: app de celular en una columna (máx. 560px). Cada pantalla abre con una imagen, un mapa o una ilustración.
@@ -431,11 +431,12 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script src="data/config.js"></script>
 <script src="data/lugares.js"></script>
 <script src="data/fuentes.js"></script>
+<script src="data/libretas.js"></script>
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.0 · 24-oct-2026';
-var INSTR_VERSION = 'reglas-fijas 3.0';
+var VERSION = 'nAIhual 3.1 · 24-oct-2026';
+var INSTR_VERSION = 'reglas-fijas 3.1';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
 // Dos modos. Sin configuración = pública (lo más seguro).
@@ -653,7 +654,10 @@ var X3 = {
     moments: [['llegue', 'Llegué'], ['transporte', 'Transporte'], ['hotel', 'Hotel'], ['comida', 'Comida'], ['cerca', 'Qué hay cerca'], ['otro', 'Otro']],
     list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
     savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
-    kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo' }
+    kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo' },
+    iaTag: 'Según la IA · confirmá en Google', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
+    confirm: 'Confirmar', remove: 'Borrar', confirmed: 'Confirmado', toConfirm: 'Por confirmar', noLearned: 'Todavía no aprendió nada. Platicá con un guía.',
+    notebooks: 'Libretas cargadas', notebooksBody: function (n) { return n ? n + (n === 1 ? ' libreta de tu Drive, cargada por Claude.' : ' libretas de tu Drive, cargadas por Claude.') : 'Todavía no hay libretas. Cuando tengás una en tu Drive, Claude la lee y la carga aquí.'; }
   },
   en: {
     introKicker: 'What nAIhual is', introTitle: 'Guatemala’s wealth is in its landscapes, and it is thanks to its people.',
@@ -669,7 +673,10 @@ var X3 = {
     moments: [['llegue', 'Just arrived'], ['transporte', 'Getting around'], ['hotel', 'Hotel'], ['comida', 'Food'], ['cerca', 'Nearby'], ['otro', 'Other']],
     list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
     savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
-    kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place' }
+    kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place' },
+    iaTag: 'From the AI · check on Google', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
+    confirm: 'Confirm', remove: 'Delete', confirmed: 'Confirmed', toConfirm: 'To confirm', noLearned: 'Nothing learned yet. Chat with a guide.',
+    notebooks: 'Loaded notebooks', notebooksBody: function (n) { return n ? n + (n === 1 ? ' notebook from your Drive, loaded by Claude.' : ' notebooks from your Drive, loaded by Claude.') : 'No notebooks yet. When you have one in your Drive, Claude reads it and loads it here.'; }
   }
 };
 function X() { return X3[S.lang]; }
@@ -686,7 +693,7 @@ var STR = {
     placeholder: 'Preguntale lo que quieras…', send: 'Enviar', switchChip: 'Otro guía', talk: 'Hablar con',
     welcome: '¿Qué tenés ganas de hacer en Antigua?', takeover: 'Ahora te guío yo. ¿Qué buscás?',
     place: { cultura: 'Monumento', cafe: 'Café', comida: 'Comida' }, route: 'Ruta a pie', plan: 'Plan', tip: 'Costumbre', culture: 'Cultura',
-    maps: 'Cómo llegar', mapsAria: function (n) { return 'Cómo llegar a ' + n + ' (abre Google Maps)'; },
+    maps: 'Vamos', info: 'Info', mapsAria: function (n) { return 'Cómo llegar a ' + n + ' (abre Google Maps)'; },
     verified: function (d) { return 'Verificado · ' + d; }, verifiedBody: function (src, who) { return 'Fuente: ' + src + '. Lo comprobó ' + who + '.'; },
     toCheck: 'Por verificar', toCheckBody: 'Vista previa: esta ficha todavía no está comprobada. El visitante no la ve.',
     hours: 'Horario', price: 'Precio', photoSoon: 'Foto pendiente',
@@ -709,7 +716,7 @@ var STR = {
     sos: 'Emergencias', sosTitle: 'Emergencias', sosBody: 'Pendiente de números oficiales. Se activan cuando cada número esté confirmado con su fuente oficial.', close: 'Cerrar',
     internal: 'Vista interna', foot: VERSION, months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], or: ' o ',
     aiThinking: 'Pensando', aiStop: 'Detener', aiBy: 'con Claude',
-    aiReady: 'Vista previa: Claude responde con tu cuenta. Lo que escribís se envía a Claude para responder; nAIhual no lo guarda.',
+    aiReady: 'Vista previa: Claude responde con tu cuenta. Lo que escribís se envía a Claude para responder. nAIhual solo guarda lo que aprende, como «por confirmar», en tu beta.',
     aiLoading: 'Conectando con Claude…', aiOffFoot: 'Claude no está disponible aquí: responden las reglas fijas.',
     aiLeak: 'Claude nombró un lugar por verificar; respondí con las reglas fijas.', aiBad: 'Claude no respondió bien esta vez; respondí con las reglas fijas.',
     aiBusy: 'Claude está ocupado o llegaste a tu límite; respondí con las reglas fijas.', aiOff: 'Claude no está permitido aquí; respondo con las reglas fijas.', aiStopped: 'Detuviste a Claude; respondí con las reglas fijas.',
@@ -728,7 +735,7 @@ var STR = {
     placeholder: 'Ask anything…', send: 'Send', switchChip: 'Another guide', talk: 'Talk to',
     welcome: 'What do you feel like doing in Antigua?', takeover: 'I’m your guide now. What are you after?',
     place: { cultura: 'Monument', cafe: 'Café', comida: 'Food' }, route: 'Walking route', plan: 'Plan', tip: 'Custom', culture: 'Culture',
-    maps: 'Directions', mapsAria: function (n) { return 'Directions to ' + n + ' (opens Google Maps)'; },
+    maps: 'Let’s go', info: 'Info', mapsAria: function (n) { return 'Directions to ' + n + ' (opens Google Maps)'; },
     verified: function (d) { return 'Verified · ' + d; }, verifiedBody: function (src, who) { return 'Source: ' + src + '. Checked by ' + who + '.'; },
     toCheck: 'To be checked', toCheckBody: 'Preview: this listing hasn’t been checked yet. Visitors don’t see it.',
     hours: 'Hours', price: 'Price', photoSoon: 'Photo coming',
@@ -751,7 +758,7 @@ var STR = {
     sos: 'Emergency', sosTitle: 'Emergency', sosBody: 'Official numbers pending. They switch on once each number is confirmed with its official source.', close: 'Close',
     internal: 'Team view', foot: VERSION, months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], or: ' or ',
     aiThinking: 'Thinking', aiStop: 'Stop', aiBy: 'with Claude',
-    aiReady: 'Preview: Claude answers with your account. What you type is sent to Claude to answer; nAIhual does not keep it.',
+    aiReady: 'Preview: Claude answers with your account. What you type is sent to Claude to answer. nAIhual only keeps what it learns, as «to confirm», in your beta.',
     aiLoading: 'Connecting to Claude…', aiOffFoot: 'Claude isn’t available here: fixed rules answer.',
     aiLeak: 'Claude named a place still to be checked; I answered with the fixed rules.', aiBad: 'Claude didn’t answer properly this time; I answered with the fixed rules.',
     aiBusy: 'Claude is busy or you reached your limit; I answered with the fixed rules.', aiOff: 'Claude isn’t allowed here; I answer with the fixed rules.', aiStopped: 'You stopped Claude; I answered with the fixed rules.',
@@ -1022,7 +1029,7 @@ function placeCard(p) {
     '<button type="button" class="pin" data-open="p:' + p.id + '" aria-label="' + esc(p.name) + '">' + phHTML(p, t) + '</button>' +
     '<div class="pc-body">' + catTags(p) + '<h3>' + esc(p.name) + '</h3>' + (p.why[L()] ? '<p>' + esc(p.why[L()]) + '</p>' : '') +
     (p.addr ? '<span class="addr">' + esc(p.addr) + '</span>' : '') +
-    '<div class="row">' + mapsBtn(p, 'primary') + sealHTML(p) + (p.hist ? infoHTML('hist') : '') + '</div></div></article>';
+    '<div class="row">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(p.id) + '">' + esc(t.info) + '</button>' + sealHTML(p) + (p.hist ? infoHTML('hist') : '') + '</div></div></article>';
 }
 function miniMap(ids, extra) {
   return '<div class="map">' + mapSVG({ routes: [{ ids: ids }], stops: ids, crop: cropFor(ids, 34), label: extra || '' }) + '</div>';
@@ -1100,50 +1107,66 @@ if (AI_ON && window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then(function (fn) { AI.fn = fn || null; AI.state = fn ? 'listo' : 'no-disponible'; render(false); }, function () { AI.state = 'no-disponible'; render(false); });
 } else if (AI_ON) AI.state = 'no-disponible';
 function aiData() {
+  var mine = function (pid, tipo) { return BETA.items.filter(function (x) { return x.lugar === pid && x.tipo === tipo; }); };
   return {
     guardianes: ORDER.map(function (id) { var g = G[id]; return { id: id, nombre: g.name, es: g.value.es + ' *', hace: g.role.es, habla: g.speaks.es, recomienda: g.recs.es, rumbo_y_color: g.dir.es + ' *' }; }),
-    lugares_publicados: PIDS.filter(function (id) { return isPub(P[id]); }).map(function (id) { var p = P[id];
-      return { id: id, nombre: p.name, categoria: p.cat, direccion: p.addr, frase: p.why.es, fuente: p.fuente, fecha_verificacion: p.fecha, verifico: p.verifico, patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
-    en_revision_no_nombrar: PIDS.filter(function (id) { return !isPub(P[id]); }).map(function (id) { return P[id].name; }),
+    // Paso 1: lo que nAIhual ya sabe.
+    catalogo: PIDS.filter(function (id) { return visible(P[id]); }).map(function (id) { var p = P[id];
+      return { id: id, nombre: p.name, categoria: p.cat, direccion: p.addr || null, estado: isPub(p) ? 'verificado (' + p.fuente + ', ' + p.fecha + ')' : 'por verificar', lo_que_dijo_el_fundador: p.why.es || null,
+        le_gusto_al_fundador: mine(id, 'gusta').length > 0, notas_del_fundador: mine(id, 'nota').concat(mine(id, 'dato')).map(function (x) { return x.texto; }), patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
+    lugares_que_agrego_el_fundador: BETA.items.filter(function (x) { return x.tipo === 'nuevo'; }).map(function (x) { return { nombre: x.nombre, momento: x.momento || null, le_gusto: !!x.gusta, nota: x.texto || null }; }),
+    libretas: LIBRETAS,
+    aprendido_confirmado: learnedConfirmed(),
     consejos: Object.keys(TIPS).map(function (id) { return { id: id, texto: TIPS[id].body.es, cultural_pendiente_de_validacion: !!TIPS[id].star }; }),
-    nawales_del_cholqij: NAWALES.map(function (r) { return r[1] + ': ' + r[2].es + ' · ' + r[3].es; }),
-    recorrido_de_cafe: 'El botón «Quiero un café» muestra hasta 3 cafés publicados con fuente y fecha. Hoy hay ' + pilotCafes().length + '.'
+    nawales_del_cholqij: NAWALES.map(function (r) { return r[1] + ': ' + r[2].es + ' · ' + r[3].es; })
   };
 }
 function aiRules(gid) {
   var g = G[gid];
-  return 'Sos el motor de respuestas de nAIhual, una guía turístico-cultural de Antigua Guatemala, en una prueba privada del fundador. ' +
-    'Respondés como el guardián de turno, ' + g.name + ' (' + g.role.es + '; habla ' + g.speaks.es.toLowerCase() + '; recomienda: ' + g.recs.es + ').\n' +
-    'Reglas obligatorias:\n' +
-    '1. Usá SOLO los DATOS de abajo. No uses conocimiento propio sobre lugares, direcciones, horarios, precios, eventos, historia ni significados culturales.\n' +
-    '2. Solo podés recomendar lugares de «lugares_publicados». Si la lista está vacía o no hay uno que sirva, decí con calma que esa selección está en revisión. Nunca nombres un lugar de «en_revision_no_nombrar» ni ningún otro lugar.\n' +
-    '3. Lo cultural de los datos lleva * porque falta que lo valide un Ajq\'ij; decilo así. Nunca le digas a nadie «cuál es su nawal».\n' +
-    '4. Seguridad, salud o emergencias: no hay fuente oficial verificada. Sugerí preguntar en el hospedaje o en la oficina de turismo local. No des números de teléfono.\n' +
-    '5. Si la pregunta es ambigua, hacé una pregunta breve y ofrecé hasta 4 opciones cortas.\n' +
-    '6. Todo lo patrocinado se dice. Un pago nunca cambia lo que recomendás.\n' +
-    '7. Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si la persona escribe en inglés, respondé en inglés.\n' +
-    '8. Si no tenés información suficiente, decilo y ofrecé lo que sí hay: consejos, cultura con *, el recorrido de café.\n' +
-    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids de lugares_publicados], "consejos": [hasta 2 ids de consejos], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 4 textos cortos]}\n\n' +
+  return 'Sos nAIhual, un agente turístico-cultural de Antigua Guatemala, en la prueba privada del fundador. ' +
+    'Respondés como el guía de turno, ' + g.name + ' (' + g.role.es + '; habla ' + g.speaks.es.toLowerCase() + '; recomienda: ' + g.recs.es + ').\n' +
+    'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
+    'Orden para buscar (obligatorio):\n' +
+    '1. Primero lo que nAIhual ya sabe: «catalogo», «lugares_que_agrego_el_fundador», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
+    '2. Si ahí no está, respondé con lo que vos sabés de Antigua, como un agente de verdad: lugares reales que conocés, con su contexto. Ponelos en «otros» (nombre exacto del lugar y por qué). La app les pone la etiqueta «Según la IA · confirmá en Google». No inventes lugares: si no conocés uno que sirva, decilo.\n' +
+    'Reglas:\n' +
+    '- Sos guía, no juez. Resumí lo que dijeron las personas (el fundador, agentes) y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
+    '- Nunca afirmes horarios, precios, si abre hoy ni qué platos tiene el menú: decí «confirmalo en Google Maps» o «en su menú», una sola vez.\n' +
+    '- Lo cultural maya lleva * porque falta que lo valide un tata (Ajq\'ij). Nunca le digas a nadie «cuál es su nawal».\n' +
+    '- Emergencias o salud: sugerí preguntar en el hospedaje; no des números de teléfono.\n' +
+    '- Lo patrocinado se dice. Un pago nunca cambia lo que recomendás.\n' +
+    '- No repitas un consejo que ya diste en esta plática. «consejos» solo si de verdad suma.\n' +
+    '- Si la pregunta es ambigua, una pregunta breve. Las «opciones» suenan a persona, no a menú (por ejemplo «¿Algo dulce cerca?»), sin palabras como «pendiente de validación».\n' +
+    '- Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si te escriben en inglés, respondé en inglés.\n' +
+    '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección del fundador). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
+    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "otros": [{"nombre": string, "porque": string}], "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos]}\n\n' +
     'DATOS:\n' + JSON.stringify(aiData());
-}
-// Palabras que delatan un lugar: su nombre completo y cada palabra propia del nombre (no las comunes como «café» o «iglesia»).
-var LEAK_COMMON = { cafe: 1, cafes: 1, coffee: 1, house: 1, especiales: 1, bistro: 1, tambien: 1, primera: 1, artista: 1, alegria: 1, once: 1, italiano: 1, patio: 1, pina: 1,
-  parque: 1, central: 1, iglesia: 1, ruinas: 1, convento: 1, palacio: 1, generales: 1, grande: 1, santa: 1, clara: 1, jose: 1, francisco: 1, arco: 1, luz: 1 };
-var LEAK_EXTRA = { fatcat: ['fat cat'], santaclara: ['santa clara'], sanfrancisco: ['san francisco'], arco: ['santa catalina'], parque: ['parque central'] };
-function leakTerms(p) {
-  var full = norm(p.name).replace(/[^a-z0-9]+/g, ' ').trim();
-  return [full].concat(full.split(' ').filter(function (x) { return x.length >= 4 && !LEAK_COMMON[x]; }), LEAK_EXTRA[p.id] || []);
 }
 // Revisión de lo que devuelve Claude antes de mostrarlo.
 function aiClean(r) {
   if (!r || typeof r !== 'object' || typeof r.texto !== 'string' || !r.texto.trim()) return null;
-  var texto = r.texto.trim().slice(0, 1500), low = ' ' + norm(texto).replace(/[^a-z0-9]+/g, ' ') + ' ';
-  var leak = PIDS.filter(function (id) { return !isPub(P[id]) && leakTerms(P[id]).some(function (w) { return low.indexOf(' ' + w + ' ') >= 0; }); });
-  if (leak.length) return { leak: leak.map(function (id) { return P[id].name; }) };
+  var texto = r.texto.trim().slice(0, 1500);
   function ids(list, ok, max) { return (Array.isArray(list) ? list : []).map(String).filter(function (x, i, a) { return ok(x) && a.indexOf(x) === i; }).slice(0, max); }
-  return { texto: texto, lugares: ids(r.lugares, function (id) { return isPub(P[id]); }, 3), consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 2),
+  var lugares = ids(r.lugares, function (id) { return visible(P[id]); }, 3), otros = [];
+  (Array.isArray(r.otros) ? r.otros : []).forEach(function (o) {
+    if (!o || typeof o.nombre !== 'string' || !o.nombre.trim()) return;
+    var nombre = o.nombre.trim().slice(0, 80), n = norm(nombre);
+    // Si es un lugar del catálogo, se muestra su ficha.
+    var cat = PIDS.filter(function (id) { return visible(P[id]) && norm(P[id].name) === n; })[0];
+    if (cat) { if (lugares.indexOf(cat) < 0 && lugares.length < 3) lugares.push(cat); return; }
+    if (otros.length < 3 && !otros.some(function (x) { return norm(x.nombre) === n; })) otros.push({ nombre: nombre, porque: typeof o.porque === 'string' ? o.porque.trim().slice(0, 200) : '' });
+  });
+  return { texto: texto, lugares: lugares, otros: otros, consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 1),
     cultural: r.cultural === true, suficiente: r.suficiente === true,
-    opciones: (Array.isArray(r.opciones) ? r.opciones : []).map(function (o) { return String(o).trim().slice(0, 60); }).filter(Boolean).slice(0, 4) };
+    opciones: (Array.isArray(r.opciones) ? r.opciones : []).map(function (o) { return String(o).trim().slice(0, 60); }).filter(Boolean).slice(0, 3),
+    aprendido: (Array.isArray(r.aprendido) ? r.aprendido : []).filter(function (x) { return typeof x === 'string' && x.trim(); }).map(function (x) { return x.trim().slice(0, 200); }).slice(0, 2) };
+}
+// Lugar que nombra la IA y no está en el catálogo: «Vamos» abre la ruta en Google Maps desde donde está la persona; «Info» lo busca en Google Maps.
+function iaPlaceCard(o) {
+  var t = T(), x = X(), q = encodeURIComponent(o.nombre + ', Antigua Guatemala');
+  return '<article class="pcard ia" data-ia-place="' + esc(o.nombre) + '"><div class="pc-body"><div class="tags"><span class="tag check">' + esc(x.iaTag) + '</span></div><h3>' + esc(o.nombre) + '</h3>' + (o.porque ? '<p>' + esc(o.porque) + '</p>' : '') +
+    '<div class="row"><a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener" aria-label="' + esc(t.mapsAria(o.nombre)) + '">' + icon('pin', 'sm') + esc(t.maps) + '</a>' +
+    '<a class="btn" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(t.info) + '</a></div></div></article>';
 }
 function askClaude(text, rulesMsg, pend) {
   AI.busy = true; AI.ctl = new AbortController();
@@ -1151,11 +1174,12 @@ function askClaude(text, rulesMsg, pend) {
   function finish(m) { var i = S.msgs.indexOf(pend); if (i >= 0) S.msgs[i] = m; else S.msgs.push(m); AI.busy = false; AI.ctl = null; render(true); }
   AI.fn.json(input, { modelTier: 'quick', cache: false, signal: AI.ctl.signal }).then(function (r) {
     var out = aiClean(r);
-    if (!out || out.leak) { rulesMsg.aiNote = out && out.leak ? 'aiLeak' : 'aiBad'; finish(rulesMsg); return; }
+    if (!out) { rulesMsg.aiNote = 'aiBad'; finish(rulesMsg); return; }
     AI.turns.push({ role: 'user', content: text }, { role: 'assistant', content: out.texto });
+    learnAdd(out.aprendido, text, pend.from);
     var cards = out.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(out.consejos.map(function (id) { return { key: 't:' + id }; }));
     finish({ from: pend.from, intro: pend.intro, kind: 'ai', ai: out,
-      meta: { proveedor: 'Claude (prueba privada en el visor)', instrucciones: INSTR_VERSION + ' + claude-1', intencion: rulesMsg.intent || rulesMsg.gap || 'libre', fuentes: sourcesOf(cards), suficiente: out.suficiente, aclaracion: out.opciones.length > 0 } });
+      meta: { proveedor: 'Claude (prueba privada en el visor)', instrucciones: INSTR_VERSION + ' + claude-2', intencion: rulesMsg.intent || rulesMsg.gap || 'libre', fuentes: sourcesOf(cards), suficiente: out.suficiente, aclaracion: out.opciones.length > 0 } });
   }, function (e) {
     var code = e && e.code;
     if (code === 'cancelled') { rulesMsg.aiNote = 'aiStopped'; finish(rulesMsg); return; }
@@ -1170,13 +1194,20 @@ function termsHTML(rows) { return '<dl class="terms">' + rows.map(function (r) {
 // Lo que anota el fundador: «me gustó», «dato mal», notas y lugares nuevos. Nada se publica solo:
 // Claude lo lee (base de datos del visor, colección «beta»), lo verifica con fuente y lo pasa al catálogo.
 var BETA = { items: [], db: null, where: 'local', msg: '' };
+// Libretas de conocimiento del fundador (Google Docs). Claude las lee del Drive y las carga en data/libretas.js; la libreta es la fuente.
+var LIBRETAS = (Array.isArray(window.NAIHUAL_LIBRETAS) ? window.NAIHUAL_LIBRETAS : []).filter(function (l) { return l && typeof l.titulo === 'string'; });
+// Lo que nAIhual aprende de las pláticas: entra «por confirmar»; solo lo confirmado se usa para responder (bases B10).
+var LEARN = { items: [] };
+var LEARN_LS = 'naihual.aprendido';
 var BETA_LS = 'naihual.beta';
 function betaLoadLocal() { try { var a = JSON.parse(localStorage.getItem(BETA_LS) || '[]'); BETA.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.tipo === 'string'; }) : []; } catch (e) { BETA.items = []; } }
 function betaSaveLocal() { try { localStorage.setItem(BETA_LS, JSON.stringify(BETA.items)); } catch (e) {} }
 function betaTyping() { var a = document.activeElement; return !!(a && a.closest && a.closest('.bform')); }
 function betaRefresh() { if (betaTyping()) { BETA.dirty = true; return; } render({ keep: true }); }
+function learnLoadLocal() { try { var a = JSON.parse(localStorage.getItem(LEARN_LS) || '[]'); LEARN.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.texto === 'string'; }) : []; } catch (e) { LEARN.items = []; } }
+function learnSaveLocal() { try { localStorage.setItem(LEARN_LS, JSON.stringify(LEARN.items)); } catch (e) {} }
 if (BETA_ON) {
-  betaLoadLocal();
+  betaLoadLocal(); learnLoadLocal();
   if (window.claude && typeof window.claude.use === 'function') {
     window.claude.use('db').then(function (db) {
       if (!db) return;
@@ -1185,6 +1216,10 @@ if (BETA_ON) {
         BETA.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; });
         betaRefresh();
       }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
+      db.collection('aprendido').onSnapshot(function (snap) {
+        LEARN.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; });
+        betaRefresh();
+      }, function () { learnLoadLocal(); betaRefresh(); });
       betaRefresh();
     }, function () {});
   }
@@ -1207,6 +1242,20 @@ function betaAdd(item) {
   item._id = 'local-' + Date.now();
   BETA.items = BETA.items.concat([item]); betaSaveLocal(); BETA.msg = 'savedOk'; render({ keep: true });
 }
+function learnAdd(list, pregunta, gid) {
+  if (!BETA_ON || !list.length) return;
+  list.forEach(function (texto) {
+    var it = { texto: texto, pregunta: String(pregunta).slice(0, 200), guia: gid, estado: 'por_confirmar', fecha: new Date().toISOString() };
+    if (BETA.db) { BETA.db.collection('aprendido').add(it).catch(function () {}); return; }
+    it._id = 'local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6); LEARN.items = LEARN.items.concat([it]); learnSaveLocal();
+  });
+}
+function learnSet(id, estado) {
+  if (BETA.db) { var ref = BETA.db.doc('aprendido/' + id); (estado ? ref.update({ estado: estado }) : ref.delete()).catch(function () { BETA.msg = 'saveFail'; render({ keep: true }); }); return; }
+  LEARN.items = estado ? LEARN.items.map(function (x) { if (x._id === id) x.estado = estado; return x; }) : LEARN.items.filter(function (x) { return x._id !== id; });
+  learnSaveLocal(); render({ keep: true });
+}
+function learnedConfirmed() { return LEARN.items.filter(function (x) { return x.estado === 'confirmado'; }).map(function (x) { return x.texto; }); }
 function betaMsg() { return BETA.msg ? '<p class="note" role="status" data-beta-msg="' + BETA.msg + '">' + esc(X()[BETA.msg]) + '</p>' : ''; }
 function betaFichaHTML(p) {
   var x = X(), on = betaLiked(p.id);
@@ -1231,6 +1280,11 @@ function betaHTML() {
       '<label class="check"><input type="checkbox" name="gusta">' + esc(x.didLike) + '</label>' +
       '<label>' + esc(x.addNote) + '<textarea name="texto" maxlength="600"></textarea></label>' +
       '<button type="submit" class="btn primary">' + esc(x.addBtn) + '</button></form>' + betaMsg() + '</section>' +
+    '<section class="sec" data-learned><h2>' + esc(x.learned) + '</h2><p class="muted">' + esc(x.learnedBody) + '</p>' + (LEARN.items.length ? '<div class="list">' + LEARN.items.slice().sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }).map(function (it) {
+      var ok = it.estado === 'confirmado';
+      return '<div class="bitem" data-learn="' + esc(it.estado) + '"><span class="tags"><span class="tag' + (ok ? ' ok' : ' check') + '">' + esc(ok ? x.confirmed : x.toConfirm) + '</span></span><p>' + esc(it.texto) + '</p>' + (it.pregunta ? '<small>«' + esc(it.pregunta) + '»</small>' : '') +
+        '<div class="row">' + (ok ? '' : '<button type="button" class="btn primary" data-learn-ok="' + esc(it._id) + '">' + esc(x.confirm) + '</button>') + '<button type="button" class="btn" data-learn-del="' + esc(it._id) + '">' + esc(x.remove) + '</button></div></div>'; }).join('') + '</div>' : '<p class="note">' + esc(x.noLearned) + '</p>') + '</section>' +
+    '<section class="sec" data-libretas><h2>' + esc(x.notebooks) + ' · ' + LIBRETAS.length + '</h2><p class="muted">' + esc(x.notebooksBody(LIBRETAS.length)) + '</p>' + (LIBRETAS.length ? '<div class="list">' + LIBRETAS.map(function (l) { return '<div class="bitem"><b>' + esc(l.titulo) + '</b><small>' + esc((l.fuente || '') + (l.fecha ? ' · ' + l.fecha : '')) + '</small></div>'; }).join('') + '</div>' : '') + '</section>' +
     '<section class="sec"><h2>' + esc(x.list) + ' · ' + items.length + '</h2>' + (items.length ? '<div class="list">' + items.map(function (it) {
       var mom = x.moments.filter(function (m) { return m[0] === it.momento; })[0];
       return '<div class="bitem" data-beta-item="' + esc(it.tipo) + '"><span class="tags"><span class="tag">' + esc(x.kinds[it.tipo] || it.tipo) + '</span>' + (mom ? '<span class="tag">' + esc(mom[1]) + '</span>' : '') + (it.gusta ? '<span class="tag like">' + esc(x.didLike) + '</span>' : '') + '</span>' +
@@ -1277,6 +1331,7 @@ var LAYERS = [
   ['Orquestador del agente', 'Recibe la pregunta, aplica las reglas, llama al proveedor y arma la respuesta con las fichas que el modo permite: en pública, solo las publicadas.', 'Hoy: dentro de index.html'],
   ['Proveedor de respuestas (intercambiable)', 'Hoy: reglas fijas, sin IA. En vista previa, dentro del visor de Claude: Claude, con la cuenta de quien la abre y solo con los datos de la app (claude_responde en config.js). Mañana: Gemini u otro, siempre detrás de un servidor propio que guarda la llave. El navegador nunca tiene una llave.', 'Hoy: RulesProvider'],
   ['Conocimiento', 'Catálogo de lugares y registro de fuentes. Solo lo publicado o revisado puede respaldar una respuesta.', 'Hoy: data/lugares.js y data/fuentes.js'],
+  ['Libretas y lo aprendido', 'Paso 1 del orden de búsqueda: libretas del fundador (Google Docs, cargadas por Claude en data/libretas.js) y lo que nAIhual aprendió de las pláticas, solo si el fundador lo confirmó. Paso 2: lo que sabe la IA, con «Según la IA · confirmá en Google».', 'Hoy: data/libretas.js y la colección «aprendido» del visor'],
   ['Beta del fundador', 'Me gustó, dato mal, notas y lugares nuevos que anota el fundador. Claude los lee, los verifica y los pasa al catálogo. No se publican solos.', 'Hoy: base de datos del visor privado; fuera del visor, solo en este teléfono'],
   ['Mapa', 'Google Maps para ubicar y llegar: enlaces gratis, sin llave. Sin estrellas dentro de nAIhual. La brújula del paisaje es dibujo propio.', 'Hoy: enlaces de Google Maps y mapa esquemático'],
   ['Reglas', 'No inventar · * cultural pendiente · † histórico pendiente · patrocinio siempre marcado · el pago no cambia el orden · sin emergencias sin fuente oficial.', 'Hoy: en el orquestador y en los datos'],
@@ -1327,8 +1382,12 @@ function msgHTML(m, isNew) {
   }
   else if (m.kind === 'ai') {
     m.ai.texto.split(/\n{2,}/).forEach(function (x) { if (x.trim()) paras.push(esc(x.trim())); });
-    var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
-    if (list.length) cards = '<div class="cards">' + cardsFor(list) + '</div>';
+    // Un consejo que ya salió en esta plática no se vuelve a mostrar.
+    var before = S.msgs.slice(0, Math.max(0, S.msgs.indexOf(m))), seen = {};
+    before.forEach(function (x) { if (x.kind === 'ai') x.ai.consejos.forEach(function (id) { seen[id] = 1; }); });
+    var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.filter(function (id) { return !seen[id]; }).map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
+    var otros = (m.ai.otros || []).map(iaPlaceCard).join('');
+    if (list.length || otros) cards = '<div class="cards">' + cardsFor(list) + otros + '</div>';
     if (m.ai.opciones.length) after = '<div class="chips" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';
   }
   else if (m.kind === 'gap') paras.push(esc(GAP_VOICE[m.from][lang].replace('{x}', GAPS[m.gap][lang]) + ' ' + MEANWHILE[lang]));
@@ -1660,9 +1719,11 @@ function openKey(key) {
 
 document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); var i = document.getElementById('q'); ask(i.value); i.value = ''; });
 document.addEventListener('click', function (e) {
-  var el = e.target.closest('[data-toggle],[data-open],[data-route],[data-selroute],[data-filter],[data-tab],[data-go],[data-back],[data-lang],[data-chip],[data-ask],[data-next],[data-g],[data-guide],[data-sos],[data-close],[data-sec],[data-demo-fb],[data-say],[data-stop],[data-nawal],[data-beta-like]');
+  var el = e.target.closest('[data-toggle],[data-open],[data-route],[data-selroute],[data-filter],[data-tab],[data-go],[data-back],[data-lang],[data-chip],[data-ask],[data-next],[data-g],[data-guide],[data-sos],[data-close],[data-sec],[data-demo-fb],[data-say],[data-stop],[data-nawal],[data-beta-like],[data-learn-ok],[data-learn-del]');
   if (!el) return;
   var a = function (n) { return el.getAttribute(n); };
+  if (el.hasAttribute('data-learn-ok')) { learnSet(a('data-learn-ok'), 'confirmado'); return; }
+  if (el.hasAttribute('data-learn-del')) { learnSet(a('data-learn-del'), null); return; }
   if (el.hasAttribute('data-beta-like')) { betaToggleLike(a('data-beta-like')); return; }
   if (el.hasAttribute('data-toggle')) { e.preventDefault(); e.stopPropagation(); toggle(a('data-toggle')); return; }
   if (el.hasAttribute('data-open')) { openKey(a('data-open')); return; }
