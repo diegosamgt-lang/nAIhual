@@ -197,8 +197,24 @@ Ajq'ij (cultura)                                                          ▼
 | C16 | Socios «sin cadenas» ↔ mostrar Pollo Campero o San Martín como opción con contexto | Hay que separar quién **aparece** de quién es **socio**. | Una cadena puede aparecer como contexto; nunca es socio ni patrocinado. |
 | C17 | «8 agentes» en un mensaje ↔ 9 en el siguiente | Menor. | Se cuentan 9 y quedan espacios abiertos. |
 | C18 | «No quiero apropiarme» ↔ el nombre «nAIhual» viene de *nahual*, palabra de la cosmovisión | El nombre es lo primero que ve un tata. | Preguntarle al tata también por el nombre. |
+| C19 | «nAIhual es Google Maps con filtros» ↔ «que no digan que nAIhual sabe como Google» | Si lo distinto son los filtros, Google lo puede copiar mañana. | La brújula es cómo te ubicás; las personas son por qué confiás. Las dos juntas. |
+| C20 | «Se negocia con el tata» ↔ «lo opuesto a imponer» (B2b) | Negociar después de un no es presionar. | Preguntar qué se puede compartir y aceptar la respuesta. |
+| C21 | Llevar turistas a pueblos de alrededor (Santa Ana, San Cristóbal…) ↔ «no gentrificar» y «se escribe con la comunidad» | Mandar visitantes a aldeas residenciales sin preguntarles puede ser lo que se quiere evitar. «Pueblos mágicos» es además el nombre de un programa del gobierno de México. | Cada pueblo entra cuando su gente lo quiere (B12). Otro nombre propio para ellos. |
+| C22 | Brújula dibujada sobre Google Maps ↔ «nada de dinero en Maps» | Un mapa propio encima del de Google pide su API con cuenta de cobro. | El mapa propio de nAIhual (ya existe uno de Antigua) o datos abiertos de OpenStreetMap; Google solo para «Cómo llegar». Ubicaciones de cada punto se verifican con fuente. |
 
 **Errores de Claude en este chat (para no repetirlos):** volvió a poner Q250 al centro · redujo el modelo a una app · empujó cómo llegan los clientes · inventó una frase de ejemplo para Gaby · dijo «sí» sin señalar choques.
+
+### B18. Examen del fundador · ronda 1 (24-oct-2026)
+Roles de Claude para el examen: **auditor de coherencia** (compara con las bases) · **mentor de producto** (conceptos) · **asesor de ética cultural** (apropiación, permiso) · **abogado del diablo** (dónde puede fallar).
+
+| Pregunta | Respuesta del fundador | Nota de Claude |
+|---|---|---|
+| 4.8 estrellas y nadie lo probó | Muestra las estrellas de Google, sin la insignia «Recomendado por nAIhual». | ✅ Alineado con C2. ⚠️ Las estrellas en automático necesitan la API de Google (C1); sin gasto, se anotan a mano con fecha. |
+| «¿El mejor pepián?» | Opciones con contexto; primero las recomendadas por un agente. Si fuimos pero no probamos el pepián, se dice en el comentario, o nAIhual investiga más sin inventar. | ✅ La honestidad del comentario es exactamente el modelo. ⚠️ «Primero los recomendados» es un orden: vale si la regla es **«primero lo probado, no lo mejor»**, y se escribe así. |
+| ¿Qué hace distinto a nAIhual? | «Google Maps pero con filtros», mejor organizado, con una **brújula del paisaje**: los rumbos apuntan a volcán de Agua, volcán de Fuego, cerro de la Cruz, cerro Cucurucho; puntos de referencia (tanque La Unión, mercado, La Merced, calle del Arco, parque central, Hermano Pedro, Chipilapa, Calvario) y pueblos de alrededor (Santa Ana, Becerra, Panorama, San Cristóbal). | ❌ «Google con filtros» choca con «que no digan que nAIhual sabe como Google» (C19). ✅ La brújula del paisaje es una idea nueva y muy propia: une los 4 rumbos de los guardianes con la geografía real. Es **cómo te ubicás**; las personas siguen siendo **por qué confiás**. ⏸️ En PAUSA. |
+| El tata dice que no | Se negocia hasta dónde se puede publicar; el tata escribe el texto con su límite y no se altera. | 🟡 Mitad. ✅ Que el tata escriba su propio límite y nadie lo toque es el modelo. ❌ Negociar después de un «no» es el patrón de imponer que el fundador quiere dejar atrás (B2b) (C20). Se pregunta qué se puede compartir y se acepta la respuesta, aunque sea «nada». |
+
+**Resultado ronda 1:** 2 alineadas, 1 a medias, 1 que choca, y una idea nueva fuerte (la brújula).
 
 ---
 
