@@ -325,6 +325,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | Notas de la beta | Base de datos del visor privado («nAIhual») | Fundador; Claude las lee |
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md` | Claude |
 | Prompts | `docs/prompts/` | Claude |
+| PDF final 3.0 (bases, abierto, cómo alimentar, prompts) | `docs/nAIhual-3.0-bases-finales.pdf` | Claude · se rehace con cada FIJA grande |
 | Respuesta vieja de NotebookLM | `docs/fuentes/notebooklm-contexto-completo-2026-10.md` | Fuente; tiene errores (A11) |
 | Documento rector v1.1, guía v2, entrega vNext | `docs/rector/`, PDFs | ❌ Reemplazados por la 3.0; solo historial |
 | Diseño | Figma: https://www.figma.com/design/K67raFNTRvhkSOAEpWtByE · https://www.figma.com/design/tw3f3T31gReovmpb5bGcxi | Fundador |
