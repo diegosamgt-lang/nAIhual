@@ -144,6 +144,7 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 | Fuentes originales | NotebookLM (Claude no tiene acceso) | Fundador | Propuesta: copiarlas a Google Drive, carpeta «nAIhual fuentes» |
 | Diseño editable | Figma: «nAIhual · App 1.0» https://www.figma.com/design/K67raFNTRvhkSOAEpWtByE · 3 páginas (Leeme y fundamentos · Componentes · Pantallas y textos). Capas «#…» = textos que usa la app | Fundador (diseño) + Claude (lee y pasa a la app) | Sí. El fundador rediseña; Claude copia los cambios a la app |
 | Línea gráfica | Figma: 6 pantallas para que el fundador las rediseñe (Entrar, Inicio, Guardianes, Chat, Muro, Ficha) https://www.figma.com/design/tw3f3T31gReovmpb5bGcxi | Fundador | Sí. Lo que el fundador dibuje aquí define el estilo visual (fase 10) |
+| Documento rector v1.1 (mapa + bitácora + siguiente paso) | PDF: `docs/rector/nAIhual-documento-rector-v1.1.pdf` · editable en Google Docs: https://docs.google.com/document/d/11U_14dNKDtvNfnaRlNlOu-O1OSUYLhEEd7iHesewS9w | Claude con el fundador | Sí, una versión nueva por etapa |
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md`. Se sube al cuaderno como fuente; NotebookLM revisa los nawales contra sus 46 fuentes | Claude | Sí, cuando cambie la app |
 | Web C0 vieja | Netlify (gregarious-tulumba-42cb05) | — | No tocar |
 
@@ -249,6 +250,8 @@ Fuentes:
 | 7 | Gemini como voz de los guardianes | C11 | Cuando haya uso real y presupuesto |
 
 ## 13. Historial de versiones
+
+**Rector v1.1 — 24-oct-2026**: norte, objetivo al 30-nov (1 turista + 1 negocio), FODA, calificación 16/50 (32 %), 4 reglas contra la gentrificación, ruta de 5 semanas. PDF y Google Doc editable.
 
 **App 1.0 — 18-oct-2026** (`app/index.html`)
 - Junta todo en una app con 3 pestañas: Guía (chat de guardianes), Explorar (muro) y Para vos.
