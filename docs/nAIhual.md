@@ -88,6 +88,30 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 - ❓ El cuaderno 7144 dice que la fecha del fundador cae en 11 No'j. ¿Tiene que ver con No'j?
 - Cada lugar del catálogo lleva la etiqueta de qué guardián lo recomienda (propuesta de Claude, sección 7).
 
+## 3c. Respuesta de NotebookLM (24-oct-2026) · fuente: `docs/fuentes/notebooklm-contexto-completo-2026-10.md`
+
+**Corrección principal:** B'atz' y Ajpu **no** son cargadores del año. NotebookLM propone la tétrada de los 4 cargadores del año: **No'j, Iq', Kej y E'**.
+
+| Cargador | Rumbo | Color | Dominio propuesto | Tono propuesto |
+|---|---|---|---|---|
+| No'j | Oriente | Rojo | Comprender | Maestro cercano, reflexivo |
+| Iq' | Norte | Blanco | Comunicar | Fresco, directo, renovador |
+| Kej | Poniente | Negro | Explorar | Práctico, firme, ordenado |
+| E' | Sur | Amarillo | Decidir / guiar | Alentador, orador, guía |
+
+**Lo que Claude pudo contrastar con lo que sabe (no con las 46 fuentes):**
+- ✅ Coincide con el Documento Consolidado: los cargadores del altiplano son Iq', Kej, E y No'j.
+- ✅ Esos cuatro corresponden a los cargadores del período Clásico (Ik', Manik', Eb', Kab'an).
+- ✅ Rumbos y colores: Oriente rojo, Norte blanco, Poniente negro, Sur amarillo. Es lo más citado en la tradición maya yucateca.
+- ❓ Falta verificar:
+  - qué cargador va en qué rumbo;
+  - los elementos (fuego, aire, tierra, agua);
+  - el dato «12 No'j inició en febrero de 2024»;
+  - las citas «[cite: …]», que remiten a fuentes del cuaderno que Claude no ve.
+- Todo sigue con \* hasta que lo valide un Ajq'ij (regla del fundador).
+
+**Pendiente de decisión del fundador:** adoptar o no la nueva tétrada (ver la sección 3 vigente). Hasta que el fundador diga CONSTRUYE, la app sigue con B'atz', Kej, Ajpu y No'j.
+
 ## 4. Producto (lo que existe)
 
 **App vigente:** `app/index.html`. Un solo archivo, se abre directo en el navegador.
