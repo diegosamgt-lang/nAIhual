@@ -126,6 +126,84 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
   3. Actualizar la tabla de los 20 nawales con la de NotebookLM (nombre clásico, símbolo, animal).
   4. Actualizar el documento rector (v1.2) y el contexto para NotebookLM.
 
+## 3d. Visión ampliada del fundador (24-oct-2026) · ⏸️ en PAUSA, nada construido
+
+> Regla 4 del método: «terminar antes de abrir». Todo esto entra como **etapas**. El objetivo al 30-nov no cambia (1 turista + 1 negocio). Solo una pieza entra ya: la primera persona de prueba puede ser también la primera agente.
+
+### A. Los 8 agentes (personas reales que curan desde adentro)
+- Son **personas**, no IA: casi todos locales, y también extranjeros que viven en Guatemala y quieren aportar sin gentrificar. Ej.: **Gaby**.
+- Un agente usa nAIhual con lo que necesita. Va a comer o hace una actividad que le recomendó un guardián, y deja su **feedback**.
+- Después arma una **playlist**: su propia ruta, comparada con la que le dio nAIhual.
+- En el muro aparecen, además de las sugerencias de los guardianes, **las listas de los agentes**.
+- **Qué aprende nAIhual de cada agente** (4 roles):
+  1. **Alumno:** pregunta para entender qué le gusta.
+  2. **Receptor:** guarda su feedback y sus playlists.
+  3. **Guía:** la acompaña en la siguiente salida.
+  4. **Maestro:** con lo aprendido, recomienda mejor a otros.
+- Con eso se arma un **arquetipo** de cada agente («a Gaby le gusta…»), visto desde los ojos de cada guardián.
+- **Para qué:** un criterio sincero, que no sale de la IA sola, sino de 8 miradas confiables.
+- ❓ Por definir: las 8 «líneas» de agentes, y qué datos de cada agente se guardan y quién los ve (pregunta T13 del método).
+
+### B. Reviews de la comunidad
+- Cualquier persona puede comentar y calificar las playlists. Las reviews que funcionan mueven a la comunidad hacia el local de verdad.
+- ⚠️ Necesita moderación y reglas: sin ataques, sin publicidad escondida, y transparencia si un negocio es patrocinado.
+
+### C. Accesibilidad y emergencias (apartado propio)
+- Lugares y hoteles con acceso para silla de ruedas, para personas ciegas, parqueos, espacios seguros, banquetas o rutas con guía táctil.
+- Dónde ir en una emergencia. El fundador menciona el Hospital Hermano Pedro y va a sumar más opciones.
+- **Regla:** cada dato se verifica en el lugar o con fuente oficial antes de publicarse. Un dato falso aquí puede poner en riesgo a una persona.
+- ❓ Por verificar con fuente oficial: números de emergencia de Guatemala. INGUAT asistencia al turista 1500 ya tiene fuente (Emisoras Unidas); PNC, bomberos y Cruz Roja están pendientes.
+
+### D. Una IA que aprende sin inventar
+- La IA no «dice todo y ya». Cada guardián recibe feedback de los agentes y crece con información **verificada, honesta y consciente**, cuidando la cultura.
+- Circuito: algo nuevo → lo verifica una persona (fundador, agente o fuente oficial) → recién entonces entra al catálogo.
+
+### E. Guía para comunidades (etapa futura)
+- Un apéndice de nAIhual: una guía para que una comunidad cree sus propias experiencias, se ayude entre sí y se organice para recibir turismo a través de nAIhual.
+- La app se puede **exportar** a otras comunidades y pueblos.
+- ⚠️ Se escribe **con** la comunidad, no para ella.
+
+### F. Impacto: familias, educación y conexión (idea desarrollada por Claude · ❓ por decidir)
+**Propuesta: «Fondo Raíz».**
+- **Qué es:** un porcentaje fijo de lo que entra (Plan Fundador, socios con QR, comisiones) va a un fondo para familias de las comunidades aliadas. Se usa para educación, celulares y acceso a internet.
+- **Cómo se cuida:**
+  1. El porcentaje se publica en la app.
+  2. Cada gasto se muestra con su recibo.
+  3. La comunidad decide en qué se usa.
+  4. Arranca solo cuando haya ingresos reales; no se promete antes.
+- **Por qué así:** cumple «no prometer lo que no se puede medir» y evita que se vea como caridad o como marketing.
+- **Además, sin dinero:** talleres gratis para que las familias aprendan a usar nAIhual y a ofrecer sus experiencias (conecta con E).
+- ❓ Falta decidir el porcentaje y averiguar si hace falta una figura legal (asociación o fundación) para recibir y entregar fondos. Regla 7: verificar con fuente oficial y con un contador o abogado.
+
+### G. Nuevas tareas de los guardianes (propuesta de Claude, por confirmar)
+| Tarea | Guardián propuesto | Por qué |
+|---|---|---|
+| Investigar eventos culturales, fiestas de pueblos cercanos, actividades y conciertos | **Iq'** (comunicar, aire) | Es el que trae las novedades |
+| Seguridad, salud y emergencias: contactos útiles, sin política ni temas amarillistas | **Kej** (sostén, 4 pilares) | Es el firme, el que sostiene |
+| Califica, pone límites, es el más consciente, dice la verdad sobre precios altos o muy bajos | **No'j** (sabiduría) | Es el que da el consejo claro |
+| Camino, artesanos, comunidades, la mejor opción | **E'** (el camino) | Ya decidido |
+- Pueden recomendar lo mismo desde enfoques distintos; en ciertos casos, opciones distintas.
+
+### H. Modelo de socio con QR (hoteles y hospedajes)
+- Un hotel socio paga y da a sus huéspedes un **QR diario**: **3 horas de nAIhual Pro gratis**, y después la versión gratis.
+- El hotel gana: ofrece más de Antigua a sus huéspedes.
+- ⚠️ Las 4 reglas valen también para hoteles: dueños guatemaltecos locales, sin cadenas, trato justo, respeto a la cultura.
+- ❓ Por definir: qué incluye Pro (¿chat libre con Gemini, playlists de los agentes, sin conexión?) y el precio para el hotel.
+
+### I. Primera pantalla
+- Entrar con Google u otras cuentas.
+- **«Ir» sin cuenta, gratis.**
+- Ver playlists guardadas.
+- Reportar algo.
+- **Emergencia** (siempre visible).
+- Plan gratis.
+- Más contexto al inicio: qué es nAIhual y quiénes son los guardianes.
+
+### J. Red social (etapa lejana)
+- Perfiles, reviews y playlists de lo que cada persona hace en el lugar que visita.
+- **Logros** por invertir o apoyar lo local.
+- ⚠️ Antes de construirla: privacidad, moderación y que los logros premien el apoyo real, no el gasto por gastar.
+
 ## 4. Producto (lo que existe)
 
 **App vigente:** `app/index.html`. Un solo archivo, se abre directo en el navegador.
@@ -161,11 +239,19 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | C12 | Plan Fundador | Un negocio paga Q250 → aparece marcado como fundador | ⬜ sin fundadores |
 | C13 | Wix | La app vive en Wix y abre en el celular | ⬜ ❓ probar ♥ y Maps dentro del iframe |
 | C14 | Opiniones | El turista deja un comentario → queda registrado | ⬜ |
+| C15 | Agentes | Un agente sale con una recomendación → deja feedback y su playlist → queda en el muro | ⬜ etapa 2 |
+| C16 | Reviews | Alguien califica una playlist → queda visible y moderada | ⬜ etapa 2 |
+| C17 | Accesibilidad y emergencias | Una persona busca acceso o ayuda → recibe lugares y contactos verificados | ⬜ etapa 2 |
+| C18 | QR de socio | Un huésped escanea el QR del hotel → tiene 3 h de Pro → vuelve a la versión gratis | ⬜ etapa 3 |
+| C19 | Eventos | Iq' encuentra una fiesta o evento → una persona lo verifica → aparece | ⬜ etapa 2 |
+| C20 | Fondo Raíz | Entra dinero → el % va al fondo → el gasto se publica con su recibo | ⬜ etapa 3 |
+| C21 | Guía para comunidades | Una comunidad usa la guía → crea su primera experiencia en nAIhual | ⬜ etapa 4 |
+| C22 | Red social | Un usuario con perfil deja una playlist y gana un logro por apoyar lo local | ⬜ etapa 5 |
 
 **Conteo:**
 - ✅ cerrados: 0
 - 🟡 abiertos: 6 (C2–C7)
-- ⬜ pendientes: 8
+- ⬜ pendientes: 16 (8 de la etapa 1 + 8 nuevos de las etapas 2–5)
 
 **Orden recomendado:** C1 → C4 → C2/C3 → C9 → C10 → C8 → C11 → C12 → C13.
 C1 va primero porque es la lección #1: nadie más ha abierto la app.
