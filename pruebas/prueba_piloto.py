@@ -330,7 +330,7 @@ def main():
         t = page.inner_text('main')
         check(M + ' Vista interna: aviso y revisión de las 21 fichas', 'no la ve el visitante' in t and 'Publicadas hoy: 0 de 21' in t and page.locator('[data-review]').count() == 21)
         check(M + ' Revisión: Coffea sin la frase sin fuente', 'Afirmación retirada hasta tener fuente' in t and 'Entre las 100 mejores coffee shops del mundo.' not in page.inner_text('body').replace('«Entre las 100 mejores coffee shops del mundo».', ''))
-        for sec, sel, n in [('textos', '[data-copy]', 11), ('etapas', '[data-stage]', 4), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 6), ('sistema', '.sw', 18)]:
+        for sec, sel, n in [('textos', '[data-copy]', 13), ('etapas', '[data-stage]', 4), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 6), ('sistema', '.sw', 18)]:
             page.click('[data-sec="%s"]' % sec)
             check(M + ' Vista interna · %s' % sec, page.locator(sel).count() >= n and no_hscroll(page), page.locator(sel).count())
         page.click('[data-sec="aprendizaje"]')
@@ -509,6 +509,13 @@ def main():
         for v in ['inicio', 'rutas', 'guardados']:
             page.click('[data-tab="%s"]' % v)
             check('Accesibilidad básica: controles con nombre (%s)' % v, not unnamed(), unnamed())
+        chicos = []
+        for v in ['inicio', 'rutas', 'guia', 'guardados']:
+            page.click('[data-tab="%s"]' % v)
+            page.wait_for_timeout(100)
+            chicos += page.evaluate("""() => [...document.querySelectorAll('button, a[href], summary')].filter(e => e.offsetParent !== null && !(e.tagName !== 'SUMMARY' && e.closest('details:not([open])')))
+              .map(e => { const r = e.getBoundingClientRect(); return [e.outerHTML.slice(0, 50), Math.round(r.width), Math.round(r.height)]; }).filter(x => x[1] < 44 || x[2] < 44)""")
+        check('Tamaño táctil: todos los controles visibles miden al menos 44 px', not chicos, chicos[:5])
         dup = page.evaluate('() => { const ids = [...document.querySelectorAll("[id]")].map(e => e.id); return ids.filter((x, i) => ids.indexOf(x) !== i); }')
         check('Accesibilidad básica: sin id duplicados', not dup, dup)
         check('Accesibilidad básica: idioma del documento', page.evaluate('document.documentElement.lang') == 'es')

@@ -105,13 +105,13 @@ svg { display: block; }
 .topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 8; background: color-mix(in srgb, var(--cal) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding-block: 10px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--cal); }
-.wordmark { all: unset; cursor: pointer; font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: -.03em; }
+.wordmark { all: unset; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: -.03em; }
 .wordmark i { font-style: normal; color: var(--anil); }
 .top-actions { display: flex; align-items: center; gap: var(--s-2); }
-.seg { display: flex; padding: 3px; border-radius: var(--r-pill); background: var(--piedra); }
-.seg button { border: 0; cursor: pointer; min-width: 38px; min-height: 32px; padding: 0 10px; border-radius: var(--r-pill); font-size: 12.5px; font-weight: 700; background: transparent; color: var(--ink-2); }
+.seg { display: flex; padding: 2px; border-radius: var(--r-pill); background: var(--piedra); }
+.seg button { border: 0; cursor: pointer; min-width: 44px; min-height: 44px; padding: 0 10px; border-radius: var(--r-pill); font-size: 12.5px; font-weight: 700; background: transparent; color: var(--ink-2); }
 .seg button[aria-pressed="true"] { background: var(--papel); color: var(--basalto); box-shadow: var(--shadow-1); }
-.sos { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 12px; border-radius: var(--r-pill); border: 1.5px solid var(--heart); color: var(--heart); background: transparent; font-weight: 700; font-size: 13px; cursor: pointer; }
+.sos { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border-radius: var(--r-pill); border: 1.5px solid var(--heart); color: var(--heart); background: transparent; font-weight: 700; font-size: 13px; cursor: pointer; }
 main { flex: 1; display: flex; flex-direction: column; gap: var(--s-6); padding-block: var(--s-2) 120px; min-width: 0; }
 main.chat { padding-bottom: 230px; gap: var(--s-4); }
 @media (prefers-reduced-motion: no-preference) { main.enter > * { animation: rise var(--dur-2) var(--ease) both; } main.enter > *:nth-child(2) { animation-delay: .04s; } main.enter > *:nth-child(3) { animation-delay: .08s; } main.enter > *:nth-child(n+4) { animation-delay: .12s; } }
@@ -133,13 +133,13 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .btn.block { width: 100%; }
 .btn.big { min-height: 58px; font-size: 17px; border-radius: 20px; padding: 0 22px; }
 .btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
-.chip { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--papel); color: var(--basalto); font-size: 14px; font-weight: 600; cursor: pointer; }
+.chip { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--papel); color: var(--basalto); font-size: 14px; font-weight: 600; cursor: pointer; }
 .chip[aria-pressed="true"] { background: var(--basalto); color: var(--cal); border-color: transparent; }
 .chip.pilot { background: var(--anil); color: var(--on-anil); border-color: transparent; }
 .chip.switch { border-style: dashed; }
 .chips { display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px; }
 .chips::-webkit-scrollbar { display: none; }
-.heart { position: absolute; top: 10px; right: 10px; z-index: 2; width: 40px; height: 40px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: color-mix(in srgb, var(--papel) 92%, transparent); box-shadow: var(--shadow-1); color: var(--heart); }
+.heart { position: absolute; top: 10px; right: 10px; z-index: 2; width: 44px; height: 44px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: color-mix(in srgb, var(--papel) 92%, transparent); box-shadow: var(--shadow-1); color: var(--heart); }
 .heart[aria-pressed="true"] .ico { fill: var(--heart); }
 .btn .ico.fill, .heart .ico { stroke: var(--heart); }
 
@@ -151,13 +151,13 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .tag.ok { background: var(--ok-soft); color: var(--ok); }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 details.seal, details.info { font-size: var(--t-sm); }
-details.seal summary, details.info summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
+details.seal summary, details.info summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
 details.seal summary::-webkit-details-marker, details.info summary::-webkit-details-marker { display: none; }
 details.seal summary { padding: 4px 12px; border-radius: var(--r-pill); font-weight: 700; font-size: 12.5px; }
 details.seal.ok summary { background: var(--ok-soft); color: var(--ok); }
 details.seal.pending summary { background: var(--check-soft); color: var(--check); border: 1px dashed currentColor; }
 details.seal p, details.info p { margin-top: 6px; color: var(--ink-2); font-size: 13px; }
-details.info summary { width: 32px; height: 32px; justify-content: center; border-radius: 50%; color: var(--ink-3); border: 1px solid var(--line-2); background: var(--papel); }
+details.info summary { width: 44px; height: 44px; justify-content: center; border-radius: 50%; color: var(--ink-3); border: 1px solid var(--line-2); background: var(--papel); }
 details.info[open] { flex-basis: 100%; }
 
 /* ---------- imagen de lugar (foto o espacio provisional) ---------- */
@@ -177,7 +177,7 @@ details.info[open] { flex-basis: 100%; }
 .sec { display: flex; flex-direction: column; gap: var(--s-3); }
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); }
 .sec-head h2 { font-size: var(--t-lg); }
-.linkish { all: unset; cursor: pointer; font-size: var(--t-sm); font-weight: 700; color: var(--anil); }
+.linkish { all: unset; cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; font-size: var(--t-sm); font-weight: 700; color: var(--anil); }
 .rail { display: flex; gap: var(--s-3); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px 6px; }
 .rail::-webkit-scrollbar { display: none; }
 .route-card { all: unset; box-sizing: border-box; cursor: pointer; scroll-snap-align: start; flex: none; width: min(78vw, 300px); display: flex; flex-direction: column; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); overflow: hidden; }
@@ -200,7 +200,7 @@ details.info[open] { flex-basis: 100%; }
 .biz .tag { background: var(--band-ink); color: var(--band); align-self: flex-start; }
 .biz .btn { align-self: flex-start; background: var(--band-ink); color: var(--band); border-color: transparent; }
 .foot { font-size: 11.5px; color: var(--ink-3); text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center; }
-.foot .linkbtn { border: 0; background: none; padding: 4px; cursor: pointer; text-decoration: underline; color: var(--ink-3); font-size: 12px; }
+.foot .linkbtn { border: 0; background: none; padding: 12px 8px; min-height: 44px; cursor: pointer; text-decoration: underline; color: var(--ink-3); font-size: 12px; }
 
 /* ---------- retrato abstracto de guardián (espacio para el arte final del fundador) ---------- */
 .portrait { flex: none; display: block; border-radius: 50%; }
@@ -260,7 +260,7 @@ details.info[open] { flex-basis: 100%; }
 .guide-head b { font-family: var(--f-display); font-size: 18px; display: block; }
 .guide-head small { color: var(--ink-3); font-size: 12.5px; }
 .minis { display: flex; gap: 4px; }
-.minis button { all: unset; cursor: pointer; border-radius: 50%; padding: 2px; opacity: .5; }
+.minis button { all: unset; cursor: pointer; border-radius: 50%; padding: 8px; opacity: .5; }
 .minis button[aria-current="true"] { opacity: 1; box-shadow: 0 0 0 2px var(--basalto); }
 .msg { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; scroll-margin-top: 140px; }
 .msg .by { display: flex; align-items: center; gap: var(--s-2); font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
@@ -272,7 +272,7 @@ details.info[open] { flex-basis: 100%; }
 .dock-in { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 form.ask { display: flex; gap: var(--s-2); align-items: center; padding: 5px 5px 5px 16px; border-radius: var(--r-pill); background: var(--papel); border: 1px solid var(--line-2); box-shadow: var(--shadow-1); }
 form.ask input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; min-height: 40px; }
-form.ask button { flex: none; width: 42px; height: 42px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--basalto); color: var(--cal); }
+form.ask button { flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--basalto); color: var(--cal); }
 .thinking { display: inline-flex; gap: 4px; align-items: center; }
 .thinking i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
 @media (prefers-reduced-motion: no-preference) { .thinking i { animation: blink 1s infinite; } .thinking i:nth-child(2) { animation-delay: .15s; } .thinking i:nth-child(3) { animation-delay: .3s; } }
@@ -504,7 +504,7 @@ var SRC = {};
 // ===================== RUTAS (paradas del catálogo) =====================
 var ROUTES = {
   centro: { g: ['e'], stops: ['parque', 'catedral', 'doce', 'palacio', 'arco', 'merced'], kicker: w('Una mañana', 'A morning'), title: w('El corazón de Antigua', 'The heart of Antigua'), intro: w('La plaza, la Catedral y el Arco, con un café a media mañana.', 'The square, the Cathedral and the Arch, with a coffee mid-morning.') },
-  conventos: { g: ['kej', 'noj'], stops: ['capuchinas', 'once', 'santaclara', 'sanfrancisco', 'patio'], kicker: w('Una tarde', 'An afternoon'), title: w('Conventos del oriente', 'Convents to the east'), intro: w('Tres ruinas y una iglesia viva en el lado tranquilo. Cierra con cena en un patio.', 'Three ruins and a living church on the quiet side. Ends with dinner in a courtyard.') },
+  conventos: { g: ['kej', 'noj'], stops: ['capuchinas', 'once', 'santaclara', 'sanfrancisco', 'patio'], kicker: w('Una tarde', 'An afternoon'), title: w('Conventos del oriente', 'Convents to the east'), intro: w('Dos ruinas de conventos y una iglesia viva en el lado oriente. Cierra con cena en un patio.', 'Two convent ruins and a living church on the east side. Ends with dinner in a courtyard.') },
   norte: { g: ['kej'], stops: ['catedral', 'cazador', 'arco', 'merced', 'siena'], kicker: w('Un par de horas', 'A couple of hours'), title: w('Del Arco a La Merced', 'From the Arch to La Merced'), intro: w('La calle del Arco a paso lento, con pausas para comer y leer.', 'The Arch street at an easy pace, with stops to eat and read.') }
 };
 // Una ruta se ve si todas sus paradas se ven en este modo y tienen dirección.
@@ -564,10 +564,10 @@ var R = {
     e: { t: w('Si hoy hacés una sola cosa, que sea esta ruta.', 'If you do one thing today, make it this route.'), items: ['r:centro'] }
   },
   horas: {
-    noj: { t: w('Tres conventos, uno junto al otro, en el lado oriente. En unas horas los recorrés.', 'Three convents side by side on the east side. You can see them in a few hours.'), plan: ['capuchinas', 'santaclara', 'sanfrancisco'] },
+    noj: { t: w('Dos conventos y una iglesia en el lado oriente. En unas horas los recorrés.', 'Two convents and a church on the east side. You can see them in a few hours.'), plan: ['capuchinas', 'santaclara', 'sanfrancisco'] },
     iq: { t: w('Un arco para la foto, una iglesia amarilla y una pausa para leer.', 'An arch for the photo, a yellow church and a break to read.'), plan: ['arco', 'merced', 'siena'] },
     kej: { t: w('Cinco paradas a pie, en este orden.', 'Five stops on foot, in this order.'), items: ['r:norte'] },
-    e: { t: w('¿Tenés la tarde? El lado tranquilo: tres ruinas y una cena.', 'Got the afternoon? The quiet side: three ruins and dinner.'), items: ['r:conventos'] }
+    e: { t: w('¿Tenés la tarde? El lado oriente: dos ruinas, una iglesia y una cena.', 'Got the afternoon? The east side: two ruins, a church and dinner.'), items: ['r:conventos'] }
   },
   dia: {
     noj: { t: w('Mañana, el poder colonial. Tarde, la vida de los conventos.', 'Morning: colonial power. Afternoon: convent life.'), items: ['r:centro', 'r:conventos'] },
@@ -590,14 +590,14 @@ var R = {
   cultura: {
     noj: { t: w('En el Popol Wuj la humanidad está hecha de maíz. Empezá por aquí:', 'In the Popol Wuj humanity is made of maize. Start here:'), items: ['t:rukux', 't:maiz', 't:nikaj'] },
     iq: { t: w('Algo para contar de tu viaje: así se cuenta el tiempo maya.', 'Something to share from your trip: how Maya time is counted.'), items: ['t:cholqij', 't:nikaj'] },
-    kej: { t: w('Tres ruinas y una iglesia viva, a pie y en orden.', 'Three ruins and a living church, on foot and in order.'), items: ['r:conventos'] },
+    kej: { t: w('Dos ruinas y una iglesia viva, a pie y en orden.', 'Two ruins and a living church, on foot and in order.'), items: ['r:conventos'] },
     e: { t: w('Si vas a ver una sola ruina, que sea esta: la torre circular de celdas.', 'If you see only one ruin, make it this one: the circular tower of cells.'), items: ['p:capuchinas'] }
   },
   costumbres: {
     noj: { t: w('Los nawales son los significados de los días, no etiquetas para personas.', 'Nawales are the meanings of the days, not labels for people.'), items: ['t:nawalpersona', 't:foto'] },
     iq: { t: w('Para una foto de alguien, primero preguntá.', 'For a photo of someone, ask first.'), items: ['t:foto'] },
     kej: { t: w('Dos cosas prácticas antes de salir:', 'Two practical things before you head out:'), items: ['t:foto', 't:horario'] },
-    e: { t: w('Así llegás bien a todos lados:', 'This is how you arrive well everywhere:'), items: ['t:foto', 't:horario'] }
+    e: { t: w('Directo, antes de salir:', 'Straight up, before you head out:'), items: ['t:foto', 't:horario'] }
   }
 };
 var GAPS = { naturaleza: w('naturaleza y miradores', 'nature and viewpoints'), arte: w('talleres y artesanía', 'workshops and crafts'), mercado: w('mercados', 'markets'), aventura: w('aventura y volcanes', 'adventure and volcanoes') };
@@ -772,7 +772,7 @@ var uid = 0;
 // Volcán de Agua (silueta) sobre los techos: es paisaje, no un símbolo cultural.
 // Rueda de rumbos*: cada guardián en su punto cardinal (Iq' norte, No'j oriente, E' sur, Kej poniente). Es un esquema, no un glifo.
 function compassArt() {
-  var pos = { iq: [150, 46], noj: [254, 150], e: [150, 254], kej: [46, 150] }, lbl = { iq: 'N', noj: 'E', e: 'S', kej: 'O' };
+  var pos = { iq: [150, 46], noj: [254, 150], e: [150, 254], kej: [46, 150] }, lbl = { iq: 'N', noj: 'E', e: 'S', kej: S.lang === 'en' ? 'W' : 'O' };
   return '<svg viewBox="0 0 300 300" role="img" aria-label="Rumbos de los guardianes*">' +
     '<circle cx="150" cy="150" r="104" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M150 40 V260 M40 150 H260" style="stroke:var(--line-2)" stroke-width="1.5"/>' +
     ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 32) + ' ' + (q[1] - 32) + ')">' + portrait(g, 64) + '</g><text class="lbl" x="' + (q[0] + (g === 'noj' ? -42 : g === 'kej' ? 42 : 0)) + '" y="' + (q[1] + (g === 'iq' ? 44 : g === 'e' ? -38 : 4)) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
@@ -1203,19 +1203,19 @@ var LAYERS = [
 // ===================== CHAT =====================
 // El guardián activo (S.guide) sigue contestando hasta que la persona pide a otro.
 function switchTo(gid) { S.guide = gid; S.msgs.push({ from: gid, kind: 'takeover', intro: true }); }
-function ask(text) {
+function ask(text, fixed) {
   text = String(text || '').trim(); if (!text || AI.busy) return;
   S.msgs.push({ user: text });
   var m = PROVIDER.respond(text, S.guide);
   S.guide = m.from;
   // Las reglas deciden siempre el turno del guardián y el café. Lo demás lo contesta Claude cuando está disponible (solo vista previa).
-  var useAI = AI.fn && AI.state === 'listo' && !(m.kind === 'r' && m.intent === 'cafe') && !(m.kind === 'takeover' && text.split(/\s+/).length <= 4);
+  var useAI = !fixed && AI.fn && AI.state === 'listo' && !(m.kind === 'r' && m.intent === 'cafe') && !(m.kind === 'takeover' && text.split(/\s+/).length <= 4);
   if (!useAI) { S.msgs.push(m); render({ scroll: true }); return; }
   var pend = { from: m.from, intro: m.intro, kind: 'thinking' };
   S.msgs.push(pend); render({ scroll: true });
   askClaude(text, m, pend);
 }
-function askIntent(intent) { var c = T().chips.concat(T().clarifyOpts).filter(function (x) { return x[0] === intent; })[0]; if (S.view !== 'guia') nav('guia', { silent: true }); ask(c ? c[1] : intent); }
+function askIntent(intent) { var c = T().chips.concat(T().clarifyOpts).filter(function (x) { return x[0] === intent; })[0]; if (S.view !== 'guia') nav('guia', { silent: true }); ask(c ? c[1] : intent, true); }
 function cardsFor(list) { return list.map(function (c) { if (c.plan) return planRow(c.plan); var k = c.key.split(':')[0], id = c.key.split(':')[1]; return k === 'p' ? placeCard(P[id]) : k === 'r' ? routeRow(id) : tipCard(id); }).join(''); }
 function chipsHTML(opts, attr) { return '<div class="chips" role="group" aria-label="' + esc(T().clarifyLabel) + '">' + opts.map(function (o) { return '<button type="button" class="chip" ' + attr + '="' + esc(o[0]) + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>'; }
 function msgHTML(m, isNew) {
@@ -1410,7 +1410,9 @@ var COPY = [
   ['Notas «* Información cultural por confirmar…» al pie de cada respuesta', 'Un ⓘ por tarjeta que se abre al tocarlo', 'Toda la app'],
   ['«Viaja directo a la raíz.» como única frase de portada', '«Antigua, con cuatro guías que la conocen.» + «Viaja directo a la raíz.»', 'Inicio'],
   ['Guardianes: letra en un círculo', 'Retrato abstracto con su color y un punto hacia su rumbo* (espacio para tu arte)', 'Toda la app'],
-  ['Respuestas de los 4 guardianes (7 temas)', 'Reescritas: más cortas y concretas, mismos lugares y datos', 'Chat']
+  ['Respuestas de los 4 guardianes (7 temas)', 'Reescritas: más cortas y concretas, mismos lugares y datos', 'Chat'],
+  ['«Tres ruinas y una iglesia viva»', '«Dos ruinas de conventos y una iglesia viva» (corregido: en el catálogo son dos ruinas)', 'Ruta Conventos del oriente y respuestas de Kej y E\''],
+  ['«Tres historias de conventos, una junto a la otra»', '«Dos conventos y una iglesia en el lado oriente» (San Francisco es iglesia y no están pegados)', 'Respuesta de No\'j']
 ];
 function lastMeta() { for (var i = S.msgs.length - 1; i >= 0; i--) if (S.msgs[i].meta) return S.msgs[i].meta; return null; }
 function secRevision() {

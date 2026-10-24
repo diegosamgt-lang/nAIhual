@@ -1,6 +1,6 @@
 # nAIhual — Documento único del proyecto
 
-Actualizado: 23-oct-2026 (hora de Guatemala) · Este es **el único documento vivo**: concepto, estado, circuitos, fuentes, decisiones e historial. Se actualiza este mismo archivo; no se crean otros.
+Actualizado: 23-oct-2026 (hora de Guatemala), nAIhual 2.0 · Este es **el único documento vivo**: concepto, estado, circuitos, fuentes, decisiones e historial. Se actualiza este mismo archivo; no se crean otros.
 
 **Marcas**
 - ✅ = lo dijo el fundador / verificado.
@@ -211,24 +211,26 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 
 ## 4. Producto (lo que existe)
 
-**App vigente:** App 1.2 vista previa (23-oct) · `app/index.html` + `app/data/` (`config.js` = vista previa y vista interna · `lugares.js` = catálogo · `fuentes.js` = registro de fuentes). Se abre directo en el navegador. Se ve en el visor privado de Claude (artifact «nAIhual», versión 2). Copias para volver atrás: `versiones/visor-app-1.0` y `versiones/app-1.1-piloto`. Entrega de la 1.1: `docs/nAIhual-vNext-handoff.md`.
+**App vigente: nAIhual 2.0 (23-oct-2026)** · reconstrucción total en 4 ciclos (prompt: `docs/prompts/prompt-claude-reconstruccion.md`).
+- Archivos: `app/index.html` + `app/data/` (`config.js` = modo · `lugares.js` = catálogo con posición en el mapa · `fuentes.js` = registro de fuentes). Se abre directo en el navegador.
+- Visor privado de Claude: artifact «nAIhual», versión 7. Copias para volver atrás: `versiones/visor-app-1.0`, `versiones/app-1.1-piloto`, `versiones/app-1.2`.
 
-- 🟡 **El visitante solo ve lo publicado** (desde 1.2). Hoy no hay ningún lugar publicado: Explorar muestra consejos, cosmovisión y nawales; donde antes había lugares, los guardianes dicen «esa selección está en revisión». Los borradores se revisan en la vista interna.
-- 🟡 **Vista interna del equipo** (enlace al pie, se apaga con `vista_interna: false`): revisión de fichas y fuentes, etapas de ingreso, ciclo de aprendizaje, arquitectura y sistema visual v0.1.
-- 🟡 Si el guardián no entiende, hace una **aclaración breve** con 4 opciones (solo dentro de la conversación).
-
-- 🟡 **Recorrido piloto:** «Quiero un café» (primer botón del chat) → hasta 3 cafés **publicados**, cada uno con fuente, fecha y quién verificó → «Cómo llegar». Hoy no hay ninguno publicado, así que se ve «Selección en revisión».
+**Dos modos** (`modo` en `config.js`; sin configuración = pública):
+- **Vista previa** (hoy): todo el catálogo, con sello «Por verificar»; vista interna del equipo; botón de emergencias «pendiente de números oficiales»; Claude responde lo que se escribe libre dentro del visor.
+- **Pública**: solo lo publicado (fuente + fecha + quién verificó), sin vista interna, sin Claude y sin emergencias.
 
 | Pestaña | Qué hace |
 |---|---|
-| **Guía** (pantalla 1) | Chat con el guardián de turno (No'j, Iq', Kej, E'). 7 preguntas listas + texto libre. Reglas fijas, sin IA. Los lugares sin fuente salen marcados «En revisión»; si no tiene datos, lo dice. ♥ para guardar desde el chat. |
-| **Explorar** | Muro de pines: consejos, cosmovisión, los 20 nawales y (cuando estén publicados) lugares y rutas. Buscador, filtros y ficha con «Preguntale a [guardián]». Tarjeta «Círculo de Aliados Fundadores» → página de la propuesta piloto. |
-| **Para vos** | Lo guardado con ♥ arma un plan de 5 paradas a pie con Google Maps. |
+| **Inicio** | Portada con el Volcán de Agua, «Quiero un café» (1 toque) y «Recién llegué», los 4 guardianes, rutas con su mapa, accesos a Explorar, Cultura maya, Costumbres de aquí y Guardianes, tarjeta de Aliados Fundadores (propuesta piloto). |
+| **Rutas** | Mapa esquemático de la cuadrícula de Antigua (calles, norte, Parque) con la ruta dibujada y las paradas numeradas · «Abrir ruta a pie en Google Maps». |
+| **Guía** | Chat con el guardián de turno (No'j → Iq' → Kej → E'). Respuestas cortas con tarjetas visuales (foto o espacio para foto, sello, «Cómo llegar», ♥). |
+| **Guardados** | Lo guardado con ♥ y un plan a pie de hasta 5 paradas, con mapa y Google Maps. Queda solo en el teléfono. |
 
-Además: ES/EN, modo claro/oscuro y panel «¿Quiénes son los guardianes?».
-
-- ✅ Visual: **neutro y provisional**. Ninguna paleta vieja sigue; el fundador hará el arte final.
-- Versiones anteriores, solo como referencia: `versiones/prototipo-0` (muro) y `versiones/prototipo-1` (chat).
+- Ficha de cada lugar: foto (hoy espacio provisional), sello «Verificado · fecha» o «Por verificar», «Cómo llegar», mapa chico, «Preguntale a…», rutas donde aparece.
+- Lo cultural lleva ⓘ (pendiente de un Ajq'ij) y lo histórico ⓘ (pendiente de fuente oficial). Ya no hay asteriscos en las frases.
+- Sistema visual 2.0: piedra, cal y basalto, añil de fachada para rutas, los 4 colores de los guardianes por rumbo \*, tintes por categoría. Tipografía: Bricolage Grotesque, Instrument Sans e IBM Plex Mono. Retratos abstractos de los guardianes (espacio para el arte del fundador). Claro y oscuro.
+- Mapa: cuadrícula confirmada el 23-oct con Wikivoyage y Revue Magazine. Posiciones calculadas con las direcciones; «aprox» = la dirección no da la esquina. Esquema, no a escala.
+- ✅ 176/176 pruebas automáticas (`python3 pruebas/prueba_piloto.py`), carga en 0.76 s. 🟡 Sin celular real, sin persona externa, sin fotos reales.
 
 ## 5. Tablero de circuitos
 
@@ -430,6 +432,13 @@ Fuentes:
 
 ## 13. Historial de versiones
 
+**nAIhual 2.0 — 23-oct-2026** (reconstrucción total, 4 ciclos)
+- Ciclo 1: 4 pestañas nuevas, dos modos, mapa esquemático, sello de verificación, datos del mapa en el catálogo.
+- Ciclo 2: 5 recorridos de turista dentro del límite de toques (café en 1); los 21 «Cómo llegar» y las 3 rutas revisados.
+- Ciclo 3: portada ilustrada, mapa con calles y norte, tintes por categoría, rueda de rumbos, imagen del Cholq'ij 13 × 20, modo oscuro revisado.
+- Ciclo 4: auditoría en 2 vueltas. Corregidos 2 datos mal dichos («tres ruinas», «tres conventos uno junto al otro»), 1 frase vaga, preguntas listas que se iban a Claude, tamaños táctiles y la rueda en inglés.
+- Textos nuevos: propuesta por aprobar (vista interna → «Textos para aprobar»).
+
 **Crítica del fundador — 23-oct-2026:** «parece un chatbot», demasiado texto, sin parte gráfica ni rutas visibles, textos como «tips para caminar con respeto» = malísimo. Se pide reconstrucción total. Prompts listos en `docs/prompts/`.
 
 **App 1.2 + «Claude responde» — 23-oct-2026** (visor privado, versión 3) · pedido del fundador: «quiero que vos Claude respondas en esta versión de prueba»
@@ -469,4 +478,4 @@ Fuentes:
 
 ## 14. Para quien siga (prompt de continuación)
 
-> Leé `CLAUDE.md` y este documento completo, y respetá el método `0_…`–`4_….md`. La app vigente es `app/index.html`; no rehagás desde cero ni toqués lo que funciona. Antes de construir, preguntá «¿qué circuito cierra esto?». Nunca inventes datos ni significados culturales. Reportá con ✅ 🟡 ❓. Esperá CONSTRUYE. Siguiente paso: el fundador revisa la App 1.2 en el visor y decide lo pendiente (Aliados, etapas, arte); después elige alojamiento y aporta hasta 3 cafés con fuente, fecha y quién verificó (`docs/nAIhual-vNext-handoff.md`, sección 5); después C1, que una persona que no sea el fundador haga el recorrido de café en su celular.
+> Leé `CLAUDE.md` y este documento completo, y respetá el método `0_…`–`4_….md`. La app vigente es `app/index.html`; no rehagás desde cero ni toqués lo que funciona. Antes de construir, preguntá «¿qué circuito cierra esto?». Nunca inventes datos ni significados culturales. Reportá con ✅ 🟡 ❓. Esperá CONSTRUYE. Siguiente paso: el fundador revisa nAIhual 2.0 en el visor, aprueba los textos nuevos y manda fotos y el arte de los guardianes; después hasta 3 cafés verificados y el alojamiento y aporta hasta 3 cafés con fuente, fecha y quién verificó (`docs/nAIhual-vNext-handoff.md`, sección 5); después C1, que una persona que no sea el fundador haga el recorrido de café en su celular.
