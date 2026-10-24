@@ -202,6 +202,9 @@ Ajq'ij (cultura)                                                          ▼
 | C21 | Llevar turistas a pueblos de alrededor (Santa Ana, San Cristóbal…) ↔ «no gentrificar» y «se escribe con la comunidad» | Mandar visitantes a aldeas residenciales sin preguntarles puede ser lo que se quiere evitar. «Pueblos mágicos» es además el nombre de un programa del gobierno de México. | Cada pueblo entra cuando su gente lo quiere (B12). Otro nombre propio para ellos. |
 | C22 | Brújula dibujada sobre Google Maps ↔ «nada de dinero en Maps» | Un mapa propio encima del de Google pide su API con cuenta de cobro. | El mapa propio de nAIhual (ya existe uno de Antigua) o datos abiertos de OpenStreetMap; Google solo para «Cómo llegar». Ubicaciones de cada punto se verifican con fuente. |
 | C23 | «Los 4 guardianes no pueden cambiar» ↔ «lo maya pasa por un tata» y «la comunidad puede decir que no» | Si el tata no los acepta, o no acepta cómo se usan, tienen que poder cambiar. | Fijos mientras el tata los acepte. |
+| C24 | «Mapa abierto, Google solo para llegar» ↔ «se muestran las estrellas de Google» | Sin Google no hay estrellas, salvo copiarlas a mano con fecha. | Elegir: estrellas copiadas a mano con fecha, o sin estrellas. |
+| C25 | «Los agentes como equipo» ↔ trato justo | Son amigos que darían su tiempo gratis. | Preguntarle a cada uno cuánto puede dar, y que sea su decisión. |
+| C26 | No eligió «una capa a la vez» ↔ regla 4 del método: «Terminar antes de abrir» | Su propio método lo pide; sin eso, la visión no cabe en el tiempo que hay (C14). | Mantener la regla 4. |
 
 **Errores de Claude en este chat (para no repetirlos):** volvió a poner Q250 al centro · redujo el modelo a una app · empujó cómo llegan los clientes · inventó una frase de ejemplo para Gaby · dijo «sí» sin señalar choques.
 
@@ -229,13 +232,23 @@ Roles de Claude para el examen: **auditor de coherencia** (compara con las bases
 
 **Núcleo fijo de nAIhual (sale del examen):** las reglas de verdad (B5) y el permiso (B2c, B12) no cambian aunque cambie la IA, la app o el proyecto. Los guardianes se quedan **mientras el tata los acepte**.
 
+**Ronda 3 · decisiones (24-oct-2026)**
+| Tema | Decisión del fundador | Nota de Claude |
+|---|---|---|
+| Datos sin gastar en Google | Mapa abierto: el mapa y la brújula usan datos abiertos (OpenStreetMap) o el mapa propio; Google solo para «Cómo llegar». | ✅ Resuelve el mapa (C22). ⚠️ No dice de dónde salen dirección, horario y estrellas. OpenStreetMap no tiene estrellas, y no sé qué tan completo está en Antigua (❓). Choca con la ronda 1: «se muestran las estrellas de Google» (C24). |
+| Pro | Existe solo como regalo de 3 horas por QR para huéspedes de hoteles socios. | ✅ Decidido. ⚠️ El QR es dinero (el hotel paga), y el dinero está en espera: Pro existe como idea, pero no se diseña hasta esa capa. Falta decir qué tiene Pro que la gratis no tenga (C6). |
+| Objetivo al 30-nov | Bases aprobadas + primer contacto con un tata. | ✅ Fue la recomendación de Claude y el fundador la aceptó. |
+| Tiempo (solo y con menos de 5 h por semana) | Los agentes como equipo + más horas. | ⚠️ No eligió «una capa a la vez», que es la regla 4 de su propio método: «Terminar antes de abrir» (C26). Los agentes son amigos que dan su tiempo: hay que preguntarles cuánto pueden y querer (C25). «Más horas»: falta el número. |
+
+**Resultado ronda 3:** 1 completa, 3 con huecos.
+
 ---
 
 ## 0. Norte, objetivo y FODA (definido con el fundador, 24-oct-2026)
 
 **Norte (palabras del fundador):** «Lo que sea conscientemente correcto, donde pueda recibir la abundancia que merezco pero también donde pueda servir a las culturas de mi país, donde pueda ofrecer un turismo consciente y no gentrificado. Siempre apoyando y enfocado al turismo local y artesanos locales y sobre todo comunidades ancestrales.»
 
-**Objetivo de esta etapa (al 30-nov-2026):** 1 turista real usa nAIhual sin ayuda y visita 1 lugar local + 1 negocio o artesano local acepta estar en nAIhual.
+**Objetivo de esta etapa (al 30-nov-2026, cambiado por el fundador el 24-oct):** ✅ bases aprobadas + primer contacto con un tata (Ajq'ij). ❌ Antes: «1 turista real usa nAIhual sin ayuda + 1 negocio acepta estar».
 
 **Recursos:** menos de 5 horas por semana · hasta Q500 al mes + dos planes de IA de $20 (uno ya existe; el otro, ChatGPT o Gemini, por decidir).
 
