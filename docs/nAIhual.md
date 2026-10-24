@@ -46,6 +46,17 @@ Actualizado: 24-oct-2026 (hora de Guatemala), nAIhual 2.0 · **Empieza por las B
   3. **Fotos de personas:** siempre preguntar antes. Al vendedor descalzo se le fotografía sin permiso; nAIhual no repite eso.
   4. **La cultura la cuenta su gente:** lo maya entra por un tata (Ajq'ij), con su nombre y reconocido por su aporte.
 
+### B2c. Intención del fundador (24-oct-2026, sus palabras)
+- ✅ «Lo intenciono para el más alto bien de Guatemala, de mi comunidad y de mí, a través de la luz, el amor y la mayor consciencia posible.»
+- ✅ Respeto, amor e integración, sobre todo a las culturas ancestrales e indígenas; también a las ladinas, latinas, mestizas y extranjeras, dentro de sus creencias, **con límites**: el bien común de la naturaleza, los animales, los minerales y todo lo que habita nuestro entorno va primero.
+- ✅ «No busco apoderarme de la cultura, creencias ni simbología maya. Busco exponerla a través de **su** verdad, no absoluta.» El fundador no la conoce desde dentro. Tiene raíces de Guatemala, Honduras, El Salvador, México e Italia: «una mezcla».
+- Nota de Claude: esta intención es del fundador. La voz de la app sigue sin tono místico (B5).
+- **Cómo no apropiarse, y que se vea** (Claude, a partir de los principios éticos de UNESCO sobre patrimonio inmaterial ya citados en la guía de ChatGPT [23]): la diferencia entre apropiarse y ser puente está en cuatro preguntas.
+  1. **¿Quién habla?** Lo maya lo cuenta un tata, con su nombre.
+  2. **¿Quién decide?** La comunidad puede decir que no y retirar algo.
+  3. **¿Quién se beneficia?** Quien sostiene esa cultura recibe reconocimiento y parte del beneficio.
+  4. **¿Se dice quién es el fundador?** La app lo dice claro: «soy mestizo, no soy maya; esto me lo enseñó [tata]».
+
 ### B3. A quién sirve (cinco lados)
 | Quién | Qué recibe |
 |---|---|
@@ -185,6 +196,7 @@ Ajq'ij (cultura)                                                          ▼
 | C15 | Objetivo al 30-nov «1 turista + 1 negocio» ↔ «dejá de enfocarte en cómo llegan los clientes» | El objetivo lo puso el fundador el 24-oct. | Decidir si sigue o se cambia por «bases aprobadas». |
 | C16 | Socios «sin cadenas» ↔ mostrar Pollo Campero o San Martín como opción con contexto | Hay que separar quién **aparece** de quién es **socio**. | Una cadena puede aparecer como contexto; nunca es socio ni patrocinado. |
 | C17 | «8 agentes» en un mensaje ↔ 9 en el siguiente | Menor. | Se cuentan 9 y quedan espacios abiertos. |
+| C18 | «No quiero apropiarme» ↔ el nombre «nAIhual» viene de *nahual*, palabra de la cosmovisión | El nombre es lo primero que ve un tata. | Preguntarle al tata también por el nombre. |
 
 **Errores de Claude en este chat (para no repetirlos):** volvió a poner Q250 al centro · redujo el modelo a una app · empujó cómo llegan los clientes · inventó una frase de ejemplo para Gaby · dijo «sí» sin señalar choques.
 
