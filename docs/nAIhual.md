@@ -192,7 +192,7 @@ Ajq'ij (cultura)                                                          ▼
 | C11 | NotebookLM: «no describe personas por su nawal» ↔ su propia tabla de 20 nawales trae «Luz/vocación» y «Sombra/desafío» | Eso describe personalidades: es horóscopo, lo que la regla prohíbe. | No usar esas dos columnas. |
 | C12 | ✅ **Corregido (24-oct):** el fundador dice que los mayas sí usan los cuatro elementos. Claude había dicho que «parecía la tabla europea» sin fuente: fue un error. Buscó y no encontró fuente ni a favor ni en contra; los colores por rumbo sí tienen fuente académica (UNAM), aunque el poniente varía entre negro y azul. «Limpieza energética» sigue como tono a revisar. | | Los elementos se quedan con \* y los valida el tata. |
 | C13 | Guía de producto v2 fechada «25 de octubre», con decisiones del 24 y 25 ↔ se subió el 23-oct en la noche (hora de Guatemala) | Un documento con fecha futura no sirve como fuente de decisiones. | Sus decisiones cuentan como propuestas, no como hechas. |
-| C14 | Toda la visión (agentes, reseñas, accesibilidad comprobada en el lugar, eventos, guía para comunidades, red social) ↔ menos de 5 h por semana, trabaja solo | La más grande: el modelo pide un equipo y hoy hay una persona. | Construir por capas (B15) y no abrir una nueva sin cerrar la anterior. |
+| C14 | 🟡 **Más chico (24-oct): ahora son de 25 a 40 h por semana, con la regla 4.** Sigue siendo una persona. Toda la visión (agentes, reseñas, accesibilidad comprobada en el lugar, eventos, guía para comunidades, red social) ↔ menos de 5 h por semana, trabaja solo | La más grande: el modelo pide un equipo y hoy hay una persona. | Construir por capas (B15) y no abrir una nueva sin cerrar la anterior. |
 | C15 | Objetivo al 30-nov «1 turista + 1 negocio» ↔ «dejá de enfocarte en cómo llegan los clientes» | El objetivo lo puso el fundador el 24-oct. | Decidir si sigue o se cambia por «bases aprobadas». |
 | C16 | Socios «sin cadenas» ↔ mostrar Pollo Campero o San Martín como opción con contexto | Hay que separar quién **aparece** de quién es **socio**. | Una cadena puede aparecer como contexto; nunca es socio ni patrocinado. |
 | C17 | «8 agentes» en un mensaje ↔ 9 en el siguiente | Menor. | Se cuentan 9 y quedan espacios abiertos. |
@@ -202,9 +202,10 @@ Ajq'ij (cultura)                                                          ▼
 | C21 | Llevar turistas a pueblos de alrededor (Santa Ana, San Cristóbal…) ↔ «no gentrificar» y «se escribe con la comunidad» | Mandar visitantes a aldeas residenciales sin preguntarles puede ser lo que se quiere evitar. «Pueblos mágicos» es además el nombre de un programa del gobierno de México. | Cada pueblo entra cuando su gente lo quiere (B12). Otro nombre propio para ellos. |
 | C22 | Brújula dibujada sobre Google Maps ↔ «nada de dinero en Maps» | Un mapa propio encima del de Google pide su API con cuenta de cobro. | El mapa propio de nAIhual (ya existe uno de Antigua) o datos abiertos de OpenStreetMap; Google solo para «Cómo llegar». Ubicaciones de cada punto se verifican con fuente. |
 | C23 | «Los 4 guardianes no pueden cambiar» ↔ «lo maya pasa por un tata» y «la comunidad puede decir que no» | Si el tata no los acepta, o no acepta cómo se usan, tienen que poder cambiar. | Fijos mientras el tata los acepte. |
-| C24 | «Mapa abierto, Google solo para llegar» ↔ «se muestran las estrellas de Google» | Sin Google no hay estrellas, salvo copiarlas a mano con fecha. | Elegir: estrellas copiadas a mano con fecha, o sin estrellas. |
+| C24 | 🟡 **Decisión del fundador (24-oct):** estrellas de Google aunque se pague, si es más fácil o da ventajas. ❌ Reemplaza «nada de dinero en Maps» para las estrellas. | Ver C27: choca con «mapa abierto». | |
 | C25 | «Los agentes como equipo» ↔ trato justo | Son amigos que darían su tiempo gratis. | Preguntarle a cada uno cuánto puede dar, y que sea su decisión. |
-| C26 | No eligió «una capa a la vez» ↔ regla 4 del método: «Terminar antes de abrir» | Su propio método lo pide; sin eso, la visión no cabe en el tiempo que hay (C14). | Mantener la regla 4. |
+| C26 | ✅ **Resuelto (24-oct):** el fundador mantiene la regla 4, «Terminar antes de abrir». Una capa a la vez. | | |
+| C27 | Estrellas de Google pagadas ↔ mapa abierto (ronda 3) | Las reglas de Google para Places (Service Specific Terms, sección 5.3, versiones 2020 a 2024) prohíben usar su contenido junto a un mapa que no sea de Google. Las estrellas no se pueden guardar: hay que pedirlas cada vez, y cada consulta cuenta. ❓ Precio visto el 24-oct: el servicio que daría las estrellas tendría 1,000 consultas gratis al mes y luego unos $20 por cada 1,000 (falta confirmar qué servicio da las estrellas). Pide tarjeta y llave. | Elegir uno: **(a)** mapa de Google con la brújula encima y estrellas de Google, pagando · **(b)** mapa abierto propio con la brújula, sin estrellas de Google. |
 
 **Errores de Claude en este chat (para no repetirlos):** volvió a poner Q250 al centro · redujo el modelo a una app · empujó cómo llegan los clientes · inventó una frase de ejemplo para Gaby · dijo «sí» sin señalar choques.
 
@@ -250,7 +251,7 @@ Roles de Claude para el examen: **auditor de coherencia** (compara con las bases
 
 **Objetivo de esta etapa (al 30-nov-2026, cambiado por el fundador el 24-oct):** ✅ bases aprobadas + primer contacto con un tata (Ajq'ij). ❌ Antes: «1 turista real usa nAIhual sin ayuda + 1 negocio acepta estar».
 
-**Recursos:** menos de 5 horas por semana · hasta Q500 al mes + dos planes de IA de $20 (uno ya existe; el otro, ChatGPT o Gemini, por decidir).
+**Recursos (actualizado por el fundador, 24-oct):** ✅ de 5 a 8 horas al día, 5 días a la semana (25 a 40 h por semana). ❌ Antes: menos de 5 h por semana. Dinero: hasta Q500 al mes + dos planes de IA de $20 (uno ya existe; el otro, ChatGPT o Gemini, por decidir).
 
 **FODA**
 - **Fortalezas:** artista y diseñador (hace la marca y el arte) · red de contactos local · concepto propio (los 4 guardianes).
@@ -520,7 +521,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | C11 | Gemini | Pregunta libre → Gemini entiende y responde como el guardián, solo con el catálogo | ⬜ necesita API y presupuesto |
 | C12 | Plan Fundador | Un negocio paga Q250 → aparece marcado como fundador | ⬜ sin fundadores |
 | C13 | Wix | La app vive en Wix y abre en el celular | ⬜ ❓ probar ♥ y Maps dentro del iframe |
-| C14 | Opiniones | El turista deja un comentario → queda registrado | ⬜ |
+| C14 | 🟡 **Más chico (24-oct): ahora son de 25 a 40 h por semana, con la regla 4.** Sigue siendo una persona. Opiniones | El turista deja un comentario → queda registrado | ⬜ |
 | C15 | Agentes | Un agente sale con una recomendación → deja feedback y su playlist → queda en el muro | ⬜ etapa 2 |
 | C16 | Reviews | Alguien califica una playlist → queda visible y moderada | ⬜ etapa 2 |
 | C17 | Accesibilidad y emergencias | Una persona busca acceso o ayuda → recibe lugares y contactos verificados | ⬜ etapa 2 |
