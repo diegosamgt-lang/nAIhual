@@ -285,6 +285,7 @@ Tata (cultura)                                accesibilidad            playlists
 | A9 | Reglas para las reseñas de visitantes: qué no se publica, quién revisa, cómo responde un negocio. | Antes de la capa 3. |
 | A10 | Figura legal para el retorno a familias. | Contador o abogado, cuando haya ingresos. |
 | A11 | Fuentes externas viejas: el resumen de NotebookLM dice que nAIhual se financia con el Plan Fundador, trae «luz» y «sombra» de los nawales y «limpieza energética». | Limpiar con el prompt `docs/prompts/prompt-notebooklm-limpieza.md`. |
+| A13 | **Pregunta del fundador (24-oct, PAUSA):** ¿n8n en lugar de que Claude lo haga con código? ⚠️ Choca con una decisión vieja: n8n había quedado fuera (Documento Rector). | Claude: **todavía no.** Los pasos 1 y 2 del orden de búsqueda funcionan hoy en el visor, sin n8n. n8n sirve cuando haga falta un servidor (Google en vivo, Gemini en modo público, que Iq' busque eventos solo cada semana, WhatsApp, guardar lo aprendido de visitantes). Ventaja: el fundador ve y cambia los flujos sin código. Costo visto el 24-oct (❓ fuentes secundarias): plan Starter de n8n Cloud, unos €24 al mes con 2,500 ejecuciones (cada mensaje del chat = 1 ejecución). Alternativa: Claude lo hace con código en un servidor gratis o barato, pero el fundador depende de Claude para cambiarlo. Se decide en la capa que lo necesite. |
 
 ---
 
