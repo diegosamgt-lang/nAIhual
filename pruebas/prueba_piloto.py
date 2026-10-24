@@ -6,7 +6,7 @@ Uso (desde la raíz del repositorio):
 Necesita Python 3 y Playwright con Chromium (vienen instalados en el entorno de Claude Code en la nube;
 no son dependencias de la app). Levanta un servidor local en 127.0.0.1, abre la app a 390 px de ancho
 y usa catálogos y configuraciones de prueba (inventados solo para la prueba, nunca se publican):
-0, 1 y 3 cafés, vista interna encendida o apagada, y la ventana de Aliados Fundadores con distintas fechas.
+0, 1 y 3 cafés, vista interna encendida o apagada, y la beta del fundador (en el teléfono y con base de datos simulada).
 No prueba un celular real ni que Google Maps caiga en el lugar correcto: eso lo tiene que hacer una persona.
 """
 import functools
@@ -147,8 +147,8 @@ def sin_nombres(texto):
     return [n for n in NOMBRES_REALES if n in texto]
 
 
-PUB = {'modo': 'publica', 'fecha_lanzamiento': '', 'mostrar_aliados': True, 'claude_responde': True}
-PREV = {'modo': 'vista_previa', 'fecha_lanzamiento': '', 'mostrar_aliados': True, 'claude_responde': True}
+PUB = {'modo': 'publica', 'claude_responde': True, 'beta_fundador': True}
+PREV = {'modo': 'vista_previa', 'claude_responde': True, 'beta_fundador': True}
 GUARDIANES = ["No'j", "Iq'", 'Kej', "E'"]
 FRASES_PROHIBIDAS = ['Caminá con respeto', '¿Cómo me porto', 'reglas fijas, sin IA', '¿En qué te ayudo', "Soy No'j", 'Tips para', 'en revisión: todavía no tengo lugares con fuente']
 
@@ -194,8 +194,14 @@ def main():
         check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4 and page.locator('.guard-strip .av').count() == 0)
         check(M + ' Inicio: 3 rutas con su mapa', page.locator('.route-card').count() == 3 and page.locator('.route-card svg path.route').count() == 3)
         check(M + ' Inicio: 4 accesos (Lugares, Cultura maya, Costumbres, Guardianes)', page.locator('.tiles .tile').count() == 4)
-        biz = page.locator('section.biz')
-        check(M + ' Inicio: Aliados como propuesta piloto, sin precio ni contacto', biz.count() == 1 and 'Propuesta piloto' in biz.inner_text() and 'Q250' not in biz.inner_text() and biz.locator('a').count() == 0)
+        check(M + ' Inicio: sin Aliados Fundadores ni Q250', page.locator('section.biz').count() == 0 and 'Q250' not in page.inner_text('main') and 'Aliados' not in page.inner_text('main'))
+        intro = page.locator('[data-intro]')
+        check(M + ' Inicio: «Qué es nAIhual» con la frase del fundador', intro.count() == 1 and 'gracias a su gente' in intro.inner_text())
+        bru = page.locator('[data-brujula]')
+        bt = bru.inner_text() if bru.count() else ''
+        check(M + ' Inicio: brújula del paisaje con sus 4 puntos y fuentes', bru.count() == 1 and all(x in bru.locator('.art > svg').inner_html() for x in ['Cerro de la Cruz', 'Volcán de Agua', 'Fuego', 'Acatenango', 'Sale el sol']) and 'Lonely Planet' in bt and bru.locator('svg.portrait').count() == 4)
+        check(M + ' Inicio: la brújula no nombra puntos sin fuente', not any(x in bru.inner_html() for x in ['Cucurucho', 'Chipilapa', 'Calvario', 'Tanque', 'Pueblos Mágicos']))
+        check(M + ' Inicio: tarjeta de la beta del fundador', page.locator('[data-beta-card]').count() == 1 and '0 anotaciones' in page.locator('[data-beta-card]').inner_text().lower())
         check(M + ' Botón de emergencias visible', page.locator('#sos').is_visible())
         page.click('#sos')
         check(M + ' Emergencias: «Pendiente de números oficiales», sin números', 'Pendiente de números oficiales' in page.inner_text('#dlg') and not any(ch.isdigit() for ch in page.inner_text('#dlg')))
@@ -310,19 +316,36 @@ def main():
         check(M + ' Guardianes: la rueda de rumbos con los 4 retratos', page.locator('[data-art="rumbos"] svg.portrait').count() == 4)
         check(M + ' 390 px sin desplazamiento horizontal (Guardianes)', no_hscroll(page))
 
-        # Aliados
+        # Beta del fundador (sin visor: se guarda en este teléfono)
         page.click('[data-tab="inicio"]')
-        page.click('section.biz [data-go="aliados"]')
-        al = page.inner_text('main')
-        for frase in ['Propuesta piloto, pendiente de aprobación antes de contratar', 'Q250 al mes', 'primeros 3 meses desde la fecha de lanzamiento público',
-                      'primeros 6 meses, contados desde tu fecha de ingreso', 'precio de renovación está pendiente de decisión', 'no hay acciones ni participación',
-                      'La ventana todavía no empieza: nAIhual está en vista previa', 'La impresión del sticker no está incluida', 'un reel vertical o un carrusel de fotos',
-                      'no es mensual', 'No incluye una activación individual garantizada', 'no prueban visitas ni ventas', 'Autorizar por escrito', 'El pago no cambia el orden',
-                      'Datos ficticios de demostración', 'Todavía no hay formulario ni contacto']:
-            check(M + ' Aliados: «%s»' % frase, frase in al)
-        check(M + ' Aliados: sin formularios, campos ni enlaces', page.locator('main form, main input, main textarea, main select, main a').count() == 0)
-        check(M + ' Aliados: sin contador ni fechas', page.locator('[data-window="preview"]').count() == 1 and '2026' not in al)
-        check(M + ' 390 px sin desplazamiento horizontal (Aliados)', no_hscroll(page))
+        page.click('[data-beta-card] [data-go="beta"]')
+        b = page.inner_text('main')
+        check(M + ' Beta: dice dónde se guarda (este teléfono)', page.locator('[data-beta-where="local"]').count() == 1 and 'solo en este teléfono' in b)
+        page.fill('[data-bform="nuevo"] input[name="nombre"]', 'Lugar de prueba')
+        page.fill('[data-bform="nuevo"] input[name="maps"]', 'http://no-seguro')
+        page.click('[data-bform="nuevo"] button[type="submit"]')
+        check(M + ' Beta: rechaza un enlace que no empieza con https://', page.locator('[data-beta-msg="badLink"]').count() == 1 and page.locator('[data-beta-item]').count() == 0)
+        page.fill('[data-bform="nuevo"] input[name="nombre"]', 'Lugar de prueba')
+        page.fill('[data-bform="nuevo"] input[name="maps"]', 'https://maps.app.goo.gl/prueba')
+        page.select_option('[data-bform="nuevo"] select[name="momento"]', 'comida')
+        page.check('[data-bform="nuevo"] input[name="gusta"]')
+        page.fill('[data-bform="nuevo"] textarea[name="texto"]', 'Nota de prueba')
+        page.click('[data-bform="nuevo"] button[type="submit"]')
+        it = page.locator('[data-beta-item="nuevo"]')
+        check(M + ' Beta: «Agregar un lugar» queda en la lista con momento, me gustó y nota', it.count() == 1 and all(x in it.inner_text() for x in ['Lugar de prueba', 'Comida', 'Me gustó', 'Nota de prueba']))
+        check(M + ' Beta: se guardó en el teléfono', page.evaluate('JSON.parse(localStorage.getItem("naihual.beta")).length') == 1)
+        check(M + ' 390 px sin desplazamiento horizontal (Beta)', no_hscroll(page))
+        page.click('[data-tab="inicio"]')
+        page.click('[data-go="explorar"]')
+        page.locator('[data-open="p:siena"]').first.click()
+        page.click('[data-beta-like="siena"]')
+        check(M + ' Ficha: «Me gustó» marca el lugar', page.locator('[data-beta-like="siena"][aria-pressed="true"]').count() == 1 and page.locator('[data-liked]').count() == 1)
+        page.fill('[data-bform="ficha"] textarea[name="texto"]', 'La dirección cambió')
+        page.click('[data-bform="ficha"] button[type="submit"]')
+        check(M + ' Ficha: «Dato mal» se guarda', page.evaluate('JSON.parse(localStorage.getItem("naihual.beta")).some(x => x.tipo === "dato" && x.lugar === "siena" && x.texto === "La dirección cambió")'))
+        page.click('[data-beta-like="siena"]')
+        check(M + ' Ficha: tocar otra vez quita el «Me gustó»', page.locator('[data-beta-like="siena"][aria-pressed="false"]').count() == 1)
+        page.evaluate('localStorage.removeItem("naihual.beta")')
 
         # Vista interna
         page.click('[data-tab="inicio"]')
@@ -330,17 +353,20 @@ def main():
         t = page.inner_text('main')
         check(M + ' Vista interna: aviso y revisión de las 21 fichas', 'no la ve el visitante' in t and 'Publicadas hoy: 0 de 21' in t and page.locator('[data-review]').count() == 21)
         check(M + ' Revisión: Coffea sin la frase sin fuente', 'Afirmación retirada hasta tener fuente' in t and 'Entre las 100 mejores coffee shops del mundo.' not in page.inner_text('body').replace('«Entre las 100 mejores coffee shops del mundo».', ''))
-        for sec, sel, n in [('textos', '[data-copy]', 13), ('etapas', '[data-stage]', 4), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 6), ('sistema', '.sw', 18)]:
+        for sec, sel, n in [('textos', '[data-copy]', 13), ('modelo', '[data-capa]', 6), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 8), ('sistema', '.sw', 18)]:
             page.click('[data-sec="%s"]' % sec)
             check(M + ' Vista interna · %s' % sec, page.locator(sel).count() >= n and no_hscroll(page), page.locator(sel).count())
+        page.click('[data-sec="modelo"]')
+        mo = page.inner_text('main')
+        check(M + ' Modelo: monetización primaria = hotel socio con QR, pendiente; Q250 fuera', 'Hotel socio con QR' in mo and 'Pendiente de evolución y planificación' in mo and 'Pro existe solo así' in mo and 'fue solo una idea' in mo)
         page.click('[data-sec="aprendizaje"]')
         a = page.inner_text('main')
         check(M + ' Aprendizaje: «Diseño futuro / no activo» y «Datos ficticios de demostración»', 'Diseño futuro / no activo' in a and 'Datos ficticios de demostración' in a)
         page.click('[data-demo-fb="si"]')
-        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1")'))
+        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta")'))
         page.click('[data-sec="arquitectura"]')
         r = page.inner_text('main')
-        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 2.0' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
+        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.0' in r and 'Beta del fundador' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
         code = open(os.path.join(APP, 'index.html'), encoding='utf-8').read()
         check(M + ' Sin llaves de API ni conexiones a servicios en el código', not any(x in code for x in ['AIza', 'generativelanguage.googleapis', 'apiKey', 'api_key=']))
         check(M + ' Sin datos de lugares escritos dentro del programa', 'Coffea Cafés Especiales' not in code.split('<script>')[1].split('// ===================== CLAUDE')[0] and "name: '12 Onzas'" not in code)
@@ -471,19 +497,40 @@ def main():
         check('[Claude] Consola sin errores', not errors, errors)
         ctx.close()
 
-        # =============== E. Ventana de Aliados Fundadores ===============
-        for cfg, state, frase in [
-            ({'modo': 'publica', 'fecha_lanzamiento': ''}, 'nodate', 'falta configurar la fecha de lanzamiento'),
-            ({'modo': 'publica', 'fecha_lanzamiento': '2099-01-01'}, 'future', 'empieza el día del lanzamiento público: 1 ene 2099'),
-            ({'modo': 'publica', 'fecha_lanzamiento': '2026-10-01'}, 'open', 'Inscripción abierta del 1 oct 2026 al 31 dic 2026'),
-            ({'modo': 'publica', 'fecha_lanzamiento': '2026-01-01'}, 'closed', 'cerró el 31 mar 2026'),
-            ({'modo': 'vista_previa', 'fecha_lanzamiento': '2026-10-01'}, 'preview', 'está en vista previa')]:
-            ctx, page, errors = new_page(browser, url, None, 'light', dict(cfg, mostrar_aliados=True), '#aliados')
-            win = page.locator('[data-window]')
-            check('Ventana de Aliados %s: «%s»' % (json.dumps(cfg, ensure_ascii=False), frase), win.count() == 1 and win.get_attribute('data-window') == state and frase in win.inner_text(), win.inner_text() if win.count() else '')
-            ctx.close()
-        ctx, page, errors = new_page(browser, url, None, 'light', dict(PREV, mostrar_aliados=False))
-        check('«mostrar_aliados: false»: sin tarjeta de negocios', page.locator('section.biz').count() == 0)
+        # =============== E. Beta con la base de datos del visor (simulada) ===============
+        ctx = browser.new_context(viewport={'width': 390, 'height': 844}, has_touch=True)
+        page = ctx.new_page()
+        errors = []
+        page.on('pageerror', lambda e: errors.append(str(e)))
+        page.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', PREV)))
+        page.add_init_script('''(() => { const store = {}; const subs = [];
+          const snap = () => ({ docs: Object.keys(store).map(id => ({ id, exists: true, data: () => Object.assign({}, store[id]), metadata: {} })), size: Object.keys(store).length, empty: !Object.keys(store).length, docChanges: () => [], metadata: {} });
+          const emit = () => setTimeout(() => subs.forEach(f => f(snap())), 30);
+          const db = { collection: (path) => ({ path, onSnapshot: (f) => { subs.push(f); emit(); return () => {}; },
+                         add: (d) => { const id = 'd' + Object.keys(store).length; store[id] = d; emit(); return Promise.resolve({ id }); } }),
+                       doc: (path) => { const id = path.split('/')[1]; return { id, path, set: (d) => { store[id] = d; emit(); return Promise.resolve(); }, delete: () => { delete store[id]; emit(); return Promise.resolve(); } }; } };
+          window.__store = store;
+          window.claude = { use: (n) => Promise.resolve(n === 'db' ? Object.freeze(db) : null) }; })();''')
+        page.goto(url + '#beta')
+        page.wait_for_selector('[data-beta-where="db"]', timeout=5000)
+        check('[beta · visor] Dice que se guarda en la base de datos del visor', 'Claude la puede leer' in page.inner_text('main'))
+        page.fill('[data-bform="nuevo"] input[name="nombre"]', 'Lugar del visor')
+        page.click('[data-bform="nuevo"] button[type="submit"]')
+        page.wait_for_selector('[data-beta-item="nuevo"]', timeout=5000)
+        check('[beta · visor] El lugar nuevo llega a la base de datos y vuelve a la lista', page.evaluate('Object.values(window.__store).some(x => x.tipo === "nuevo" && x.nombre === "Lugar del visor")') and not page.evaluate('localStorage.getItem("naihual.beta")'))
+        page.click('[data-tab="inicio"]')
+        page.click('[data-go="explorar"]')
+        page.locator('[data-open="p:siena"]').first.click()
+        page.click('[data-beta-like="siena"]')
+        page.wait_for_selector('[data-beta-like="siena"][aria-pressed="true"]', timeout=5000)
+        check('[beta · visor] «Me gustó» se guarda como un solo documento por lugar', page.evaluate('window.__store["gusta-siena"] && window.__store["gusta-siena"].lugar === "siena"'))
+        check('[beta · visor] Consola sin errores', not errors, errors)
+        ctx.close()
+        ctx, page, errors = new_page(browser, url, None, 'light', PUB, '#beta')
+        check('[pública] Sin beta: ni tarjeta, ni pantalla, ni botones', page.locator('[data-beta-card], [data-beta-ficha], [data-bform]').count() == 0 and page.locator('[data-intro]').count() == 1)
+        ctx.close()
+        ctx, page, errors = new_page(browser, url, None, 'light', dict(PREV, beta_fundador=False))
+        check('«beta_fundador: false»: sin tarjeta de la beta', page.locator('[data-beta-card]').count() == 0)
         ctx.close()
 
         # =============== F. Teclado, accesibilidad básica y contraste ===============
@@ -522,7 +569,7 @@ def main():
         ctx.close()
         for scheme in ['light', 'dark']:
             c2, p2, e2 = new_page(browser, url, FIX['cuatro'], scheme, PREV)
-            vals = {'café': contrast(p2, '#cta-cafe'), 'pestaña activa': contrast(p2, '#tabs [aria-current="page"]'), 'propuesta': contrast(p2, 'section.biz .tag')}
+            vals = {'café': contrast(p2, '#cta-cafe'), 'pestaña activa': contrast(p2, '#tabs [aria-current="page"]'), 'beta': contrast(p2, '[data-beta-card] .btn.primary')}
             p2.click('#cta-cafe')
             p2.wait_for_timeout(150)
             vals['sello verificado'] = contrast(p2, 'details.seal.ok summary')

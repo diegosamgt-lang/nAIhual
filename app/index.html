@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* =====================================================================
-   nAIhual 2.0 · sistema visual (tokens). Cambiar un token cambia toda la app.
+   nAIhual 3.0 · sistema visual (tokens). Cambiar un token cambia toda la app.
    Concepto: Antigua en piedra, cal y basalto. Muros encalados (fondo), basalto volcánico (tinta),
    añil de fachada (acento de rutas y enlaces) y los cuatro colores de los guardianes por rumbo*.
    Layout: app de celular en una columna (máx. 560px). Cada pantalla abre con una imagen, un mapa o una ilustración.
@@ -146,7 +146,7 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 /* ---------- etiquetas, sello e información ---------- */
 .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--r-pill); font-size: var(--t-2xs); font-weight: 700; letter-spacing: .02em; background: var(--piedra); color: var(--ink-2); white-space: nowrap; }
 .tag.check { background: var(--check-soft); color: var(--check); border: 1px dashed currentColor; }
-.tag.sp, .tag.ally { background: var(--sponsor-bg); color: var(--sponsor-ink); }
+.tag.sp { background: var(--sponsor-bg); color: var(--sponsor-ink); }
 .tag.future { background: var(--future-bg); color: var(--future-ink); }
 .tag.ok { background: var(--ok-soft); color: var(--ok); }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -194,6 +194,24 @@ details.info[open] { flex-basis: 100%; }
 .gbtn b { font-family: var(--f-display); font-size: 15px; }
 .gbtn small { font-size: 11.5px; color: var(--ink-3); line-height: 1.25; }
 .gbtn[aria-current="true"] { background: var(--papel); box-shadow: var(--shadow-1); }
+.tag.like { background: var(--g-noj-soft); color: var(--basalto); }
+.intro-card { display: flex; flex-direction: column; gap: 6px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--band); color: var(--band-ink); }
+.intro-card h2 { font-size: var(--t-lg); }
+.intro-card p { color: var(--band-muted); font-size: 14.5px; }
+.brujula { display: grid; gap: var(--s-3); }
+.brujula .art { background: var(--papel); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 8px; }
+.brujula .art > svg { display: block; width: 100%; height: auto; max-width: 420px; margin: 0 auto; }
+.brujula .note { font-size: 12.5px; }
+.beta-card { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: var(--r-md); border: 1.5px dashed var(--line-2); background: var(--papel); }
+.beta-card .row { display: flex; flex-wrap: wrap; gap: 8px; }
+.bform { display: flex; flex-direction: column; gap: 10px; }
+.bform label { display: flex; flex-direction: column; gap: 4px; font-size: var(--t-sm); font-weight: 600; color: var(--ink-2); }
+.bform input[type=text], .bform input[type=url], .bform select, .bform textarea { font: inherit; font-size: 16px; font-weight: 400; color: var(--basalto); background: var(--papel); border: 1px solid var(--line-2); border-radius: var(--r-md); padding: 10px 12px; min-height: 44px; width: 100%; }
+.bform textarea { min-height: 76px; resize: vertical; }
+.bform .check { flex-direction: row; align-items: center; gap: 10px; min-height: 44px; }
+.bform .check input { width: 22px; height: 22px; }
+.bitem { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: var(--r-md); background: var(--papel); border: 1px solid var(--line); }
+.bitem small { color: var(--ink-3); font-family: var(--f-data); font-size: 11.5px; }
 .biz { display: flex; flex-direction: column; gap: 10px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--band); color: var(--band-ink); }
 .biz h2 { font-size: var(--t-lg); }
 .biz p { color: var(--band-muted); font-size: 14.5px; }
@@ -416,16 +434,16 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 2.0 · 23-oct-2026';
-var INSTR_VERSION = 'reglas-fijas 2.0';
+var VERSION = 'nAIhual 3.0 · 24-oct-2026';
+var INSTR_VERSION = 'reglas-fijas 3.0';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
 // Dos modos. Sin configuración = pública (lo más seguro).
 var MODE = CFG.modo === 'vista_previa' || (CFG.modo === undefined && CFG.vista_previa === true) ? 'vista_previa' : 'publica';
 var PREVIEW = MODE === 'vista_previa';
 var INTERNAL = PREVIEW;
-var SHOW_ALLIES = CFG.mostrar_aliados !== false;
-var LAUNCH = String(CFG.fecha_lanzamiento || '').trim();
+// Beta del fundador: solo en vista previa. Lo que anota queda en la base de datos del visor (o en este teléfono si no hay visor).
+var BETA_ON = PREVIEW && CFG.beta_fundador !== false;
 function w(es, en) { return { es: es, en: en }; }
 
 // ===================== GUARDIANES (aprobados por el fundador · no se cambian) =====================
@@ -619,6 +637,42 @@ var MEANWHILE = w('Mientras, te cuento de la cultura maya o de las costumbres de
 var SAFETY = w('Para temas de seguridad, preguntá en tu hospedaje o en la oficina de turismo local.', 'For safety questions, ask at your lodging or the local tourist office.');
 
 // ===================== TEXTOS DE PANTALLA (propuesta 2.0, por aprobar) =====================
+// Textos nuevos de la 3.0.
+var X3 = {
+  es: {
+    introKicker: 'Qué es nAIhual', introTitle: 'La riqueza de Guatemala está en sus paisajes, y es gracias a su gente.',
+    introBody: 'nAIhual te da contexto para que elijás con conciencia: de quién es, desde cuándo, qué lo hace especial. No impone y no pone a uno encima de otro.',
+    compass: 'Brújula del paisaje', compassBody: 'Mirá hacia dónde está cada cosa y vas a saber dónde estás.',
+    compassNote: 'Fuentes: Lonely Planet y OK Antigua (24-oct-2026). * Rumbos y colores de los guardianes, por validar con un tata (Ajq’ij).',
+    north: 'Cerro de la Cruz', south: 'Volcán de Agua', west: 'Fuego · Acatenango', east: 'Sale el sol',
+    betaKicker: 'Beta del fundador', betaTitle: 'Alimentá nAIhual', betaBody: 'Marcá lo que te gustó, avisá si un dato está mal o agregá un lugar. Claude lo lee, lo verifica y lo pasa al catálogo.',
+    betaOpen: 'Abrir la beta', betaCount: function (n) { return n === 1 ? '1 anotación' : n + ' anotaciones'; },
+    liked: 'Te gustó', like: 'Me gustó', likedTag: 'Le gustó al fundador', wrong: 'Dato mal', note: 'Nota',
+    betaFicha: 'Beta · ¿qué sabés de este lugar?', kind: 'Tipo', text: 'Qué querés anotar', save: 'Guardar anotación',
+    addTitle: 'Agregar un lugar', name: 'Nombre del lugar', mapsLink: 'Enlace de Google Maps (Compartir → Copiar enlace)', moment: 'Momento del viaje', didLike: 'Me gustó', addNote: 'Nota corta, en tus palabras', addBtn: 'Agregar',
+    moments: [['llegue', 'Llegué'], ['transporte', 'Transporte'], ['hotel', 'Hotel'], ['comida', 'Comida'], ['cerca', 'Qué hay cerca'], ['otro', 'Otro']],
+    list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
+    savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
+    kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo' }
+  },
+  en: {
+    introKicker: 'What nAIhual is', introTitle: 'Guatemala’s wealth is in its landscapes, and it is thanks to its people.',
+    introBody: 'nAIhual gives you context so you choose consciously: whose it is, since when, what makes it special. It does not impose and does not rank one over another.',
+    compass: 'Landscape compass', compassBody: 'See where each landmark is and you will know where you are.',
+    compassNote: 'Sources: Lonely Planet and OK Antigua (Oct 24, 2026). * Guardians’ directions and colors, pending validation by a tata (Ajq’ij).',
+    north: 'Cerro de la Cruz', south: 'Agua volcano', west: 'Fuego · Acatenango', east: 'Sunrise',
+    betaKicker: 'Founder beta', betaTitle: 'Feed nAIhual', betaBody: 'Mark what you liked, flag wrong data or add a place. Claude reads it, checks it and adds it to the catalog.',
+    betaOpen: 'Open the beta', betaCount: function (n) { return n === 1 ? '1 note' : n + ' notes'; },
+    liked: 'You liked it', like: 'I liked it', likedTag: 'The founder liked it', wrong: 'Wrong data', note: 'Note',
+    betaFicha: 'Beta · what do you know about this place?', kind: 'Type', text: 'What do you want to note', save: 'Save note',
+    addTitle: 'Add a place', name: 'Place name', mapsLink: 'Google Maps link (Share → Copy link)', moment: 'Moment of the trip', didLike: 'I liked it', addNote: 'Short note, in your words', addBtn: 'Add',
+    moments: [['llegue', 'Just arrived'], ['transporte', 'Getting around'], ['hotel', 'Hotel'], ['comida', 'Food'], ['cerca', 'Nearby'], ['otro', 'Other']],
+    list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
+    savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
+    kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place' }
+  }
+};
+function X() { return X3[S.lang]; }
 var STR = {
   es: {
     tagline: 'Viaja directo a la raíz.', heroTitle: 'Antigua, con cuatro guías que la conocen.',
@@ -651,7 +705,7 @@ var STR = {
     dValue: 'Es', dDir: 'Rumbo y color', dRole: 'Hace', dSpeaks: 'Habla', dRecs: 'Recomienda', dPdf: 'Su nawal',
     savedTitle: 'Guardados', savedSub: 'Lo que guardás queda solo en este teléfono.', emptySaved: 'Todavía no guardaste nada', emptySavedBody: 'Tocá el corazón en un lugar, una ruta o una costumbre.',
     yourPlan: 'Tu plan a pie', planBody: function (n) { return n + ' paradas, en este orden.'; }, planSoon: 'Tu plan se arma con lugares que ya probé. Todavía no hay.',
-    bizKicker: 'Para negocios de Antigua', pilotTag: 'Propuesta piloto', bizTitle: 'Círculo de Aliados Fundadores', bizBody: 'Una alianza con negocios locales para arrancar nAIhual. Pendiente de aprobación: no es inversión y no promete ventas.', bizCta: 'Ver la propuesta', bizTag: 'Patrocinado',
+    bizTag: 'Patrocinado',
     sos: 'Emergencias', sosTitle: 'Emergencias', sosBody: 'Pendiente de números oficiales. Se activan cuando cada número esté confirmado con su fuente oficial.', close: 'Cerrar',
     internal: 'Vista interna', foot: VERSION, months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], or: ' o ',
     aiThinking: 'Pensando', aiStop: 'Detener', aiBy: 'con Claude',
@@ -693,7 +747,7 @@ var STR = {
     dValue: 'Is', dDir: 'Direction and colour', dRole: 'Does', dSpeaks: 'Speaks', dRecs: 'Recommends', dPdf: 'Their nawal',
     savedTitle: 'Saved', savedSub: 'What you save stays on this phone only.', emptySaved: 'Nothing saved yet', emptySavedBody: 'Tap the heart on a place, a route or a custom.',
     yourPlan: 'Your walking plan', planBody: function (n) { return n + ' stops, in this order.'; }, planSoon: 'Your plan is built from places I’ve tested. None yet.',
-    bizKicker: 'For Antigua businesses', pilotTag: 'Pilot proposal', bizTitle: 'Founding Partners Circle', bizBody: 'A partnership with local businesses to get nAIhual started. Pending approval: not an investment, no sales promised.', bizCta: 'See the proposal', bizTag: 'Sponsored',
+    bizTag: 'Sponsored',
     sos: 'Emergency', sosTitle: 'Emergency', sosBody: 'Official numbers pending. They switch on once each number is confirmed with its official source.', close: 'Close',
     internal: 'Team view', foot: VERSION, months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], or: ' or ',
     aiThinking: 'Thinking', aiStop: 'Stop', aiBy: 'with Claude',
@@ -777,6 +831,29 @@ function compassArt() {
     '<circle cx="150" cy="150" r="104" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M150 40 V260 M40 150 H260" style="stroke:var(--line-2)" stroke-width="1.5"/>' +
     ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 32) + ' ' + (q[1] - 32) + ')">' + portrait(g, 64) + '</g><text class="lbl" x="' + (q[0] + (g === 'noj' ? -42 : g === 'kej' ? 42 : 0)) + '" y="' + (q[1] + (g === 'iq' ? 44 : g === 'e' ? -38 : 4)) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
     '<text x="150" y="155" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text></svg>';
+}
+// Brújula del paisaje (idea del fundador, 24-oct): los rumbos de los guardianes* apuntan a lo que se ve desde Antigua.
+// Fuentes: Lonely Planet y OK Antigua (Cerro de la Cruz al norte; Agua al sur; Fuego y Acatenango al poniente). El oriente: por donde sale el sol.
+function paisajeArt() {
+  var x = X(), en = S.lang === 'en';
+  var pos = { iq: [180, 92], noj: [268, 180], e: [180, 268], kej: [92, 180] };
+  var lbl = { iq: 'N', noj: en ? 'E' : 'E', e: 'S', kej: en ? 'W' : 'O' };
+  var vol = function (cx, by, w, h) { return '<path d="M' + (cx - w) + ' ' + by + ' L' + (cx - 4) + ' ' + (by - h) + ' Q' + cx + ' ' + (by - h - 4) + ' ' + (cx + 4) + ' ' + (by - h) + ' L' + (cx + w) + ' ' + by + ' Z" style="fill:var(--volcan)"/>'; };
+  return '<svg viewBox="0 0 360 380" role="img" aria-label="' + esc(x.compass + ': ' + x.north + ' (N), ' + x.east + ' (E), ' + x.south + ' (S), ' + x.west + ' (' + lbl.kej + ')') + '">' +
+    '<circle cx="180" cy="180" r="96" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M180 70 V290 M70 180 H290" style="stroke:var(--line-2)" stroke-width="1.5"/>' +
+    // Norte: Cerro de la Cruz (cerro con cruz)
+    '<path d="M130 52 Q180 14 230 52 Z" style="fill:var(--piedra-2)"/><path d="M180 16 V36 M172 23 H188" style="stroke:var(--basalto)" stroke-width="2.5" stroke-linecap="round"/>' +
+    '<text x="180" y="66" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:13px;fill:var(--basalto)">' + esc(x.north) + '</text>' +
+    // Sur: Volcán de Agua
+    vol(180, 350, 58, 38) + '<text x="180" y="372" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:13px;fill:var(--basalto)">' + esc(x.south) + '</text>' +
+    // Poniente: Fuego y Acatenango
+    vol(30, 214, 24, 28) + vol(58, 214, 20, 22) + '<text x="44" y="232" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.west.split(' · ')[0]) + '</text><text x="44" y="246" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.west.split(' · ')[1]) + '</text>' +
+    // Oriente: sale el sol
+    '<circle cx="322" cy="176" r="15" style="fill:var(--g-e)"/><text x="322" y="214" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.east) + '</text>' +
+    ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 22) + ' ' + (q[1] - 22) + ')">' + portrait(g, 44) + '</g>'; }).join('') +
+    '<text x="180" y="185" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text>' +
+    ['iq', 'noj', 'e', 'kej'].map(function (g) { var q = pos[g], dx = g === 'noj' ? -34 : g === 'kej' ? 34 : 0, dy = g === 'iq' ? 36 : g === 'e' ? -30 : 4; return '<text x="' + (q[0] + dx) + '" y="' + (q[1] + dy) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
+    '</svg>';
 }
 // El Cholq'ij en una imagen: 260 días = 13 números × 20 nawales (dato del consejo «cholqij»).
 function cholqijArt() {
@@ -937,7 +1014,7 @@ function mapsBtn(p, cls, label) {
 }
 function catTags(p) {
   var t = T();
-  return '<div class="tags"><span class="tag">' + esc(t.place[p.cat]) + '</span>' + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + '</div>';
+  return '<div class="tags"><span class="tag">' + esc(t.place[p.cat]) + '</span>' + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + (betaLiked(p.id) ? '<span class="tag like" data-liked>' + esc(X().likedTag) + '</span>' : '') + '</div>';
 }
 function placeCard(p) {
   var t = T();
@@ -1088,99 +1165,103 @@ function askClaude(text, rulesMsg, pend) {
   });
 }
 
-var A = {
-  title: 'Círculo de Aliados Fundadores',
-  kicker: 'Para negocios de Antigua',
-  status: 'Propuesta piloto, pendiente de aprobación antes de contratar',
-  statusSub: 'Precio y condiciones todavía no se ofrecen comercialmente. No se cobra ni se recibe ningún dato en esta versión.',
-  intro: 'Una alianza con negocios locales para arrancar nAIhual juntos: tu ficha verificada, un distintivo y una pieza de contenido, mientras probamos qué le sirve de verdad a tu negocio.',
-  notThis: 'No es una ronda de inversión: no hay acciones ni participación en nAIhual. Tampoco prometemos ventas ni visitas.',
-  terms: [
-    ['Tarifa fundadora propuesta', 'Q250 al mes.'],
-    ['Quién puede entrar', 'Quien se inscriba durante los primeros 3 meses desde la fecha de lanzamiento público de nAIhual.'],
-    ['Tarifa fija', 'La misma tarifa durante tus primeros 6 meses, contados desde tu fecha de ingreso.'],
-    ['Después de 6 meses', 'El precio de renovación está pendiente de decisión. Todavía no existe.']
-  ],
-  benefits: [
-    ['Ficha del negocio', 'Con datos verificados y con tu permiso.'],
-    ['Distintivo «Aliado Fundador»', 'Visible en tu ficha, junto a la etiqueta «Patrocinado».'],
-    ['Diseño digital de un QR', 'Lleva a tu ficha en nAIhual. La impresión del sticker no está incluida; su costo está por definir.'],
-    ['Una pieza de contenido acordada', 'Durante los 6 meses: un reel vertical o un carrusel de fotos. Una de las dos, no ambas, y no es mensual.'],
-    ['Activaciones grupales', 'Podés participar en salidas con varios negocios, según disponibilidad y acuerdo. No incluye una activación individual garantizada.'],
-    ['Reporte de señales', 'Por ejemplo: vistas de tu ficha y toques en «Cómo llegar». Estas señales no prueban visitas ni ventas. Hoy nAIhual no mide nada: esto empieza solo cuando haya reglas de privacidad aprobadas.']
-  ],
-  asks: [
-    'Confirmar los datos de tu ficha antes de publicarla.',
-    'Autorizar por escrito el uso de tu nombre, tu espacio, tu imagen, tu logo y tu contenido.',
-    'Aceptar que toda publicación o tarjeta pagada lleva la etiqueta «Patrocinado».'
-  ],
-  rules: [
-    'El pago no cambia el orden de las recomendaciones ni lo que dicen los guardianes.',
-    'Lo patrocinado siempre se marca. Sin excepción.',
-    'Solo negocios locales. La ficha se puede pausar el mismo día si hay un error.'
-  ],
-  contact: 'Todavía no hay formulario ni contacto. Se abren cuando estén aprobados el canal, las condiciones finales y las reglas de privacidad.',
-  demoTitle: 'Así se vería una ficha de aliado',
-  demoLabel: 'Datos ficticios de demostración · no es un negocio real',
-  internalOnly: 'Vista interna: esta ficha está en revisión y no la ve el visitante.',
-  windowTitle: 'Ventana de inscripción'
-};
-function addMonthsUTC(d, n) { var x = new Date(d.getTime()); x.setUTCMonth(x.getUTCMonth() + n); return x; }
-function isoUTC(d) { return d.toISOString().slice(0, 10); }
-// La ventana de 3 meses solo corre si la app ya no es vista previa y tiene una fecha de lanzamiento real, ya pasada. Sin contador.
-function allyWindow() {
-  if (PREVIEW) return { state: 'preview', text: 'La ventana todavía no empieza: nAIhual está en vista previa y no tiene lanzamiento público.' };
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(LAUNCH)) return { state: 'nodate', text: 'La ventana todavía no empieza: falta configurar la fecha de lanzamiento público.' };
-  if (!validDate(LAUNCH)) return { state: 'future', text: 'La ventana empieza el día del lanzamiento público: ' + fmtDate(LAUNCH, 'es') + '.' };
-  var m = LAUNCH.split('-'), start = new Date(Date.UTC(+m[0], +m[1] - 1, +m[2])), end = addMonthsUTC(start, 3), last = new Date(end.getTime() - 864e5);
-  if (Date.now() < end.getTime()) return { state: 'open', text: 'Inscripción abierta del ' + fmtDate(LAUNCH, 'es') + ' al ' + fmtDate(isoUTC(last), 'es') + '.' };
-  return { state: 'closed', text: 'La ventana de inscripción cerró el ' + fmtDate(isoUTC(last), 'es') + '.' };
-}
 function termsHTML(rows) { return '<dl class="terms">' + rows.map(function (r) { return '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>'; }).join('') + '</dl>'; }
-function allyDemoCard() {
-  return '<div class="panel demo" data-demo="aliado"><span class="tag future">' + esc(A.demoLabel) + '</span>' +
-    '<div class="pcard"><div class="ph" style="aspect-ratio:16/9">' + photoArt('cafe', 'e') + '<span class="ph-note">Foto del negocio, con permiso</span></div><div class="pc-body"><div class="tags"><span class="tag">Café</span><span class="tag ally">Aliado Fundador</span><span class="tag sp">Patrocinado</span></div>' +
-    '<h3>Café de Ejemplo</h3><p>Frase de ejemplo del negocio, aprobada por el negocio.</p><span class="addr">Dirección de ejemplo</span>' +
-    '<div class="row"><span class="btn primary" aria-disabled="true">' + icon('pin', 'sm') + 'Cómo llegar</span><span class="tag ok">' + icon('check', 'sm') + 'Verificado · [fecha]</span></div></div></div>' +
-    '<div class="empty" style="align-items:center;text-align:center"><b>QR</b><p>Diseño pendiente. No es un código real.</p></div></div>';
+// ===================== BETA DEL FUNDADOR (solo vista previa) =====================
+// Lo que anota el fundador: «me gustó», «dato mal», notas y lugares nuevos. Nada se publica solo:
+// Claude lo lee (base de datos del visor, colección «beta»), lo verifica con fuente y lo pasa al catálogo.
+var BETA = { items: [], db: null, where: 'local', msg: '' };
+var BETA_LS = 'naihual.beta';
+function betaLoadLocal() { try { var a = JSON.parse(localStorage.getItem(BETA_LS) || '[]'); BETA.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.tipo === 'string'; }) : []; } catch (e) { BETA.items = []; } }
+function betaSaveLocal() { try { localStorage.setItem(BETA_LS, JSON.stringify(BETA.items)); } catch (e) {} }
+function betaTyping() { var a = document.activeElement; return !!(a && a.closest && a.closest('.bform')); }
+function betaRefresh() { if (betaTyping()) { BETA.dirty = true; return; } render({ keep: true }); }
+if (BETA_ON) {
+  betaLoadLocal();
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('db').then(function (db) {
+      if (!db) return;
+      BETA.db = db; BETA.where = 'db';
+      db.collection('beta').onSnapshot(function (snap) {
+        BETA.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; });
+        betaRefresh();
+      }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
+      betaRefresh();
+    }, function () {});
+  }
 }
-function alliesHTML() {
-  var win = allyWindow();
-  return backBtn() +
-    '<article class="doc" id="aliados">' +
-    '<div class="pagehead"><span class="eyebrow">' + esc(A.kicker) + '</span><h1>' + esc(A.title) + '</h1><p>' + esc(A.intro) + '</p></div>' +
-    '<div class="status" role="note"><b>' + esc(A.status) + '</b><span>' + esc(A.statusSub) + '</span></div>' +
-    '<p>' + esc(A.notThis) + '</p>' +
-    '<section><h2>Condiciones propuestas</h2>' + termsHTML(A.terms) + '</section>' +
-    '<section><h2>' + esc(A.windowTitle) + '</h2><div class="status plain" data-window="' + win.state + '"><span>' + esc(win.text) + '</span></div></section>' +
-    '<section><h2>Beneficios propuestos</h2>' + termsHTML(A.benefits) + '</section>' +
-    '<section><h2>Lo que pedimos al negocio</h2><ul>' + A.asks.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>' +
-    '<section><h2>Reglas de transparencia</h2><ul>' + A.rules.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>' +
-    '<section><h2>' + esc(A.demoTitle) + '</h2>' + allyDemoCard() + '</section>' +
-    '<section><h2>Contacto</h2><p>' + esc(A.contact) + '</p></section>' +
-    (S.lang === 'en' ? '<p class="note">This proposal is only available in Spanish for now.</p>' : '') +
-    '</article>';
+function betaLiked(pid) { return BETA_ON && BETA.items.some(function (x) { return x.tipo === 'gusta' && x.lugar === pid; }); }
+function betaToggleLike(pid) {
+  var id = 'gusta-' + pid, has = betaLiked(pid);
+  if (BETA.db) {
+    var ref = BETA.db.doc('beta/' + id);
+    (has ? ref.delete() : ref.set({ tipo: 'gusta', lugar: pid, nombre: P[pid] ? P[pid].name : pid, fecha: new Date().toISOString() })).catch(function () { BETA.msg = 'saveFail'; render({ keep: true }); });
+    return;
+  }
+  BETA.items = has ? BETA.items.filter(function (x) { return !(x.tipo === 'gusta' && x.lugar === pid); }) : BETA.items.concat([{ _id: id, tipo: 'gusta', lugar: pid, nombre: P[pid] ? P[pid].name : pid, fecha: new Date().toISOString() }]);
+  betaSaveLocal(); render({ keep: true });
+}
+function betaAdd(item) {
+  item.fecha = new Date().toISOString();
+  BETA.msg = '';
+  if (BETA.db) return BETA.db.collection('beta').add(item).then(function () { BETA.msg = 'savedOk'; render({ keep: true }); }, function () { BETA.msg = 'saveFail'; render({ keep: true }); });
+  item._id = 'local-' + Date.now();
+  BETA.items = BETA.items.concat([item]); betaSaveLocal(); BETA.msg = 'savedOk'; render({ keep: true });
+}
+function betaMsg() { return BETA.msg ? '<p class="note" role="status" data-beta-msg="' + BETA.msg + '">' + esc(X()[BETA.msg]) + '</p>' : ''; }
+function betaFichaHTML(p) {
+  var x = X(), on = betaLiked(p.id);
+  return '<section class="beta-card" data-beta-ficha="' + esc(p.id) + '"><span class="eyebrow">' + esc(x.betaFicha) + '</span>' +
+    '<div class="row"><button type="button" class="btn" data-beta-like="' + esc(p.id) + '" aria-pressed="' + on + '">' + icon('heart', 'sm' + (on ? ' fill' : '')) + esc(on ? x.liked : x.like) + '</button></div>' +
+    '<form class="bform" data-bform="ficha" data-lugar="' + esc(p.id) + '"><label>' + esc(x.kind) + '<select name="tipo"><option value="dato">' + esc(x.wrong) + '</option><option value="nota">' + esc(x.note) + '</option></select></label>' +
+    '<label>' + esc(x.text) + '<textarea name="texto" required maxlength="600"></textarea></label><button type="submit" class="btn primary">' + esc(x.save) + '</button></form>' + betaMsg() + '</section>';
+}
+function betaCard() {
+  var x = X(), n = BETA.items.length;
+  return '<section class="beta-card" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><b>' + esc(x.betaTitle) + '</b><p>' + esc(x.betaBody) + '</p>' +
+    '<div class="row"><button type="button" class="btn primary" data-go="beta">' + esc(x.betaOpen) + '</button></div></section>';
+}
+function betaHTML() {
+  var x = X(), items = BETA.items.slice().sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); });
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
+    '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
+    '<section class="sec"><h2>' + esc(x.addTitle) + '</h2><form class="bform" data-bform="nuevo">' +
+      '<label>' + esc(x.name) + '<input type="text" name="nombre" required maxlength="120" autocomplete="off"></label>' +
+      '<label>' + esc(x.mapsLink) + '<input type="url" name="maps" inputmode="url" autocomplete="off" placeholder="https://maps.app.goo.gl/…"></label>' +
+      '<label>' + esc(x.moment) + '<select name="momento">' + x.moments.map(function (m) { return '<option value="' + m[0] + '">' + esc(m[1]) + '</option>'; }).join('') + '</select></label>' +
+      '<label class="check"><input type="checkbox" name="gusta">' + esc(x.didLike) + '</label>' +
+      '<label>' + esc(x.addNote) + '<textarea name="texto" maxlength="600"></textarea></label>' +
+      '<button type="submit" class="btn primary">' + esc(x.addBtn) + '</button></form>' + betaMsg() + '</section>' +
+    '<section class="sec"><h2>' + esc(x.list) + ' · ' + items.length + '</h2>' + (items.length ? '<div class="list">' + items.map(function (it) {
+      var mom = x.moments.filter(function (m) { return m[0] === it.momento; })[0];
+      return '<div class="bitem" data-beta-item="' + esc(it.tipo) + '"><span class="tags"><span class="tag">' + esc(x.kinds[it.tipo] || it.tipo) + '</span>' + (mom ? '<span class="tag">' + esc(mom[1]) + '</span>' : '') + (it.gusta ? '<span class="tag like">' + esc(x.didLike) + '</span>' : '') + '</span>' +
+        '<b>' + esc(it.nombre || (P[it.lugar] ? P[it.lugar].name : '—')) + '</b>' + (it.texto ? '<p>' + esc(it.texto) + '</p>' : '') +
+        (it.maps && safeHttp(it.maps) ? '<a class="linkish" href="' + esc(it.maps) + '" target="_blank" rel="noopener">' + esc(T().maps) + '</a>' : '') +
+        '<small>' + esc(String(it.fecha || '').slice(0, 10)) + '</small></div>'; }).join('') + '</div>' : '<p class="note">' + esc(x.none) + '</p>') + '</section>';
+}
+function betaSubmit(form) {
+  var x = X(), f = form.elements, kind = form.getAttribute('data-bform');
+  if (kind === 'ficha') {
+    var txt = String(f.texto.value || '').trim(); if (!txt) return;
+    var pid = form.getAttribute('data-lugar');
+    betaAdd({ tipo: f.tipo.value === 'dato' ? 'dato' : 'nota', lugar: pid, nombre: P[pid] ? P[pid].name : pid, texto: txt.slice(0, 600) });
+    return;
+  }
+  var nombre = String(f.nombre.value || '').trim(), maps = String(f.maps.value || '').trim();
+  if (!nombre) return;
+  if (maps && !/^https:\/\//.test(maps)) { BETA.msg = 'badLink'; render({ keep: true }); return; }
+  betaAdd({ tipo: 'nuevo', nombre: nombre.slice(0, 120), maps: maps.slice(0, 500), momento: f.momento.value, gusta: !!f.gusta.checked, texto: String(f.texto.value || '').trim().slice(0, 600) });
 }
 
 // ===================== VISTA INTERNA DEL EQUIPO (no la ve el visitante; se apaga en data/config.js) =====================
-var SECS = [['revision', 'Revisión de fichas'], ['textos', 'Textos para aprobar'], ['etapas', 'Etapas de ingreso'], ['aprendizaje', 'Ciclo de aprendizaje'], ['arquitectura', 'Arquitectura'], ['sistema', 'Sistema visual']];
-var STAGES = [
-  { n: 'Etapa 1', name: 'Aliados Fundadores', goal: 'Financiar parte del trabajo inicial, crear colaboración local y probar si los negocios valoran la ficha, el QR, el contenido y la participación.',
-    how: 'La oferta piloto de la página «Círculo de Aliados Fundadores»: Q250 al mes propuestos, ventana de 3 meses desde el lanzamiento, tarifa fija 6 meses.',
-    evidence: ['Negocios que aceptan por escrito y pagan (hoy: ninguno).', 'Si renuevan después de los 6 meses.', 'Qué beneficio valoran más, preguntándoles en persona.', 'Señales de la ficha, cuando haya medición con reglas de privacidad (hoy no se mide).'],
-    pending: 'Aprobación comercial del precio y las condiciones · contrato y autorización escrita · canal de contacto · precio de renovación.' },
-  { n: 'Etapa 2', name: 'Contenido y activaciones', goal: 'Crear contenido con negocios locales y salidas que visiten varios lugares.',
-    how: 'Incluido en la oferta fundadora: una pieza acordada por aliado en 6 meses (reel o carrusel). Aparte, en el futuro: producciones adicionales, activaciones individuales, impresiones y costos externos. Activaciones grupales: varios lugares, contenido para nAIhual y para los participantes.',
-    evidence: ['Costo real de producir una pieza (tiempo y gastos).', 'Negocios que piden algo adicional y aceptan una cotización.', 'Al menos una activación grupal hecha, con permiso de cada participante.'],
-    pending: 'Tarifas · frecuencia · quién produce · permisos de imagen de personas.' },
-  { n: 'Etapa 3', name: 'Comisión por reservas completadas', goal: 'Cobrar solo cuando una experiencia reservable (taller, tour, actividad cultural) se completa gracias a nAIhual.',
-    how: 'La reserva se atribuye con un enlace propio, un código que el visitante menciona o una confirmación del proveedor. Cada reserva se verifica con el proveedor.',
-    evidence: ['Un proveedor con acuerdo escrito.', 'Reglas para cancelaciones y reembolsos.', 'Reservas confirmadas por el proveedor y atribuidas a nAIhual.'],
-    pending: 'Porcentaje (no se inventa) · forma de pago · qué pasa con cancelaciones. Nunca se usa para decir que una recomendación de café generó una venta.' },
-  { n: 'Etapa 4', name: 'Guía digital o QR para alojamientos', goal: 'Una guía local de nAIhual que hoteles, hostales u otros alojamientos ofrecen a sus huéspedes con un QR.',
-    how: 'El modelo de pago se prueba cuando existan datos de uso y un alojamiento interesado. No hay tarifas publicadas.',
-    evidence: ['Un alojamiento interesado (hoy: ninguno).', 'Datos de uso del QR, cuando haya medición con reglas de privacidad.', 'Opinión de huéspedes, preguntada en persona.'],
-    pending: 'Quién paga, cuánto y cómo · qué ve el huésped · privacidad.' }
+var SECS = [['revision', 'Revisión de fichas'], ['textos', 'Textos para aprobar'], ['modelo', 'Modelo y capas'], ['aprendizaje', 'Ciclo de aprendizaje'], ['arquitectura', 'Arquitectura'], ['sistema', 'Sistema visual']];
+// Las 6 capas del modelo (bases B16) y la monetización primaria (B14). Regla 4: una capa a la vez.
+var CAPAS = [
+  ['Bases', 'Qué es nAIhual, intención, pilares, guardianes, personas, arquitectura.', 'ok', 'Fijadas el 24-oct-2026'],
+  ['Conocimiento', 'Catálogo con fuente y fecha, primera ola del viaje (Llegué, Transporte, Hotel, Comida, Qué hay cerca) y brújula del paisaje.', 'now', 'Capa actual · empieza con la beta del fundador'],
+  ['Red de confianza', 'Agentes con su permiso, «me gusta», reseñas y playlists. El ciclo de aprendizaje.', 'next', 'Después'],
+  ['Cuidado', 'Accesibilidad, emergencias y eventos, todo comprobado con fuente y fecha.', 'next', 'Después'],
+  ['Comunidad', 'Visibilidad justa, guía para comunidades escrita con ellas, talleres gratis.', 'next', 'Después'],
+  ['Crecer', 'Hotel socio con QR · retorno a familias cuando haya ingresos · otros pueblos · red social.', 'next', 'Después']
 ];
 var CYCLE = [
   ['nAIhual identifica la intención general de la pregunta.', 'on', 'Activo: reglas fijas, sin IA.'],
@@ -1196,6 +1277,8 @@ var LAYERS = [
   ['Orquestador del agente', 'Recibe la pregunta, aplica las reglas, llama al proveedor y arma la respuesta con las fichas que el modo permite: en pública, solo las publicadas.', 'Hoy: dentro de index.html'],
   ['Proveedor de respuestas (intercambiable)', 'Hoy: reglas fijas, sin IA. En vista previa, dentro del visor de Claude: Claude, con la cuenta de quien la abre y solo con los datos de la app (claude_responde en config.js). Mañana: Gemini u otro, siempre detrás de un servidor propio que guarda la llave. El navegador nunca tiene una llave.', 'Hoy: RulesProvider'],
   ['Conocimiento', 'Catálogo de lugares y registro de fuentes. Solo lo publicado o revisado puede respaldar una respuesta.', 'Hoy: data/lugares.js y data/fuentes.js'],
+  ['Beta del fundador', 'Me gustó, dato mal, notas y lugares nuevos que anota el fundador. Claude los lee, los verifica y los pasa al catálogo. No se publican solos.', 'Hoy: base de datos del visor privado; fuera del visor, solo en este teléfono'],
+  ['Mapa', 'Google Maps para ubicar y llegar: enlaces gratis, sin llave. Sin estrellas dentro de nAIhual. La brújula del paisaje es dibujo propio.', 'Hoy: enlaces de Google Maps y mapa esquemático'],
   ['Reglas', 'No inventar · * cultural pendiente · † histórico pendiente · patrocinio siempre marcado · el pago no cambia el orden · sin emergencias sin fuente oficial.', 'Hoy: en el orquestador y en los datos'],
   ['Registro de cada respuesta', 'Qué proveedor respondió, con qué versión de instrucciones, qué fuentes la respaldan y si faltó información.', 'Hoy: solo en memoria y en esta vista; no se guarda ni se envía']
 ];
@@ -1285,11 +1368,13 @@ function inicioHTML() {
   var tiles = [['explorar', 'grid', 'lugares'], ['cultura', 'calendar', 'cultura'], ['costumbres', 'compass', 'costumbres'], ['guardianes', 'users', 'guardianes']];
   return '<section class="hero"><div class="hero-art">' + heroArt() + '<div class="hero-copy"><span class="eyebrow" style="color:rgba(255,255,255,.85)">Antigua Guatemala</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
     '<div class="cta-row"><button type="button" class="btn anil big" data-ask="cafe" id="cta-cafe">' + icon('coffee') + esc(t.coffee) + '</button><button type="button" class="btn big" data-ask="empezar">' + esc(t.arrived) + '</button></div></section>' +
+    '<section class="intro-card" data-intro><span class="eyebrow" style="color:inherit;opacity:.75">' + esc(X().introKicker) + '</span><h2>' + esc(X().introTitle) + '</h2><p>' + esc(X().introBody) + '</p></section>' +
+    (BETA_ON ? betaCard() : '') +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.todayGuide) + '</h2>' + infoHTML('guard') + '</div>' + guardStrip(S.guide) + '</section>' +
+    '<section class="sec brujula" data-brujula><div class="sec-head"><h2>' + esc(X().compass) + '</h2>' + infoHTML('guard') + '</div><p class="muted">' + esc(X().compassBody) + '</p><div class="art">' + paisajeArt() + '</div><p class="note">' + esc(X().compassNote) + '</p></section>' +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.routes) + '</h2>' + (rids.length ? '<button type="button" class="linkish" data-go="rutas">' + esc(t.seeAll) + '</button>' : '') + '</div>' + routes + '</section>' +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.explore) + '</h2></div><div class="tiles">' + tiles.map(function (x) {
       return '<button type="button" class="tile" data-go="' + x[0] + '">' + icon(x[1]) + '<span><b>' + esc(t.tiles[x[2]][0]) + '</b><small>' + esc(t.tiles[x[2]][1]) + '</small></span></button>'; }).join('') + '</div></section>' +
-    (SHOW_ALLIES ? '<section class="biz"><span class="eyebrow" style="color:inherit;opacity:.7">' + esc(t.bizKicker) + '</span><span class="tag">' + esc(t.pilotTag) + '</span><h2>' + esc(t.bizTitle) + '</h2><p>' + esc(t.bizBody) + '</p><button type="button" class="btn" data-go="aliados">' + icon('store', 'sm') + esc(t.bizCta) + '</button></section>' : '') +
     footHTML();
 }
 function rutasHTML() {
@@ -1393,6 +1478,7 @@ function fichaHTML() {
       (p.why[lang] ? '<p class="lead">' + esc(p.why[lang]) + '</p>' : '') + (p.addr ? '<p class="addr">' + esc(p.addr) + '</p>' : '') + sealHTML(p) +
       (PREVIEW && !isPub(p) ? '<p class="note">' + esc('Le falta: ' + missing(p).join(', ') + '.') + '</p>' : '') +
       '<div class="actions">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-toggle="p:' + p.id + '" aria-pressed="' + isSaved('p:' + p.id) + '">' + icon('heart', 'sm fill') + esc(isSaved('p:' + p.id) ? t.saved : t.save) + '</button></div></section>' +
+    (BETA_ON ? betaFichaHTML(p) : '') +
     (p.pos ? '<div class="minimap map">' + mapSVG({ pin: p.id, crop: cropFor([p.id], 70), label: p.name }) + '<span class="note">' + esc(t.mapNote + (p.pos.aprox ? ' · ' + t.aprox : '')) + '</span></div>' : '') +
     (p.g.length ? '<section class="sec"><h2 style="font-size:17px">' + esc(t.recBy) + '</h2><div class="asklist">' + p.g.map(function (g) { return '<button type="button" class="chip" data-guide="' + g + '">' + portrait(g, 22) + esc(G[g].name) + '</button>'; }).join('') + '</div></section>' : '') +
     (routes.length ? '<section class="sec"><h2 style="font-size:17px">' + esc(t.inRoutes) + '</h2>' + routes.map(routeRow).join('') + '</section>' : '');
@@ -1400,6 +1486,8 @@ function fichaHTML() {
 // ===================== VISTA INTERNA DEL EQUIPO (solo vista previa) =====================
 // Textos nuevos de la 2.0 para que el fundador los apruebe (antes → ahora).
 var COPY = [
+  ['Tarjeta «Círculo de Aliados Fundadores» en Inicio', '«Qué es nAIhual»: «La riqueza de Guatemala está en sus paisajes, y es gracias a su gente.»', 'Inicio (3.0)'],
+  ['Rueda de rumbos sola', 'Brújula del paisaje: Cerro de la Cruz, Volcán de Agua, Fuego · Acatenango, sale el sol', 'Inicio (3.0)'],
   ['«¿Cómo me porto con respeto?»', '«Costumbres de aquí»', 'Botón del chat y pantalla'],
   ['«Caminá con respeto: estas calles son casa de mucha gente.»', 'Eliminado', 'Consejo y pie de cada ficha'],
   ['«Soy No\'j*. Yo te cuento el porqué.»', '«No\'j · te cuenta el porqué» (etiqueta, sin presentación)', 'Chat'],
@@ -1435,14 +1523,18 @@ function secTextos() {
   return '<section><h2>Textos para aprobar</h2><p>Todo texto nuevo de la 2.0 es una propuesta. Decime cuáles quedan, cuáles cambiás y cómo.</p></section>' +
     '<div class="list">' + COPY.map(function (c) { return '<div class="copyrow" data-copy><span class="eyebrow">' + esc(c[2]) + '</span><s>' + esc(c[0]) + '</s><b>→ ' + esc(c[1]) + '</b></div>'; }).join('') + '</div>';
 }
-function secEtapas() {
-  return '<section><h2>Cuatro etapas de ingreso</h2><div class="status"><b>Todas son hipótesis.</b><span>Ningún ingreso está probado. No hay aliados, alojamientos ni proveedores confirmados.</span></div></section>' +
-    STAGES.map(function (s) {
-      return '<section class="panel" data-stage="' + esc(s.n) + '"><span class="tags"><span class="tag">' + esc(s.n) + '</span><span class="tag future">Hipótesis · sin ingresos</span></span><h3>' + esc(s.name) + '</h3>' +
-        '<p><strong>Para qué:</strong> ' + esc(s.goal) + '</p><p><strong>Cómo:</strong> ' + esc(s.how) + '</p>' +
-        '<p><strong>Evidencia que necesita:</strong></p><ul>' + s.evidence.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
-        '<p><strong>Pendiente de decisión:</strong> ' + esc(s.pending) + '</p></section>';
-    }).join('') + (SHOW_ALLIES ? '<button type="button" class="btn" data-go="aliados">' + icon('store', 'sm') + 'Ver la página de Aliados Fundadores</button>' : '');
+function secModelo() {
+  return '<section><h2>Las 6 capas del modelo</h2><div class="status plain"><b>Regla 4 del método: terminar antes de abrir.</b><span>No se abre una capa sin cerrar la anterior.</span></div></section>' +
+    '<ol class="flow">' + CAPAS.map(function (c, i) {
+      var tag = c[2] === 'ok' ? '<span class="tag ok">' + esc(c[3]) + '</span>' : c[2] === 'now' ? '<span class="tag check">' + esc(c[3]) + '</span>' : '<span class="tag future">' + esc(c[3]) + '</span>';
+      return '<li data-capa="' + (i + 1) + '"><div><p><strong>' + (i + 1) + ' · ' + esc(c[0]) + '</strong></p>' + tag + '<p>' + esc(c[1]) + '</p></div></li>'; }).join('') + '</ol>' +
+    '<section><h2>Sostener el modelo</h2><div class="status future"><b>Pendiente de evolución y planificación</b><span>Nada de esto está activo. No hay hoteles, pagos ni ingresos.</span></div></section>' +
+    '<section class="panel" data-monet="primaria"><span class="tags"><span class="tag">Monetización primaria</span><span class="tag future">Capa 6</span></span><h3>Hotel socio con QR</h3>' +
+      '<ul><li>El visitante usa nAIhual gratis.</li><li>El hotel paga. Sus huéspedes escanean un QR diario: 3 horas de nAIhual Pro y después la versión gratis.</li><li>Pro existe solo así.</li><li>El hotel cumple las mismas reglas: local, sin cadenas, trato justo, respeto a la cultura.</li><li>El pago no cambia el orden de nada.</li></ul>' +
+      '<p><strong>Pendiente:</strong> qué tiene Pro que la gratis no tenga · precio · primer hotel.</p></section>' +
+    '<section class="panel"><h3>Ideas secundarias, sin orden ni fecha</h3><ul><li>Patrocinio, siempre marcado «Patrocinado».</li><li>Comisión transparente en experiencias con locales.</li><li>Licencia del modelo a otros destinos.</li></ul></section>' +
+    '<section class="panel"><h3>Retorno a niños y familias</h3><p>Cuando haya ingresos reales, una parte fija va a educación, celulares e internet. El porcentaje se publica, cada gasto se muestra con su recibo y la comunidad decide. No se anuncia antes de que exista.</p></section>' +
+    '<section class="panel"><h3>Fuera</h3><ul><li>El Plan Fundador de Q250: fue solo una idea.</li><li>Afiliados de plataformas grandes.</li><li>Cobrar al visitante desde el inicio.</li></ul></section>';
 }
 function secAprendizaje() {
   var fb = S.demoFb;
@@ -1507,7 +1599,7 @@ function secSistema() {
 }
 function tallerHTML() {
   var sec = SECS.some(function (s) { return s[0] === S.sec; }) ? S.sec : 'revision';
-  var body = sec === 'revision' ? secRevision() : sec === 'textos' ? secTextos() : sec === 'etapas' ? secEtapas() : sec === 'aprendizaje' ? secAprendizaje() : sec === 'arquitectura' ? secArquitectura() : secSistema();
+  var body = sec === 'revision' ? secRevision() : sec === 'textos' ? secTextos() : sec === 'modelo' ? secModelo() : sec === 'aprendizaje' ? secAprendizaje() : sec === 'arquitectura' ? secArquitectura() : secSistema();
   return '<div class="inbanner" role="note"><span>Vista interna del equipo · no la ve el visitante</span><button type="button" class="btn" data-go="inicio">Volver a la app</button></div>' +
     '<div class="chips" role="group" aria-label="Secciones internas">' + SECS.map(function (s) { return '<button type="button" class="chip" data-sec="' + s[0] + '" aria-pressed="' + (s[0] === sec) + '">' + esc(s[1]) + '</button>'; }).join('') + '</div>' +
     '<article class="doc" id="taller-' + sec + '">' + body + '</article>' +
@@ -1516,8 +1608,8 @@ function tallerHTML() {
 
 // ===================== DIBUJAR Y NAVEGAR =====================
 var TABS = [['inicio', 'home'], ['rutas', 'map'], ['guia', 'chat'], ['guardados', 'heart']];
-var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, aliados: function () { return alliesHTML(); }, taller: tallerHTML };
-var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', aliados: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
+var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, taller: tallerHTML };
+var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
 var main = document.getElementById('main');
 function render(opts) {
   if (opts === true) opts = { scroll: true }; else if (!opts) opts = { keep: true };
@@ -1548,7 +1640,7 @@ function render(opts) {
 function nav(view, o) {
   o = o || {};
   if (view === 'taller' && !INTERNAL) view = 'inicio';
-  if (view === 'aliados' && !SHOW_ALLIES) view = 'inicio';
+  if (view === 'beta' && !BETA_ON) view = 'inicio';
   if (!o.tab && view !== S.view) S.stack.push({ view: S.view, detail: S.detail, nawal: S.nawal, route: S.route });
   if (o.tab) S.stack = [];
   S.view = view;
@@ -1568,9 +1660,10 @@ function openKey(key) {
 
 document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); var i = document.getElementById('q'); ask(i.value); i.value = ''; });
 document.addEventListener('click', function (e) {
-  var el = e.target.closest('[data-toggle],[data-open],[data-route],[data-selroute],[data-filter],[data-tab],[data-go],[data-back],[data-lang],[data-chip],[data-ask],[data-next],[data-g],[data-guide],[data-sos],[data-close],[data-sec],[data-demo-fb],[data-say],[data-stop],[data-nawal]');
+  var el = e.target.closest('[data-toggle],[data-open],[data-route],[data-selroute],[data-filter],[data-tab],[data-go],[data-back],[data-lang],[data-chip],[data-ask],[data-next],[data-g],[data-guide],[data-sos],[data-close],[data-sec],[data-demo-fb],[data-say],[data-stop],[data-nawal],[data-beta-like]');
   if (!el) return;
   var a = function (n) { return el.getAttribute(n); };
+  if (el.hasAttribute('data-beta-like')) { betaToggleLike(a('data-beta-like')); return; }
   if (el.hasAttribute('data-toggle')) { e.preventDefault(); e.stopPropagation(); toggle(a('data-toggle')); return; }
   if (el.hasAttribute('data-open')) { openKey(a('data-open')); return; }
   if (el.hasAttribute('data-route')) { openKey('r:' + a('data-route')); return; }
@@ -1593,13 +1686,15 @@ document.addEventListener('click', function (e) {
   if (el.hasAttribute('data-sos')) { var t = T(); document.getElementById('dlg-body').innerHTML = '<h2>' + esc(t.sosTitle) + '</h2><p>' + esc(t.sosBody) + '</p><button type="button" class="btn primary" data-close>' + esc(t.close) + '</button>'; var d = document.getElementById('dlg'); if (d.showModal) d.showModal(); else d.setAttribute('open', ''); return; }
   if (el.hasAttribute('data-close')) document.getElementById('dlg').close();
 });
+document.addEventListener('submit', function (e) { var f = e.target.closest && e.target.closest('[data-bform]'); if (!f) return; e.preventDefault(); betaSubmit(f); });
+document.addEventListener('focusout', function () { setTimeout(function () { if (BETA.dirty && !betaTyping()) { BETA.dirty = false; render({ keep: true }); } }, 0); });
 document.addEventListener('input', function (e) { if (e.target.id === 'fq') { S.query = e.target.value; render({ keep: true }); } });
 
-// Abrir una pantalla directa con un enlace: #rutas, #guia, #guardados, #explorar, #cultura, #costumbres, #nawales, #guardianes, #aliados
-// y, en vista previa, #taller o una sección interna (#revision, #textos, #etapas, #aprendizaje, #arquitectura, #sistema).
+// Abrir una pantalla directa con un enlace: #rutas, #guia, #guardados, #explorar, #cultura, #costumbres, #nawales, #guardianes
+// y, en vista previa, #beta, #taller o una sección interna (#revision, #textos, #modelo, #aprendizaje, #arquitectura, #sistema).
 (function () {
   var h = String(location.hash || '').slice(1);
-  if (VIEWS[h] && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !INTERNAL) && !(h === 'aliados' && !SHOW_ALLIES)) S.view = h;
+  if (VIEWS[h] && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !INTERNAL) && !(h === 'beta' && !BETA_ON)) S.view = h;
   else if (INTERNAL && SECS.some(function (s) { return s[0] === h; })) { S.view = 'taller'; S.sec = h; }
   if (S.view !== 'inicio') S.stack = [{ view: 'inicio' }];
 })();
