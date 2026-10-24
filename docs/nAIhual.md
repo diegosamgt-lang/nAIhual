@@ -232,7 +232,12 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 | Moverme | Shuttles, tuk-tuks, buses | Claude |
 | Tours distintos | Experiencias culturales que no ofrece todo el mundo | Fundador y su red (después) |
 
-**Preguntas abiertas:** 4) estrellas de Google o solo «ver reseñas en Google Maps» (recomendado: solo el enlace) · 5) eventos del mes con fuente y fecha, o solo fiestas fijas · 6) primera ola: Llegué, Comer típico, De noche, Moverme, ¿Qué estoy viendo? (recomendado).
+**Respuestas del fundador (23-oct):**
+- ✅ 4) Lo principal es el sello **«Recomendado por nAIhual»** (su criterio). Un filtro muestra también los no recomendados por estrellas de Google (3, 4 o 5). Etiqueta para lugares **nuevos o con nuevo dueño**, para no castigarlos. Las personas dejan su opinión, se muestra a otros, y la IA aprende con preguntas que van cambiando.
+- ✅ 5) Eventos: el fundador aporta las fuentes (Instagram u otras); Claude filtra lo relevante. Aquí entra más el fundador.
+- ✅ 6) Primera ola: **Llegué → Transporte → Hotel → Comida → Qué hay cerca**.
+- ⚠️ Límites: las estrellas de Google no se leen solas (la API cobra; sin gasto en Maps) → se anotan a mano con fecha si están en una fuente pública. Instagram suele bloquear la lectura sin cuenta (❓ por probar) → el fundador pega texto o captura. Guardar opiniones = datos de personas → en el visor privado se pueden guardar en la base de datos del artifact; en pública hace falta aviso de privacidad.
+- ❓ Por decidir: 7) estrellas anotadas a mano con fecha (recomendado) o sin estrellas · 8) opiniones guardadas en el visor privado para probar (recomendado) o todavía no.
 
 ## 4. Producto (lo que existe)
 
