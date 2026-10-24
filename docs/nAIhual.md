@@ -209,6 +209,31 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 - **Logros** por invertir o apoyar lo local.
 - ⚠️ Antes de construirla: privacidad, moderación y que los logros premien el apoyo real, no el gasto por gastar.
 
+## 3e. Nueva regla y visión de contenido (23-oct-2026) · ⏸️ PAUSA, nada construido
+
+**Regla nueva del fundador (reemplaza la cautela total):**
+- ✅ Lo **maya, los nahuales y la cosmovisión**: no se inventa nada; sigue con \* hasta que lo valide un Ajq'ij.
+- ✅ **Todo lo demás lo investiga Claude en fuentes públicas y lo cita**: historia de Antigua, monumentos (Capuchinas, Catedral, La Merced…), museos, cafés, restaurantes, direcciones, transporte. No hace falta que el fundador confirme cada dato.
+- ✅ El valor del fundador es el **criterio**: aquí sí / aquí no, típico o cadena, local de verdad o para turistas.
+- ✅ Visión: hay miles de guías que ofrecen el mismo tour; nAIhual ofrece algo culturalmente distinto, para que quien venga entienda lo que es Antigua.
+- ❓ Asumido con «sí, ahí vamos» (falta confirmar): 1a dos sellos («Según fuente pública» y «Probado por nAIhual») · 2a fuentes oficiales + Wikipedia + fichas públicas de Google Maps, citadas · 3a «cadena» lo marca Claude si se sabe con certeza; «típico / vale la pena» lo decide el fundador.
+- Sigue igual: emergencias y seguridad solo con fuente oficial.
+
+**El viaje imaginado por el fundador (con app) → momentos de la app:**
+| Momento | Qué hace | Quién lo llena |
+|---|---|---|
+| Llegué | Dónde estoy, qué hay cerca, cómo se mueve la ciudad | Claude (fuentes públicas) |
+| Comer típico | Qué es típico, dónde comerlo, influencias de la comida | Claude investiga · fundador da criterio |
+| ¿Qué está pasando? | Eventos, fiestas culturales, el partido del Antigua GFC | Claude, con fecha de consulta |
+| Lo que recomiendan los locales | Aquí sí / aquí no, típico o cadena | Fundador |
+| ¿Qué estoy viendo? | Frente a una ruina, te la cuenta | Claude (historia con fuente). Sin ubicación del celular en el visor: se toca en el mapa o se escribe |
+| Necesito algo | Tecnología, cables, memorias, farmacia | Claude |
+| De noche | Tranquilo (trago y boquitas) o encendido (p. ej. Antigua Brewing, Ulew) | Claude investiga · fundador da criterio |
+| Moverme | Shuttles, tuk-tuks, buses | Claude |
+| Tours distintos | Experiencias culturales que no ofrece todo el mundo | Fundador y su red (después) |
+
+**Preguntas abiertas:** 4) estrellas de Google o solo «ver reseñas en Google Maps» (recomendado: solo el enlace) · 5) eventos del mes con fuente y fecha, o solo fiestas fijas · 6) primera ola: Llegué, Comer típico, De noche, Moverme, ¿Qué estoy viendo? (recomendado).
+
 ## 4. Producto (lo que existe)
 
 **App vigente: nAIhual 2.0 (23-oct-2026)** · reconstrucción total en 4 ciclos (prompt: `docs/prompts/prompt-claude-reconstruccion.md`).
