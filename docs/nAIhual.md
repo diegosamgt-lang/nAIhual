@@ -201,6 +201,7 @@ Ajq'ij (cultura)                                                          ▼
 | C20 | «Se negocia con el tata» ↔ «lo opuesto a imponer» (B2b) | Negociar después de un no es presionar. | Preguntar qué se puede compartir y aceptar la respuesta. |
 | C21 | Llevar turistas a pueblos de alrededor (Santa Ana, San Cristóbal…) ↔ «no gentrificar» y «se escribe con la comunidad» | Mandar visitantes a aldeas residenciales sin preguntarles puede ser lo que se quiere evitar. «Pueblos mágicos» es además el nombre de un programa del gobierno de México. | Cada pueblo entra cuando su gente lo quiere (B12). Otro nombre propio para ellos. |
 | C22 | Brújula dibujada sobre Google Maps ↔ «nada de dinero en Maps» | Un mapa propio encima del de Google pide su API con cuenta de cobro. | El mapa propio de nAIhual (ya existe uno de Antigua) o datos abiertos de OpenStreetMap; Google solo para «Cómo llegar». Ubicaciones de cada punto se verifican con fuente. |
+| C23 | «Los 4 guardianes no pueden cambiar» ↔ «lo maya pasa por un tata» y «la comunidad puede decir que no» | Si el tata no los acepta, o no acepta cómo se usan, tienen que poder cambiar. | Fijos mientras el tata los acepte. |
 
 **Errores de Claude en este chat (para no repetirlos):** volvió a poner Q250 al centro · redujo el modelo a una app · empujó cómo llegan los clientes · inventó una frase de ejemplo para Gaby · dijo «sí» sin señalar choques.
 
@@ -215,6 +216,18 @@ Roles de Claude para el examen: **auditor de coherencia** (compara con las bases
 | El tata dice que no | Se negocia hasta dónde se puede publicar; el tata escribe el texto con su límite y no se altera. | 🟡 Mitad. ✅ Que el tata escriba su propio límite y nadie lo toque es el modelo. ❌ Negociar después de un «no» es el patrón de imponer que el fundador quiere dejar atrás (B2b) (C20). Se pregunta qué se puede compartir y se acepta la respuesta, aunque sea «nada». |
 
 **Resultado ronda 1:** 2 alineadas, 1 a medias, 1 que choca, y una idea nueva fuerte (la brújula).
+
+**Ronda 2 · conceptos (24-oct-2026)**
+| Concepto | Respuesta del fundador | Nota de Claude |
+|---|---|---|
+| Una sola fuente de verdad (dirección distinta en Google, en la lista y según Gaby) | Se verifica y se corrige en un solo lugar; de ahí la toman todos. | ✅ |
+| Permiso (doña Marta, del mercado) | Ella acepta: sabe qué es nAIhual, decide qué se cuenta y puede pedir que se quite. | ✅ |
+| Impacto (cómo saber si ayudó a las familias) | Lo que le quedó a cada familia o negocio, contado con ellos. | ✅ |
+| Lo que no cambia aunque nAIhual se fusione o cambie de forma | Los 4 guardianes · las reglas de verdad · el permiso. | ✅ reglas y permiso. ⚠️ Los guardianes dependen del tata (C10, C23): no pueden ser intocables si él puede decir que no. |
+
+**Resultado ronda 2:** 3 de 4 completas; la cuarta, a medias.
+
+**Núcleo fijo de nAIhual (sale del examen):** las reglas de verdad (B5) y el permiso (B2c, B12) no cambian aunque cambie la IA, la app o el proyecto. Los guardianes se quedan **mientras el tata los acepte**.
 
 ---
 
