@@ -35,6 +35,17 @@ Actualizado: 24-oct-2026 (hora de Guatemala), nAIhual 2.0 · **Empieza por las B
 - ✅ Que **más turismo consciente = más oportunidades para niños y familias**: educación, celulares e internet, trabajo para más comunidades.
 - ✅ Que nAIhual **no sea «otro Google»**: «si nAIhual lo recomienda es porque alguien ya lo probó».
 
+### B2b. El corazón: lo opuesto a imponer (fundador, 24-oct-2026)
+- ✅ «Quiero ser la conexión entre las culturas, un puente que nos une.»
+- ✅ Lo opuesto de lo que hicieron los españoles: **venir e imponer**, creer que algo es mejor sin contexto, decir que es así porque sí. nAIhual **da contexto y no impone**.
+- ✅ Lo que quiere cambiar (palabras del fundador): en Guatemala al indígena se lo ve como menos y su cultura se desvaloriza en los mercados, pero se revaloriza cuando un turista está a la par. Amamos al que camina descalzo vendiendo artesanías, pero maltratamos al camionetero o al tuctuquero que anda trabajando. Nos enojamos con la mesera de Campero porque no se apura, pero le regateamos al del mercado que vende desde las 4 de la mañana.
+- ✅ Bienvenida a cualquier persona que venga a Guatemala, para que entienda que **la riqueza de Guatemala está en sus paisajes, pero es gracias a su gente**.
+- ⚠️ Claude: decir que esta idea es distinta no la hace distinta; lo que la hace distinta es lo que nAIhual hace en cada momento del viaje. Propuestas ❓ (no son tips sueltos; van dentro de cada momento):
+  1. **Precio con contexto:** por qué cuesta lo que cuesta (horas de trabajo, materiales), dicho por quien lo hace y con su permiso. No'j cuida esto.
+  2. **Los oficios que no se ven:** tuctuquero, camionetero, mesera, vendedora del mercado, con nombre e historia solo si dan permiso. En «Transporte» y «Comida».
+  3. **Fotos de personas:** siempre preguntar antes. Al vendedor descalzo se le fotografía sin permiso; nAIhual no repite eso.
+  4. **La cultura la cuenta su gente:** lo maya entra por un tata (Ajq'ij), con su nombre y reconocido por su aporte.
+
 ### B3. A quién sirve (cinco lados)
 | Quién | Qué recibe |
 |---|---|
@@ -166,9 +177,9 @@ Ajq'ij (cultura)                                                          ▼
 | C7 | «Q250 era una idea» ↔ el resumen de NotebookLM y el rector v1.1 dicen que nAIhual «se financia con el Plan Fundador» | Las fuentes que alimentan a la IA siguen diciendo lo viejo. | Corregir esa línea en NotebookLM y en el rector. |
 | C8 | Ayudar a niños y familias ↔ dinero en espera | Sin ingresos, a las familias solo les llega visibilidad y la guía. Prometer educación o celulares sin fondos es prometer de más. | Hoy se dice solo lo que existe. El retorno con dinero se anuncia cuando haya ingresos reales. |
 | C9 | «Más turistas = más educación» ↔ amenaza de gentrificación y «no masificar» | Más turismo también sube rentas y precios. Que ayude a las familias es hipótesis, no hecho. | Medir qué le queda a cada familia, no cuántos turistas llegan. |
-| C10 | Guardianes = cargadores mayas sin validar ↔ tareas modernas (Kej seguridad, Iq' eventos, No'j precios) ↔ amenaza de apropiación del FODA | Ponerle «trabajos» a signos sagrados es lo que un Ajq'ij podría rechazar. | Mostrarlo a un Ajq'ij **antes** de construir más encima. Si lo rechaza, las tareas pasan a personajes no sagrados. |
+| C10 | ✅ **Resuelto por el fundador (24-oct):** no es apropiación si se hace a través de un tata (Ajq'ij o sacerdote maya). | Mientras no haya un tata, todo lo cultural sigue con \*. | Las tareas de los guardianes se le muestran al tata antes de construir más encima. |
 | C11 | NotebookLM: «no describe personas por su nawal» ↔ su propia tabla de 20 nawales trae «Luz/vocación» y «Sombra/desafío» | Eso describe personalidades: es horóscopo, lo que la regla prohíbe. | No usar esas dos columnas. |
-| C12 | NotebookLM da fuego, aire, tierra y agua a los cargadores, y «Iq': limpieza energética» ↔ «sin tono esotérico» | ❓ Claude no encontró fuente para los elementos; parece la tabla europea de cuatro elementos. «Limpieza energética» es lenguaje esotérico. | Fuera hasta tener fuente o validación. |
+| C12 | ✅ **Corregido (24-oct):** el fundador dice que los mayas sí usan los cuatro elementos. Claude había dicho que «parecía la tabla europea» sin fuente: fue un error. Buscó y no encontró fuente ni a favor ni en contra; los colores por rumbo sí tienen fuente académica (UNAM), aunque el poniente varía entre negro y azul. «Limpieza energética» sigue como tono a revisar. | | Los elementos se quedan con \* y los valida el tata. |
 | C13 | Guía de producto v2 fechada «25 de octubre», con decisiones del 24 y 25 ↔ se subió el 23-oct en la noche (hora de Guatemala) | Un documento con fecha futura no sirve como fuente de decisiones. | Sus decisiones cuentan como propuestas, no como hechas. |
 | C14 | Toda la visión (agentes, reseñas, accesibilidad comprobada en el lugar, eventos, guía para comunidades, red social) ↔ menos de 5 h por semana, trabaja solo | La más grande: el modelo pide un equipo y hoy hay una persona. | Construir por capas (B15) y no abrir una nueva sin cerrar la anterior. |
 | C15 | Objetivo al 30-nov «1 turista + 1 negocio» ↔ «dejá de enfocarte en cómo llegan los clientes» | El objetivo lo puso el fundador el 24-oct. | Decidir si sigue o se cambia por «bases aprobadas». |
