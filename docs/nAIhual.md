@@ -18,6 +18,11 @@ Actualizado: 24-oct-2026 (hora de Guatemala), nAIhual 2.0 · **Empieza por las B
 
 > Armado con todo lo que el fundador entregó: sus mensajes (15 al 24-oct), el resumen de NotebookLM, la guía de apps exitosas (ChatGPT), la guía de producto v2, el Documento Consolidado y el método 0_ a 4_. Cuando el fundador lo apruebe, esta sección queda fija y todo lo demás se ordena debajo de ella. Si algo de abajo la contradice, manda esta.
 
+### B0. Rol de Claude (pedido del fundador, 24-oct-2026)
+- ✅ Claude **organiza, contrasta y construye**. No valida todo.
+- Antes de anotar algo nuevo, lo compara con estas bases. Si choca, es falso o no tiene fuente, **lo dice de frente**, señala dónde y propone una salida.
+- No toma nada como decisión final si el fundador no lo dijo. No inventa.
+
 ### B1. Qué es nAIhual
 - ✅ **Un modelo, no solo una app.** Un modelo de turismo consciente y comunitario que nace en Antigua Guatemala y se puede llevar a otros pueblos.
 - ✅ La app es la herramienta del visitante. El modelo es todo lo que la sostiene: la red de personas que prueban y opinan, las reglas para saber qué es verdad, y lo que vuelve a las familias y comunidades.
@@ -59,11 +64,11 @@ Actualizado: 24-oct-2026 (hora de Guatemala), nAIhual 2.0 · **Empieza por las B
 ### B6. Cómo sabe nAIhual lo que sabe (tres tipos de conocimiento)
 | Tipo | Ejemplos | Quién lo pone | Regla |
 |---|---|---|---|
-| **Datos** | Historia de Antigua, Capuchinas, Catedral, La Merced, museos, cafés, direcciones, transporte, eventos | La IA, investigando | ✅ Google es la fuente principal (Maps, reseñas, NotebookLM), más fuentes oficiales. Siempre con fuente y fecha. |
+| **Datos** | Historia de Antigua, Capuchinas, Catedral, La Merced, museos, cafés, direcciones, transporte, eventos | La IA, investigando | ⚠️ El fundador pidió «100 % Google»: choca con otras bases (B17-C1). Mientras se decide: fuentes públicas citadas, con fecha. |
 | **Experiencias** | «Aquí sí», «aquí no», típico o cadena, para quién sirve | Agentes y visitantes | Opiniones firmadas, con un perfil corto de quien opina («ama el pan», «viaja con niños»). |
 | **Cultura maya** | Nahuales, Cholq'ij, cargadores, cosmovisión | Ajq'ij | \* hasta validar. Nada se inventa. |
 - ✅ Los agentes también aportan desde Google: lo que ellos usan y publican allí.
-- ✅ Lugares de Google Maps con más de 3 estrellas entran como candidatos; se curan poco a poco, sacando y metiendo.
+- ⚠️ «Lugares de Google con más de 3 estrellas» choca con «recomendado = alguien lo probó» y con «no castigar a los nuevos» (B17-C2).
 - ✅ Un lugar nuevo o con nuevo dueño lleva su etiqueta para no castigarlo por tener pocas reseñas.
 - ✅ Las estrellas no son lo principal: lo principal es quién lo probó. Un filtro puede mostrar 3, 4 o 5 estrellas.
 
@@ -148,6 +153,29 @@ Ajq'ij (cultura)                                                          ▼
 - Reglas para las opiniones de visitantes: qué no se publica, quién revisa, cómo responde un negocio.
 - Privacidad: qué se guarda de cada persona y quién lo ve.
 - Figura legal para el retorno a familias (contador o abogado).
+
+### B17. Contradicciones abiertas (Claude, 24-oct-2026 · las decide el fundador)
+| # | Lo que choca | Por qué importa | Salida que propone Claude |
+|---|---|---|---|
+| C1 | «Alimentate 100 % de Google» ↔ «que no digan que nAIhual sabe como Google» ↔ «nada de dinero en Maps» | Leer estrellas y reseñas de Google en automático exige la API de Google con cuenta de cobro, y sus reglas limitan guardar ese contenido. NotebookLM normal no tiene conexión oficial con apps. | Google como **fuente de datos** (dirección, enlace, horario), citada a mano con fecha. Lo que hace distinto a nAIhual son las personas, no Google. |
+| C2 | «Lugares con más de 3 estrellas» ↔ «recomendado = alguien lo probó» ↔ «las estrellas no son justas con los nuevos» | Si entran por estrellas, nAIhual vuelve a ser un filtro de Google. | Dos estados: **«Por probar»** (dato público) y **«Probado por…»** (persona real). Las estrellas nunca deciden quién entra. |
+| C3 | «Opciones con contexto, no ranking» ↔ «la mejor comida típica rankeada» ↔ E' «la mejor opción, directo» ↔ No'j «califica» | No se puede no rankear y rankear a la vez. | nAIhual no rankea. «Lo mejor» siempre lleva firma («para Dani, este»). No'j califica precios y límites, no lugares. |
+| C4 | «Comunidad primero, comunidades ancestrales» ↔ la red de agentes | De los 9 agentes, 3 son guatemaltecos según lo que contó el fundador; ninguno es de una comunidad indígena ni artesano. El criterio saldría sobre todo de extranjeros que viven en Antigua: la gentrificación que se quiere evitar. | Antes de abrir opiniones, sumar al menos una persona de comunidad y un artesano. Cada perfil declara: local o extranjero que vive aquí, y relación con el fundador o con un negocio. |
+| C5 | El fundador y su esposa son agentes ↔ «la gente no confía en mi criterio» | Si las primeras opiniones son del fundador y su familia, no se ve como criterio independiente. | Se quedan, con la relación declarada en el perfil. |
+| C6 | «Gratis para el turista» ↔ «versión Pro» por QR de hotel ↔ «plan gratis» en la primera pantalla | Si hay Pro, hay algo que el gratis no tiene. | Decidir si existe Pro. Mientras no, no se diseña. |
+| C7 | «Q250 era una idea» ↔ el resumen de NotebookLM y el rector v1.1 dicen que nAIhual «se financia con el Plan Fundador» | Las fuentes que alimentan a la IA siguen diciendo lo viejo. | Corregir esa línea en NotebookLM y en el rector. |
+| C8 | Ayudar a niños y familias ↔ dinero en espera | Sin ingresos, a las familias solo les llega visibilidad y la guía. Prometer educación o celulares sin fondos es prometer de más. | Hoy se dice solo lo que existe. El retorno con dinero se anuncia cuando haya ingresos reales. |
+| C9 | «Más turistas = más educación» ↔ amenaza de gentrificación y «no masificar» | Más turismo también sube rentas y precios. Que ayude a las familias es hipótesis, no hecho. | Medir qué le queda a cada familia, no cuántos turistas llegan. |
+| C10 | Guardianes = cargadores mayas sin validar ↔ tareas modernas (Kej seguridad, Iq' eventos, No'j precios) ↔ amenaza de apropiación del FODA | Ponerle «trabajos» a signos sagrados es lo que un Ajq'ij podría rechazar. | Mostrarlo a un Ajq'ij **antes** de construir más encima. Si lo rechaza, las tareas pasan a personajes no sagrados. |
+| C11 | NotebookLM: «no describe personas por su nawal» ↔ su propia tabla de 20 nawales trae «Luz/vocación» y «Sombra/desafío» | Eso describe personalidades: es horóscopo, lo que la regla prohíbe. | No usar esas dos columnas. |
+| C12 | NotebookLM da fuego, aire, tierra y agua a los cargadores, y «Iq': limpieza energética» ↔ «sin tono esotérico» | ❓ Claude no encontró fuente para los elementos; parece la tabla europea de cuatro elementos. «Limpieza energética» es lenguaje esotérico. | Fuera hasta tener fuente o validación. |
+| C13 | Guía de producto v2 fechada «25 de octubre», con decisiones del 24 y 25 ↔ se subió el 23-oct en la noche (hora de Guatemala) | Un documento con fecha futura no sirve como fuente de decisiones. | Sus decisiones cuentan como propuestas, no como hechas. |
+| C14 | Toda la visión (agentes, reseñas, accesibilidad comprobada en el lugar, eventos, guía para comunidades, red social) ↔ menos de 5 h por semana, trabaja solo | La más grande: el modelo pide un equipo y hoy hay una persona. | Construir por capas (B15) y no abrir una nueva sin cerrar la anterior. |
+| C15 | Objetivo al 30-nov «1 turista + 1 negocio» ↔ «dejá de enfocarte en cómo llegan los clientes» | El objetivo lo puso el fundador el 24-oct. | Decidir si sigue o se cambia por «bases aprobadas». |
+| C16 | Socios «sin cadenas» ↔ mostrar Pollo Campero o San Martín como opción con contexto | Hay que separar quién **aparece** de quién es **socio**. | Una cadena puede aparecer como contexto; nunca es socio ni patrocinado. |
+| C17 | «8 agentes» en un mensaje ↔ 9 en el siguiente | Menor. | Se cuentan 9 y quedan espacios abiertos. |
+
+**Errores de Claude en este chat (para no repetirlos):** volvió a poner Q250 al centro · redujo el modelo a una app · empujó cómo llegan los clientes · inventó una frase de ejemplo para Gaby · dijo «sí» sin señalar choques.
 
 ---
 
