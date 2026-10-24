@@ -5,32 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>nAIhual</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: app de celular (máx. 520px), 3 pestañas abajo: Guía (chat), Explorar (muro 2 columnas), Para vos.
-   Visual NEUTRO y provisional: el fundador hará el arte final. Los colores de guardián solo sirven para distinguirlos. */
+/* ======================================================================
+   SISTEMA VISUAL nAIhual v0.1 — base para la etapa gráfica.
+   Neutro y provisional: el fundador define el arte final. Cambiar aquí los tokens cambia toda la app.
+   Layout: app de celular en una columna (máx. 520px), guía arriba, barra de pestañas flotante abajo.
+   ====================================================================== */
 :root {
+  /* Color · neutros cálidos (piedra y cal), sin acento de marca todavía */
   --bg: #f3f2ef; --surface: #ffffff; --sunk: #e8e6e1;
-  --ink: #1b1b1a; --ink-2: #4a4945; --ink-3: #75736d;
+  --ink: #1b1b1a; --ink-2: #4a4945; --ink-3: #6a6863;
   --line: rgba(27,27,26,.12);
-  --g-batz: #a8573f; --g-kej: #5b7148; --g-ajpu: #a77c1f; --g-noj: #4f6b80;
-  --g-batz-soft: #f3e4de; --g-kej-soft: #e3eadc; --g-ajpu-soft: #f2e9d2; --g-noj-soft: #dfe7ed;
-  --on-g: #ffffff; --heart: #b4462f;
-  --star: #8a4b2a; --hist: #4f6340;
   --band: #1b1b1a; --band-ink: #f3f2ef; --band-muted: #c9c6be;
+  /* Color · estados con significado */
+  --heart: #b4462f;            /* guardado ♥ */
+  --star: #8a4b2a;             /* * cultural, pendiente de validación */
+  --hist: #4f6340;             /* † histórico, pendiente de fuente oficial */
+  --review: #6a6863;           /* en revisión */
+  --sponsor-bg: #efe3c8; --sponsor-ink: #4d3a10;  /* Patrocinado · Aliado Fundador */
+  --future-bg: #e6e3f0; --future-ink: #3c3561;    /* diseño futuro / no activo */
+  /* Color por rumbo* (pendiente de validación cultural): No'j rojo · Iq' blanco · Kej negro · E' amarillo */
+  --g-noj: #a63d2f; --g-iq: #ffffff; --g-kej: #2b2a27; --g-e: #e0b23a;
+  --g-noj-on: #ffffff; --g-iq-on: #1b1b1a; --g-kej-on: #ffffff; --g-e-on: #1b1b1a;
+  --g-noj-soft: #f4e0db; --g-iq-soft: #ffffff; --g-kej-soft: #e4e2dd; --g-e-soft: #f6ebcd;
+  /* Tipografía · una familia por ahora; los tres papeles quedan separados para la etapa gráfica */
+  --font-display: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: 12px; --t-sm: 13.5px; --t-base: 15.5px; --t-md: 17px; --t-lg: 21px; --t-xl: 27px;
+  --lh-tight: 1.15; --lh-body: 1.5;
+  --w-reg: 400; --w-med: 500; --w-semi: 600; --w-bold: 700;
+  --track-label: .07em;
+  /* Espacio (múltiplos de 4) */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-7: 32px;
+  /* Forma */
+  --r-sm: 12px; --r-md: 18px; --r-lg: 26px; --r-pill: 999px;
+  --tap: 44px;                 /* tamaño mínimo de un control táctil */
   --shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.05);
-  --font: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #161615; --surface: #222220; --sunk: #2c2c29;
   --ink: #efede8; --ink-2: #c9c6be; --ink-3: #9d9a92;
   --line: rgba(239,237,232,.14);
-  --g-batz: #d98468; --g-kej: #93ab7c; --g-ajpu: #d9ad4c; --g-noj: #86a7bf;
-  --g-batz-soft: #3a2620; --g-kej-soft: #26301f; --g-ajpu-soft: #362b13; --g-noj-soft: #1f2a33;
-  --on-g: #161615; --heart: #ef8a70; --star: #e59b72; --hist: #a9c08f;
   --band: #0c0c0b; --band-ink: #efede8; --band-muted: #9d9a92;
+  --heart: #ef8a70; --star: #e59b72; --hist: #a9c08f; --review: #9d9a92;
+  --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
+  --g-noj: #e07a68; --g-iq: #f3f2ef; --g-kej: #0c0c0b; --g-e: #e5b94a;
+  --g-noj-on: #161615; --g-iq-on: #161615; --g-kej-on: #efede8; --g-e-on: #161615;
+  --g-noj-soft: #3a221d; --g-iq-soft: #2e2e2b; --g-kej-soft: #0f0f0e; --g-e-soft: #362b13;
   --shadow: 0 1px 2px rgba(0,0,0,.5);
   color-scheme: dark;
 } }
@@ -38,82 +64,91 @@
   --bg: #161615; --surface: #222220; --sunk: #2c2c29;
   --ink: #efede8; --ink-2: #c9c6be; --ink-3: #9d9a92;
   --line: rgba(239,237,232,.14);
-  --g-batz: #d98468; --g-kej: #93ab7c; --g-ajpu: #d9ad4c; --g-noj: #86a7bf;
-  --g-batz-soft: #3a2620; --g-kej-soft: #26301f; --g-ajpu-soft: #362b13; --g-noj-soft: #1f2a33;
-  --on-g: #161615; --heart: #ef8a70; --star: #e59b72; --hist: #a9c08f;
   --band: #0c0c0b; --band-ink: #efede8; --band-muted: #9d9a92;
+  --heart: #ef8a70; --star: #e59b72; --hist: #a9c08f; --review: #9d9a92;
+  --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
+  --g-noj: #e07a68; --g-iq: #f3f2ef; --g-kej: #0c0c0b; --g-e: #e5b94a;
+  --g-noj-on: #161615; --g-iq-on: #161615; --g-kej-on: #efede8; --g-e-on: #161615;
+  --g-noj-soft: #3a221d; --g-iq-soft: #2e2e2b; --g-kej-soft: #0f0f0e; --g-e-soft: #362b13;
   --shadow: 0 1px 2px rgba(0,0,0,.5);
   color-scheme: dark;
 }
+
+/* ---------- base ---------- */
 * { box-sizing: border-box; }
 html, body { margin: 0; }
-body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15.5px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: var(--t-base); line-height: var(--lh-body); -webkit-font-smoothing: antialiased; }
 button, input { font: inherit; color: inherit; }
 a { color: inherit; }
-h1, h2, h3 { margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h1, h2, h3 { margin: 0; font-family: var(--font-display); text-wrap: balance; letter-spacing: -.01em; line-height: var(--lh-tight); }
+p { margin: 0; }
 :focus-visible { outline: 3px solid var(--ink-3); outline-offset: 2px; }
 [hidden] { display: none !important; }
 svg { display: block; }
+.k { font-size: var(--t-xs); font-weight: var(--w-bold); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-3); }
 
+/* ---------- estructura ---------- */
 .app { max-width: 520px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; background: var(--bg); padding-block: 14px 10px; display: flex; flex-direction: column; gap: 12px; }
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; background: var(--bg); padding-block: 14px 10px; display: flex; flex-direction: column; gap: var(--s-3); }
 header.line { border-bottom: 1px solid var(--line); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .brand { all: unset; cursor: pointer; display: flex; flex-direction: column; }
-.brand b { font-size: 21px; letter-spacing: -.01em; }
-.brand span { font-size: 12.5px; color: var(--ink-3); }
-.seg { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--sunk); }
-.seg button { border: 0; cursor: pointer; padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: transparent; color: var(--ink-2); }
+.brand b { font-family: var(--font-display); font-size: var(--t-lg); letter-spacing: -.01em; }
+.brand span { font-size: var(--t-xs); color: var(--ink-3); }
+.seg { display: flex; gap: 2px; padding: 3px; border-radius: var(--r-pill); background: var(--sunk); }
+.seg button { border: 0; cursor: pointer; padding: 6px 12px; border-radius: var(--r-pill); font-size: 13px; font-weight: var(--w-semi); background: transparent; color: var(--ink-2); }
 .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
-
-/* guardianes */
-.av { flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: var(--on-g); background: var(--gc); }
-.g-batz { --gc: var(--g-batz); --gs: var(--g-batz-soft); }
-.g-kej { --gc: var(--g-kej); --gs: var(--g-kej-soft); }
-.g-ajpu { --gc: var(--g-ajpu); --gs: var(--g-ajpu-soft); }
-.g-noj { --gc: var(--g-noj); --gs: var(--g-noj-soft); }
-.wheel { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
-.wg { border: 0; cursor: pointer; background: transparent; border-radius: 14px; padding: 6px 2px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; }
-.wg .av { width: 40px; height: 40px; font-size: 16px; opacity: .4; transition: opacity .2s, transform .2s; }
-.wg small { font-size: 12px; font-weight: 600; color: var(--ink-3); }
-.wg[aria-current="true"] .av { opacity: 1; transform: scale(1.08); }
-.wg[aria-current="true"] small { color: var(--ink); }
-.wg[aria-current="true"]::after { content: ""; position: absolute; bottom: 0; width: 18px; height: 3px; border-radius: 3px; background: var(--gc); }
-.hint { font-size: 12px; color: var(--ink-3); text-align: center; margin: -4px 0 0; }
-
-main { flex: 1; padding-block: 16px 140px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+main { flex: 1; padding-block: var(--s-4) 140px; display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
 main.chatpad { padding-bottom: 260px; }
 
-/* chat */
-.msg { display: flex; flex-direction: column; gap: 8px; min-width: 0; scroll-margin-top: 190px; }
+/* ---------- guardianes ---------- */
+.av { flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: var(--w-bold); color: var(--go); background: var(--gc); box-shadow: inset 0 0 0 1px var(--line); }
+.g-noj { --gc: var(--g-noj); --go: var(--g-noj-on); --gs: var(--g-noj-soft); }
+.g-iq { --gc: var(--g-iq); --go: var(--g-iq-on); --gs: var(--g-iq-soft); }
+.g-kej { --gc: var(--g-kej); --go: var(--g-kej-on); --gs: var(--g-kej-soft); }
+.g-e { --gc: var(--g-e); --go: var(--g-e-on); --gs: var(--g-e-soft); }
+.wheel { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
+.wg { border: 0; cursor: pointer; background: transparent; border-radius: 14px; padding: 6px 2px 8px; display: flex; flex-direction: column; align-items: center; gap: var(--s-1); position: relative; }
+.wg .av { width: 40px; height: 40px; font-size: 16px; opacity: .45; transition: opacity .2s, transform .2s; }
+.wg small { font-size: var(--t-xs); font-weight: var(--w-semi); color: var(--ink-3); }
+.wg[aria-current="true"] .av { opacity: 1; transform: scale(1.08); }
+.wg[aria-current="true"] small { color: var(--ink); }
+.wg[aria-current="true"]::after { content: ""; position: absolute; bottom: 0; width: 18px; height: 3px; border-radius: 3px; background: var(--ink); }
+.hint { font-size: var(--t-xs); color: var(--ink-3); text-align: center; margin: -4px 0 0; }
+
+/* ---------- chat ---------- */
+.msg { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; scroll-margin-top: 190px; }
 .who { display: flex; align-items: center; gap: 10px; }
 .who .av { width: 34px; height: 34px; font-size: 14px; }
 .who b { font-size: 14.5px; }
-.who em { font-style: normal; font-size: 12.5px; color: var(--ink-3); }
-.bubble { background: var(--gs); border-radius: 4px 20px 20px 20px; padding: 13px 16px; text-wrap: pretty; }
-.bubble p { margin: 0; } .bubble p + p { margin-top: 8px; }
-.me { align-self: flex-end; max-width: 85%; background: var(--ink); color: var(--bg); border-radius: 20px 4px 20px 20px; padding: 10px 15px; }
-.cards { display: flex; flex-direction: column; gap: 8px; }
-.card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.card .k { font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); padding-right: 44px; }
-.card h3 { font-size: 17px; line-height: 1.25; padding-right: 44px; }
-.card p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
-.card .ad { font-size: 13px; color: var(--ink-3); }
-.card .heart { top: 8px; right: 8px; bottom: auto; box-shadow: none; background: var(--sunk); }
-.steps { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; counter-reset: s; }
-.steps li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0,1fr); gap: 8px; align-items: baseline; font-size: 14.5px; }
-.steps li::before { content: counter(s); width: 22px; height: 22px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-size: 12px; font-weight: 700; }
-.steps li span { color: var(--ink-3); font-size: 13px; }
-.tipcard { background: var(--sunk); border: 0; }
-.tipcard p { color: var(--ink); }
+.who em { font-style: normal; font-size: var(--t-xs); color: var(--ink-3); }
+.bubble { background: var(--gs); border: 1px solid var(--line); border-radius: 4px var(--s-5) var(--s-5) var(--s-5); padding: 13px var(--s-4); text-wrap: pretty; }
+.bubble p + p { margin-top: var(--s-2); }
+.me { align-self: flex-end; max-width: 85%; background: var(--ink); color: var(--bg); border-radius: var(--s-5) 4px var(--s-5) var(--s-5); padding: 10px 15px; }
+.cards { display: flex; flex-direction: column; gap: var(--s-2); }
+.choices { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .notes { display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; }
 .note-star { color: var(--star); } .note-hist { color: var(--hist); } .note-muted { color: var(--ink-3); }
 
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); font-size: 14.5px; font-weight: 600; text-decoration: none; background: var(--surface); cursor: pointer; }
+/* ---------- componentes ---------- */
+.card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px var(--s-4); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.card .k, .card h3 { padding-right: 44px; }
+.card h3 { font-size: var(--t-md); line-height: 1.25; }
+.card p { font-size: 14.5px; color: var(--ink-2); }
+.card .ad { font-size: 13px; color: var(--ink-3); }
+.card .heart { top: var(--s-2); right: var(--s-2); bottom: auto; box-shadow: none; background: var(--sunk); }
+.tipcard { background: var(--sunk); border: 0; }
+.tipcard p { color: var(--ink); }
+.steps { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0,1fr); gap: var(--s-2); align-items: baseline; font-size: 14.5px; }
+.steps li::before { content: counter(s); width: 22px; height: 22px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-size: var(--t-xs); font-weight: var(--w-bold); }
+.steps li span { color: var(--ink-3); font-size: 13px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--tap); padding: 0 var(--s-4); border-radius: var(--r-pill); border: 1px solid var(--line); font-size: 14.5px; font-weight: var(--w-semi); text-decoration: none; background: var(--surface); color: var(--ink); cursor: pointer; }
 .btn.solid { background: var(--ink); color: var(--bg); border-color: transparent; }
-.btn.g { background: var(--gc); color: var(--on-g); border-color: transparent; }
+.btn.g { background: var(--gc); color: var(--go); }
 .btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
 .btn svg { fill: none; stroke: currentColor; }
 .card .btn { align-self: flex-start; margin-top: 4px; min-height: 42px; font-size: 14px; }
@@ -121,106 +156,171 @@ main.chatpad { padding-bottom: 260px; }
 .heart svg, .btn.save svg { fill: none; stroke: var(--heart); }
 .heart[aria-pressed="true"] svg, .btn.save[aria-pressed="true"] svg { fill: var(--heart); }
 
+.chip { flex: none; border: 1px solid var(--line); background: var(--surface); cursor: pointer; min-height: 40px; padding: 0 14px; border-radius: var(--r-pill); font-size: 14px; font-weight: var(--w-med); color: var(--ink-2); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: transparent; }
+.chip.switch { border-style: dashed; color: var(--ink); font-weight: var(--w-semi); }
+.chip.pilot { background: var(--ink); color: var(--bg); border-color: transparent; font-weight: var(--w-bold); }
+
+.tag { display: inline-flex; align-items: center; gap: 4px; align-self: flex-start; padding: 4px 10px; border-radius: var(--r-pill); font-size: var(--t-xs); font-weight: var(--w-bold); background: var(--surface); color: var(--ink-2); }
+.tag.sp, .tag.ally { background: var(--sponsor-bg); color: var(--sponsor-ink); }
+.tag.rev { background: var(--sunk); color: var(--review); }
+.tag.future { background: var(--future-bg); color: var(--future-ink); }
+.tag.ok { background: var(--sunk); color: var(--ink); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.trust { margin-top: 2px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+.trust a { text-decoration: underline; }
+.trust.rev { font-size: 12.5px; font-weight: var(--w-semi); color: var(--review); }
+
+.emptybox { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 22px; border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--line); }
+.emptybox b { font-size: 19px; font-family: var(--font-display); }
+.emptybox span { color: var(--ink-2); }
+.pilot-empty b { font-size: var(--t-md); }
+
+/* ---------- dock y navegación ---------- */
 .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: linear-gradient(to top, var(--bg) 85%, transparent); padding-top: 18px; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
 .dock-in { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 2px; }
+.chips { display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 2px; }
 .chips::-webkit-scrollbar { display: none; }
-.chip { flex: none; border: 1px solid var(--line); background: var(--surface); cursor: pointer; min-height: 40px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--ink-2); }
-.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: transparent; }
-.chip.switch { border-style: dashed; color: var(--ink); font-weight: 600; }
-form { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 5px 5px 16px; box-shadow: var(--shadow); }
+form { display: flex; gap: var(--s-2); align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 5px 5px 5px var(--s-4); box-shadow: var(--shadow); }
 form input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; min-height: 40px; }
-form button { flex: none; border: 0; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--gc); color: var(--on-g); }
+form button { flex: none; border: 0; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--gc); color: var(--go); box-shadow: inset 0 0 0 1px var(--line); }
 form button svg { fill: none; stroke: currentColor; }
-
-nav.tabs { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); width: min(440px, calc(100% - 28px)); display: flex; gap: 4px; padding: 5px; border-radius: 999px; background: var(--band); box-shadow: var(--shadow); z-index: 6; }
-nav.tabs button { flex: 1; border: 0; cursor: pointer; min-height: 46px; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 14px; font-weight: 700; background: transparent; color: var(--band-muted); }
+nav.tabs { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); width: min(440px, calc(100% - 28px)); display: flex; gap: 4px; padding: 5px; border-radius: var(--r-pill); background: var(--band); box-shadow: var(--shadow); z-index: 6; }
+nav.tabs button { flex: 1; border: 0; cursor: pointer; min-height: 46px; border-radius: var(--r-pill); display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 14px; font-weight: var(--w-bold); background: transparent; color: var(--band-muted); }
 nav.tabs button[aria-current="page"] { background: var(--bg); color: var(--ink); }
 nav.tabs svg { fill: none; stroke: currentColor; }
 
-/* explorar */
+/* ---------- explorar ---------- */
+.pagehead { display: flex; flex-direction: column; gap: 6px; }
 .pagehead h1 { font-size: 28px; line-height: 1.1; }
-.pagehead p { margin: 6px 0 0; color: var(--ink-2); font-size: 15px; }
-.search { display: flex; align-items: center; gap: 10px; padding: 0 16px; min-height: 48px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.pagehead p { color: var(--ink-2); font-size: 15px; }
+.search { display: flex; align-items: center; gap: 10px; padding: 0 var(--s-4); min-height: 48px; border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--line); }
 .search svg { fill: none; stroke: var(--ink-3); flex: none; }
 .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; }
-.grid { column-count: 2; column-gap: 12px; }
+.grid { column-count: 2; column-gap: var(--s-3); }
 .pin { display: inline-block; width: 100%; margin: 0 0 14px; break-inside: avoid; cursor: pointer; vertical-align: top; }
-.pin-img { position: relative; border-radius: 20px; overflow: hidden; background: var(--sunk); display: flex; align-items: flex-end; padding: 12px; }
-.pin-img .glyph { font-size: 42px; font-weight: 700; line-height: 1; color: var(--ink-3); opacity: .5; }
-.pin-img .tag { position: absolute; left: 8px; top: 8px; }
-.tag { display: inline-flex; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--surface); color: var(--ink-2); }
-.pin-cap { padding: 8px 4px 0; display: flex; flex-direction: column; gap: 3px; }
+.pin-img { position: relative; border-radius: var(--s-5); overflow: hidden; background: var(--sunk); display: flex; align-items: flex-end; padding: var(--s-3); }
+.pin-img .glyph { font-size: 42px; font-weight: var(--w-bold); line-height: 1; color: var(--ink-3); opacity: .5; }
+.pin-img .tag { position: absolute; left: var(--s-2); top: var(--s-2); }
+.pin-cap { padding: var(--s-2) 4px 0; display: flex; flex-direction: column; gap: 3px; }
 .pin-cap b { font-size: 14.5px; line-height: 1.25; }
 .pin-cap > span:not(.gs) { font-size: 12.5px; line-height: 1.35; color: var(--ink-3); }
 .pin-cap .gs { display: flex; gap: 4px; margin-top: 2px; }
 .pin-cap .gs .av { width: 20px; height: 20px; font-size: 10px; }
-.pin-tip { position: relative; padding: 16px 16px 56px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); }
-.pin-tip .k { font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
-.pin-tip p { margin: 6px 0 0; font-size: 16px; line-height: 1.35; font-weight: 600; }
+.pin-tip { position: relative; padding: var(--s-4) var(--s-4) 56px; border-radius: var(--s-5); background: var(--surface); border: 1px solid var(--line); }
+.pin-tip p { margin-top: 6px; font-size: 16px; line-height: 1.35; font-weight: var(--w-semi); }
 .empty-q { margin: 4px; color: var(--ink-2); }
-.biz { padding: 20px; border-radius: 26px; background: var(--band); color: var(--band-ink); display: flex; flex-direction: column; gap: 10px; }
+.biz { padding: var(--s-5); border-radius: var(--r-lg); background: var(--band); color: var(--band-ink); display: flex; flex-direction: column; gap: 10px; }
 .biz .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-.biz .kicker { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--band-muted); }
+.biz .k { color: var(--band-muted); }
 .biz .tag { background: var(--band-ink); color: var(--band); }
-.biz h2 { font-size: 21px; }
-.biz p { margin: 0; font-size: 14.5px; color: var(--band-muted); }
+.biz h2 { font-size: var(--t-lg); }
+.biz p { font-size: 14.5px; color: var(--band-muted); }
 .biz .btn { align-self: flex-start; background: var(--band-ink); color: var(--band); border-color: transparent; }
 
-/* ficha */
-.d-img { height: 170px; border-radius: 26px; background: var(--sunk); display: flex; align-items: flex-end; padding: 18px; }
-.d-img .glyph { font-size: 64px; font-weight: 700; line-height: 1; color: var(--ink-3); opacity: .5; }
-.d-body { display: flex; flex-direction: column; gap: 8px; }
-.d-body .k { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-.d-body h1 { font-size: 27px; line-height: 1.12; }
-.d-body > p { margin: 0; font-size: 15.5px; color: var(--ink-2); text-wrap: pretty; }
-.d-addr { font-size: 13.5px !important; color: var(--ink-3) !important; }
+/* ---------- ficha ---------- */
+.d-img { height: 170px; border-radius: var(--r-lg); background: var(--sunk); display: flex; align-items: flex-end; padding: 18px; }
+.d-img .glyph { font-size: 64px; font-weight: var(--w-bold); line-height: 1; color: var(--ink-3); opacity: .5; }
+.d-body { display: flex; flex-direction: column; gap: var(--s-2); }
+.d-body h1 { font-size: var(--t-xl); line-height: 1.12; }
+.d-body > p { font-size: var(--t-base); color: var(--ink-2); text-wrap: pretty; }
+.d-body > p.d-addr { font-size: var(--t-sm); color: var(--ink-3); }
 .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 .actions .btn.solid { flex: 1; }
-.recby { display: flex; flex-direction: column; gap: 8px; }
+.recby { display: flex; flex-direction: column; gap: var(--s-2); }
 .recby h3 { font-size: 16px; }
 .recby .btn { justify-content: flex-start; width: 100%; }
-.recby .btn .av { width: 26px; height: 26px; font-size: 12px; }
-.facts { margin: 0; display: grid; gap: 8px; }
-.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px; }
-.fact dt { font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.recby .btn .av { width: 26px; height: 26px; font-size: var(--t-xs); }
+.facts { margin: 0; display: grid; gap: var(--s-2); }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: var(--s-4); padding: var(--s-3) var(--s-4); }
+.fact dt { font-size: var(--t-xs); font-weight: var(--w-bold); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-3); }
 .fact dd { margin: 3px 0 0; }
-.warn { margin: 0; padding: 12px 16px; border-radius: 16px; border: 1.5px dashed var(--star); color: var(--star); font-size: 13.5px; }
-.rlink { all: unset; box-sizing: border-box; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 50px; padding: 0 18px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-weight: 600; }
+.warn { padding: var(--s-3) var(--s-4); border-radius: var(--s-4); border: 1.5px dashed var(--star); color: var(--star); font-size: var(--t-sm); }
+.rlink { all: unset; box-sizing: border-box; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); width: 100%; min-height: 50px; padding: 0 18px; border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--line); font-weight: var(--w-semi); }
 .rlink svg { fill: none; stroke: currentColor; flex: none; }
-.list { display: flex; flex-direction: column; gap: 8px; }
-.respect { margin: 0; font-size: 13px; color: var(--ink-3); }
+.list { display: flex; flex-direction: column; gap: var(--s-2); }
+.respect { font-size: 13px; color: var(--ink-3); }
 
-/* para vos */
-.emptybox { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 22px; border-radius: 26px; background: var(--surface); border: 1px solid var(--line); }
-.emptybox b { font-size: 19px; }
-.emptybox span { color: var(--ink-2); }
-.plan { background: var(--surface); border: 1px solid var(--line); border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
-.plan .k { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+/* ---------- para vos ---------- */
+.plan { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
 .plan h2 { font-size: 22px; }
-.plan > p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
-.plan ol { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.plan li button { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: grid; grid-template-columns: 36px minmax(0,1fr); gap: 12px; align-items: center; }
-.plan .num { width: 36px; height: 36px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-weight: 700; }
+.plan > p { font-size: var(--t-sm); color: var(--ink-2); }
+.plan ol { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--s-2); }
+.plan li button { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: grid; grid-template-columns: 36px minmax(0,1fr); gap: var(--s-3); align-items: center; }
+.plan .num { width: 36px; height: 36px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-weight: var(--w-bold); }
 .plan li b { display: block; font-size: 15px; }
 .plan li small { font-size: 12.5px; color: var(--ink-3); }
 .plan .btn { width: 100%; }
-.saved-h { font-size: 18px; margin-top: 8px; }
+.saved-h { font-size: 18px; margin-top: var(--s-2); }
 
-.foot { font-size: 11.5px; color: var(--ink-3); text-align: center; margin: 0; }
+/* ---------- pie y panel de guardianes ---------- */
+.foot { font-size: 11.5px; color: var(--ink-3); text-align: center; }
 .linkbtn { border: 0; background: none; padding: 0; cursor: pointer; text-decoration: underline; color: var(--ink-3); font-size: 11.5px; }
 dialog { border: 0; padding: 0; border-radius: 22px; width: min(480px, calc(100% - 32px)); max-height: 85vh; background: var(--bg); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
 dialog::backdrop { background: rgba(0,0,0,.4); }
-.dlg { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-.dlg h2 { font-size: 20px; }
-.dlg > p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
-.gcard { background: var(--gs); border-radius: 18px; padding: 14px 16px; display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 12px; }
-.gcard .av { width: 44px; height: 44px; font-size: 17px; }
+.dlg { padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-3); }
+.dlg h2 { font-size: var(--t-lg); }
+.dlg > p { color: var(--ink-2); font-size: 14.5px; }
+.gcard { background: var(--gs); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px var(--s-4); display: grid; grid-template-columns: 44px minmax(0,1fr); gap: var(--s-3); }
+.gcard .av { width: 44px; height: 44px; font-size: var(--t-md); }
 .gcard b { font-size: 16px; }
-.gcard dl { margin: 4px 0 0; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 2px 10px; font-size: 13.5px; }
+.gcard dl { margin: 4px 0 0; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 2px 10px; font-size: var(--t-sm); }
 .gcard dt { color: var(--ink-3); } .gcard dd { margin: 0; }
 .dlg .close { align-self: flex-end; }
+
+/* ---------- páginas largas: Aliados y vista interna ---------- */
+.doc { display: flex; flex-direction: column; gap: var(--s-4); }
+.doc section { display: flex; flex-direction: column; gap: 10px; }
+.doc h2 { font-size: 19px; }
+.doc h3 { font-size: 16px; }
+.doc p, .doc li { color: var(--ink-2); font-size: 14.5px; }
+.doc ul, .doc ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.doc strong { color: var(--ink); }
+.status { display: flex; flex-direction: column; gap: 4px; padding: 14px var(--s-4); border-radius: var(--r-md); background: var(--sponsor-bg); color: var(--sponsor-ink); font-size: var(--t-sm); }
+.status b { font-size: 14.5px; }
+.status.future { background: var(--future-bg); color: var(--future-ink); }
+.status.plain { background: var(--sunk); color: var(--ink); }
+.terms { margin: 0; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+.terms div { background: var(--surface); padding: var(--s-3) 14px; display: grid; grid-template-columns: minmax(0, 9.5em) minmax(0,1fr); gap: var(--s-3); }
+.terms dt { font-size: var(--t-sm); color: var(--ink-3); font-weight: var(--w-semi); }
+.terms dd { margin: 0; font-size: 14.5px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px var(--s-4); display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+.panel.demo { border-style: dashed; }
+.panel h3 { font-size: 16px; }
+.panel p, .panel li { font-size: 14px; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.inbanner { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border-radius: var(--r-md); background: var(--future-bg); color: var(--future-ink); font-size: var(--t-sm); font-weight: var(--w-semi); }
+.inbanner .btn { min-height: 38px; font-size: 13.5px; }
+.subnav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 2px; }
+.subnav::-webkit-scrollbar { display: none; }
+.check { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 12.5px; color: var(--ink-3); }
+.check .no { color: var(--star); font-weight: var(--w-semi); }
+.rowlink { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: var(--s-3) 14px; border-radius: var(--r-sm); background: var(--surface); border: 1px solid var(--line); }
+.rowlink b { font-size: 15px; }
+.layer { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; padding: var(--s-3) 14px; border-radius: var(--r-sm); background: var(--surface); border: 1px solid var(--line); }
+.layer .n { width: 28px; height: 28px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-weight: var(--w-bold); font-size: 13px; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.layer b { display: block; font-size: 15px; }
+.layer p { font-size: 13.5px; }
+.flow { list-style: none; padding: 0 !important; counter-reset: f; }
+.flow li { counter-increment: f; display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; align-items: start; }
+.flow li::before { content: counter(f); width: 26px; height: 26px; border-radius: 50%; background: var(--sunk); color: var(--ink); display: grid; place-items: center; font-weight: var(--w-bold); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.flow li .tag { margin-top: 4px; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--s-2); }
+.sw { display: flex; flex-direction: column; gap: 6px; padding: 10px; border-radius: var(--r-sm); background: var(--surface); border: 1px solid var(--line); font-size: var(--t-xs); min-width: 0; }
+.sw i { display: block; height: 40px; border-radius: var(--s-2); box-shadow: inset 0 0 0 1px var(--line); }
+.sw code { font-family: var(--font-data); font-size: 11.5px; color: var(--ink-3); overflow-wrap: anywhere; }
+.scale { display: flex; flex-direction: column; gap: 6px; }
+.scale div { display: grid; grid-template-columns: 90px minmax(0,1fr); gap: 10px; align-items: baseline; }
+.scale small { font-family: var(--font-data); font-size: 11.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.bar { height: 12px; border-radius: 3px; background: var(--ink-3); }
+.row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+.ph { display: grid; place-items: center; height: 110px; border-radius: var(--r-md); border: 1.5px dashed var(--line); color: var(--ink-3); font-size: 13px; text-align: center; padding: var(--s-2); background: var(--sunk); }
+.mininav { display: flex; gap: 4px; padding: 5px; border-radius: var(--r-pill); background: var(--band); }
+.mininav span { flex: 1; text-align: center; padding: 10px 6px; border-radius: var(--r-pill); font-size: 13px; font-weight: var(--w-bold); color: var(--band-muted); }
+.mininav span:first-child { background: var(--bg); color: var(--ink); }
+.ext { overflow-wrap: anywhere; }
+
 @media (prefers-reduced-motion: no-preference) { .msg.new { animation: up .25s ease-out; } @keyframes up { from { transform: translateY(6px); opacity: .4; } } .pin:active { transform: scale(.98); } }
 </style>
 </head>
@@ -254,83 +354,122 @@ dialog::backdrop { background: rgba(0,0,0,.4); }
 </nav>
 <dialog id="dlg"><div class="dlg" id="dlg-body"></div></dialog>
 
+<!-- Datos: se editan en data/, no aquí. config.js = vista previa y vista interna · lugares.js = catálogo · fuentes.js = registro de fuentes -->
+<script src="data/config.js"></script>
+<script src="data/lugares.js"></script>
+<script src="data/fuentes.js"></script>
 <script>
 (function () {
 'use strict';
-var VERSION = 'App 1.0 · 18-oct-2026';
-var BIZ_WHATSAPP = ''; // Falta el número del fundador. Vacío = botón desactivado.
+var VERSION = 'App 1.2 vista previa · 23-oct-2026';
+var INSTR_VERSION = 'reglas-fijas 1.2'; // versión de las instrucciones del agente; cambia con cada ajuste de respuestas o reglas
+var PILOT_MAX = 3; // Recorrido «Quiero un café»: máximo de fichas.
+var CFG = window.NAIHUAL_CONFIG || {};
+var PREVIEW = CFG.vista_previa !== false;          // sin config = vista previa
+var INTERNAL = CFG.vista_interna === true;         // sin config = sin vista interna
+var SHOW_ALLIES = CFG.mostrar_aliados !== false;
+var LAUNCH = String(CFG.fecha_lanzamiento || '').trim();
 function w(es, en) { return { es: es, en: en }; }
 
-// ===================== GUARDIANES (docs/nAIhual.md, sección 3) =====================
-var ORDER = ['batz', 'kej', 'ajpu', 'noj'];
+// ===================== GUARDIANES (docs/nAIhual.md, sección 3c · aprobados por el fundador) =====================
+// Selección y orden aprobados: No'j → Iq' → Kej → E'. No se cambian.
+// Rumbo, color, valor y frases: pendientes de validación cultural (*). Tono y recomendaciones: decisión del fundador (24-oct).
+var ORDER = ['noj', 'iq', 'kej', 'e'];
 var G = {
-  batz: { name: "B'atz'", ini: 'B', value: w('El inicio', 'The beginning'), role: w('Crear', 'Create'), speaks: w('Juguetón y curioso', 'Playful and curious'),
-    recs: w('Arte y artesanía, talleres, qué contar de tu viaje, por dónde empezar', 'Art and crafts, workshops, what to share from your trip, where to start'),
-    hello: w("Soy B'atz', el inicio*: el hilo con el que empieza todo.", "I'm B'atz', the beginning*: the thread everything starts with."),
-    pdf: w('Hilo del tiempo, tejido, origen · Mono', 'Thread of time, weaving, origin · Monkey') },
-  kej: { name: 'Kej', ini: 'K', value: w('El equilibrio', 'Balance'), role: w('Explorar', 'Explore'), speaks: w('Práctico y ordenado', 'Practical and orderly'),
-    recs: w('Rutas a pie, naturaleza, pausas y calma, comunidad y mercados', 'Walking routes, nature, calm breaks, community and markets'),
-    hello: w('Soy Kej, el equilibrio*. Yo te ordeno el camino.', "I'm Kej, balance*. I put your path in order."),
-    pdf: w('Venado, 4 pilares del cosmos · Venado', 'Deer, the 4 pillars of the cosmos · Deer') },
-  ajpu: { name: 'Ajpu', ini: 'A', value: w('La fuerza', 'Strength'), role: w('Decidir', 'Decide'), speaks: w('Valiente y retador', 'Brave and daring'),
-    recs: w('La mejor opción directo, aventura, seguridad y cuidado, comida con carácter', 'The best option, straight up; adventure; safety and care; food with character'),
-    hello: w('Soy Ajpu, la fuerza del sol*. Yo te reto a ir.', "I'm Ajpu, the strength of the sun*. I dare you to go."),
-    pdf: w('El Sol, cazador célebre, autoridad · Espíritu humano / Sol', 'The Sun, the famed hunter, authority · Human spirit / Sun') },
-  noj: { name: "No'j", ini: 'N', value: w('La sabiduría', 'Wisdom'), role: w('Comprender', 'Understand'), speaks: w('Maestro cercano', 'A friendly teacher'),
+  noj: { name: "No'j", ini: 'N', value: w('La sabiduría', 'Wisdom'), role: w('Comprender', 'Understand'), speaks: w('Maestro cercano, reflexivo', 'A friendly, reflective teacher'), dir: w('Oriente · rojo', 'East · red'),
     recs: w('Historia y monumentos, cosmovisión maya, respeto y costumbres, lugares para aprender', 'History and monuments, Maya worldview, respect and customs, places to learn'),
-    hello: w("Soy No'j, la sabiduría*. Yo te cuento el porqué.", "I'm No'j, wisdom*. I tell you the why."),
-    pdf: w('Mente, pensamiento, sabiduría · Coyote, lobo, pájaro carpintero', 'Mind, thought, wisdom · Coyote, wolf, woodpecker') }
+    hello: w("Soy No'j*. Yo te cuento el porqué.", "I'm No'j*. I tell you the why."),
+    pdf: w('Mente, pensamiento, sabiduría · Coyote, lobo, pájaro carpintero', 'Mind, thought, wisdom · Coyote, wolf, woodpecker') },
+  iq: { name: "Iq'", ini: 'I', value: w('El viento', 'The wind'), role: w('Comunicar', 'Communicate'), speaks: w('Fresco, directo, renovador', 'Fresh, direct, renewing'), dir: w('Norte · blanco', 'North · white'),
+    recs: w('Pausas y aire libre, qué contar de tu viaje, hablar con la gente, primeros pasos', 'Breaks and fresh air, what to share from your trip, talking with people, first steps'),
+    hello: w("Soy Iq'*. Te doy aire: primeros pasos, pausas y qué contar.", "I'm Iq'*. I bring fresh air: first steps, breaks and what to share."),
+    pdf: w('Viento, aliento de vida, purificación · Colibrí', 'Wind, breath of life, purification · Hummingbird') },
+  kej: { name: 'Kej', ini: 'K', value: w('El equilibrio', 'Balance'), role: w('Explorar', 'Explore'), speaks: w('Práctico, firme, ordenado', 'Practical, steady, orderly'), dir: w('Poniente · negro', 'West · black'),
+    recs: w('Rutas a pie, naturaleza y mercados', 'Walking routes, nature and markets'),
+    hello: w('Soy Kej*. Yo te ordeno el camino.', "I'm Kej*. I put your path in order."),
+    pdf: w('Venado, 4 pilares del cosmos · Venado', 'Deer, the 4 pillars of the cosmos · Deer') },
+  e: { name: "E'", ini: 'E', value: w('El camino', 'The path'), role: w('Guiar', 'Guide'), speaks: w('Alentador, orador, guía', 'Encouraging, a speaker, a guide'), dir: w('Sur · amarillo', 'South · yellow'),
+    recs: w('Artesanos y talleres, la mejor opción directo, comida con carácter, comunidades cercanas, aventura (cuando haya datos)', 'Artisans and workshops, the best option straight up, food with character, nearby communities, adventure (once there is data)'),
+    hello: w("Soy E'*. Te acompaño por el mejor camino.", "I'm E'*. I walk you down the best path."),
+    pdf: w('Camino, destino, estructura corporal · Gato de monte, puma', 'Path, destiny, the body’s structure · Wildcat, puma') }
 };
 
-// ===================== CATÁLOGO (única fuente dentro de la app; pasa a Google Sheets en C9) =====================
-// Frases: textuales del fundador. addr null = sin verificar: se ve en el muro, nunca en rutas, planes ni chat.
-// g = guardianes que lo recomiendan (propuesta de Claude, por corregir).
-var P = {
-  parque: { cat: 'cultura', hist: true, g: ['batz', 'noj'], name: 'Parque Central', addr: 'Entre 4a y 5a Calle, 4a y 5a Avenida', why: w('La plaza principal. A su alrededor están la Catedral, el Palacio de los Capitanes Generales y el Ayuntamiento.', 'The main square, framed by the Cathedral, the Palace of the Captains General and City Hall.') },
-  catedral: { cat: 'cultura', hist: true, g: ['noj'], name: 'Catedral de San José', addr: 'Lado oriente del Parque Central', why: w('Se empezó a construir en 1545. Los terremotos de 1773 la dañaron: una parte sigue siendo iglesia y otra quedó en ruinas.', 'Construction began in 1545. After the 1773 earthquakes, part is still a church and part remains in ruins.') },
-  palacio: { cat: 'cultura', hist: true, g: ['noj'], name: 'Palacio de los Capitanes Generales', addr: 'Lado sur del Parque Central', why: w('Fue la sede del gobierno colonial de la Capitanía General de Guatemala.', 'Seat of the colonial government of the Captaincy General of Guatemala.') },
-  arco: { cat: 'cultura', hist: true, g: ['kej', 'batz'], name: 'Arco de Santa Catalina', addr: '5a Avenida Norte', why: w('Del siglo XVII. Unía dos partes de un convento para que las monjas cruzaran la calle sin ser vistas.', 'From the 17th century. It joined two parts of a convent so the nuns could cross the street unseen.') },
-  merced: { cat: 'cultura', hist: true, g: ['kej', 'noj'], name: 'Iglesia de La Merced', addr: '1a Calle Poniente y 6a Avenida Norte', why: w('Iglesia barroca del siglo XVIII, amarilla y con su fachada cubierta de relieves blancos.', 'An 18th-century baroque church, yellow, its façade covered in white relief work.') },
-  capuchinas: { cat: 'cultura', hist: true, g: ['ajpu', 'noj'], name: 'Convento de las Capuchinas', addr: '2a Avenida Norte y 2a Calle Oriente', why: w('Ruinas de un convento del siglo XVIII con una torre circular de celdas.', 'Ruins of an 18th-century convent with a circular tower of cells.') },
-  santaclara: { cat: 'cultura', hist: true, g: ['noj', 'kej'], name: 'Ruinas de Santa Clara', addr: '2a Avenida Sur y 6a Calle Oriente', why: w('Convento de las clarisas. Enfrente está el tanque Unión, lavaderos públicos de la época colonial.', 'Convent of the Poor Clares. Across the street is Tanque Unión, the colonial-era public washbasins.') },
-  sanfrancisco: { cat: 'cultura', hist: true, g: ['noj'], name: 'Iglesia de San Francisco el Grande', addr: '1a Avenida Sur y 7a Calle Oriente', why: w('Aquí está la tumba del Santo Hermano Pedro de San José de Betancur.', 'Home to the tomb of Saint Hermano Pedro de San José de Betancur.') },
-  doce: { cat: 'cafe', g: ['kej'], name: '12 Onzas', addr: '4a Calle Oriente 5', why: w('No falla con el café, expertos catadores.', 'Never misses with coffee. Expert cuppers.') },
-  artista: { cat: 'cafe', g: ['batz'], name: 'Artista de Café', addr: '5a Avenida Sur 34B', why: w('No falla con el café, expertos catadores, pero con una forma super aesthetic de comunicar el amor por el café.', 'Never misses with coffee, with a super aesthetic way of sharing their love for it.') },
-  komori: { cat: 'cafe', g: [], name: 'Komori', addr: null, why: w('Literal el mejor matcha.', 'Literally the best matcha.') },
-  siena: { cat: 'cafe', g: ['noj'], name: 'Siena Luz', addr: '6a Avenida Norte', why: w('La vibe con filosofía y literatura combinada con el mejor café es una experiencia top.', 'Philosophy and literature vibes plus the best coffee: a top experience.') },
-  fatcat: { cat: 'cafe', g: ['kej'], name: 'Fat Cat Coffee House', addr: '4a Calle Oriente, frente a 12 Onzas', why: w('Especialistas en café.', 'Coffee specialists.') },
-  alegria: { cat: 'cafe', g: [], name: 'Alegría Café', addr: null, why: w('Especialistas en café.', 'Coffee specialists.') },
-  coffea: { cat: 'cafe', g: ['ajpu', 'kej'], name: 'Coffea Cafés Especiales', addr: '6a Calle Oriente 18A', why: w('Especialistas en café. Entre las 100 mejores coffee shops del mundo.', 'Coffee specialists. Among the world’s 100 best coffee shops.') },
-  cazador: { cat: 'comida', g: ['ajpu'], name: 'El Cazador Italiano', addr: '3a Avenida Norte 1B, detrás de la Catedral', why: w('Lo mejor si querés la mejor pizza tradicional italiana o panadería italiana.', 'The place for the best traditional Italian pizza or Italian bakery.') },
-  once: { cat: 'comida', g: ['kej'], name: 'Once Once', addr: '2a Calle Oriente 22', why: w('Lugar vegano/vegetariano que recomiendo sobre todas las cosas. Cualquier plato de ahí es perfecto.', 'A vegan/vegetarian spot I recommend above all. Any dish there is perfect.') },
-  hectors: { cat: 'comida', g: [], name: 'Hector’s Bistro', addr: null, why: w('Un 10 en casi todos los platos, aparte de buen ambiente y una cervecería artesanal dentro.', 'A 10 on almost every dish, plus a great vibe and a craft brewery inside.') },
-  nikolo: { cat: 'comida', g: [], name: 'Nikolo', addr: null, why: w('Fancy cuisine literal. No decepciona.', 'Literally fancy cuisine. Never disappoints.') },
-  pina: { cat: 'comida', g: [], name: 'Y Tu Piña También', addr: null, why: w('Todo con piña y punto. Perfecto si querés algo diferentemente chill.', 'Everything with pineapple, period. Perfect for something differently chill.') },
-  patio: { cat: 'comida', g: ['batz'], name: 'Patio de la Primera', addr: '1a Avenida Sur 17C', why: w('De todo un poco, pero sobresale el ambiente y lo instagrameable del lugar.', 'A bit of everything, but the vibe and how photogenic it is stand out.') }
-};
+// ===================== CATÁLOGO (vive en data/lugares.js) =====================
+// Publicado = estado «publicado» + nombre, dirección, enlace de Maps, fuente, fecha y quién verificó.
+// El visitante solo ve lo publicado. Lo demás queda en la vista interna de revisión. Pausado y retirado no se cargan.
+var CATS = { cultura: 1, cafe: 1, comida: 1 };
+// Enlace propio de Maps: solo se acepta si es de Google Maps.
+var MAPS_RE = /^https:\/\/(www\.google\.[a-z.]+\/maps|maps\.google\.[a-z.]+|maps\.app\.goo\.gl|goo\.gl\/maps)(\/|\?|$)/;
+var P = {}, PIDS = [];
+(window.NAIHUAL_LUGARES || []).forEach(function (r) {
+  if (!r || !r.id || !CATS[r.categoria] || P[r.id]) return;
+  var estado = r.estado || 'borrador';
+  if (estado === 'pausado' || estado === 'retirado') return;
+  var f = r.frase || {};
+  P[r.id] = { id: r.id, cat: r.categoria, hist: !!r.historico, g: (r.guardianes || []).filter(function (g) { return ORDER.indexOf(g) >= 0; }),
+    name: String(r.nombre || '').trim(), addr: String(r.direccion || '').trim() || null, mapsLink: String(r.maps_url || '').trim(),
+    fuente: String(r.fuente || '').trim(), fuenteUrl: String(r.fuente_url || '').trim(), fecha: String(r.fecha_verificacion || '').trim(), verifico: String(r.verifico || '').trim(),
+    estado: estado, patro: r.patrocinado === true, pendiente: String(r.pendiente || '').trim(),
+    horario: r.fuente_horario ? String(r.horario || '').trim() : '', precio: r.fuente_precio ? String(r.precio || '').trim() : '',
+    why: { es: f.es || '', en: f.en || f.es || '' } };
+  if (P[r.id].name) PIDS.push(r.id); else delete P[r.id];
+});
+function validDate(s) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s); if (!m) return false;
+  var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  return d.getUTCMonth() === +m[2] - 1 && d.getTime() <= Date.now();
+}
+function mapsUrl(p) {
+  if (!p || !p.addr) return '';
+  if (p.mapsLink) return MAPS_RE.test(p.mapsLink) ? p.mapsLink : '';
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.name, p.addr, 'Antigua Guatemala'].join(', '));
+}
+// Qué le falta a una ficha para publicarse (para la vista interna).
+function missing(p) {
+  var m = [];
+  if (!p.addr) m.push('dirección');
+  if (p.addr && !mapsUrl(p)) m.push('enlace de Maps válido');
+  if (!p.fuente) m.push('fuente');
+  if (!validDate(p.fecha)) m.push('fecha de verificación');
+  if (!p.verifico) m.push('quién verificó');
+  if (p.estado !== 'publicado') m.push('estado «publicado»');
+  return m;
+}
+function isPub(p) { return !!p && !missing(p).length; }
+function pilotCafes() { return PIDS.filter(function (id) { return P[id].cat === 'cafe' && isPub(P[id]); }).slice(0, PILOT_MAX); }
+
+// ===================== FUENTES (vive en data/fuentes.js) =====================
+var SRC = {};
+(window.NAIHUAL_FUENTES || []).forEach(function (f) { if (f && f.id) SRC[f.id] = f; });
+
+// ===================== RUTAS =====================
 var ROUTES = {
-  centro: { g: ['ajpu'], stops: ['parque', 'catedral', 'doce', 'palacio', 'arco', 'merced'], kicker: w('Una mañana', 'A morning'), title: w('El corazón de Antigua', 'The heart of Antigua'), intro: w('La plaza, la Catedral y el Arco, con un café de especialidad a media mañana.', 'The square, the Cathedral and the Arch, with a specialty coffee mid-morning.') },
+  centro: { g: ['e'], stops: ['parque', 'catedral', 'doce', 'palacio', 'arco', 'merced'], kicker: w('Una mañana', 'A morning'), title: w('El corazón de Antigua', 'The heart of Antigua'), intro: w('La plaza, la Catedral y el Arco, con un café de especialidad a media mañana.', 'The square, the Cathedral and the Arch, with a specialty coffee mid-morning.') },
   conventos: { g: ['kej', 'noj'], stops: ['capuchinas', 'once', 'santaclara', 'sanfrancisco', 'patio'], kicker: w('Una tarde', 'An afternoon'), title: w('Conventos del oriente', 'Convents to the east'), intro: w('Tres ruinas y una iglesia viva en el lado tranquilo de la ciudad. Termina con cena en un patio.', 'Three ruins and a living church on the quiet side of town. Ends with dinner in a courtyard.') },
   norte: { g: ['kej'], stops: ['catedral', 'cazador', 'arco', 'merced', 'siena'], kicker: w('Un par de horas', 'A couple of hours'), title: w('Del Arco a La Merced', 'From the Arch to La Merced'), intro: w('La calle más fotografiada de Antigua, a paso lento, con pausas para comer y leer.', 'Antigua’s most photographed street, slowly, with stops to eat and read.') }
 };
+// Una ruta solo la ve el visitante si TODAS sus paradas están publicadas (el título y el texto las nombran).
+Object.keys(ROUTES).forEach(function (id) { if (!ROUTES[id].stops.every(function (s) { return isPub(P[s]); })) delete ROUTES[id]; });
+
+// ===================== CONSEJOS (src = fuente del registro que los respalda) =====================
 var TIPS = {
-  foto: { cat: 'general', g: ['batz', 'ajpu'], body: w('Antes de fotografiar a alguien, pedí permiso. Un «¿puedo?» basta.', 'Before photographing someone, ask first. A simple “may I?” is enough.') },
+  foto: { cat: 'general', g: ['iq', 'e'], body: w('Antes de fotografiar a alguien, pedí permiso. Un «¿puedo?» basta.', 'Before photographing someone, ask first. A simple “may I?” is enough.') },
   horario: { cat: 'general', g: ['kej'], body: w('Los horarios cambian. Confirmalos en Google Maps antes de salir.', 'Opening hours change. Check them in Google Maps before you head out.') },
-  calles: { cat: 'general', g: ['kej', 'ajpu'], body: w('Caminá con respeto: estas calles son casa de mucha gente.', 'Walk with respect: these streets are home to many people.') },
-  cholqij: { cat: 'cultura', star: true, g: ['batz', 'noj'], body: w('El Cholq\'ij, el calendario sagrado maya, tiene 260 días: 13 números por 20 nawales.', 'The Cholq\'ij, the sacred Maya calendar, has 260 days: 13 numbers times 20 nawales.') },
-  winaq: { cat: 'cultura', star: true, g: ['noj'], body: w('Los mayas cuentan en base 20. Un Winaq (20) son los dedos de las manos y de los pies.', 'The Maya count in base 20. One Winaq (20) is all the fingers and toes.') },
-  rukux: { cat: 'cultura', star: true, g: ['noj'], body: w('Ruk\'u\'x Kaj y Ruk\'u\'x Ulew: el Corazón del Cielo y el Corazón de la Tierra, fuerzas creadoras junto al Corazón del Agua y del Fuego.', 'Ruk\'u\'x Kaj and Ruk\'u\'x Ulew: the Heart of Sky and the Heart of Earth, creative forces alongside the Heart of Water and of Fire.') },
-  maiz: { cat: 'cultura', star: true, g: ['noj'], body: w('En el Popol Wuj, la humanidad está hecha de maíz. Por eso el ser humano y la naturaleza no se separan.', 'In the Popol Wuj, humanity is made of maize, so people and nature cannot be separated.') },
-  nikaj: { cat: 'cultura', star: true, g: ['noj', 'batz'], body: w('El cero maya, Nik\'aj, se dibuja como una concha o una flor. No es vacío: es plenitud, semilla y ciclo completo.', 'The Maya zero, Nik\'aj, is drawn as a shell or a flower. It is not emptiness: it means fullness, seed and a completed cycle.') },
-  ab: { cat: 'cultura', star: true, g: ['noj'], body: w('El Ab\' es el calendario solar de 365 días: 18 meses de 20 días, más los 5 días del Wayeb\'.', 'The Ab\' is the 365-day solar calendar: 18 months of 20 days, plus the 5 days of the Wayeb\'.') },
-  rueda: { cat: 'cultura', star: true, g: ['noj'], body: w('Juntos, el Cholq\'ij y el Ab\' forman la Rueda Calendárica: un ciclo de 52 años, 18,980 días.', 'Together, the Cholq\'ij and the Ab\' form the Calendar Round: a 52-year cycle of 18,980 days.') },
-  cargadores: { cat: 'cultura', star: true, g: ['noj'], body: w('Solo cuatro nawales pueden abrir el año solar: los Cargadores del Año. En el altiplano guatemalteco son Iq\', Kej, E y No\'j.', 'Only four nawales can open the solar year: the Year Bearers. In the Guatemalan highlands they are Iq\', Kej, E and No\'j.') },
-  nawalpersona: { cat: 'cultura', star: true, g: ['noj'], body: w('Los nawales son los significados de los días. Decirle a alguien «cuál es su nawal» le corresponde a un Ajq\'ij.', 'Nawales are the meanings of the days. Telling someone "what their nawal is" is the work of an Ajq\'ij.') }
+  calles: { cat: 'general', g: ['kej', 'e'], body: w('Caminá con respeto: estas calles son casa de mucha gente.', 'Walk with respect: these streets are home to many people.') },
+  cholqij: { cat: 'cultura', star: true, src: ['consolidado'], g: ['iq', 'noj'], body: w('El Cholq\'ij, el calendario sagrado maya, tiene 260 días: 13 números por 20 nawales.', 'The Cholq\'ij, the sacred Maya calendar, has 260 days: 13 numbers times 20 nawales.') },
+  winaq: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Los mayas cuentan en base 20. Un Winaq (20) son los dedos de las manos y de los pies.', 'The Maya count in base 20. One Winaq (20) is all the fingers and toes.') },
+  rukux: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Ruk\'u\'x Kaj y Ruk\'u\'x Ulew: el Corazón del Cielo y el Corazón de la Tierra, fuerzas creadoras junto al Corazón del Agua y del Fuego.', 'Ruk\'u\'x Kaj and Ruk\'u\'x Ulew: the Heart of Sky and the Heart of Earth, creative forces alongside the Heart of Water and of Fire.') },
+  maiz: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('En el Popol Wuj, la humanidad está hecha de maíz. Por eso el ser humano y la naturaleza no se separan.', 'In the Popol Wuj, humanity is made of maize, so people and nature cannot be separated.') },
+  nikaj: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj', 'iq'], body: w('El cero maya, Nik\'aj, se dibuja como una concha o una flor. No es vacío: es plenitud, semilla y ciclo completo.', 'The Maya zero, Nik\'aj, is drawn as a shell or a flower. It is not emptiness: it means fullness, seed and a completed cycle.') },
+  ab: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('El Ab\' es el calendario solar de 365 días: 18 meses de 20 días, más los 5 días del Wayeb\'.', 'The Ab\' is the 365-day solar calendar: 18 months of 20 days, plus the 5 days of the Wayeb\'.') },
+  rueda: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Juntos, el Cholq\'ij y el Ab\' forman la Rueda Calendárica: un ciclo de 52 años, 18,980 días.', 'Together, the Cholq\'ij and the Ab\' form the Calendar Round: a 52-year cycle of 18,980 days.') },
+  cargadores: { cat: 'cultura', star: true, src: ['consolidado', 'notebooklm-cargadores'], g: ['noj'], body: w('Solo cuatro nawales pueden abrir el año solar: los Cargadores del Año. En el altiplano guatemalteco son Iq\', Kej, E\' y No\'j. Son los cuatro guardianes de nAIhual.', 'Only four nawales can open the solar year: the Year Bearers. In the Guatemalan highlands they are Iq\', Kej, E\' and No\'j. They are the four nAIhual guardians.') },
+  nawalpersona: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Los nawales son los significados de los días. Decirle a alguien «cuál es su nawal» le corresponde a un Ajq\'ij.', 'Nawales are the meanings of the days. Telling someone "what their nawal is" is the work of an Ajq\'ij.') }
 };
 // 20 nawales: tabla del Documento Consolidado. Inglés traducido por Claude, sin revisar.
 var NAWALES = [
   ['batz', "B'atz'", w('Hilo del tiempo, tejido, origen', 'Thread of time, weaving, origin'), w('Mono', 'Monkey'), w('Maestro de artes, tejedor del tiempo, guía familiar', 'Master of the arts, weaver of time, family guide'), w('Terquedad, ambición material, sarcasmo', 'Stubbornness, material ambition, sarcasm')],
-  ['e', 'E', w('Camino, destino, estructura corporal', 'Path, destiny, the body’s structure'), w('Gato de monte, puma', 'Wildcat, puma'), w('Guía de viajeros, líder nato, orador', 'Guide of travelers, natural leader, speaker'), w('Impaciencia, inestabilidad emocional', 'Impatience, emotional instability')],
+  ['e', "E'", w('Camino, destino, estructura corporal', 'Path, destiny, the body’s structure'), w('Gato de monte, puma', 'Wildcat, puma'), w('Guía de viajeros, líder nato, orador', 'Guide of travelers, natural leader, speaker'), w('Impaciencia, inestabilidad emocional', 'Impatience, emotional instability')],
   ['aj', 'Aj', w('Cañaveral, hogar, linaje, autoridad', 'Cane field, home, lineage, authority'), w('Armadillo', 'Armadillo'), w('Protector de niños, mediador, sabio', 'Protector of children, mediator, wise one'), w('Chisme, celos, manipulación', 'Gossip, jealousy, manipulation')],
   ['ix', "I'x", w('Jaguar, energía terrestre, altar', 'Jaguar, earth energy, altar'), w('Jaguar', 'Jaguar'), w('Intuición, sagacidad, fuerza de la Tierra', 'Intuition, shrewdness, strength of the Earth'), w('Orgullo, impulsividad, reserva excesiva', 'Pride, impulsiveness, excessive reserve')],
   ['tzikin', "Tz'ikin", w('Pájaro, quetzal, abundancia', 'Bird, quetzal, abundance'), w('Aves rapaces, quetzal', 'Birds of prey, quetzal'), w('Visión a larga distancia, imán de fortuna', 'Far-reaching vision, a magnet for fortune'), w('Inconstancia, egoísmo, dispersión', 'Inconstancy, selfishness, scattered focus')],
@@ -352,132 +491,167 @@ var NAWALES = [
 ];
 var N = {};
 NAWALES.forEach(function (r, i) { N[r[0]] = { n: i + 1, name: r[1], symbol: r[2], animal: r[3], light: r[4], shadow: r[5] }; });
-var GUARDIAN_NAWAL = { batz: 'batz', kej: 'kej', ajpu: 'ajpu', noj: 'noj' };
+var GUARDIAN_NAWAL = { noj: 'noj', iq: 'iq', kej: 'kej', e: 'e' };
 
 // ===================== RESPUESTAS DE LOS GUARDIANES (propuesta de Claude, por corregir) =====================
 // items: 'p:id' lugar · 'r:id' ruta · 't:id' consejo · plan: lugares en orden
+// «cafe» es el recorrido piloto: no lleva lugares fijos; muestra los cafés publicados (pilotCafes).
+// Si una respuesta nombra lugares que todavía no están publicados, el visitante ve «en revisión» en su lugar.
 var R = {
   empezar: {
-    batz: { t: w('¡Empecemos por el nudo donde se juntan todos los hilos! El Parque Central. Desde ahí todo queda a pie. Y una idea para tu primera foto: pedí permiso antes de retratar a alguien.', 'Let’s start where all the threads meet! Parque Central. From there everything is walkable. And an idea for your first photo: ask before you take someone’s portrait.'), items: ['p:parque', 't:foto'] },
+    noj: { t: w('¿Sabías que Antigua fue la sede de toda la Capitanía General de Guatemala? Empezá por la plaza: ahí entendés por qué.', 'Did you know Antigua was the seat of the whole Captaincy General of Guatemala? Start at the square and you’ll see why.'), items: ['p:parque', 'p:palacio', 'p:catedral'] },
+    iq: { t: w('Primer paso: respirá y empezá por el Parque Central. Desde ahí todo queda a pie. Y si querés retratar a alguien, primero preguntá.', 'First step: take a breath and start at Parque Central. Everything is walkable from there. And if you want someone’s portrait, ask first.'), items: ['p:parque', 't:foto'] },
     kej: { t: w('Primer paso: ubicate. Esta ruta te ordena el centro en un par de horas. Cinco paradas, en este orden.', 'Step one: get your bearings. This route lays out the centre in a couple of hours. Five stops, in this order.'), items: ['r:norte'] },
-    ajpu: { t: w('¿Te animás a arrancar fuerte? Si hoy hacés una sola cosa, que sea esta: el corazón de Antigua, de la plaza a La Merced.', 'Up for a strong start? If you do one thing today, make it this: the heart of Antigua, from the square to La Merced.'), items: ['r:centro'] },
-    noj: { t: w('¿Sabías que Antigua fue la sede de toda la Capitanía General de Guatemala? Empezá por la plaza: ahí entendés por qué.', 'Did you know Antigua was the seat of the whole Captaincy General of Guatemala? Start at the square and you’ll see why.'), items: ['p:parque', 'p:palacio', 'p:catedral'] }
+    e: { t: w('Directo a lo mejor: si hoy hacés una sola cosa, que sea esta. El corazón de Antigua, de la plaza a La Merced.', 'Straight to the best: if you do one thing today, make it this. The heart of Antigua, from the square to La Merced.'), items: ['r:centro'] }
   },
   horas: {
-    batz: { t: w('¡Tres horas dan para mucho! Calles bonitas, un arco para tu foto y un café con libros para cerrar.', 'Three hours go a long way! Pretty streets, an arch for your photo and a café full of books to finish.'), plan: ['arco', 'merced', 'siena'] },
+    noj: { t: w('Mirá este detalle: en el oriente de la ciudad quedan tres historias de conventos, una junto a la otra. En unas horas las podés leer todas.', 'Look at this: on the east side of town, three convent stories sit side by side. In a few hours you can read them all.'), plan: ['capuchinas', 'santaclara', 'sanfrancisco'] },
+    iq: { t: w('Tres horas con aire: un arco para tu foto, una iglesia y una pausa para cerrar.', 'Three easy hours: an arch for your photo, a church and a break to finish.'), plan: ['arco', 'merced', 'siena'] },
     kej: { t: w('Para unas horas: cinco paradas a pie, en este orden. Confirmá horarios antes de salir.', 'For a few hours: five stops on foot, in this order. Check opening hours before you go.'), items: ['r:norte'] },
-    ajpu: { t: w('¿Tenés la tarde? Andate al lado tranquilo: tres ruinas y una cena. Vale la pena.', 'Got the afternoon? Head to the quiet side: three ruins and dinner. Worth it.'), items: ['r:conventos'] },
-    noj: { t: w('Mirá este detalle: en el oriente de la ciudad quedan tres historias de conventos, una junto a la otra. En unas horas las podés leer todas.', 'Look at this: on the east side of town, three convent stories sit side by side. In a few hours you can read them all.'), plan: ['capuchinas', 'santaclara', 'sanfrancisco'] }
+    e: { t: w('¿Tenés la tarde? Te llevo al lado tranquilo: tres ruinas y una cena. Vale la pena.', 'Got the afternoon? I’ll take you to the quiet side: three ruins and dinner. Worth it.'), items: ['r:conventos'] }
   },
   dia: {
-    batz: { t: w('¡Un día entero para tejer! Arrancá en la plaza y cerrá en un patio para contar todo lo que viviste.', 'A whole day to weave! Start at the square and end in a courtyard to tell everything you lived.'), items: ['r:centro', 'r:conventos'] },
+    noj: { t: w('¿Sabías que casi todo lo que vas a ver sobrevivió a los terremotos de 1773? Por la mañana, el poder colonial; por la tarde, la vida de los conventos.', 'Did you know most of what you’ll see survived the 1773 earthquakes? Morning: colonial power. Afternoon: convent life.'), items: ['r:centro', 'r:conventos'] },
+    iq: { t: w('Un día entero: arrancá en la plaza y cerrá en un patio, para contar todo lo que viviste.', 'A whole day: start at the square and end in a courtyard, to tell everything you lived.'), items: ['r:centro', 'r:conventos'] },
     kej: { t: w('Un día, dos rutas. Mañana: el centro. Tarde: los conventos del oriente. En ese orden.', 'One day, two routes. Morning: the centre. Afternoon: the eastern convents. In that order.'), items: ['r:centro', 'r:conventos'] },
-    ajpu: { t: w('Un día completo, sin excusas. ¿Te animás a las dos rutas? Mañana centro, tarde conventos.', 'A full day, no excuses. Up for both routes? Centre in the morning, convents in the afternoon.'), items: ['r:centro', 'r:conventos'] },
-    noj: { t: w('¿Sabías que casi todo lo que vas a ver sobrevivió a los terremotos de 1773? Por la mañana, el poder colonial; por la tarde, la vida de los conventos.', 'Did you know most of what you’ll see survived the 1773 earthquakes? Morning: colonial power. Afternoon: convent life.'), items: ['r:centro', 'r:conventos'] }
+    e: { t: w('Un día completo, y vos podés con las dos rutas. Mañana centro, tarde conventos.', 'A full day, and you can do both routes. Centre in the morning, convents in the afternoon.'), items: ['r:centro', 'r:conventos'] }
   },
   cafe: {
-    batz: { t: w('¡Café con estilo! Este lo cuenta todo con mucho amor y estética. Perfecto para tu historia del día.', 'Coffee with style! This one shares its love for coffee beautifully. Perfect for your story of the day.'), items: ['p:artista'] },
-    kej: { t: w('Tres cafés de especialidad, cerca uno del otro: dos están frente a frente en la 4a Calle Oriente.', 'Three specialty cafés close together: two face each other on 4a Calle Oriente.'), plan: ['doce', 'fatcat', 'coffea'] },
-    ajpu: { t: w('Uno solo, el mejor para lo que buscás: Coffea. ¿Te animás a probar uno de los cien mejores del mundo?', 'Just one, the best for you: Coffea. Up for trying one of the world’s hundred best?'), items: ['p:coffea'] },
-    noj: { t: w('¿Café y algo para pensar? Siena Luz junta filosofía, literatura y buen café.', 'Coffee and something to think about? Siena Luz brings together philosophy, literature and great coffee.'), items: ['p:siena'] }
+    noj: { t: w('Te muestro solo cafés con fuente y fecha de verificación. Así sabés de dónde sale cada dato.', 'I only show cafés with a source and a verification date, so you know where each detail comes from.') },
+    iq: { t: w('¡Buena pausa! Estos cafés ya tienen fuente y fecha de verificación.', 'Good call for a break! These cafés already have a source and a verification date.') },
+    kej: { t: w('Cafés con fuente y fecha de verificación, y cómo llegar a pie.', 'Cafés with a source and verification date, and how to walk there.') },
+    e: { t: w('Directo: estos son los cafés que ya pasaron la revisión.', 'Straight up: these are the cafés that have passed review.') }
   },
   comida: {
-    batz: { t: w('¡A comer con ambiente! Este patio es de esos lugares que dan ganas de contar.', 'Let’s eat somewhere with atmosphere! This courtyard is the kind of place you want to share.'), items: ['p:patio'] },
-    kej: { t: w('Una pausa tranquila: comida vegana y vegetariana en el lado oriente.', 'A calm break: vegan and vegetarian food on the east side.'), items: ['p:once'] },
-    ajpu: { t: w('Comida con carácter: pizza italiana de verdad, detrás de la Catedral. Andá.', 'Food with character: real Italian pizza, right behind the Cathedral. Go.'), items: ['p:cazador'] },
-    noj: { t: w('Mirá, aquí van tres opciones distintas. Elegí sabiendo qué buscás: vegana, italiana o de ambiente.', 'Here are three different options. Choose knowing what you want: vegan, Italian or atmosphere.'), items: ['p:once', 'p:cazador', 'p:patio'] }
+    noj: { t: w('Mirá, aquí van tres opciones distintas. Elegí sabiendo qué buscás: vegana, italiana o de ambiente.', 'Here are three different options. Choose knowing what you want: vegan, Italian or atmosphere.'), items: ['p:once', 'p:cazador', 'p:patio'] },
+    iq: { t: w('Una pausa para comer y platicar: este patio invita a quedarse.', 'A break to eat and chat: this courtyard invites you to stay.'), items: ['p:patio'] },
+    kej: { t: w('Comida en el camino: vegana y vegetariana en el lado oriente, cerca de los conventos.', 'Food along the way: vegan and vegetarian on the east side, near the convents.'), items: ['p:once'] },
+    e: { t: w('Comida con carácter: pizza italiana de verdad, detrás de la Catedral. Andá.', 'Food with character: real Italian pizza, right behind the Cathedral. Go.'), items: ['p:cazador'] }
   },
   cultura: {
-    batz: { t: w('¡El tiempo maya también es un tejido! Mirá cómo se cuenta.', 'Maya time is a weaving too! Look how it’s counted.'), items: ['t:cholqij', 't:nikaj'] },
+    noj: { t: w('¿Sabías que en el Popol Wuj la humanidad está hecha de maíz? Te dejo tres ideas para entender la cosmovisión.', 'Did you know that in the Popol Wuj humanity is made of maize? Here are three ideas to understand the worldview.'), items: ['t:rukux', 't:maiz', 't:nikaj'] },
+    iq: { t: w('¿Algo para contar de tu viaje? Cómo se cuenta el tiempo maya.', 'Something to share from your trip? How Maya time is counted.'), items: ['t:cholqij', 't:nikaj'] },
     kej: { t: w('Tres ruinas y una iglesia viva, a pie y en orden.', 'Three ruins and a living church, on foot and in order.'), items: ['r:conventos'] },
-    ajpu: { t: w('Si vas a ver una sola ruina, que sea esta. ¿Te animás a ver la torre circular de celdas?', 'If you see only one ruin, make it this one. Up for the circular tower of cells?'), items: ['p:capuchinas'] },
-    noj: { t: w('¿Sabías que en el Popol Wuj la humanidad está hecha de maíz? Te dejo tres ideas para entender la cosmovisión.', 'Did you know that in the Popol Wuj humanity is made of maize? Here are three ideas to understand the worldview.'), items: ['t:rukux', 't:maiz', 't:nikaj'] }
+    e: { t: w('Si vas a ver una sola ruina, que sea esta: la torre circular de celdas.', 'If you see only one ruin, make it this one: the circular tower of cells.'), items: ['p:capuchinas'] }
   },
   respeto: {
-    batz: { t: w('Antes de contarlo, pedí permiso. La mejor historia es la que la otra persona quiere compartir.', 'Before you share it, ask. The best story is the one the other person wants to share.'), items: ['t:foto'] },
+    noj: { t: w('Mirá este detalle: los nawales son los significados de los días, no etiquetas para personas.', 'Look at this: nawales are the meanings of the days, not labels for people.'), items: ['t:nawalpersona', 't:foto'] },
+    iq: { t: w('Hablar con la gente empieza por preguntar. La mejor historia es la que la otra persona quiere compartir.', 'Talking with people starts with asking. The best story is the one the other person wants to share.'), items: ['t:foto'] },
     kej: { t: w('Dos reglas simples para moverte bien por la ciudad.', 'Two simple rules for moving well around town.'), items: ['t:calles', 't:horario'] },
-    ajpu: { t: w('¿Te animás a algo difícil? Preguntar antes de fotografiar. Y cuidar el lugar como si fuera tuyo.', 'Up for something hard? Asking before you take a photo. And caring for the place like it’s yours.'), items: ['t:foto', 't:calles'] },
-    noj: { t: w('Mirá este detalle: los nawales son los significados de los días, no etiquetas para personas.', 'Look at this: nawales are the meanings of the days, not labels for people.'), items: ['t:nawalpersona', 't:foto'] }
+    e: { t: w('El buen camino: preguntar antes de fotografiar y cuidar el lugar como si fuera tuyo.', 'The good path: ask before taking a photo, and care for the place like it’s yours.'), items: ['t:foto', 't:calles'] }
   }
 };
 var GAPS = { naturaleza: w('naturaleza y miradores', 'nature and viewpoints'), arte: w('talleres y artesanía', 'workshops and crafts'), mercado: w('mercados', 'markets'), aventura: w('aventura y volcanes', 'adventure and volcanoes') };
 var GAP_VOICE = {
-  batz: w('¡Uy! De {x} todavía no tengo nada curado, y no te voy a inventar.', 'Oops! I don’t have anything curated on {x} yet, and I won’t make it up.'),
+  noj: w('Te cuento la verdad: de {x} todavía no tenemos información curada. Prefiero no inventar.', 'Here’s the truth: we don’t have curated information on {x} yet. I’d rather not invent it.'),
+  iq: w('Aire fresco y honesto: de {x} todavía no tengo nada curado, y no te voy a inventar.', 'Honest and simple: I don’t have anything curated on {x} yet, and I won’t make it up.'),
   kej: w('Sobre {x}: todavía no hay lugares verificados en nAIhual. No te invento nada.', 'On {x}: there are no verified places in nAIhual yet. I won’t invent any.'),
-  ajpu: w('Te reto a algo: esperá un poco. De {x} todavía no tengo lugares verificados y no te mando a ciegas.', 'A challenge: hold on a bit. I don’t have verified places for {x} yet, and I won’t send you in blind.'),
-  noj: w('Te cuento la verdad: de {x} todavía no tenemos información curada. Prefiero no inventar.', 'Here’s the truth: we don’t have curated information on {x} yet. I’d rather not invent it.')
+  e: w('Todavía no te puedo guiar ahí: de {x} no tengo lugares verificados y no te mando a ciegas.', 'I can’t guide you there yet: I don’t have verified places for {x}, and I won’t send you in blind.')
 };
 var SAFETY = w('Sobre seguridad no tengo una fuente oficial verificada, así que no te voy a dar consejos inventados. Preguntá en tu hospedaje o en la oficina de turismo local.', 'I don’t have a verified official source on safety, so I won’t give you made-up advice. Ask at your lodging or the local tourist office.');
-var GAP_TAIL = w('Preguntame por cafés, comida, rutas a pie o cultura.', 'Ask me about cafés, food, walking routes or culture.');
-var UNKNOWN = {
-  batz: w('¡Uy, esa no la entendí! Probá con una de las preguntas de abajo.', 'Oops, I didn’t get that one! Try one of the questions below.'),
-  kej: w('No entendí la pregunta. Elegí una de abajo y te ordeno el camino.', 'I didn’t understand. Pick one below and I’ll lay out the way.'),
-  ajpu: w('No te entendí. ¿Te animás con una de las de abajo?', 'I didn’t get that. Up for one of the ones below?'),
-  noj: w('Mirá, esa todavía no sé responderla. Probá con una de abajo.', 'I can’t answer that one yet. Try one of the questions below.')
+var GAP_TAIL = w('Mientras tanto, te puedo contar de la cultura maya o de cómo moverte con respeto.', 'Meanwhile, I can tell you about Maya culture or how to travel respectfully.');
+// Aclaración breve cuando no se entiende la pregunta (paso 2 del ciclo de aprendizaje; vive solo en esta conversación).
+var CLARIFY = {
+  noj: w('Para responderte bien, decime qué buscás:', 'To answer well, tell me what you’re looking for:'),
+  iq: w('Contame un poco más. ¿Qué buscás?', 'Tell me a bit more. What are you looking for?'),
+  kej: w('Para ordenarte el camino, elegí qué buscás:', 'To lay out the way, pick what you’re looking for:'),
+  e: w('Te guío mejor si me decís qué buscás:', 'I can guide you better if you tell me what you want:')
 };
 
 var STR = {
   es: {
+    aiThinking: 'Pensando…', aiStop: 'Detener', aiBy: 'responde Claude',
+    aiReady: 'Prueba privada: responde Claude con tu cuenta. Lo que escribís se envía a Claude para responder; nAIhual no lo guarda.',
+    aiLoading: 'Conectando con Claude…', aiOffFoot: 'Claude no está disponible en esta vista: responden las reglas fijas.',
+    aiLeak: 'Claude nombró un lugar que todavía está en revisión, así que respondí con las reglas fijas.', aiBad: 'Claude no pudo responder bien esta vez: respondí con las reglas fijas.',
+    aiBusy: 'Claude está ocupado o llegaste a tu límite de uso: respondí con las reglas fijas. Probá en un rato.', aiOff: 'Claude no está permitido en esta vista: respondo con las reglas fijas.',
+    aiStopped: 'Detuviste a Claude: respondí con las reglas fijas.',
+    footAI: VERSION + ' · responde Claude (prueba privada) · arte provisional',
     tagline: 'Viaja directo a la raíz.', placeholder: 'Escribí tu pregunta…', send: 'Enviar',
     tabGuia: 'Guía', tabFeed: 'Explorar', tabPara: 'Para vos',
     hint: 'Te guía uno hasta que pidás a otro. Tocá su ícono.', guides: 'te guía', asked: 'pediste', value: '',
-    welcome: 'Te voy a guiar yo por Antigua hasta que quieras hablar con otro guardián: Kej, Ajpu o No\'j. Tocá su ícono arriba o pedímelo. ¿Qué querés hacer?',
+    welcome: function (others) { return 'Te voy a guiar yo por Antigua hasta que quieras hablar con otro guardián: ' + others + '. Tocá su ícono arriba o pedímelo. ¿Qué querés hacer?'; }, or: ' o ',
     takeover: 'Desde ahora te guío yo, hasta que pidás a otro. ¿En qué te ayudo?',
     switchChip: 'Otro guía →',
-    chips: [['empezar', '¿Por dónde empiezo?'], ['horas', 'Tengo 3 horas'], ['cafe', 'Quiero un café'], ['comida', '¿Dónde como?'], ['dia', 'Plan de un día'], ['cultura', 'Contame de la cultura maya'], ['respeto', '¿Cómo me porto con respeto?']],
+    chips: [['cafe', 'Quiero un café'], ['empezar', '¿Por dónde empiezo?'], ['horas', 'Tengo 3 horas'], ['comida', '¿Dónde como?'], ['dia', 'Plan de un día'], ['cultura', 'Contame de la cultura maya'], ['respeto', '¿Cómo me porto con respeto?']],
     place: { cultura: 'Cultura', cafe: 'Café', comida: 'Para comer' }, route: 'Ruta a pie', plan: 'Plan', tip: 'Consejo', nawal: 'Nawal', collection: 'Colección',
-    maps: 'Cómo llegar', openMaps: 'Abrir en Google Maps', full: 'Abrir ruta completa a pie', stops: 'paradas a pie', addrPending: 'Dirección por confirmar',
+    maps: 'Cómo llegar', mapsAria: function (n) { return 'Cómo llegar a ' + n + ' (abre Google Maps)'; }, openMaps: 'Abrir en Google Maps',
+    review: 'En revisión', reviewNote: '◌ En revisión: todavía sin fuente ni fecha de verificación registradas.',
+    srcLabel: 'Fuente', checked: function (d, who) { return 'Comprobado el ' + d + ' por ' + who; }, hours: 'Horario', price: 'Precio',
+    pilotEmptyTitle: 'Selección en revisión', pilotEmptyBody: 'Todavía no hay cafés con fuente y fecha de verificación. Prefiero no recomendarte uno sin comprobar. Mientras tanto, preguntame por la cultura maya o por cómo moverte con respeto.',
+    months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], full: 'Abrir ruta completa a pie', stops: 'paradas a pie', addrPending: 'Dirección por confirmar',
     save: 'Guardar', saved: 'Guardado', back: 'Volver', inRoutes: 'Aparece en estas rutas', recBy: 'Lo recomienda', askTo: 'Preguntale a',
-    feedTitle: 'Antigua, a tu manera', feedSub: 'Rutas, lugares, consejos y los 20 nawales.', search: 'Buscá rutas, cafés, ruinas, nawales…',
+    feedTitle: 'Antigua, a tu manera', feedSub: 'Consejos, cosmovisión y los 20 nawales. Los lugares aparecen cuando ya están comprobados.', search: 'Buscá rutas, cafés, ruinas, nawales…',
     fAll: 'Todo', fRoute: 'Rutas', fCultura: 'Cultura', fNawal: 'Nawales', fCafe: 'Cafés', fComida: 'Comida', fTip: 'Consejos',
     noResults: 'Todavía no tenemos nada con esa búsqueda. Probá con otra palabra.',
     nawalsTitle: 'Los 20 nawales del Cholq\'ij', nawalsSub: '20 energías de los días',
     nawalsIntro: 'Un nawal es la energía o espíritu vital de los elementos de la naturaleza y de los días. Cada uno tiene luz (virtudes) y sombra (desafíos).',
     nSymbol: 'Símbolo / elemento', nAnimal: 'Animal asociado', nLight: 'Luz / vocación', nShadow: 'Sombra / desafío', nGuardian: 'Es uno de los 4 guardianes de nAIhual',
     nawalWarn: 'Estos son los significados de los días, no una descripción de personas. nAIhual no te dice «cuál es tu nawal»: eso lo hace un Ajq\'ij.',
-    bizTag: 'Patrocinado', bizKicker: 'Para negocios de Antigua', bizTitle: 'Plan Fundador',
-    bizBody: 'Los negocios fundadores pagan Q250 al mes durante 3 meses. Solo 5 lugares. Tu negocio aparece con tu historia y tu ubicación, siempre marcado como patrocinado.',
-    bizCta: 'Quiero ser fundador', bizPending: 'Contacto pendiente', bizMsg: 'Hola, quiero información del Plan Fundador de nAIhual.',
+    bizTag: 'Patrocinado', bizKicker: 'Para negocios de Antigua', pilotTag: 'Propuesta piloto',
+    bizBody: 'Una alianza con negocios locales para arrancar nAIhual. Pendiente de aprobación antes de contratar: no es inversión y no promete ventas.',
+    bizCta: 'Ver la propuesta',
+    reviewAnswer: 'Esa selección está en revisión: todavía no tengo lugares con fuente y fecha de verificación. Prefiero no recomendarte uno sin comprobar.',
+    clarifyLabel: 'Opciones', clarifyOpts: [['cafe', 'Un café'], ['cultura', 'Cultura maya'], ['respeto', 'Moverme con respeto'], ['empezar', 'Por dónde empiezo']],
+    filterReview: 'Todavía no hay lugares con fuente y fecha de verificación en esta categoría. Aparecen aquí apenas estén comprobados.', filters: 'Filtros',
+    planReview: 'Tu plan se arma con lugares comprobados. Todavía no hay ninguno publicado.', internalLink: 'Vista interna del equipo',
     paraTitle: 'Para vos', paraSub: 'Lo que guardás con ♥ arma tu plan.',
-    emptyTitle: 'Todavía no guardaste nada', emptyBody: 'Tocá el corazón en lo que te recomienden los guardianes o en el muro. Con eso armamos un plan a tu medida.', explore: 'Ir a Explorar',
+    emptyTitle: 'Todavía no guardaste nada', emptyBody: 'Tocá el corazón en lo que te recomienden los guardianes o en el muro. Lo que guardás queda solo en este dispositivo.', explore: 'Ir a Explorar',
     yourPlan: 'Armado para vos', yourPlanTitle: 'Tu plan en Antigua', savedTitle: 'Guardados',
     because: function (n, top) { return 'Guardaste ' + n + ' ' + (n === 1 ? 'cosa' : 'cosas') + '. Lo que más te interesa: ' + top + '. Revisá el orden en el mapa.'; },
     respect: 'Caminá con respeto: estas calles son casa de mucha gente. Confirmá horarios en Google Maps antes de ir.',
     starNote: '* Información cultural por confirmar con un Ajq\'ij.', histNote: '† Dato histórico por confirmar con fuente oficial.', enNote: '',
     foot: VERSION + ' · reglas fijas, sin IA · arte provisional', who: '¿Quiénes son los guardianes?',
-    dlgTitle: 'Los cuatro guardianes', dlgIntro: 'Te guía uno a la vez, hasta que pidás a otro. Si pedís «otro», pasa el siguiente en este orden. Lo que dice el PDF sobre cada nawal lleva * hasta que lo valide un Ajq\'ij.',
-    dValue: 'Es', dRole: 'Hace', dSpeaks: 'Habla', dRecs: 'Recomienda', dPdf: 'Nawal (PDF)*', close: 'Cerrar', talk: 'Hablar con'
+    dlgTitle: 'Los cuatro guardianes', dlgIntro: 'Son los cuatro cargadores del año*. Te guía uno a la vez, hasta que pidás a otro. Si pedís «otro», pasa el siguiente en este orden.',
+    dValue: 'Es', dDir: 'Rumbo y color', dRole: 'Hace', dSpeaks: 'Habla', dRecs: 'Recomienda', dPdf: 'Nawal (PDF)*', close: 'Cerrar', talk: 'Hablar con', wheel: 'Guardianes',
+    dlgPending: '* Pendiente de validación cultural: rumbo, color, valor, frases y lo que dice el PDF. La selección y el orden de los cuatro ya están aprobados.'
   },
   en: {
+    aiThinking: 'Thinking…', aiStop: 'Stop', aiBy: 'answered by Claude',
+    aiReady: 'Private test: Claude answers with your account. What you type is sent to Claude to answer; nAIhual does not keep it.',
+    aiLoading: 'Connecting to Claude…', aiOffFoot: 'Claude is not available in this view: fixed rules answer.',
+    aiLeak: 'Claude named a place that is still under review, so I answered with the fixed rules.', aiBad: 'Claude could not answer properly this time: I answered with the fixed rules.',
+    aiBusy: 'Claude is busy or you reached your usage limit: I answered with the fixed rules. Try again later.', aiOff: 'Claude is not allowed in this view: I answer with the fixed rules.',
+    aiStopped: 'You stopped Claude: I answered with the fixed rules.',
+    footAI: VERSION + ' · answered by Claude (private test) · placeholder art',
     tagline: 'Travel straight to the roots.', placeholder: 'Type your question…', send: 'Send',
     tabGuia: 'Guide', tabFeed: 'Explore', tabPara: 'For you',
     hint: 'One guides you until you ask for another. Tap their icon.', guides: 'is your guide', asked: 'you asked',
-    welcome: 'I’ll guide you through Antigua until you want to talk to another guardian: Kej, Ajpu or No\'j. Tap their icon above or just ask me. What would you like to do?',
+    welcome: function (others) { return 'I’ll guide you through Antigua until you want to talk to another guardian: ' + others + '. Tap their icon above or just ask me. What would you like to do?'; }, or: ' or ',
     takeover: 'From now on I’m your guide, until you ask for someone else. How can I help?',
     switchChip: 'Another guide →',
-    chips: [['empezar', 'Where do I start?'], ['horas', 'I have 3 hours'], ['cafe', 'I want a coffee'], ['comida', 'Where should I eat?'], ['dia', 'A one-day plan'], ['cultura', 'Tell me about Maya culture'], ['respeto', 'How do I travel respectfully?']],
+    chips: [['cafe', 'I want a coffee'], ['empezar', 'Where do I start?'], ['horas', 'I have 3 hours'], ['comida', 'Where should I eat?'], ['dia', 'A one-day plan'], ['cultura', 'Tell me about Maya culture'], ['respeto', 'How do I travel respectfully?']],
     place: { cultura: 'Culture', cafe: 'Coffee', comida: 'Food' }, route: 'Walking route', plan: 'Plan', tip: 'Tip', nawal: 'Nawal', collection: 'Collection',
-    maps: 'Directions', openMaps: 'Open in Google Maps', full: 'Open full walking route', stops: 'stops on foot', addrPending: 'Address to be confirmed',
+    maps: 'Directions', mapsAria: function (n) { return 'Directions to ' + n + ' (opens Google Maps)'; }, openMaps: 'Open in Google Maps',
+    review: 'Under review', reviewNote: '◌ Under review: no source or verification date recorded yet.',
+    srcLabel: 'Source', checked: function (d, who) { return 'Checked on ' + d + ' by ' + who; }, hours: 'Hours', price: 'Price',
+    pilotEmptyTitle: 'Selection under review', pilotEmptyBody: 'There are no cafés with a source and verification date yet. I’d rather not recommend one without checking. Meanwhile, ask me about Maya culture or how to travel respectfully.',
+    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], full: 'Open full walking route', stops: 'stops on foot', addrPending: 'Address to be confirmed',
     save: 'Save', saved: 'Saved', back: 'Back', inRoutes: 'Part of these routes', recBy: 'Recommended by', askTo: 'Ask',
-    feedTitle: 'Antigua, your way', feedSub: 'Routes, places, tips and the 20 nawales.', search: 'Search routes, cafés, ruins, nawales…',
+    feedTitle: 'Antigua, your way', feedSub: 'Tips, worldview and the 20 nawales. Places appear once they have been checked.', search: 'Search routes, cafés, ruins, nawales…',
     fAll: 'All', fRoute: 'Routes', fCultura: 'Culture', fNawal: 'Nawales', fCafe: 'Cafés', fComida: 'Food', fTip: 'Tips',
     noResults: 'Nothing matches that search yet. Try another word.',
     nawalsTitle: 'The 20 nawales of the Cholq\'ij', nawalsSub: '20 energies of the days',
     nawalsIntro: 'A nawal is the energy or vital spirit of the elements of nature and of the days. Each has a light side (virtues) and a shadow side (challenges).',
     nSymbol: 'Symbol / element', nAnimal: 'Associated animal', nLight: 'Light / calling', nShadow: 'Shadow / challenge', nGuardian: 'One of the 4 nAIhual guardians',
     nawalWarn: 'These are the meanings of the days, not descriptions of people. nAIhual does not tell you "what your nawal is": that is the work of an Ajq\'ij.',
-    bizTag: 'Sponsored', bizKicker: 'For Antigua businesses', bizTitle: 'Founder Plan',
-    bizBody: 'Founding businesses pay Q250 a month for 3 months. Only 5 spots. Your business appears with your story and location, always marked as sponsored.',
-    bizCta: 'I want to be a founder', bizPending: 'Contact coming soon', bizMsg: 'Hi, I would like information about the nAIhual Founder Plan.',
+    bizTag: 'Sponsored', bizKicker: 'For Antigua businesses', pilotTag: 'Pilot proposal',
+    bizBody: 'A partnership with local businesses to get nAIhual started. Pending approval before any contract: it is not an investment and promises no sales.',
+    bizCta: 'See the proposal',
+    reviewAnswer: 'That selection is under review: I don’t have places with a source and verification date yet. I’d rather not recommend one without checking.',
+    clarifyLabel: 'Options', clarifyOpts: [['cafe', 'A coffee'], ['cultura', 'Maya culture'], ['respeto', 'Travel respectfully'], ['empezar', 'Where to start']],
+    filterReview: 'There are no places with a source and verification date in this category yet. They appear here once checked.', filters: 'Filters',
+    planReview: 'Your plan is built from checked places. None are published yet.', internalLink: 'Team view',
     paraTitle: 'For you', paraSub: 'What you save with ♥ builds your plan.',
-    emptyTitle: 'Nothing saved yet', emptyBody: 'Tap the heart on what the guardians recommend, or on the wall. We use that to build a plan for you.', explore: 'Go to Explore',
+    emptyTitle: 'Nothing saved yet', emptyBody: 'Tap the heart on what the guardians recommend, or on the wall. What you save stays on this device only.', explore: 'Go to Explore',
     yourPlan: 'Built for you', yourPlanTitle: 'Your plan in Antigua', savedTitle: 'Saved',
     because: function (n, top) { return 'You saved ' + n + ' ' + (n === 1 ? 'thing' : 'things') + '. What you like most: ' + top + '. Check the order on the map.'; },
     respect: 'Walk with respect: these streets are home to many people. Check opening hours in Google Maps before you go.',
     starNote: '* Cultural information pending confirmation by an Ajq\'ij.', histNote: '† Historical detail pending confirmation with an official source.', enNote: 'English not yet reviewed by a native speaker.',
     foot: VERSION + ' · fixed rules, no AI · placeholder art', who: 'Who are the guardians?',
-    dlgTitle: 'The four guardians', dlgIntro: 'One guides you at a time, until you ask for another. If you ask for "another", the next one in this order takes over. What the PDF says about each nawal is marked * until an Ajq\'ij validates it.',
-    dValue: 'Is', dRole: 'Does', dSpeaks: 'Speaks', dRecs: 'Recommends', dPdf: 'Nawal (PDF)*', close: 'Close', talk: 'Talk to'
+    dlgTitle: 'The four guardians', dlgIntro: 'They are the four Year Bearers*. One guides you at a time, until you ask for another. If you ask for "another", the next one in this order takes over.',
+    dValue: 'Is', dDir: 'Direction and colour', dRole: 'Does', dSpeaks: 'Speaks', dRecs: 'Recommends', dPdf: 'Nawal (PDF)*', close: 'Close', talk: 'Talk to', wheel: 'Guardians',
+    dlgPending: '* Pending cultural validation: direction, colour, value, phrases and what the PDF says. The choice and order of the four are already approved.'
   }
 };
 
@@ -498,29 +672,14 @@ var RULES = [
   ['empezar', /empiez|empez|inicio|primer|start|begin|first|llegu|arriv|\bhola\b|hello|\bhi\b/]
 ];
 function detectGuardian(t) {
-  if (/b'?atz/.test(t)) return 'batz';
-  if (/\bkej\b/.test(t)) return 'kej';
-  if (/\bajpu\b/.test(t)) return 'ajpu';
   if (/\bno'?j\b/.test(t)) return 'noj';
+  if (/\biq\b/.test(t)) return 'iq';
+  if (/\bkej\b/.test(t)) return 'kej';
+  if (/(^|[^a-z'])e'(?![a-z])/.test(t)) return 'e';
   return null;
 }
 var NEXT_RE = /\botr[oa]\b|siguiente|cambi|\bnext\b|another|someone else|switch|other guide/;
 function detectIntent(t) { for (var i = 0; i < RULES.length; i++) if (RULES[i][1].test(t)) return RULES[i][0]; return null; }
-
-// ===================== ESTADO =====================
-var LS = 'naihual.app1';
-var S = { tab: 'guia', detail: null, prev: 'feed', lang: 'es', filter: 'all', query: '', saved: [], pref: { cultura: 0, cafe: 0, comida: 0 }, guide: 'batz', msgs: [] };
-try { var st0 = JSON.parse(localStorage.getItem(LS) || 'null'); if (st0) { S.saved = st0.saved || []; S.lang = st0.lang === 'en' ? 'en' : 'es'; Object.assign(S.pref, st0.pref || {}); } } catch (e) {}
-function persist() { try { localStorage.setItem(LS, JSON.stringify({ saved: S.saved, pref: S.pref, lang: S.lang })); } catch (e) {} }
-
-function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-function q(p) { return [p.name, p.addr, 'Antigua Guatemala'].filter(Boolean).join(', '); }
-function mapsUrl(p) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q(p)); }
-function routeUrl(ids) {
-  var qs = ids.map(function (id) { return encodeURIComponent(q(P[id])); });
-  return 'https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=' + qs[0] + '&destination=' + qs[qs.length - 1] + (qs.length > 2 ? '&waypoints=' + qs.slice(1, -1).join('%7C') : '');
-}
-function marks(o) { return (o.star ? ' *' : '') + (o.hist ? ' †' : ''); }
 
 var ICON = {
   heart: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
@@ -533,8 +692,44 @@ var ICON = {
   search: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>'
 };
 
+// ===================== ESTADO =====================
+// Solo se guardan en este dispositivo: los ♥, el idioma y las preferencias. La conversación vive en memoria y se borra al recargar.
+var LS = 'naihual.app1';
+var S = { tab: 'guia', detail: null, prev: 'feed', lang: 'es', filter: 'all', query: '', saved: [], pref: { cultura: 0, cafe: 0, comida: 0 }, guide: ORDER[0], msgs: [], sec: 'revision', demoFb: '' };
+try { var st0 = JSON.parse(localStorage.getItem(LS) || 'null'); if (st0) { S.saved = (st0.saved || []).filter(function (k) { return typeof k === 'string'; }); S.lang = st0.lang === 'en' ? 'en' : 'es'; Object.assign(S.pref, st0.pref || {}); } } catch (e) {}
+function persist() { try { localStorage.setItem(LS, JSON.stringify({ saved: S.saved, pref: S.pref, lang: S.lang })); } catch (e) {} }
+
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function routeUrl(ids) {
+  var qs = ids.map(function (id) { return encodeURIComponent([P[id].name, P[id].addr, 'Antigua Guatemala'].join(', ')); });
+  return 'https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=' + qs[0] + '&destination=' + qs[qs.length - 1] + (qs.length > 2 ? '&waypoints=' + qs.slice(1, -1).join('%7C') : '');
+}
+function marks(o) { return (o.star ? ' *' : '') + (o.hist ? ' †' : ''); }
+// Lo que el visitante puede ver: lugares publicados, rutas completas, consejos y nawales.
+function shown(key) {
+  var k = String(key).split(':')[0], id = String(key).split(':')[1];
+  return k === 'p' ? isPub(P[id]) : k === 'r' ? !!ROUTES[id] : k === 't' ? !!TIPS[id] : k === 'n' ? !!N[id] : key === 'c:nawales';
+}
+var MONTHS_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+function fmtDate(s, lang) { var m = s.split('-'), t = STR[lang || S.lang]; return (lang || S.lang) === 'en' ? t.months[+m[1] - 1] + ' ' + (+m[2]) + ', ' + m[0] : (+m[2]) + ' ' + t.months[+m[1] - 1] + ' ' + m[0]; }
+function safeHttp(u) { return /^https?:\/\//.test(u) ? u : ''; }
+// Fuente, fecha y quién verificó: solo para fichas publicadas. Lo demás dice «En revisión».
+function trustHTML(p) {
+  var t = STR[S.lang];
+  if (!isPub(p)) return '<p class="trust rev">' + esc(t.review) + '</p>';
+  var u = safeHttp(p.fuenteUrl);
+  return '<p class="trust">' + esc(t.srcLabel) + ': ' + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(p.fuente) + '</a>' : esc(p.fuente)) + '<br>' + esc(t.checked(fmtDate(p.fecha), p.verifico)) + '</p>' +
+    (p.horario ? '<p class="trust">' + esc(t.hours) + ': ' + esc(p.horario) + '</p>' : '') + (p.precio ? '<p class="trust">' + esc(t.price) + ': ' + esc(p.precio) + '</p>' : '');
+}
+function sponsorTag(p) { return p.patro ? '<span class="tag sp">' + esc(STR[S.lang].bizTag) + '</span>' : ''; }
+function mapsBtn(p, cls, label) {
+  var u = mapsUrl(p); if (!u) return '';
+  return '<a class="btn' + (cls ? ' ' + cls : '') + '" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + esc(STR[S.lang].mapsAria(p.name)) + '">' + ICON.pin + esc(label) + '</a>';
+}
+
 // ===================== GUARDADOS =====================
 function cats(key) {
+  if (!shown(key)) return [];
   var k = key.split(':')[0], id = key.split(':')[1];
   if (k === 'r') return ROUTES[id].stops.map(function (s) { return P[s].cat; });
   if (k === 'p') return [P[id].cat];
@@ -543,60 +738,170 @@ function cats(key) {
 }
 function bump(key, n) { cats(key).forEach(function (c) { S.pref[c] = (S.pref[c] || 0) + n; }); }
 function isSaved(key) { return S.saved.indexOf(key) >= 0; }
+function savedShown() { return S.saved.filter(shown); }
 function toggle(key) {
   var has = isSaved(key);
   S.saved = has ? S.saved.filter(function (x) { return x !== key; }) : S.saved.concat([key]);
   bump(key, has ? -3 : 3); persist(); render(false);
 }
-function heartBtn(key, cls) {
+function heartBtn(key) {
   var t = STR[S.lang], on = isSaved(key);
-  return '<button type="button" class="heart ' + (cls || '') + '" data-toggle="' + key + '" aria-pressed="' + on + '" aria-label="' + esc(on ? t.saved : t.save) + '">' + ICON.heart + '</button>';
+  return '<button type="button" class="heart" data-toggle="' + key + '" aria-pressed="' + on + '" aria-label="' + esc(on ? t.saved : t.save) + '">' + ICON.heart + '</button>';
+}
+
+// ===================== PROVEEDOR DE RESPUESTAS (interfaz intercambiable) =====================
+// Contrato: respond(pregunta, guardián activo) → mensaje { from, kind, intent?, gap?, intro?, meta }.
+// meta = registro de la respuesta: proveedor, versión de instrucciones, fuentes que la respaldan, si hubo información suficiente y si pidió aclaración.
+// Hoy: reglas fijas, sin IA y sin red. Mañana: otro proveedor (por ejemplo Gemini) detrás de un servidor propio que guarda la llave;
+// el navegador nunca ve una llave. Cualquier proveedor solo puede usar fichas publicadas y fuentes registradas.
+// El registro vive en memoria: no se guarda ni se envía a ninguna parte.
+function resolve(intent, gid) {
+  var r = R[intent][gid], cards = [], hidden = false;
+  if (r.plan) { if (r.plan.every(function (id) { return isPub(P[id]); })) cards.push({ plan: r.plan }); else hidden = true; }
+  (r.items || []).forEach(function (k) { if (shown(k)) cards.push({ key: k }); else if (k.charAt(0) !== 't') hidden = true; });
+  return { cards: cards, hidden: hidden };
+}
+function sourcesOf(cards) {
+  var out = [];
+  function place(id) { var p = P[id]; out.push(p.name + ' · ' + p.fuente + ' (' + p.fecha + ')'); }
+  cards.forEach(function (c) {
+    if (c.plan) c.plan.forEach(place);
+    else { var k = c.key.split(':')[0], id = c.key.split(':')[1];
+      if (k === 'p') place(id);
+      if (k === 'r') ROUTES[id].stops.forEach(place);
+      if (k === 't') (TIPS[id].src || []).forEach(function (s) { out.push(SRC[s] ? SRC[s].titulo + ' · ' + SRC[s].estado : s); }); }
+  });
+  return out.filter(function (x, i) { return out.indexOf(x) === i; });
+}
+var RulesProvider = {
+  id: 'reglas-fijas', label: 'Reglas fijas (sin IA)', version: INSTR_VERSION,
+  respond: function (text, guide) {
+    var t = norm(text), named = detectGuardian(t), intent = detectIntent(t);
+    var target = named || (NEXT_RE.test(t) ? ORDER[(ORDER.indexOf(guide) + 1) % ORDER.length] : null);
+    var m = { from: guide };
+    if (target && target !== guide) { m.from = target; m.intro = true; m.asked = true; }
+    if (intent && R[intent]) { m.kind = 'r'; m.intent = intent; }
+    else if (intent === 'seguridad') m.kind = 'safety';
+    else if (intent && GAPS[intent]) { m.kind = 'gap'; m.gap = intent; }
+    else m.kind = m.intro ? 'takeover' : 'clarify';
+    var meta = { proveedor: this.label, instrucciones: this.version, intencion: m.intent || m.gap || m.kind, fuentes: [], suficiente: false, aclaracion: m.kind === 'clarify' };
+    if (m.kind === 'r' && m.intent === 'cafe') { var ids = pilotCafes(); meta.fuentes = sourcesOf(ids.map(function (id) { return { key: 'p:' + id }; })); meta.suficiente = ids.length > 0; }
+    else if (m.kind === 'r') { var res = resolve(m.intent, m.from); meta.fuentes = sourcesOf(res.cards); meta.suficiente = !res.hidden && res.cards.length > 0; }
+    else if (m.kind === 'takeover') meta.suficiente = true;
+    m.meta = meta;
+    return m;
+  }
+};
+var PROVIDER = RulesProvider;
+
+// ===================== CLAUDE RESPONDE (solo en la prueba privada dentro del visor de Claude) =====================
+// Se enciende con «claude_responde: true» en data/config.js. Usa la función oficial del visor que le pregunta a Claude
+// con la cuenta de quien abre la página: sin llaves, sin servidor y sin pagos aparte. Fuera del visor no existe: responden las reglas fijas.
+// Claude recibe solo los datos de esta app y estas reglas. La app revisa cada respuesta: solo muestra fichas publicadas,
+// y si el texto nombra un lugar en revisión, la descarta y responde con reglas fijas. Nada se guarda en nAIhual.
+var AI_ON = CFG.claude_responde === true;
+var AI = { fn: null, state: AI_ON ? 'cargando' : 'apagado', busy: false, turns: [], ctl: null };
+var AI_OFF_CODES = { not_granted: 1, sampling_disabled: 1, not_declared: 1, capability_disabled: 1, capability_removed: 1, session_expired: 1 };
+if (AI_ON && window.claude && typeof window.claude.use === 'function') {
+  window.claude.use('sample').then(function (fn) { AI.fn = fn || null; AI.state = fn ? 'listo' : 'no-disponible'; render(false); }, function () { AI.state = 'no-disponible'; render(false); });
+} else if (AI_ON) AI.state = 'no-disponible';
+function aiData() {
+  return {
+    guardianes: ORDER.map(function (id) { var g = G[id]; return { id: id, nombre: g.name, es: g.value.es + ' *', hace: g.role.es, habla: g.speaks.es, recomienda: g.recs.es, rumbo_y_color: g.dir.es + ' *' }; }),
+    lugares_publicados: PIDS.filter(function (id) { return isPub(P[id]); }).map(function (id) { var p = P[id];
+      return { id: id, nombre: p.name, categoria: p.cat, direccion: p.addr, frase: p.why.es, fuente: p.fuente, fecha_verificacion: p.fecha, verifico: p.verifico, patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
+    en_revision_no_nombrar: PIDS.filter(function (id) { return !isPub(P[id]); }).map(function (id) { return P[id].name; }),
+    consejos: Object.keys(TIPS).map(function (id) { return { id: id, texto: TIPS[id].body.es, cultural_pendiente_de_validacion: !!TIPS[id].star }; }),
+    nawales_del_cholqij: NAWALES.map(function (r) { return r[1] + ': ' + r[2].es + ' · ' + r[3].es; }),
+    recorrido_de_cafe: 'El botón «Quiero un café» muestra hasta 3 cafés publicados con fuente y fecha. Hoy hay ' + pilotCafes().length + '.'
+  };
+}
+function aiRules(gid) {
+  var g = G[gid];
+  return 'Sos el motor de respuestas de nAIhual, una guía turístico-cultural de Antigua Guatemala, en una prueba privada del fundador. ' +
+    'Respondés como el guardián de turno, ' + g.name + ' (' + g.role.es + '; habla ' + g.speaks.es.toLowerCase() + '; recomienda: ' + g.recs.es + ').\n' +
+    'Reglas obligatorias:\n' +
+    '1. Usá SOLO los DATOS de abajo. No uses conocimiento propio sobre lugares, direcciones, horarios, precios, eventos, historia ni significados culturales.\n' +
+    '2. Solo podés recomendar lugares de «lugares_publicados». Si la lista está vacía o no hay uno que sirva, decí con calma que esa selección está en revisión. Nunca nombres un lugar de «en_revision_no_nombrar» ni ningún otro lugar.\n' +
+    '3. Lo cultural de los datos lleva * porque falta que lo valide un Ajq\'ij; decilo así. Nunca le digas a nadie «cuál es su nawal».\n' +
+    '4. Seguridad, salud o emergencias: no hay fuente oficial verificada. Sugerí preguntar en el hospedaje o en la oficina de turismo local. No des números de teléfono.\n' +
+    '5. Si la pregunta es ambigua, hacé una pregunta breve y ofrecé hasta 4 opciones cortas.\n' +
+    '6. Todo lo patrocinado se dice. Un pago nunca cambia lo que recomendás.\n' +
+    '7. Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si la persona escribe en inglés, respondé en inglés.\n' +
+    '8. Si no tenés información suficiente, decilo y ofrecé lo que sí hay: consejos, cultura con *, el recorrido de café.\n' +
+    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids de lugares_publicados], "consejos": [hasta 2 ids de consejos], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 4 textos cortos]}\n\n' +
+    'DATOS:\n' + JSON.stringify(aiData());
+}
+// Palabras que delatan un lugar: su nombre completo y cada palabra propia del nombre (no las comunes como «café» o «iglesia»).
+var LEAK_COMMON = { cafe: 1, cafes: 1, coffee: 1, house: 1, especiales: 1, bistro: 1, tambien: 1, primera: 1, artista: 1, alegria: 1, once: 1, italiano: 1, patio: 1, pina: 1,
+  parque: 1, central: 1, iglesia: 1, ruinas: 1, convento: 1, palacio: 1, generales: 1, grande: 1, santa: 1, clara: 1, jose: 1, francisco: 1, arco: 1, luz: 1 };
+var LEAK_EXTRA = { fatcat: ['fat cat'], santaclara: ['santa clara'], sanfrancisco: ['san francisco'], arco: ['santa catalina'], parque: ['parque central'] };
+function leakTerms(p) {
+  var full = norm(p.name).replace(/[^a-z0-9]+/g, ' ').trim();
+  return [full].concat(full.split(' ').filter(function (x) { return x.length >= 4 && !LEAK_COMMON[x]; }), LEAK_EXTRA[p.id] || []);
+}
+// Revisión de lo que devuelve Claude antes de mostrarlo.
+function aiClean(r) {
+  if (!r || typeof r !== 'object' || typeof r.texto !== 'string' || !r.texto.trim()) return null;
+  var texto = r.texto.trim().slice(0, 1500), low = ' ' + norm(texto).replace(/[^a-z0-9]+/g, ' ') + ' ';
+  var leak = PIDS.filter(function (id) { return !isPub(P[id]) && leakTerms(P[id]).some(function (w) { return low.indexOf(' ' + w + ' ') >= 0; }); });
+  if (leak.length) return { leak: leak.map(function (id) { return P[id].name; }) };
+  function ids(list, ok, max) { return (Array.isArray(list) ? list : []).map(String).filter(function (x, i, a) { return ok(x) && a.indexOf(x) === i; }).slice(0, max); }
+  return { texto: texto, lugares: ids(r.lugares, function (id) { return isPub(P[id]); }, 3), consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 2),
+    cultural: r.cultural === true, suficiente: r.suficiente === true,
+    opciones: (Array.isArray(r.opciones) ? r.opciones : []).map(function (o) { return String(o).trim().slice(0, 60); }).filter(Boolean).slice(0, 4) };
+}
+function askClaude(text, rulesMsg, pend) {
+  AI.busy = true; AI.ctl = new AbortController();
+  var input = [{ role: 'user', content: aiRules(pend.from) }].concat(AI.turns.slice(-8)).concat([{ role: 'user', content: text }]);
+  function finish(m) { var i = S.msgs.indexOf(pend); if (i >= 0) S.msgs[i] = m; else S.msgs.push(m); AI.busy = false; AI.ctl = null; render(true); }
+  AI.fn.json(input, { modelTier: 'quick', cache: false, signal: AI.ctl.signal }).then(function (r) {
+    var out = aiClean(r);
+    if (!out || out.leak) { rulesMsg.aiNote = out && out.leak ? 'aiLeak' : 'aiBad'; finish(rulesMsg); return; }
+    AI.turns.push({ role: 'user', content: text }, { role: 'assistant', content: out.texto });
+    var cards = out.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(out.consejos.map(function (id) { return { key: 't:' + id }; }));
+    finish({ from: pend.from, intro: pend.intro, kind: 'ai', ai: out,
+      meta: { proveedor: 'Claude (prueba privada en el visor)', instrucciones: INSTR_VERSION + ' + claude-1', intencion: rulesMsg.intent || rulesMsg.gap || 'libre', fuentes: sourcesOf(cards), suficiente: out.suficiente, aclaracion: out.opciones.length > 0 } });
+  }, function (e) {
+    var code = e && e.code;
+    if (code === 'cancelled') { rulesMsg.aiNote = 'aiStopped'; finish(rulesMsg); return; }
+    if (AI_OFF_CODES[code]) AI.state = 'no-disponible';
+    rulesMsg.aiNote = code === 'rate_limited' ? 'aiBusy' : AI_OFF_CODES[code] ? 'aiOff' : 'aiBad';
+    finish(rulesMsg);
+  });
 }
 
 // ===================== CHAT =====================
 // El guardián activo (S.guide) sigue contestando hasta que el turista pida a otro.
-function switchTo(gid) {
-  S.guide = gid;
-  S.msgs.push({ from: gid, kind: 'takeover', intro: true });
-}
-function answer(text) {
-  var t = norm(text), named = detectGuardian(t), intent = detectIntent(t);
-  var wantsNext = !named && NEXT_RE.test(t);
-  var target = named || (wantsNext ? ORDER[(ORDER.indexOf(S.guide) + 1) % 4] : null);
-  if (target && target !== S.guide) {
-    S.guide = target;
-    var m0 = { from: target, intro: true, asked: true };
-    if (intent && R[intent]) { m0.kind = 'r'; m0.intent = intent; }
-    else if (intent === 'seguridad') m0.kind = 'safety';
-    else if (intent && GAPS[intent]) { m0.kind = 'gap'; m0.gap = intent; }
-    else m0.kind = 'takeover';
-    S.msgs.push(m0); return;
-  }
-  var m = { from: S.guide };
-  if (intent && R[intent]) { m.kind = 'r'; m.intent = intent; }
-  else if (intent === 'seguridad') m.kind = 'safety';
-  else if (intent && GAPS[intent]) { m.kind = 'gap'; m.gap = intent; }
-  else m.kind = 'unknown';
-  S.msgs.push(m);
-}
+function switchTo(gid) { S.guide = gid; S.msgs.push({ from: gid, kind: 'takeover', intro: true }); }
 function ask(text) {
-  text = text.trim(); if (!text) return;
+  text = text.trim(); if (!text || AI.busy) return;
   S.msgs.push({ user: text });
-  answer(text);
-  render(true);
+  var m = PROVIDER.respond(text, S.guide);
+  S.guide = m.from;
+  // Las reglas siempre deciden el turno del guardián y el recorrido de café. Lo demás lo contesta Claude cuando está disponible.
+  var useAI = AI.fn && AI.state === 'listo' && !(m.kind === 'r' && m.intent === 'cafe') && !(m.kind === 'takeover' && text.split(/\s+/).length <= 4);
+  if (!useAI) { S.msgs.push(m); render(true); return; }
+  var pend = { from: m.from, intro: m.intro, kind: 'thinking' };
+  S.msgs.push(pend); render(true);
+  askClaude(text, m, pend);
 }
-
+function placeCard(p) {
+  var t = STR[S.lang];
+  return '<article class="card" data-place="' + esc(p.id) + '" data-pub="' + isPub(p) + '">' + heartBtn('p:' + p.id) +
+    '<span class="k">' + esc(t.place[p.cat]) + '</span>' + sponsorTag(p) +
+    '<h3>' + esc(p.name + marks(p)) + '</h3>' + (p.why[S.lang] ? '<p>' + esc(p.why[S.lang]) + '</p>' : '') +
+    '<span class="ad">' + esc(p.addr) + '</span>' + trustHTML(p) + mapsBtn(p, '', t.maps) + '</article>';
+}
 function itemCard(key) {
   var t = STR[S.lang], L = S.lang, k = key.split(':')[0], id = key.split(':')[1], o = { html: '', star: false, hist: false };
-  if (k === 'p') {
-    var p = P[id]; if (!p.addr) return o; o.hist = !!p.hist;
-    o.html = '<div class="card">' + heartBtn(key) + '<span class="k">' + esc(t.place[p.cat]) + '</span><h3>' + esc(p.name + marks(p)) + '</h3><p>' + esc(p.why[L]) + '</p><span class="ad">' + esc(p.addr) + '</span>' +
-      '<a class="btn" href="' + mapsUrl(p) + '" target="_blank" rel="noopener">' + ICON.pin + esc(t.maps) + '</a></div>';
-  } else if (k === 'r') {
+  if (!shown(key)) return o;
+  if (k === 'p') { var p = P[id]; o.hist = !!p.hist; o.html = placeCard(p); }
+  else if (k === 'r') {
     var r = ROUTES[id]; o.hist = true;
     o.html = '<div class="card">' + heartBtn(key) + '<span class="k">' + esc(t.route) + ' · ' + esc(r.kicker[L]) + '</span><h3>' + esc(r.title[L]) + ' †</h3><ol class="steps">' +
       r.stops.map(function (s) { return '<li><div>' + esc(P[s].name) + '</div></li>'; }).join('') +
-      '</ol><a class="btn solid" href="' + routeUrl(r.stops) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a></div>';
+      '</ol><a class="btn solid" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a></div>';
   } else if (k === 't') {
     var tp = TIPS[id]; o.star = !!tp.star;
     o.html = '<div class="card tipcard">' + heartBtn(key) + '<span class="k">' + esc(t.tip) + '</span><p>' + esc(tp.body[L] + marks(tp)) + '</p></div>';
@@ -604,41 +909,76 @@ function itemCard(key) {
   return o;
 }
 function planCard(plan) {
-  var t = STR[S.lang], hist = plan.some(function (id) { return P[id].hist; });
-  return { hist: hist, star: false, html: '<div class="card"><span class="k">' + esc(t.plan) + ' · ' + plan.length + ' ' + esc(t.stops) + '</span><ol class="steps">' +
+  var t = STR[S.lang];
+  return { hist: plan.some(function (id) { return P[id].hist; }), star: false,
+    html: '<div class="card"><span class="k">' + esc(t.plan) + ' · ' + plan.length + ' ' + esc(t.stops) + '</span><ol class="steps">' +
     plan.map(function (id) { var p = P[id]; return '<li><div><b>' + esc(p.name + marks(p)) + '</b><br><span>' + esc(p.addr) + '</span></div></li>'; }).join('') +
-    '</ol><a class="btn solid" href="' + routeUrl(plan) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a></div>' };
+    '</ol><a class="btn solid" href="' + esc(routeUrl(plan)) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a></div>' };
+}
+// Recorrido piloto «Quiero un café»: hasta PILOT_MAX cafés publicados, en el orden del catálogo. Si no hay, estado vacío.
+function pilotHTML() {
+  var t = STR[S.lang], ids = pilotCafes();
+  if (!ids.length) return '<div class="emptybox pilot-empty" role="status"><b>' + esc(t.pilotEmptyTitle) + '</b><span>' + esc(t.pilotEmptyBody) + '</span></div>';
+  return '<div class="cards pilot" data-count="' + ids.length + '">' + ids.map(function (id) { return placeCard(P[id]); }).join('') + '</div>';
 }
 function notesHTML(star, hist) {
   var t = STR[S.lang];
-  var n = (star ? '<span class="note-star">' + esc(t.starNote) + '</span>' : '') + (hist ? '<span class="note-hist">' + esc(t.histNote) + '</span>' : '') + (S.lang === 'en' ? '<span class="note-muted">' + esc(t.enNote) + '</span>' : '');
+  var n = (star ? '<span class="note-star">' + esc(t.starNote) + '</span>' : '') + (hist ? '<span class="note-hist">' + esc(t.histNote) + '</span>' : '') +
+    (S.lang === 'en' ? '<span class="note-muted">' + esc(t.enNote) + '</span>' : '');
   return n ? '<div class="notes">' + n + '</div>' : '';
+}
+function othersOf(gid) {
+  var t = STR[S.lang], names = ORDER.filter(function (x) { return x !== gid; }).map(function (x) { return G[x].name; });
+  return names.slice(0, -1).join(', ') + t.or + names[names.length - 1];
 }
 function msgHTML(m, isNew) {
   if (m.user) return '<div class="msg me' + (isNew ? ' new' : '') + '">' + esc(m.user) + '</div>';
-  var t = STR[S.lang], L = S.lang, g = G[m.from], paras = [], cards = '', star = !!m.intro, hist = false;
+  var t = STR[S.lang], L = S.lang, g = G[m.from], paras = [], cards = '', after = '', star = !!m.intro, hist = false;
   if (m.intro) paras.push(g.hello[L]);
-  if (m.kind === 'welcome') paras.push(t.welcome);
+  if (m.kind === 'welcome') paras.push(t.welcome(othersOf(m.from)));
   else if (m.kind === 'takeover') paras.push(t.takeover);
+  else if (m.kind === 'r' && m.intent === 'cafe') {
+    if (pilotCafes().length) paras.push(R.cafe[m.from].t[L]);
+    after = pilotHTML();
+  }
   else if (m.kind === 'r') {
-    var r = R[m.intent][m.from];
-    paras.push(r.t[L]);
-    var parts = (r.plan ? [planCard(r.plan)] : []).concat((r.items || []).map(itemCard));
-    parts.forEach(function (c) { cards += c.html; star = star || c.star; hist = hist || c.hist; });
+    var res = resolve(m.intent, m.from);
+    // Si la respuesta nombra lugares que todavía no están publicados, no se dice: se avisa que está en revisión.
+    if (res.hidden) { paras.push(t.reviewAnswer); if (!res.cards.length) paras.push(GAP_TAIL[L]); }
+    else paras.push(R[m.intent][m.from].t[L]);
+    res.cards.map(function (c) { return c.plan ? planCard(c.plan) : itemCard(c.key); }).forEach(function (c) { cards += c.html; star = star || c.star; hist = hist || c.hist; });
   }
   else if (m.kind === 'gap') paras.push(GAP_VOICE[m.from][L].replace('{x}', GAPS[m.gap][L]) + ' ' + GAP_TAIL[L]);
   else if (m.kind === 'safety') paras.push(SAFETY[L]);
-  else if (m.kind === 'unknown') paras.push(UNKNOWN[m.from][L]);
-  return '<div class="msg g-' + m.from + (isNew ? ' new' : '') + '"><div class="who"><span class="av" aria-hidden="true">' + g.ini + '</span><div><b>' + esc(g.name) + '</b> <em>' + esc(t.guides + ' · ' + g.value[L].toLowerCase()) + '</em></div></div>' +
-    '<div class="bubble">' + paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' +
-    (cards ? '<div class="cards">' + cards + '</div>' : '') + notesHTML(star, hist) + '</div>';
+  else if (m.kind === 'thinking') paras.push(t.aiThinking);
+  else if (m.kind === 'ai') {
+    m.ai.texto.split(/\n{2,}/).forEach(function (x) { if (x.trim()) paras.push(x.trim()); });
+    star = star || m.ai.cultural;
+    m.ai.lugares.map(function (id) { return itemCard('p:' + id); }).concat(m.ai.consejos.map(function (id) { return itemCard('t:' + id); })).forEach(function (c) { cards += c.html; star = star || c.star; hist = hist || c.hist; });
+    if (m.ai.opciones.length) after = '<div class="choices" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';
+  }
+  else if (m.kind === 'clarify') {
+    paras.push(CLARIFY[m.from][L]);
+    after = '<div class="choices" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + t.clarifyOpts.map(function (o) { return '<button type="button" class="chip" data-chip="' + o[0] + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>';
+  }
+  if (m.kind === 'thinking') after = '<button type="button" class="chip" data-stop style="align-self:flex-start">' + esc(t.aiStop) + '</button>';
+  var by = m.kind === 'ai' || m.kind === 'thinking' ? ' · ' + t.aiBy : '';
+  return '<div class="msg g-' + m.from + (isNew ? ' new' : '') + '" data-kind="' + m.kind + '"><div class="who"><span class="av" aria-hidden="true">' + g.ini + '</span><div><b>' + esc(g.name) + '</b> <em>' + esc(t.guides + ' · ' + g.value[L].toLowerCase() + by) + '</em></div></div>' +
+    (paras.length ? '<div class="bubble">' + paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' : '') +
+    (cards ? '<div class="cards">' + cards + '</div>' : '') + after + (m.aiNote ? '<p class="note-muted" style="font-size:12.5px">' + esc(t[m.aiNote]) + '</p>' : '') + notesHTML(star, hist) + '</div>';
 }
-function guiaHTML(scrollNew) {
-  return S.msgs.map(function (m, i) { return msgHTML(m, scrollNew && i >= S.msgs.length - 2); }).join('');
+function guiaHTML(scrollNew) { return S.msgs.map(function (m, i) { return msgHTML(m, scrollNew && i >= S.msgs.length - 2); }).join(''); }
+function footHTML() {
+  var t = STR[S.lang];
+  var ai = AI_ON ? '<p class="foot" data-ai="' + AI.state + '">' + esc(AI.state === 'listo' ? t.aiReady : AI.state === 'cargando' ? t.aiLoading : t.aiOffFoot) + '</p>' : '';
+  return ai + '<p class="foot">' + esc(AI.state === 'listo' ? t.footAI : t.foot) + ' · <button type="button" class="linkbtn" data-who>' + esc(t.who) + '</button>' +
+    (INTERNAL ? ' · <button type="button" class="linkbtn" data-go="taller">' + esc(t.internalLink) + '</button>' : '') + '</p>';
 }
 
 // ===================== EXPLORAR (muro) =====================
 var FEED = ['r:centro', 'p:doce', 't:cholqij', 'p:capuchinas', 'c:nawales', 'p:once', 'r:conventos', 't:rukux', 'p:artista', 't:foto', 'p:arco', 'p:siena', 't:maiz', 'p:cazador', 'r:norte', 'p:coffea', 't:winaq', 'p:merced', 't:nikaj', 'p:patio', 'p:fatcat', 'p:santaclara', 't:ab', 'p:komori', 't:horario', 'p:sanfrancisco', 't:rueda', 'p:hectors', 'p:catedral', 't:cargadores', 'p:nikolo', 'p:alegria', 'p:palacio', 'p:pina', 'p:parque']
+  .concat(PIDS.map(function (id) { return 'p:' + id; }))
+  .filter(function (key, i, all) { return all.indexOf(key) === i; })
   .concat(NAWALES.map(function (r) { return 'n:' + r[0]; }));
 var HEIGHTS = [210, 160, 190, 230, 150, 200];
 function gOf(key) {
@@ -649,33 +989,39 @@ function gOf(key) {
 function pinOf(key, i) {
   var t = STR[S.lang], L = S.lang, k = key.split(':')[0], id = key.split(':')[1], b = { key: key, h: HEIGHTS[i % HEIGHTS.length], g: gOf(key) };
   if (k === 'r') { var r = ROUTES[id]; return Object.assign(b, { type: 'route', img: true, label: t.route, glyph: r.stops.length, title: r.title[L] + ' †', sub: r.stops.length + ' ' + t.stops, text: r.title[L] + ' ' + r.intro[L], hist: true }); }
-  if (k === 'p') { var p = P[id]; return Object.assign(b, { type: p.cat, img: true, label: t.place[p.cat], glyph: p.name.charAt(0), title: p.name + marks(p), sub: p.why[L], text: p.name + ' ' + p.why[L], hist: !!p.hist }); }
+  if (k === 'p') { var p = P[id]; return Object.assign(b, { type: p.cat, img: true, label: t.place[p.cat], glyph: p.name.charAt(0), title: p.name + marks(p), sub: p.why[L], text: p.name + ' ' + p.why[L], hist: !!p.hist, patro: p.patro }); }
   if (k === 'c') return Object.assign(b, { type: 'cultura', img: true, label: t.collection, glyph: '20', title: t.nawalsTitle + ' *', sub: t.nawalsSub, text: t.nawalsTitle + ' nawal nahual', star: true });
   if (k === 'n') { var nw = N[id]; return Object.assign(b, { type: 'nawal', img: true, label: t.nawal, glyph: nw.n, title: nw.name + ' *', sub: nw.symbol[L], text: nw.name + ' nawal nahual ' + nw.symbol[L] + ' ' + nw.animal[L], star: true }); }
   var tp = TIPS[id]; return Object.assign(b, { type: 'tip', img: false, label: t.tip, body: tp.body[L] + marks(tp), text: tp.body[L], star: !!tp.star });
 }
 function gsHTML(list) { return list && list.length ? '<span class="gs">' + list.map(function (g) { return '<span class="av g-' + g + '" title="' + esc(G[g].name) + '">' + G[g].ini + '</span>'; }).join('') + '</span>' : ''; }
 function pinHTML(p) {
+  var t = STR[S.lang];
   if (!p.img) return '<div class="pin" data-open="' + p.key + '" role="button" tabindex="0"><div class="pin-tip"><span class="k">' + esc(p.label) + '</span><p>' + esc(p.body) + '</p>' + heartBtn(p.key) + '</div></div>';
-  return '<div class="pin" data-open="' + p.key + '" role="button" tabindex="0"><div class="pin-img" style="height:' + p.h + 'px"><span class="tag">' + esc(p.label) + '</span><span class="glyph" aria-hidden="true">' + esc(p.glyph) + '</span>' + heartBtn(p.key) + '</div>' +
+  return '<div class="pin" data-open="' + p.key + '" role="button" tabindex="0"><div class="pin-img" style="height:' + p.h + 'px"><span class="tag">' + esc(p.label) + (p.patro ? ' · ' + esc(t.bizTag) : '') + '</span><span class="glyph" aria-hidden="true">' + esc(p.glyph) + '</span>' + heartBtn(p.key) + '</div>' +
     '<div class="pin-cap"><b>' + esc(p.title) + '</b><span>' + esc(p.sub) + '</span>' + gsHTML(p.g) + '</div></div>';
 }
 function gridNotes(list) { return notesHTML(list.some(function (p) { return p.star; }), list.some(function (p) { return p.hist; })); }
+function bizCard() {
+  var t = STR[S.lang];
+  if (!SHOW_ALLIES) return '';
+  return '<section class="biz"><div class="row"><span class="k">' + esc(t.bizKicker) + '</span><span class="tag">' + esc(t.pilotTag) + '</span></div><h2>' + esc(A.title) + '</h2><p>' + esc(t.bizBody) + '</p>' +
+    '<button type="button" class="btn" data-go="aliados">' + esc(t.bizCta) + '</button></section>';
+}
 function feedHTML() {
-  var t = STR[S.lang], qy = norm(S.query.trim()), f = S.filter, all = FEED.map(pinOf);
+  var t = STR[S.lang], qy = norm(S.query.trim()), f = S.filter, all = FEED.filter(shown).map(pinOf);
   var list = all.filter(function (p) {
     var ok = f === 'all' ? p.type !== 'nawal' : f === 'route' ? p.type === 'route' : f === 'tip' ? p.type === 'tip' : f === 'nawal' ? p.type === 'nawal' : (p.type === f);
     if (qy) ok = (f === 'all' || ok) && norm(p.text).indexOf(qy) >= 0;
     return ok;
   });
   var fdefs = [['all', t.fAll], ['route', t.fRoute], ['cultura', t.fCultura], ['nawal', t.fNawal], ['cafe', t.fCafe], ['comida', t.fComida], ['tip', t.fTip]];
-  var wa = BIZ_WHATSAPP.replace(/\D/g, '');
-  var biz = wa ? '<a class="btn" href="https://wa.me/' + wa + '?text=' + encodeURIComponent(t.bizMsg) + '" target="_blank" rel="noopener">' + esc(t.bizCta) + '</a>' : '<span class="btn" aria-disabled="true">' + esc(t.bizPending) + '</span>';
+  var placeFilter = ['route', 'cafe', 'comida'].indexOf(f) >= 0;
+  var empty = placeFilter && !qy ? '<div class="emptybox" role="status"><b>' + esc(t.pilotEmptyTitle) + '</b><span>' + esc(t.filterReview) + '</span></div>' : '<p class="empty-q">' + esc(t.noResults) + '</p>';
   return '<div class="pagehead"><h1>' + esc(t.feedTitle) + '</h1><p>' + esc(t.feedSub) + '</p></div>' +
     '<label class="search">' + ICON.search + '<input id="fq" type="search" autocomplete="off" placeholder="' + esc(t.search) + '" value="' + esc(S.query) + '" aria-label="' + esc(t.search) + '"></label>' +
-    '<div class="chips" role="group">' + fdefs.map(function (d) { return '<button type="button" class="chip" data-filter="' + d[0] + '" aria-pressed="' + (f === d[0]) + '">' + esc(d[1]) + '</button>'; }).join('') + '</div>' +
-    (list.length ? '<div class="grid">' + list.map(pinHTML).join('') + '</div>' : '<p class="empty-q">' + esc(t.noResults) + '</p>') + gridNotes(list) +
-    '<section class="biz"><div class="row"><span class="kicker">' + esc(t.bizKicker) + '</span><span class="tag">' + esc(t.bizTag) + '</span></div><h2>' + esc(t.bizTitle) + '</h2><p>' + esc(t.bizBody) + '</p>' + biz + '</section>';
+    '<div class="chips" role="group" aria-label="' + esc(t.filters) + '">' + fdefs.map(function (d) { return '<button type="button" class="chip" data-filter="' + d[0] + '" aria-pressed="' + (f === d[0]) + '">' + esc(d[1]) + '</button>'; }).join('') + '</div>' +
+    (list.length ? '<div class="grid">' + list.map(pinHTML).join('') + '</div>' : empty) + gridNotes(list) + bizCard();
 }
 
 // ===================== FICHA =====================
@@ -689,19 +1035,20 @@ function detailHTML() {
   }
   function recBy(list) {
     if (!list || !list.length) return '';
-    return '<div class="recby"><h3>' + esc(t.recBy) + '</h3>' + list.map(function (g) { return '<button type="button" class="btn g-' + g + '" data-talk="' + g + '"><span class="av">' + G[g].ini + '</span>' + esc(t.askTo + ' ' + G[g].name) + '</button>'; }).join('') + '</div>';
+    return '<div class="recby"><h3>' + esc(t.recBy) + '</h3>' + list.map(function (g) { return '<button type="button" class="btn g g-' + g + '" data-talk="' + g + '"><span class="av">' + G[g].ini + '</span>' + esc(t.askTo + ' ' + G[g].name) + '</button>'; }).join('') + '</div>';
   }
   if (k === 'r') {
     var r = ROUTES[id]; hist = true;
     h += head(r.stops.length, r.kicker[L], r.title[L] + ' †', r.intro[L]) +
-      '<div class="actions"><a class="btn solid" href="' + routeUrl(r.stops) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a>' + saveBtn + '</div></section>' +
+      '<div class="actions"><a class="btn solid" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a>' + saveBtn + '</div></section>' +
       '<div class="list">' + r.stops.map(function (sid) { return '<button type="button" class="rlink" data-open="p:' + sid + '">' + esc(P[sid].name) + ICON.arrow + '</button>'; }).join('') + '</div>' + recBy(r.g);
   } else if (k === 'p') {
-    var p = P[id]; hist = !!p.hist;
+    var p = P[id], pub = isPub(p); hist = !!p.hist;
     var routes = Object.keys(ROUTES).filter(function (rid) { return ROUTES[rid].stops.indexOf(id) >= 0; });
-    h += head(p.name.charAt(0), t.place[p.cat], p.name + marks(p), p.why[L]) + '<p class="d-addr">' + esc(p.addr || t.addrPending) + '</p>' +
-      '<div class="actions">' + (p.addr ? '<a class="btn solid" href="' + mapsUrl(p) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.openMaps) + '</a>' : '') + saveBtn + '</div></section>' +
-      recBy(p.g) +
+    h += (pub ? '' : '<div class="inbanner"><span>' + esc(A.internalOnly) + '</span></div>') +
+      head(p.name.charAt(0), t.place[p.cat], p.name + marks(p), p.why[L]) + sponsorTag(p) + '<p class="d-addr">' + esc(p.addr || t.addrPending) + '</p>' + trustHTML(p) +
+      '<div class="actions">' + mapsBtn(p, 'solid', t.openMaps) + (pub ? saveBtn : '') + '</div></section>' +
+      (pub ? recBy(p.g) : '') +
       (routes.length ? '<div class="recby"><h3>' + esc(t.inRoutes) + '</h3>' + routes.map(function (rid) { return '<button type="button" class="rlink" data-open="r:' + rid + '">' + esc(ROUTES[rid].title[L]) + ICON.arrow + '</button>'; }).join('') + '</div>' : '');
   } else if (k === 'c') {
     star = true;
@@ -723,11 +1070,11 @@ function detailHTML() {
 // ===================== PARA VOS =====================
 function planIds() {
   var pool = [];
-  S.saved.forEach(function (key) { var k = key.split(':')[0], id = key.split(':')[1]; if (k === 'p') pool.push(id); if (k === 'r') ROUTES[id].stops.forEach(function (s) { pool.push(s); }); });
+  savedShown().forEach(function (key) { var k = key.split(':')[0], id = key.split(':')[1]; if (k === 'p') pool.push(id); if (k === 'r') ROUTES[id].stops.forEach(function (s) { pool.push(s); }); });
   var used = {}, pref = S.pref;
   function pick(cat) {
-    var ok = function (x) { return P[x].cat === cat && !used[x] && P[x].addr; };
-    var id = pool.filter(ok)[0] || Object.keys(P).filter(ok)[0];
+    var ok = function (x) { return P[x] && isPub(P[x]) && P[x].cat === cat && !used[x]; };
+    var id = pool.filter(ok)[0] || PIDS.filter(ok)[0];
     if (id) used[id] = true; return id;
   }
   var a = (pref.cafe || 0) >= (pref.comida || 0) ? 'cafe' : 'comida', b = a === 'cafe' ? 'comida' : 'cafe';
@@ -735,19 +1082,235 @@ function planIds() {
   return seq.map(pick).filter(Boolean);
 }
 function paraHTML() {
-  var t = STR[S.lang], saved = FEED.concat(['t:calles', 't:nawalpersona']).filter(isSaved).map(pinOf);
+  var t = STR[S.lang], keys = savedShown(), saved = FEED.concat(['t:calles', 't:nawalpersona']).filter(function (k) { return keys.indexOf(k) >= 0; }).map(pinOf);
   var h = '<div class="pagehead"><h1>' + esc(t.paraTitle) + '</h1><p>' + esc(t.paraSub) + '</p></div>';
   if (!saved.length) return h + '<div class="emptybox"><b>' + esc(t.emptyTitle) + '</b><span>' + esc(t.emptyBody) + '</span><button type="button" class="btn solid" data-tab="feed">' + esc(t.explore) + '</button></div>';
   var ids = planIds(), pref = S.pref;
   var top = ['cultura', 'cafe', 'comida'].sort(function (x, y) { return (pref[y] || 0) - (pref[x] || 0); })[0];
-  h += '<div class="plan"><span class="k">' + esc(t.yourPlan) + '</span><h2>' + esc(t.yourPlanTitle) + '</h2><p>' + esc(t.because(saved.length, t.place[top].toLowerCase())) + '</p><ol>' +
+  if (ids.length) h += '<div class="plan"><span class="k">' + esc(t.yourPlan) + '</span><h2>' + esc(t.yourPlanTitle) + '</h2><p>' + esc(t.because(saved.length, t.place[top].toLowerCase())) + '</p><ol>' +
     ids.map(function (id, i) { var p = P[id]; return '<li><button type="button" data-open="p:' + id + '"><span class="num">' + (i + 1) + '</span><span><b>' + esc(p.name) + '</b><small>' + esc(t.place[p.cat]) + '</small></span></button></li>'; }).join('') +
-    '</ol>' + (ids.length > 1 ? '<a class="btn solid" href="' + routeUrl(ids) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a>' : '') + '</div>';
+    '</ol>' + (ids.length > 1 ? '<a class="btn solid" href="' + esc(routeUrl(ids)) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.full) + '</a>' : '') + '</div>';
+  else h += '<div class="emptybox" role="status"><b>' + esc(t.pilotEmptyTitle) + '</b><span>' + esc(t.planReview) + '</span></div>';
   return h + '<h3 class="saved-h">' + esc(t.savedTitle) + '</h3><div class="grid">' + saved.map(pinHTML).join('') + '</div>' + gridNotes(saved);
+}
+
+// ===================== ALIADOS FUNDADORES (propuesta piloto · pendiente de aprobación comercial) =====================
+// Textos solo en español por ahora. Nada aquí cobra, registra ni envía datos.
+var A = {
+  title: 'Círculo de Aliados Fundadores',
+  kicker: 'Para negocios de Antigua',
+  status: 'Propuesta piloto, pendiente de aprobación antes de contratar',
+  statusSub: 'Precio y condiciones todavía no se ofrecen comercialmente. No se cobra ni se recibe ningún dato en esta versión.',
+  intro: 'Una alianza con negocios locales para arrancar nAIhual juntos: tu ficha verificada, un distintivo y una pieza de contenido, mientras probamos qué le sirve de verdad a tu negocio.',
+  notThis: 'No es una ronda de inversión: no hay acciones ni participación en nAIhual. Tampoco prometemos ventas ni visitas.',
+  terms: [
+    ['Tarifa fundadora propuesta', 'Q250 al mes.'],
+    ['Quién puede entrar', 'Quien se inscriba durante los primeros 3 meses desde la fecha de lanzamiento público de nAIhual.'],
+    ['Tarifa fija', 'La misma tarifa durante tus primeros 6 meses, contados desde tu fecha de ingreso.'],
+    ['Después de 6 meses', 'El precio de renovación está pendiente de decisión. Todavía no existe.']
+  ],
+  benefits: [
+    ['Ficha del negocio', 'Con datos verificados y con tu permiso.'],
+    ['Distintivo «Aliado Fundador»', 'Visible en tu ficha, junto a la etiqueta «Patrocinado».'],
+    ['Diseño digital de un QR', 'Lleva a tu ficha en nAIhual. La impresión del sticker no está incluida; su costo está por definir.'],
+    ['Una pieza de contenido acordada', 'Durante los 6 meses: un reel vertical o un carrusel de fotos. Una de las dos, no ambas, y no es mensual.'],
+    ['Activaciones grupales', 'Podés participar en salidas con varios negocios, según disponibilidad y acuerdo. No incluye una activación individual garantizada.'],
+    ['Reporte de señales', 'Por ejemplo: vistas de tu ficha y toques en «Cómo llegar». Estas señales no prueban visitas ni ventas. Hoy nAIhual no mide nada: esto empieza solo cuando haya reglas de privacidad aprobadas.']
+  ],
+  asks: [
+    'Confirmar los datos de tu ficha antes de publicarla.',
+    'Autorizar por escrito el uso de tu nombre, tu espacio, tu imagen, tu logo y tu contenido.',
+    'Aceptar que toda publicación o tarjeta pagada lleva la etiqueta «Patrocinado».'
+  ],
+  rules: [
+    'El pago no cambia el orden de las recomendaciones ni lo que dicen los guardianes.',
+    'Lo patrocinado siempre se marca. Sin excepción.',
+    'Solo negocios locales. La ficha se puede pausar el mismo día si hay un error.'
+  ],
+  contact: 'Todavía no hay formulario ni contacto. Se abren cuando estén aprobados el canal, las condiciones finales y las reglas de privacidad.',
+  demoTitle: 'Así se vería una ficha de aliado',
+  demoLabel: 'Datos ficticios de demostración · no es un negocio real',
+  internalOnly: 'Vista interna: esta ficha está en revisión y no la ve el visitante.',
+  windowTitle: 'Ventana de inscripción'
+};
+function addMonthsUTC(d, n) { var x = new Date(d.getTime()); x.setUTCMonth(x.getUTCMonth() + n); return x; }
+function isoUTC(d) { return d.toISOString().slice(0, 10); }
+// La ventana de 3 meses solo corre si la app ya no es vista previa y tiene una fecha de lanzamiento real, ya pasada. Sin contador.
+function allyWindow() {
+  if (PREVIEW) return { state: 'preview', text: 'La ventana todavía no empieza: nAIhual está en vista previa y no tiene lanzamiento público.' };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(LAUNCH)) return { state: 'nodate', text: 'La ventana todavía no empieza: falta configurar la fecha de lanzamiento público.' };
+  if (!validDate(LAUNCH)) return { state: 'future', text: 'La ventana empieza el día del lanzamiento público: ' + fmtDate(LAUNCH, 'es') + '.' };
+  var m = LAUNCH.split('-'), start = new Date(Date.UTC(+m[0], +m[1] - 1, +m[2])), end = addMonthsUTC(start, 3), last = new Date(end.getTime() - 864e5);
+  if (Date.now() < end.getTime()) return { state: 'open', text: 'Inscripción abierta del ' + fmtDate(LAUNCH, 'es') + ' al ' + fmtDate(isoUTC(last), 'es') + '.' };
+  return { state: 'closed', text: 'La ventana de inscripción cerró el ' + fmtDate(isoUTC(last), 'es') + '.' };
+}
+function termsHTML(rows) { return '<dl class="terms">' + rows.map(function (r) { return '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>'; }).join('') + '</dl>'; }
+function allyDemoCard() {
+  return '<div class="panel demo" data-demo="aliado"><span class="tag future">' + esc(A.demoLabel) + '</span>' +
+    '<div class="card"><span class="k">Café</span><div class="tags"><span class="tag ally">Aliado Fundador</span><span class="tag sp">Patrocinado</span></div>' +
+    '<h3>Café de Ejemplo</h3><p>Frase de ejemplo del negocio, aprobada por el negocio.</p><span class="ad">Dirección de ejemplo</span>' +
+    '<p class="trust">Fuente: ejemplo<br>Comprobado el [fecha] por [persona]</p><span class="btn" aria-disabled="true">' + ICON.pin + 'Cómo llegar</span></div>' +
+    '<div class="ph">QR · diseño pendiente<br>(no es un código real)</div></div>';
+}
+function alliesHTML() {
+  var win = allyWindow();
+  return '<button type="button" class="btn" style="align-self:flex-start" data-back>' + ICON.back + esc(STR[S.lang].back) + '</button>' +
+    '<article class="doc" id="aliados">' +
+    '<div class="pagehead"><span class="k">' + esc(A.kicker) + '</span><h1>' + esc(A.title) + '</h1><p>' + esc(A.intro) + '</p></div>' +
+    '<div class="status" role="note"><b>' + esc(A.status) + '</b><span>' + esc(A.statusSub) + '</span></div>' +
+    '<p>' + esc(A.notThis) + '</p>' +
+    '<section><h2>Condiciones propuestas</h2>' + termsHTML(A.terms) + '</section>' +
+    '<section><h2>' + esc(A.windowTitle) + '</h2><div class="status plain" data-window="' + win.state + '"><span>' + esc(win.text) + '</span></div></section>' +
+    '<section><h2>Beneficios propuestos</h2>' + termsHTML(A.benefits) + '</section>' +
+    '<section><h2>Lo que pedimos al negocio</h2><ul>' + A.asks.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>' +
+    '<section><h2>Reglas de transparencia</h2><ul>' + A.rules.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>' +
+    '<section><h2>' + esc(A.demoTitle) + '</h2>' + allyDemoCard() + '</section>' +
+    '<section><h2>Contacto</h2><p>' + esc(A.contact) + '</p></section>' +
+    (S.lang === 'en' ? '<p class="note-muted">This proposal is only available in Spanish for now.</p>' : '') +
+    '</article>';
+}
+
+// ===================== VISTA INTERNA DEL EQUIPO (no la ve el visitante; se apaga en data/config.js) =====================
+var SECS = [['revision', 'Revisión de fichas'], ['etapas', 'Etapas de ingreso'], ['aprendizaje', 'Ciclo de aprendizaje'], ['arquitectura', 'Arquitectura'], ['sistema', 'Sistema visual']];
+var STAGES = [
+  { n: 'Etapa 1', name: 'Aliados Fundadores', goal: 'Financiar parte del trabajo inicial, crear colaboración local y probar si los negocios valoran la ficha, el QR, el contenido y la participación.',
+    how: 'La oferta piloto de la página «Círculo de Aliados Fundadores»: Q250 al mes propuestos, ventana de 3 meses desde el lanzamiento, tarifa fija 6 meses.',
+    evidence: ['Negocios que aceptan por escrito y pagan (hoy: ninguno).', 'Si renuevan después de los 6 meses.', 'Qué beneficio valoran más, preguntándoles en persona.', 'Señales de la ficha, cuando haya medición con reglas de privacidad (hoy no se mide).'],
+    pending: 'Aprobación comercial del precio y las condiciones · contrato y autorización escrita · canal de contacto · precio de renovación.' },
+  { n: 'Etapa 2', name: 'Contenido y activaciones', goal: 'Crear contenido con negocios locales y salidas que visiten varios lugares.',
+    how: 'Incluido en la oferta fundadora: una pieza acordada por aliado en 6 meses (reel o carrusel). Aparte, en el futuro: producciones adicionales, activaciones individuales, impresiones y costos externos. Activaciones grupales: varios lugares, contenido para nAIhual y para los participantes.',
+    evidence: ['Costo real de producir una pieza (tiempo y gastos).', 'Negocios que piden algo adicional y aceptan una cotización.', 'Al menos una activación grupal hecha, con permiso de cada participante.'],
+    pending: 'Tarifas · frecuencia · quién produce · permisos de imagen de personas.' },
+  { n: 'Etapa 3', name: 'Comisión por reservas completadas', goal: 'Cobrar solo cuando una experiencia reservable (taller, tour, actividad cultural) se completa gracias a nAIhual.',
+    how: 'La reserva se atribuye con un enlace propio, un código que el visitante menciona o una confirmación del proveedor. Cada reserva se verifica con el proveedor.',
+    evidence: ['Un proveedor con acuerdo escrito.', 'Reglas para cancelaciones y reembolsos.', 'Reservas confirmadas por el proveedor y atribuidas a nAIhual.'],
+    pending: 'Porcentaje (no se inventa) · forma de pago · qué pasa con cancelaciones. Nunca se usa para decir que una recomendación de café generó una venta.' },
+  { n: 'Etapa 4', name: 'Guía digital o QR para alojamientos', goal: 'Una guía local de nAIhual que hoteles, hostales u otros alojamientos ofrecen a sus huéspedes con un QR.',
+    how: 'El modelo de pago se prueba cuando existan datos de uso y un alojamiento interesado. No hay tarifas publicadas.',
+    evidence: ['Un alojamiento interesado (hoy: ninguno).', 'Datos de uso del QR, cuando haya medición con reglas de privacidad.', 'Opinión de huéspedes, preguntada en persona.'],
+    pending: 'Quién paga, cuánto y cómo · qué ve el huésped · privacidad.' }
+];
+var CYCLE = [
+  ['nAIhual identifica la intención general de la pregunta.', 'on', 'Activo: reglas fijas, sin IA.'],
+  ['Si falta información, hace una aclaración breve y relevante.', 'part', 'Activo solo dentro de la conversación: si no entiende, pregunta qué buscás y ofrece opciones. No se guarda.'],
+  ['La persona puede indicar, si quiere, si la respuesta le sirvió.', 'off', 'Diseño futuro / no activo. Solo hay una demostración abajo.'],
+  ['El sistema agrupa señales para ver preguntas frecuentes, información que falta y aclaraciones útiles.', 'off', 'Diseño futuro / no activo. Requiere aviso de privacidad, consentimiento y datos sin identificar a nadie.'],
+  ['El sistema propone mejoras a respuestas, reglas, fuentes o filtros.', 'off', 'Diseño futuro / no activo. Una propuesta nunca se aplica sola.'],
+  ['Una persona revisa y aprueba cada cambio antes de aplicarlo.', 'off', 'Hoy lo hace el fundador con Claude, a mano, en los archivos de datos.'],
+  ['Cada cambio queda versionado, se prueba contra casos anteriores y se puede revertir.', 'part', 'Hoy: copias en «versiones/» y pruebas automáticas del recorrido piloto. Falta guardar casos de preguntas reales.']
+];
+var LAYERS = [
+  ['Interfaz', 'Pantallas, idioma, botones y pestañas. No sabe qué proveedor responde.', 'Hoy: index.html'],
+  ['Orquestador del agente', 'Recibe la pregunta, aplica las reglas, llama al proveedor y arma la respuesta solo con fichas publicadas.', 'Hoy: dentro de index.html'],
+  ['Proveedor de respuestas (intercambiable)', 'Hoy: reglas fijas, sin IA. En la prueba privada del visor de Claude: Claude, con la cuenta de quien la abre y solo con los datos de la app (claude_responde en config.js). Mañana: Gemini u otro, siempre detrás de un servidor propio que guarda la llave. El navegador nunca tiene una llave.', 'Hoy: RulesProvider'],
+  ['Conocimiento', 'Catálogo de lugares y registro de fuentes. Solo lo publicado o revisado puede respaldar una respuesta.', 'Hoy: data/lugares.js y data/fuentes.js'],
+  ['Reglas', 'No inventar · * cultural pendiente · † histórico pendiente · patrocinio siempre marcado · el pago no cambia el orden · sin emergencias sin fuente oficial.', 'Hoy: en el orquestador y en los datos'],
+  ['Registro de cada respuesta', 'Qué proveedor respondió, con qué versión de instrucciones, qué fuentes la respaldan y si faltó información.', 'Hoy: solo en memoria y en esta vista; no se guarda ni se envía']
+];
+function lastMeta() { for (var i = S.msgs.length - 1; i >= 0; i--) if (S.msgs[i].meta) return S.msgs[i].meta; return null; }
+function secRevision() {
+  var pubN = PIDS.filter(function (id) { return isPub(P[id]); }).length;
+  var groups = [['cafe', 'Cafés'], ['comida', 'Comida'], ['cultura', 'Cultura y monumentos']];
+  return '<section><h2>Revisión de fichas</h2><p>El visitante solo ve fichas publicadas. Publicadas hoy: <strong>' + pubN + ' de ' + PIDS.length + '</strong>. Las demás están aquí, con lo que les falta. Tocá una para ver su ficha interna.</p></section>' +
+    groups.map(function (g) {
+      var ids = PIDS.filter(function (id) { return P[id].cat === g[0]; });
+      return '<section><h3>' + esc(g[1]) + ' · ' + ids.length + '</h3><div class="list">' + ids.map(function (id) {
+        var p = P[id], miss = missing(p);
+        return '<button type="button" class="rowlink" data-open="p:' + id + '" data-review="' + id + '"><span class="tags"><span class="tag ' + (miss.length ? 'rev' : 'ok') + '">' + (miss.length ? 'En revisión' : 'Publicada') + '</span>' + (p.patro ? '<span class="tag sp">Patrocinado</span>' : '') + '</span><b>' + esc(p.name) + '</b>' +
+          (miss.length ? '<span class="check">Falta: ' + miss.map(function (x) { return '<span class="no">' + esc(x) + '</span>'; }).join(' · ') + '</span>' : '') +
+          (p.pendiente ? '<span class="check">' + esc(p.pendiente) + '</span>' : '') + '</button>';
+      }).join('') + '</div></section>';
+    }).join('') +
+    '<section><h3>Fuentes registradas · ' + Object.keys(SRC).length + '</h3><div class="list">' + Object.keys(SRC).map(function (id) { var f = SRC[id];
+      return '<div class="panel"><span class="tags"><span class="tag rev">' + esc(f.estado) + '</span></span><b>' + esc(f.titulo) + '</b>' + termsHTML([['Archivo o URL', f.url_o_archivo || '—'], ['Fecha', f.fecha || '—'], ['Responsable', f.responsable || '—'], ['Tema', f.tema || '—'], ['Versión', f.version || '—']]) + '</div>'; }).join('') + '</div></section>';
+}
+function secEtapas() {
+  return '<section><h2>Cuatro etapas de ingreso</h2><div class="status"><b>Todas son hipótesis.</b><span>Ningún ingreso está probado. No hay aliados, alojamientos ni proveedores confirmados.</span></div></section>' +
+    STAGES.map(function (s) {
+      return '<section class="panel" data-stage="' + esc(s.n) + '"><span class="tags"><span class="tag">' + esc(s.n) + '</span><span class="tag future">Hipótesis · sin ingresos</span></span><h3>' + esc(s.name) + '</h3>' +
+        '<p><strong>Para qué:</strong> ' + esc(s.goal) + '</p><p><strong>Cómo:</strong> ' + esc(s.how) + '</p>' +
+        '<p><strong>Evidencia que necesita:</strong></p><ul>' + s.evidence.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+        '<p><strong>Pendiente de decisión:</strong> ' + esc(s.pending) + '</p></section>';
+    }).join('') + (SHOW_ALLIES ? '<button type="button" class="rlink" data-go="aliados">Ver la página de Aliados Fundadores' + ICON.arrow + '</button>' : '');
+}
+function secAprendizaje() {
+  var fb = S.demoFb;
+  return '<section><h2>Ciclo de aprendizaje del agente</h2><div class="status future"><b>Diseño futuro / no activo</b><span>Este prototipo no recopila, no guarda y no envía conversaciones. No hay analítica, perfiles ni memoria entre personas.</span></div></section>' +
+    '<section><h3>Los 7 pasos</h3><ol class="flow">' + CYCLE.map(function (c) {
+      var tag = c[1] === 'on' ? '<span class="tag ok">Activo</span>' : c[1] === 'part' ? '<span class="tag ok">Parcial</span>' : '<span class="tag future">No activo</span>';
+      return '<li><div><p><strong>' + esc(c[0]) + '</strong></p>' + tag + '<p>' + esc(c[2]) + '</p></div></li>'; }).join('') + '</ol></section>' +
+    '<section><h3>Cuatro cosas distintas</h3><div class="cols">' +
+      '<div class="panel"><b>Contexto de la conversación actual</b><span class="tags"><span class="tag ok">Activo</span></span><p>El guardián de turno y lo que se dijo en esta pantalla. Vive en la memoria del navegador y se borra al recargar.</p></div>' +
+      '<div class="panel"><b>Patrones entre conversaciones</b><span class="tags"><span class="tag future">No activo</span></span><p>Agrupar señales de muchas personas para ver qué falta. Requiere privacidad aprobada, consentimiento y datos sin identificar a nadie.</p></div>' +
+      '<div class="panel"><b>Actualizar la base de conocimiento</b><span class="tags"><span class="tag ok">Manual</span></span><p>Agregar o corregir fichas y fuentes. Hoy lo hace una persona, con fuente y fecha, y se prueba antes de publicar.</p></div>' +
+      '<div class="panel"><b>Reentrenar un modelo</b><span class="tags"><span class="tag future">No previsto</span></span><p>Cambiar un modelo de IA por dentro. nAIhual no lo necesita: mejora con fuentes, reglas e instrucciones con versión.</p></div>' +
+    '</div></section>' +
+    '<section><h3>Cómo se vería</h3><div class="panel demo" data-demo="aprendizaje"><span class="tag future">Datos ficticios de demostración</span>' +
+      '<p><strong>Señal agrupada (ficticia):</strong> varias personas preguntan por «café con wifi».</p>' +
+      '<p><strong>Información que falta (ficticia):</strong> las fichas no dicen si hay wifi.</p>' +
+      '<p><strong>Propuesta (ficticia):</strong> agregar el dato «wifi» con su fuente. Estado: espera revisión de una persona.</p>' +
+      '<p><strong>¿Te sirvió esta respuesta?</strong></p><div class="row"><button type="button" class="chip" data-demo-fb="si" aria-pressed="' + (fb === 'si') + '">Sí</button><button type="button" class="chip" data-demo-fb="no" aria-pressed="' + (fb === 'no') + '">No</button></div>' +
+      (fb ? '<p role="status">Demostración: no se guardó ni se envió nada.</p>' : '') +
+    '</div></section>';
+}
+function secArquitectura() {
+  var m = lastMeta();
+  return '<section><h2>Arquitectura futura</h2><div class="status future"><b>Diseño · sin servicios externos conectados</b><span>No hay Gemini, NotebookLM, Google Sheets, API de Maps ni ningún otro servicio conectado. No hay llaves en el código. La única excepción es la prueba privada: dentro del visor de Claude, responde Claude con tu cuenta.</span></div></section>' +
+    '<section><h3>Capas separadas</h3><div class="list">' + LAYERS.map(function (l, i) { return '<div class="layer"><span class="n">' + (i + 1) + '</span><div><b>' + esc(l[0]) + '</b><p>' + esc(l[1]) + '</p><p class="note-muted">' + esc(l[2]) + '</p></div></div>'; }).join('') + '</div></section>' +
+    '<section><h3>Contrato del proveedor</h3>' + termsHTML([
+      ['Recibe', 'La pregunta, el idioma, el guardián de turno, las fichas publicadas que puede usar y la versión de instrucciones.'],
+      ['Devuelve', 'El texto, las fichas usadas, las fuentes que la respaldan, si tuvo información suficiente y si pide aclaración.'],
+      ['Nunca', 'Usar fichas sin publicar, inventar un dato o una fuente, o cambiar el orden por un pago.'],
+      ['Si no sabe', 'Lo dice: «sin información suficiente», y ofrece lo que sí está verificado.']]) + '</section>' +
+    '<section><h3>Registro de la última respuesta</h3>' + (m ? termsHTML([['Proveedor', m.proveedor], ['Instrucciones', m.instrucciones], ['Intención', m.intencion], ['Fuentes', m.fuentes.length ? m.fuentes.join(' | ') : 'ninguna'], ['¿Información suficiente?', m.suficiente ? 'sí' : 'no'], ['¿Pidió aclaración?', m.aclaracion ? 'sí' : 'no']]) : '<p>Todavía no hay respuestas en esta conversación. Preguntá algo en la Guía y volvé.</p>') +
+      '<p class="note-muted">Solo en esta pantalla. No se guarda ni se envía.</p></section>' +
+    '<section><h3>Cada fuente registra</h3><p>Título · URL o archivo · fecha · responsable · tema · versión · estado de revisión. Ver «Revisión de fichas».</p></section>' +
+    '<section><h3>Gemini (verificado el 23-oct-2026)</h3><ul>' +
+      '<li>La documentación oficial pide no poner la llave en apps web o móviles y usar un servidor propio que haga las llamadas: <a class="ext" href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/api-key</a>.</li>' +
+      '<li>Falta decidir: dónde vive ese servidor, cuánto cuesta y quién lo mantiene.</li></ul></section>' +
+    '<section><h3>NotebookLM (verificado el 23-oct-2026)</h3><ul>' +
+      '<li>Existe una API oficial solo para <strong>NotebookLM Enterprise</strong>, dentro de Google Cloud y en versión alfa: crea cuadernos y agrega fuentes. <a class="ext" href="https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks-sources" target="_blank" rel="noopener">Documentación de Google Cloud</a>.</li>' +
+      '<li>Para la versión gratis o Pro no encontré una API oficial. Las herramientas que circulan son de terceros y no oficiales.</li>' +
+      '<li>❓ No confirmé que esa API permita hacerle preguntas al cuaderno desde una app, ni su costo.</li></ul>' +
+      '<p><strong>Flujo propuesto sin conexión:</strong></p><ol class="flow">' +
+      '<li><div><p>El fundador investiga en NotebookLM.</p></div></li>' +
+      '<li><div><p>Lo útil se registra como fuente: título, URL o archivo, fecha, responsable, tema y versión.</p></div></li>' +
+      '<li><div><p>Una persona la revisa (Ajq\'ij para lo cultural, fuente oficial para lo histórico).</p></div></li>' +
+      '<li><div><p>Revisada, pasa al conocimiento de nAIhual. Solo entonces puede respaldar una respuesta.</p></div></li></ol></section>';
+}
+function swatch(name, use) {
+  var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return '<div class="sw"><i style="background:var(' + name + ')"></i><b>' + esc(use) + '</b><code>' + esc(name) + ' · ' + esc(v) + '</code></div>';
+}
+function secSistema() {
+  return '<section><h2>Sistema visual v0.1</h2><p>Base neutra para empezar la etapa gráfica. Todo sale de los tokens al inicio del estilo: cambiar un token cambia la app entera. El arte final lo define el fundador.</p>' +
+    '<div class="status plain"><span>Los ejemplos de esta pantalla son ficticios y solo sirven para diseñar. No están en el catálogo.</span></div></section>' +
+    '<section><h3>Color</h3><div class="swatches">' + [['--bg', 'Fondo'], ['--surface', 'Superficie'], ['--sunk', 'Hundido'], ['--ink', 'Texto'], ['--ink-2', 'Texto 2'], ['--ink-3', 'Texto 3'], ['--band', 'Banda'], ['--heart', 'Guardado ♥'], ['--star', '* Cultural'], ['--hist', '† Histórico'], ['--sponsor-bg', 'Patrocinado'], ['--future-bg', 'Diseño futuro']].map(function (s) { return swatch(s[0], s[1]); }).join('') + '</div>' +
+    '<p>Guardianes (color por rumbo*, pendiente de validación cultural):</p><div class="swatches">' + ORDER.map(function (g) { return swatch('--g-' + g, G[g].name); }).join('') + '</div></section>' +
+    '<section><h3>Tipografía</h3><p>Una familia por ahora, con tres papeles separados: títulos, texto y datos.</p><div class="scale">' +
+      [['--t-xl', 'Título de ficha'], ['--t-lg', 'Título de sección'], ['--t-md', 'Título de tarjeta'], ['--t-base', 'Texto principal'], ['--t-sm', 'Texto secundario'], ['--t-xs', 'ETIQUETA']].map(function (r) { return '<div><small>' + r[0] + '</small><span style="font-size:var(' + r[0] + ');font-weight:' + (r[0] === '--t-xs' ? 700 : r[0] === '--t-base' || r[0] === '--t-sm' ? 400 : 700) + ';letter-spacing:' + (r[0] === '--t-xs' ? 'var(--track-label)' : 'normal') + '">' + esc(r[1]) + '</span></div>'; }).join('') + '</div></section>' +
+    '<section><h3>Espacio y forma</h3><div class="scale">' + [1, 2, 3, 4, 5, 6, 7].map(function (n) { return '<div><small>--s-' + n + '</small><span class="bar" style="width:var(--s-' + n + ')"></span></div>'; }).join('') + '</div>' +
+      '<div class="row">' + [['--r-sm', 'chico'], ['--r-md', 'tarjeta'], ['--r-lg', 'bloque'], ['--r-pill', 'botón']].map(function (r) { return '<span class="tag" style="border-radius:var(' + r[0] + ');border:1px solid var(--line);padding:10px 14px">' + r[0] + ' · ' + r[1] + '</span>'; }).join('') + '</div></section>' +
+    '<section><h3>Botones y chips</h3><div class="row"><span class="btn solid">Principal</span><span class="btn">Secundario</span><span class="btn g g-noj"><span class="av" style="width:24px;height:24px;font-size:11px">N</span>De guardián</span><span class="btn" aria-disabled="true">Desactivado</span></div>' +
+      '<div class="row"><span class="chip pilot" style="display:inline-flex;align-items:center">Quiero un café</span><span class="chip" style="display:inline-flex;align-items:center">Pregunta lista</span><span class="chip switch" style="display:inline-flex;align-items:center">Otro guía →</span></div></section>' +
+    '<section><h3>Etiquetas</h3><div class="tags"><span class="tag">Café</span><span class="tag rev">En revisión</span><span class="tag sp">Patrocinado</span><span class="tag ally">Aliado Fundador</span><span class="tag future">Diseño futuro / no activo</span><span class="tag ok">Publicada</span></div></section>' +
+    '<section><h3>Tarjeta de lugar</h3><div class="card" data-demo="tarjeta"><span class="k">Café · ejemplo ficticio</span><h3>Nombre de ejemplo</h3><p>Frase de ejemplo.</p><span class="ad">Dirección de ejemplo</span><p class="trust">Fuente: ejemplo<br>Comprobado el [fecha] por [persona]</p><span class="btn" aria-disabled="true">' + ICON.pin + 'Cómo llegar</span></div>' +
+      '<div class="ph">Espacio para foto del lugar · pendiente (solo con permiso)</div></section>' +
+    '<section><h3>Estado vacío</h3><div class="emptybox"><b>Selección en revisión</b><span>Así se avisa cuando todavía no hay datos comprobados.</span></div></section>' +
+    '<section><h3>Navegación</h3><div class="mininav" aria-hidden="true"><span>Guía</span><span>Explorar</span><span>Para vos</span></div></section>';
+}
+function tallerHTML() {
+  var sec = SECS.some(function (s) { return s[0] === S.sec; }) ? S.sec : 'revision';
+  var body = sec === 'revision' ? secRevision() : sec === 'etapas' ? secEtapas() : sec === 'aprendizaje' ? secAprendizaje() : sec === 'arquitectura' ? secArquitectura() : secSistema();
+  return '<div class="inbanner" role="note"><span>Vista interna del equipo · no la ve el visitante</span><button type="button" class="btn" data-tab="guia">Volver a la app</button></div>' +
+    '<div class="subnav" role="group" aria-label="Secciones internas">' + SECS.map(function (s) { return '<button type="button" class="chip" data-sec="' + s[0] + '" aria-pressed="' + (s[0] === sec) + '">' + esc(s[1]) + '</button>'; }).join('') + '</div>' +
+    '<article class="doc" id="taller-' + sec + '">' + body + '</article>' +
+    (S.lang === 'en' ? '<p class="note-muted">The internal view is only available in Spanish for now.</p>' : '');
 }
 
 // ===================== DIBUJAR =====================
 var main = document.getElementById('main');
+var VISITOR_TABS = { guia: 1, feed: 1, para: 1 };
 function render(scrollChat) {
   var t = STR[S.lang], onGuia = S.tab === 'guia';
   document.documentElement.lang = S.lang;
@@ -761,27 +1324,37 @@ function render(scrollChat) {
   document.getElementById('q').placeholder = t.placeholder;
   document.getElementById('send').setAttribute('aria-label', t.send);
   document.getElementById('ask').className = 'g-' + S.guide;
+  document.getElementById('wheel').setAttribute('aria-label', t.wheel);
   document.getElementById('wheel').innerHTML = ORDER.map(function (id) {
     var g = G[id];
     return '<button type="button" class="wg g-' + id + '" data-g="' + id + '" aria-current="' + (id === S.guide) + '" aria-label="' + esc(t.talk + ' ' + g.name + ' · ' + g.value[S.lang]) + '"><span class="av">' + g.ini + '</span><small>' + esc(g.name) + '</small></button>';
   }).join('');
-  document.getElementById('chips').innerHTML = '<button type="button" class="chip switch" data-next>' + esc(t.switchChip) + '</button>' +
-    t.chips.map(function (c) { return '<button type="button" class="chip" data-chip="' + c[0] + '">' + esc(c[1]) + '</button>'; }).join('');
-  var tabOn = S.tab === 'detail' ? S.prev : S.tab;
-  [['guia', ICON.chat, t.tabGuia], ['feed', ICON.grid, t.tabFeed], ['para', ICON.heart, t.tabPara + (S.saved.length ? ' · ' + S.saved.length : '')]].forEach(function (d) {
+  // «Quiero un café» va primero y resaltado: es la acción del recorrido piloto.
+  document.getElementById('chips').innerHTML = t.chips.map(function (c, i) {
+    return (i === 1 ? '<button type="button" class="chip switch" data-next>' + esc(t.switchChip) + '</button>' : '') + '<button type="button" class="chip' + (c[0] === 'cafe' ? ' pilot' : '') + '" data-chip="' + c[0] + '">' + esc(c[1]) + '</button>';
+  }).join('');
+  var tabOn = S.tab === 'detail' ? S.prev : S.tab, n = savedShown().length;
+  [['guia', ICON.chat, t.tabGuia], ['feed', ICON.grid, t.tabFeed], ['para', ICON.heart, t.tabPara + (n ? ' · ' + n : '')]].forEach(function (d) {
     var b = document.getElementById('tab-' + d[0]); b.innerHTML = d[1] + esc(d[2]);
     if (tabOn === d[0]) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
   var hadFocus = document.activeElement && document.activeElement.id === 'fq', caret = hadFocus ? document.activeElement.selectionStart : 0;
   if (onGuia) {
-    main.innerHTML = guiaHTML(scrollChat) + '<p class="foot">' + esc(t.foot) + ' · <button type="button" class="linkbtn" data-who>' + esc(t.who) + '</button></p>';
+    main.innerHTML = guiaHTML(scrollChat) + footHTML();
     if (scrollChat) { var msgs = main.querySelectorAll('.msg'); var target = msgs[Math.max(0, msgs.length - 2)]; if (target) target.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
-  } else if (S.tab === 'feed') main.innerHTML = feedHTML() + '<p class="foot">' + esc(t.foot) + '</p>';
+  } else if (S.tab === 'feed') main.innerHTML = feedHTML() + footHTML();
   else if (S.tab === 'para') main.innerHTML = paraHTML();
+  else if (S.tab === 'aliados') main.innerHTML = alliesHTML();
+  else if (S.tab === 'taller') main.innerHTML = tallerHTML();
   else main.innerHTML = detailHTML();
   if (hadFocus) { var fi = document.getElementById('fq'); if (fi) { fi.focus(); try { fi.setSelectionRange(caret, caret); } catch (e) {} } }
 }
-function go(tab) { S.tab = tab; S.detail = null; render(false); window.scrollTo(0, tab === 'guia' ? document.body.scrollHeight : 0); }
+function go(tab) {
+  if (tab === 'taller' && !INTERNAL) tab = 'guia';
+  if (tab === 'aliados' && !SHOW_ALLIES) tab = 'feed';
+  if (tab === 'aliados' || tab === 'taller') S.prev = VISITOR_TABS[S.tab] || S.tab === 'taller' ? S.tab : (S.prev || 'feed');
+  S.tab = tab; S.detail = null; render(false); window.scrollTo(0, tab === 'guia' ? document.body.scrollHeight : 0);
+}
 function open(key) {
   if (S.tab !== 'detail') S.prev = S.tab;
   S.detail = key; S.tab = 'detail'; bump(key, 1); persist(); render(false); window.scrollTo(0, 0);
@@ -789,16 +1362,21 @@ function open(key) {
 
 document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); var i = document.getElementById('q'); ask(i.value); i.value = ''; });
 document.addEventListener('click', function (e) {
-  var el = e.target.closest('[data-toggle],[data-open],[data-filter],[data-tab],[data-back],[data-lang],[data-chip],[data-next],[data-g],[data-talk],[data-who],[data-close]');
+  var el = e.target.closest('[data-toggle],[data-open],[data-filter],[data-tab],[data-back],[data-lang],[data-chip],[data-next],[data-g],[data-talk],[data-who],[data-close],[data-go],[data-sec],[data-demo-fb],[data-say],[data-stop]');
   if (!el) return;
   if (el.hasAttribute('data-toggle')) { e.stopPropagation(); toggle(el.getAttribute('data-toggle')); return; }
   if (el.hasAttribute('data-open')) { open(el.getAttribute('data-open')); return; }
   if (el.hasAttribute('data-filter')) { var f = el.getAttribute('data-filter'); S.filter = f; if (S.pref[f] !== undefined) S.pref[f]++; persist(); render(false); return; }
   if (el.hasAttribute('data-tab')) { go(el.getAttribute('data-tab')); return; }
-  if (el.hasAttribute('data-back')) { go(S.prev || 'feed'); return; }
+  if (el.hasAttribute('data-go')) { go(el.getAttribute('data-go')); return; }
+  if (el.hasAttribute('data-sec')) { S.sec = el.getAttribute('data-sec'); render(false); window.scrollTo(0, 0); return; }
+  if (el.hasAttribute('data-say')) { ask(el.getAttribute('data-say')); return; }
+  if (el.hasAttribute('data-stop')) { if (AI.ctl) AI.ctl.abort(); return; }
+  if (el.hasAttribute('data-demo-fb')) { S.demoFb = el.getAttribute('data-demo-fb'); render(false); return; }
+  if (el.hasAttribute('data-back')) { var to = S.prev || 'feed'; if (S.tab === 'detail' && to === 'taller') { S.tab = 'taller'; S.detail = null; render(false); window.scrollTo(0, 0); return; } go(to); return; }
   if (el.hasAttribute('data-lang')) { S.lang = el.getAttribute('data-lang'); persist(); render(false); return; }
-  if (el.hasAttribute('data-chip')) { var c = STR[S.lang].chips.filter(function (x) { return x[0] === el.getAttribute('data-chip'); })[0]; ask(c[1]); return; }
-  if (el.hasAttribute('data-next')) { switchTo(ORDER[(ORDER.indexOf(S.guide) + 1) % 4]); render(true); return; }
+  if (el.hasAttribute('data-chip')) { var c = STR[S.lang].chips.concat(STR[S.lang].clarifyOpts).filter(function (x) { return x[0] === el.getAttribute('data-chip'); })[0]; if (S.tab !== 'guia') { S.tab = 'guia'; S.detail = null; } ask(c[1]); return; }
+  if (el.hasAttribute('data-next')) { switchTo(ORDER[(ORDER.indexOf(S.guide) + 1) % ORDER.length]); render(true); return; }
   if (el.hasAttribute('data-g')) { var id = el.getAttribute('data-g'); if (id !== S.guide) { switchTo(id); render(true); } return; }
   if (el.hasAttribute('data-talk')) { var gt = el.getAttribute('data-talk'); S.tab = 'guia'; S.detail = null; if (gt !== S.guide) switchTo(gt); render(true); return; }
   if (el.hasAttribute('data-who')) { openDlg(); return; }
@@ -811,12 +1389,18 @@ function openDlg() {
   var t = STR[S.lang], L = S.lang;
   document.getElementById('dlg-body').innerHTML = '<h2>' + esc(t.dlgTitle) + '</h2><p>' + esc(t.dlgIntro) + '</p>' +
     ORDER.map(function (id) { var g = G[id]; return '<div class="gcard g-' + id + '"><span class="av">' + g.ini + '</span><div><b>' + esc(g.name) + '</b><dl>' +
-      [[t.dValue, g.value[L] + ' *'], [t.dRole, g.role[L]], [t.dSpeaks, g.speaks[L]], [t.dRecs, g.recs[L]], [t.dPdf, g.pdf[L]]].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
-      '</dl></div></div>'; }).join('') + '<button type="button" class="btn solid close" data-close>' + esc(t.close) + '</button>';
+      [[t.dValue, g.value[L] + ' *'], [t.dDir, g.dir[L] + ' *'], [t.dRole, g.role[L]], [t.dSpeaks, g.speaks[L]], [t.dRecs, g.recs[L]], [t.dPdf, g.pdf[L]]].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
+      '</dl></div></div>'; }).join('') + '<p class="note-star" style="font-size:12.5px">' + esc(t.dlgPending) + '</p><button type="button" class="btn solid close" data-close>' + esc(t.close) + '</button>';
   var d = document.getElementById('dlg'); if (d.showModal) d.showModal(); else d.setAttribute('open', '');
 }
 
-S.msgs.push({ from: 'batz', kind: 'welcome', intro: true });
+// Abrir una vista directa con un enlace (#aliados, o una sección interna como #etapas si la vista interna está encendida).
+(function () {
+  var h = String(location.hash || '').slice(1);
+  if (h === 'aliados' && SHOW_ALLIES) { S.prev = 'feed'; S.tab = 'aliados'; }
+  else if (INTERNAL && (h === 'taller' || SECS.some(function (s) { return s[0] === h; }))) { S.prev = 'guia'; S.tab = 'taller'; if (h !== 'taller') S.sec = h; }
+})();
+S.msgs.push({ from: ORDER[0], kind: 'welcome', intro: true });
 render(false);
 })();
 </script>

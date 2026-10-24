@@ -1,6 +1,6 @@
 # nAIhual — Documento único del proyecto
 
-Actualizado: 18-oct-2026 · Este es **el único documento vivo**: concepto, estado, circuitos, fuentes, decisiones e historial. Se actualiza este mismo archivo; no se crean otros.
+Actualizado: 23-oct-2026 (hora de Guatemala) · Este es **el único documento vivo**: concepto, estado, circuitos, fuentes, decisiones e historial. Se actualiza este mismo archivo; no se crean otros.
 
 **Marcas**
 - ✅ = lo dijo el fundador / verificado.
@@ -65,6 +65,8 @@ Actualizado: 18-oct-2026 · Este es **el único documento vivo**: concepto, esta
 
 ## 3. Los 4 guardianes (corazón del concepto)
 
+> ❌ Esta tabla es la versión vieja (B'atz', Kej, Ajpu, No'j). La vigente es la **3c**: No'j, Iq', Kej, E'. La app ya la usa desde App 1.1 (23-oct).
+
 Nacen del resumen viejo: simbología del número 4 y las direcciones.
 
 | Guardián | Es (valor\*) | Hace | Habla | Recomienda |
@@ -121,8 +123,8 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 - **Kej** (Poniente · negro): rutas a pie, naturaleza, mercados. Las pausas pasan a Iq'.
 - **No'j** (Oriente · rojo): sin cambios.
 - ⏸️ PAUSA (24-oct). **Lista para el próximo CONSTRUYE:**
-  1. Cambiar los guardianes en la app (nombres, colores por rumbo, voces y respuestas).
-  2. Nuevo orden y arranque: empieza No'j.
+  1. ✅ Hecho en App 1.1 (23-oct): guardianes, colores por rumbo con \*, voces y respuestas (🟡 sin prueba externa).
+  2. ✅ Hecho en App 1.1: nuevo orden y arranque con No'j.
   3. Actualizar la tabla de los 20 nawales con la de NotebookLM (nombre clásico, símbolo, animal).
   4. Actualizar el documento rector (v1.2) y el contexto para NotebookLM.
 
@@ -209,12 +211,18 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 
 ## 4. Producto (lo que existe)
 
-**App vigente:** `app/index.html`. Un solo archivo, se abre directo en el navegador.
+**App vigente:** App 1.2 vista previa (23-oct) · `app/index.html` + `app/data/` (`config.js` = vista previa y vista interna · `lugares.js` = catálogo · `fuentes.js` = registro de fuentes). Se abre directo en el navegador. Se ve en el visor privado de Claude (artifact «nAIhual», versión 2). Copias para volver atrás: `versiones/visor-app-1.0` y `versiones/app-1.1-piloto`. Entrega de la 1.1: `docs/nAIhual-vNext-handoff.md`.
+
+- 🟡 **El visitante solo ve lo publicado** (desde 1.2). Hoy no hay ningún lugar publicado: Explorar muestra consejos, cosmovisión y nawales; donde antes había lugares, los guardianes dicen «esa selección está en revisión». Los borradores se revisan en la vista interna.
+- 🟡 **Vista interna del equipo** (enlace al pie, se apaga con `vista_interna: false`): revisión de fichas y fuentes, etapas de ingreso, ciclo de aprendizaje, arquitectura y sistema visual v0.1.
+- 🟡 Si el guardián no entiende, hace una **aclaración breve** con 4 opciones (solo dentro de la conversación).
+
+- 🟡 **Recorrido piloto:** «Quiero un café» (primer botón del chat) → hasta 3 cafés **publicados**, cada uno con fuente, fecha y quién verificó → «Cómo llegar». Hoy no hay ninguno publicado, así que se ve «Selección en revisión».
 
 | Pestaña | Qué hace |
 |---|---|
-| **Guía** (pantalla 1) | Chat con el guardián de turno. 7 preguntas listas + texto libre. Reglas fijas, sin IA. Responde solo con lugares verificados del catálogo; si no tiene datos, lo dice. ♥ para guardar desde el chat. |
-| **Explorar** | Muro de pines: rutas, lugares, consejos, cosmovisión y los 20 nawales. Buscador, filtros y ficha de cada pin con «Preguntale a [guardián]». Tarjeta Plan Fundador (Patrocinado). |
+| **Guía** (pantalla 1) | Chat con el guardián de turno (No'j, Iq', Kej, E'). 7 preguntas listas + texto libre. Reglas fijas, sin IA. Los lugares sin fuente salen marcados «En revisión»; si no tiene datos, lo dice. ♥ para guardar desde el chat. |
+| **Explorar** | Muro de pines: consejos, cosmovisión, los 20 nawales y (cuando estén publicados) lugares y rutas. Buscador, filtros y ficha con «Preguntale a [guardián]». Tarjeta «Círculo de Aliados Fundadores» → página de la propuesta piloto. |
 | **Para vos** | Lo guardado con ♥ arma un plan de 5 paradas a pie con Google Maps. |
 
 Además: ES/EN, modo claro/oscuro y panel «¿Quiénes son los guardianes?».
@@ -265,7 +273,9 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 |---|---|---|---|
 | Método y reglas | `0_…` a `4_….md` | Fundador | No |
 | Concepto, estado, circuitos | Este documento | Claude con el fundador | Sí |
-| Lugares, rutas, consejos, nawales | Dentro de `app/index.html` (temporal) | Fundador (frases) + Claude (direcciones) | Sí. Pasa a Google Sheets en C9 |
+| Lugares | `app/data/lugares.js` (desde App 1.1). Estado, fuente, fecha y quién verificó por ficha | Fundador (frases y verificación) + Claude (escribe el archivo) | Sí. ❓ Google Sheets en C9 sigue siendo idea |
+| Rutas, consejos, nawales | Dentro de `app/index.html` | Claude con el fundador | Sí |
+| Entrega vNext (qué cambió, pruebas, pendientes) | `docs/nAIhual-vNext-handoff.md` + PDF | Claude | Es un informe fechado, no un documento vivo |
 | Respuestas de los guardianes | Dentro de `app/index.html` | Claude (propuesta) | Sí, el fundador corrige |
 | Cosmovisión y 20 nawales | PDF Consolidado | Fundador | No; en la app con \* |
 | Fuentes originales | NotebookLM (Claude no tiene acceso) | Fundador | Propuesta: copiarlas a Google Drive, carpeta «nAIhual fuentes» |
@@ -279,17 +289,21 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 
 **Lugares** (frases textuales del fundador; inglés traducido por Claude, sin revisar). La columna «Guardián» es una propuesta de Claude, por corregir.
 
-| Lugar | Tipo | Dirección | Guardián |
+⚠️ Corrección (23-oct): antes estas direcciones tenían ✅, pero las escribió Claude sin fuente registrada. Desde App 1.1 **los 21 lugares están en «borrador»**: se ven con la etiqueta «En revisión» y ninguno entra al recorrido de café hasta tener fuente, fecha y quién verificó.
+
+| Lugar | Tipo | Dirección (sin fuente) | Guardián |
 |---|---|---|---|
-| 12 Onzas | Café | ✅ 4a Calle Oriente 5 | Kej |
-| Artista de Café | Café | ✅ 5a Avenida Sur 34B | B'atz' |
-| Siena Luz | Café | ✅ 6a Avenida Norte | No'j |
-| Fat Cat Coffee House | Café | ✅ 4a Calle Oriente, frente a 12 Onzas | Kej |
-| Coffea Cafés Especiales | Café | ✅ 6a Calle Oriente 18A | Ajpu |
-| El Cazador Italiano | Comida | ✅ 3a Avenida Norte 1B | Ajpu |
-| Once Once | Comida | ✅ 2a Calle Oriente 22 | Kej |
-| Patio de la Primera | Comida | ✅ 1a Avenida Sur 17C | B'atz' |
-| Komori · Alegría Café · Hector's Bistro · Nikolo · Y Tu Piña También | Café / comida | ❓ sin verificar: se ven en el muro, nunca en rutas, planes ni chat | — |
+| 12 Onzas | Café | 4a Calle Oriente 5 | Kej |
+| Artista de Café | Café | 5a Avenida Sur 34B | Iq' |
+| Siena Luz | Café | 6a Avenida Norte | No'j |
+| Fat Cat Coffee House | Café | 4a Calle Oriente, frente a 12 Onzas | Kej |
+| Coffea Cafés Especiales | Café | 6a Calle Oriente 18A · ❓ «entre las 100 mejores» necesita fuente | E', Kej |
+| El Cazador Italiano | Comida | 3a Avenida Norte 1B | E' |
+| Once Once | Comida | 2a Calle Oriente 22 | Kej |
+| Patio de la Primera | Comida | 1a Avenida Sur 17C | Iq' |
+| Komori · Alegría Café · Hector's Bistro · Nikolo · Y Tu Piña También | Café / comida | ❓ sin dirección: se ven en el muro, nunca en rutas, planes ni chat | — |
+
+Guardianes de los lugares: B'atz' pasó a Iq' y Ajpu a E', siguiendo el reparto del fundador (3c).
 
 **Monumentos y rutas**
 - 8 monumentos †: Parque Central, Catedral, Palacio de los Capitanes, Arco de Santa Catalina, La Merced, Capuchinas, Santa Clara y San Francisco el Grande.
@@ -309,7 +323,13 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 - ✅ Destino final: app en **Wix** (verificado: acepta HTML propio con «Embed HTML»; para apps avanzadas, Velo). ❌ Netlify no.
 - ✅ Voz del agente: **Gemini** (18-oct). Claude construye.
 - ✅ Motor actual: **reglas fijas, gratis** (lección #6). Gemini entra en C11.
-- ✅ Lugares: Google Sheets (C9).
+- Lugares: hoy en `app/data/lugares.js` (App 1.1). ❓ Google Sheets (C9) queda como idea futura.
+- Pruebas automáticas: `python3 pruebas/prueba_piloto.py` (Playwright del entorno de Claude; no es dependencia de la app). App 1.2: 141/141 (23-oct).
+- **Arquitectura futura (diseño, nada conectado · App 1.2):** interfaz → orquestador → **proveedor intercambiable** (hoy `RulesProvider`, reglas fijas sin IA; mañana Gemini u otro detrás de un servidor propio que guarda la llave) → conocimiento (`lugares.js` + `fuentes.js`, solo lo publicado o revisado) → reglas → registro de cada respuesta (proveedor, versión de instrucciones, fuentes, si faltó información; hoy solo en memoria, no se guarda ni se envía).
+- Cada fuente registra: título, URL o archivo, fecha, responsable, tema, versión y estado de revisión.
+- ✅ Verificado 23-oct: la documentación oficial de Gemini pide no poner la llave en apps web y usar un servidor propio (ai.google.dev/gemini-api/docs/api-key).
+- ✅ Verificado 23-oct: NotebookLM tiene API oficial solo en **NotebookLM Enterprise** (Google Cloud, versión alfa): crear cuadernos y agregar fuentes. ❓ Para la versión gratis/Pro no encontré API oficial (solo fuentes secundarias). ❓ No confirmé si la API permite hacerle preguntas al cuaderno ni su costo. Flujo propuesto: NotebookLM como mesa de investigación → la fuente se registra → una persona la revisa → recién entonces respalda respuestas.
+- **Ciclo de aprendizaje (diseño futuro / no activo, salvo pasos 1 y 2):** 1 identifica la intención (activo) · 2 aclaración breve (activo solo en la conversación) · 3 «¿te sirvió?» opcional · 4 agrupar señales · 5 proponer mejoras · 6 una persona aprueba · 7 versión, prueba y reversa. Distinto de: contexto de la conversación (activo, se borra al recargar) · patrones entre conversaciones (no activo; necesita privacidad y consentimiento) · base de conocimiento (manual) · reentrenar un modelo (no previsto). Nada se recopila ni se envía.
 - ❓ NotebookLM no se conecta a apps (hasta donde sé; falta verificar con fuente oficial). Propuesta: Google Drive como casa única de las fuentes.
 - ❌ n8n en VPS, OpenAI, Redis, Zapier, 360dialog, Zoho, Stripe: fuera, por decisiones más nuevas o por el Documento Rector.
 - Código en GitHub: `diegosamgt-lang/nAIhual`, rama `claude/awesome-carson-sz5k9i`.
@@ -317,7 +337,14 @@ C1 va primero porque es la lección #1: nadie más ha abierto la app.
 ## 9. Dinero
 
 - ✅ Turista: nacional y extranjero, por igual. Usa nAIhual **gratis**; premium (WhatsApp, voz, alertas) **después**, sin precios.
-- ✅ Fase 1: **Plan Fundador**, Q250/mes × 3 meses, 5 lugares, siempre marcado Patrocinado. Lo pagan los negocios. Fundadores: ninguno todavía.
+- ❌ «Plan Fundador» Q250 × 3 meses, 5 lugares (18-oct): fue una idea, nunca se vendió ni se probó. La reemplaza la propuesta de abajo (23-oct).
+- ❓ **Círculo de Aliados Fundadores** (propuesta piloto, pendiente de aprobación antes de contratar · en la app desde 1.2):
+  - Inscripción solo durante los primeros 3 meses desde el lanzamiento público. El reloj no corre mientras la app sea vista previa o no tenga fecha (`config.js`).
+  - Q250 al mes propuestos, fijos durante los primeros 6 meses desde la fecha de ingreso. Renovación: por decidir.
+  - Beneficios propuestos: ficha verificada con permiso · distintivo «Aliado Fundador» · diseño digital de un QR (impresión no incluida, costo por definir) · una pieza de contenido en 6 meses (reel vertical o carrusel, no ambas) · activaciones grupales según disponibilidad · reporte de señales (vistas, «Cómo llegar»; no prueban visitas ni ventas; hoy no se mide nada).
+  - El negocio confirma su ficha y autoriza por escrito nombre, espacio, imagen, logo y contenido. Todo lo pagado dice «Patrocinado». El pago no cambia el orden.
+  - No es inversión: sin acciones ni participación. No promete ventas. Sin formulario, cobro ni contacto hasta tener canal, condiciones finales y reglas de privacidad.
+- ❓ **Cuatro etapas de ingreso (todas hipótesis, en la vista interna):** 1 Aliados Fundadores · 2 contenido y activaciones (una pieza incluida; lo adicional se cotiza aparte en el futuro) · 3 comisión por reservas completadas de experiencias (enlace, código o confirmación del proveedor; porcentaje sin definir; nunca para cafés) · 4 guía o QR para alojamientos (se prueba con datos de uso y un alojamiento interesado). Cada una lista la evidencia que necesita.
 - ✅ Solo negocios locales. ❌ Afiliados de Booking, Expedia u OpenTable. ❌ Paywall desde el inicio.
 - ❓ Criterios para aceptar un fundador (propuesta: local, de dueños guatemaltecos, sin cadenas). ❓ Falta el número de WhatsApp para el botón.
 - Idea vigente: publicidad ética, «destacado» siempre marcado.
@@ -402,6 +429,25 @@ Fuentes:
 
 ## 13. Historial de versiones
 
+**App 1.2 + «Claude responde» — 23-oct-2026** (visor privado, versión 3) · pedido del fundador: «quiero que vos Claude respondas en esta versión de prueba»
+- En el visor privado, Claude contesta las preguntas libres como el guardián de turno, con la cuenta del fundador (función oficial del visor; sin llaves ni servidor). Se apaga con `claude_responde: false` en `config.js`; fuera del visor responden las reglas fijas.
+- Claude recibe solo los datos de la app y las reglas (no inventar, solo lugares publicados, * cultural, sin emergencias). El turno del guardián y «Quiero un café» siguen con reglas fijas.
+- La app revisa cada respuesta: solo muestra fichas publicadas y consejos existentes; si el texto nombra un lugar en revisión, la descarta y responden las reglas. 🟡 Es una red de seguridad, no perfecta: Claude podría nombrar un lugar que no está en el catálogo.
+- ✅ 153/153 pruebas automáticas (con Claude simulado). 🟡 Sin probar con Claude de verdad dentro del visor: lo prueba el fundador.
+
+**App 1.2 vista previa — 23-oct-2026** (`app/` + visor privado de Claude, versión 2) · sin commit, sin push, sin publicar
+- El visitante ya no ve borradores; revisión en la vista interna. Coffea sin «entre las 100 mejores» (nota interna).
+- «Plan Fundador» → «Círculo de Aliados Fundadores», propuesta piloto pendiente de aprobación.
+- Vista interna: revisión, 4 etapas de ingreso, ciclo de aprendizaje, arquitectura Gemini/NotebookLM, sistema visual v0.1 (tokens de color, tipo, espacio y forma).
+- Proveedor de respuestas intercambiable y registro de fuentes. Aclaración breve cuando no entiende.
+- ✅ 141/141 pruebas automáticas a 390 px, claro y oscuro. 🟡 Sin celular real ni persona externa. No pude abrir el visor yo mismo: lo probé con una copia local igual.
+
+**App 1.1 piloto — 23-oct-2026** (`app/index.html` + `app/data/lugares.js`) · cambios locales, sin commit ni publicar
+- Guardianes No'j → Iq' → Kej → E' (rumbo y color con \*). B'atz' y Ajpu quedan solo como nawales.
+- Catálogo fuera del programa, con estado, fuente, fecha y quién verificó. Los 21 lugares en borrador.
+- Recorrido «Quiero un café»: hasta 3 cafés publicados con fuente y fecha, y «Cómo llegar». Hoy: «Selección en revisión».
+- ✅ 81/81 pruebas automáticas a 390 px. 🟡 Sin celular real, sin persona externa. Detalle: `docs/nAIhual-vNext-handoff.md`.
+
 **Rector v1.1 — 24-oct-2026**: norte, objetivo al 30-nov (1 turista + 1 negocio), FODA, calificación 16/50 (32 %), 4 reglas contra la gentrificación, ruta de 5 semanas. PDF y Google Doc editable.
 
 **App 1.0 — 18-oct-2026** (`app/index.html`)
@@ -420,4 +466,4 @@ Fuentes:
 
 ## 14. Para quien siga (prompt de continuación)
 
-> Leé `CLAUDE.md` y este documento completo, y respetá el método `0_…`–`4_….md`. La app vigente es `app/index.html`; no rehagás desde cero ni toqués lo que funciona. Antes de construir, preguntá «¿qué circuito cierra esto?». Nunca inventes datos ni significados culturales. Reportá con ✅ 🟡 ❓. Esperá CONSTRUYE. Siguiente paso: C1, que una persona que no sea el fundador abra la app en su celular.
+> Leé `CLAUDE.md` y este documento completo, y respetá el método `0_…`–`4_….md`. La app vigente es `app/index.html`; no rehagás desde cero ni toqués lo que funciona. Antes de construir, preguntá «¿qué circuito cierra esto?». Nunca inventes datos ni significados culturales. Reportá con ✅ 🟡 ❓. Esperá CONSTRUYE. Siguiente paso: el fundador revisa la App 1.2 en el visor y decide lo pendiente (Aliados, etapas, arte); después elige alojamiento y aporta hasta 3 cafés con fuente, fecha y quién verificó (`docs/nAIhual-vNext-handoff.md`, sección 5); después C1, que una persona que no sea el fundador haga el recorrido de café en su celular.
