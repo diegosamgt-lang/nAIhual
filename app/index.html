@@ -22,6 +22,8 @@
   --basalto: #1d2125; --ink-2: #474c52; --ink-3: #62676d;
   --line: rgba(29,33,37,.12); --line-2: rgba(29,33,37,.22);
   --anil: #2f4b7c; --anil-soft: #dfe5f0; --on-anil: #ffffff;
+  --band: #1d2125; --band-ink: #f3f1ec; --band-muted: rgba(243,241,236,.66);
+  --tint-cafe: #f1dfbd; --tint-comida: #efd3c6; --tint-cultura: #d9e1ee;
   --cielo-1: #f6d9b8; --cielo-2: #c9d4e3; --volcan: #6f7d8f; --volcan-2: #4f5b6b; --techo: #b4664b;
   /* color · estados */
   --heart: #b4462f; --ok: #2f6b4f; --ok-soft: #dcebe2;
@@ -52,6 +54,8 @@
   --basalto: #eceae4; --ink-2: #c3c1ba; --ink-3: #9c9a93;
   --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
   --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
+  --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b;
   --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
   --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
   --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
@@ -66,6 +70,8 @@
   --basalto: #eceae4; --ink-2: #c3c1ba; --ink-3: #9c9a93;
   --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
   --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
+  --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b;
   --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
   --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
   --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
@@ -114,9 +120,9 @@ main.chat { padding-bottom: 230px; gap: var(--s-4); }
 
 /* ---------- navegación inferior ---------- */
 nav.tabs { position: fixed; z-index: 9; left: 50%; transform: translateX(-50%); bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: min(480px, calc(100% - 24px));
-  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 2px; padding: 6px; border-radius: var(--r-xl); background: var(--basalto); box-shadow: var(--shadow-2); }
-nav.tabs button { border: 0; cursor: pointer; min-height: 52px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: transparent; color: color-mix(in srgb, var(--cal) 62%, transparent); font-size: 11.5px; font-weight: 700; }
-nav.tabs button[aria-current="page"] { background: var(--cal); color: var(--basalto); }
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 2px; padding: 6px; border-radius: var(--r-xl); background: var(--band); box-shadow: var(--shadow-2); }
+nav.tabs button { border: 0; cursor: pointer; min-height: 52px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: transparent; color: var(--band-muted); font-size: 11.5px; font-weight: 700; }
+nav.tabs button[aria-current="page"] { background: var(--band-ink); color: var(--band); }
 nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 
 /* ---------- botones y chips ---------- */
@@ -162,10 +168,10 @@ details.info[open] { flex-basis: 100%; }
 
 /* ---------- inicio ---------- */
 .hero { position: relative; margin: 0 -16px; padding: 0 16px; display: flex; flex-direction: column; gap: var(--s-4); }
-.hero-art { position: relative; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 11; max-width: 100%; background: var(--cielo-2); }
+.hero-art { position: relative; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 4 / 3; max-width: 100%; background: var(--cielo-2); }
 .hero-art svg { width: 100%; height: 100%; }
 .hero-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--s-5); display: flex; flex-direction: column; gap: 6px; }
-.hero-copy h1 { font-size: var(--t-2xl); color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+.hero-copy h1 { font-size: clamp(26px, 8vw, var(--t-2xl)); color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); max-width: 15ch; }
 .hero-copy p { color: rgba(255,255,255,.92); font-weight: 600; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
 .cta-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2); }
 .sec { display: flex; flex-direction: column; gap: var(--s-3); }
@@ -188,11 +194,11 @@ details.info[open] { flex-basis: 100%; }
 .gbtn b { font-family: var(--f-display); font-size: 15px; }
 .gbtn small { font-size: 11.5px; color: var(--ink-3); line-height: 1.25; }
 .gbtn[aria-current="true"] { background: var(--papel); box-shadow: var(--shadow-1); }
-.biz { display: flex; flex-direction: column; gap: 10px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--basalto); color: var(--cal); }
+.biz { display: flex; flex-direction: column; gap: 10px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--band); color: var(--band-ink); }
 .biz h2 { font-size: var(--t-lg); }
-.biz p { color: color-mix(in srgb, var(--cal) 78%, transparent); font-size: 14.5px; }
-.biz .tag { background: var(--cal); color: var(--basalto); align-self: flex-start; }
-.biz .btn { align-self: flex-start; background: var(--cal); color: var(--basalto); border-color: transparent; }
+.biz p { color: var(--band-muted); font-size: 14.5px; }
+.biz .tag { background: var(--band-ink); color: var(--band); align-self: flex-start; }
+.biz .btn { align-self: flex-start; background: var(--band-ink); color: var(--band); border-color: transparent; }
 .foot { font-size: 11.5px; color: var(--ink-3); text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center; }
 .foot .linkbtn { border: 0; background: none; padding: 4px; cursor: pointer; text-decoration: underline; color: var(--ink-3); font-size: 12px; }
 
@@ -213,13 +219,15 @@ details.info[open] { flex-basis: 100%; }
 .map .park { fill: var(--ok-soft); stroke: var(--ok); stroke-opacity: .35; }
 .map .street { stroke: var(--piedra-2); stroke-width: 1; }
 .map .lbl { font-family: var(--f-data); font-size: 9px; fill: var(--ink-3); letter-spacing: .04em; }
+.map .park-lbl { fill: var(--ok); font-size: 8.5px; text-transform: uppercase; }
+.map .north path { fill: var(--basalto); }
 .map .route { fill: none; stroke: var(--anil); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
 .map .route.faint { stroke: var(--ink-3); stroke-opacity: .28; stroke-width: 2.5; }
 .map .stop circle { fill: var(--basalto); stroke: var(--papel); stroke-width: 2; }
 .map .stop text { font-family: var(--f-data); font-size: 10px; font-weight: 600; fill: var(--cal); text-anchor: middle; dominant-baseline: central; }
 .map .stop.aprox circle { stroke-dasharray: 2 2; }
 .map .pin circle { fill: var(--anil); stroke: var(--papel); stroke-width: 3; }
-.map .note { position: absolute; right: 8px; bottom: 8px; font-family: var(--f-data); font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase; padding: 3px 7px; border-radius: var(--r-pill); background: color-mix(in srgb, var(--papel) 88%, transparent); color: var(--ink-3); }
+.map .note { position: absolute; left: 8px; bottom: 8px; font-family: var(--f-data); font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase; padding: 3px 7px; border-radius: var(--r-pill); background: color-mix(in srgb, var(--papel) 88%, transparent); color: var(--ink-3); }
 @media (prefers-reduced-motion: no-preference) { .map .route.draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw var(--dur-route) var(--ease) forwards .15s; } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
@@ -305,6 +313,11 @@ form.ask button { flex: none; width: 42px; height: 42px; border: 0; border-radiu
 .facts dt { font-family: var(--f-data); font-size: var(--t-2xs); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
 .facts dd { margin: 3px 0 0; }
 .note { font-size: 13px; color: var(--ink-3); }
+.artbox { margin: 0; display: flex; flex-direction: column; gap: 10px; padding: var(--s-4); border-radius: var(--r-xl); background: var(--papel); border: 1px solid var(--line); }
+.artbox > svg { width: 100%; height: auto; max-height: 300px; }
+.artbox figcaption { display: block; font-size: 13.5px; color: var(--ink-2); }
+.artbox figcaption details.info { display: inline-block; vertical-align: middle; margin-left: 4px; }
+.artbox figcaption b { font-family: var(--f-data); font-size: 15px; color: var(--basalto); }
 .nawal-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--s-2); }
 .nawal { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 10px; align-items: center; padding: 10px 12px; border-radius: var(--r-md); background: var(--papel); border: 1px solid var(--line); }
 .nawal .n { font-family: var(--f-data); font-weight: 600; font-size: 13px; color: var(--ink-3); }
@@ -757,29 +770,53 @@ function portrait(gid, size) {
 }
 var uid = 0;
 // Volcán de Agua (silueta) sobre los techos: es paisaje, no un símbolo cultural.
+// Rueda de rumbos*: cada guardián en su punto cardinal (Iq' norte, No'j oriente, E' sur, Kej poniente). Es un esquema, no un glifo.
+function compassArt() {
+  var pos = { iq: [150, 46], noj: [254, 150], e: [150, 254], kej: [46, 150] }, lbl = { iq: 'N', noj: 'E', e: 'S', kej: 'O' };
+  return '<svg viewBox="0 0 300 300" role="img" aria-label="Rumbos de los guardianes*">' +
+    '<circle cx="150" cy="150" r="104" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M150 40 V260 M40 150 H260" style="stroke:var(--line-2)" stroke-width="1.5"/>' +
+    ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 32) + ' ' + (q[1] - 32) + ')">' + portrait(g, 64) + '</g><text class="lbl" x="' + (q[0] + (g === 'noj' ? -42 : g === 'kej' ? 42 : 0)) + '" y="' + (q[1] + (g === 'iq' ? 44 : g === 'e' ? -38 : 4)) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
+    '<text x="150" y="155" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text></svg>';
+}
+// El Cholq'ij en una imagen: 260 días = 13 números × 20 nawales (dato del consejo «cholqij»).
+function cholqijArt() {
+  var s = '', i, j;
+  for (j = 0; j < 13; j++) for (i = 0; i < 20; i++) s += '<circle cx="' + (12 + i * 15) + '" cy="' + (12 + j * 15) + '" r="4.2" style="fill:' + (i === 6 || i === 11 || i === 16 || i === 1 ? 'var(--anil)' : 'var(--piedra-2)') + '"/>';
+  return '<svg viewBox="0 0 300 204" role="img" aria-label="260 días: 13 números por 20 nawales">' + s + '</svg>';
+}
 function heroArt() {
   var id = 'h' + (++uid);
-  return '<svg viewBox="0 0 400 275" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
-    '<defs><linearGradient id="' + id + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--cielo-2)"/><stop offset="1" style="stop-color:var(--cielo-1)"/></linearGradient>' +
-    '<linearGradient id="' + id + 'f" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient></defs>' +
-    '<rect width="400" height="275" fill="url(#' + id + 's)"/>' +
-    '<path d="M60 205 L196 62 Q205 54 214 62 L352 205 Z" style="fill:var(--volcan)"/>' +
-    '<path d="M196 62 Q205 54 214 62 L232 82 Q218 76 205 84 Q192 76 180 80 Z" style="fill:var(--cal)" opacity=".7"/>' +
-    '<path d="M0 205 L70 170 L120 190 L170 160 L240 192 L300 168 L400 200 L400 275 L0 275 Z" style="fill:var(--volcan-2)"/>' +
-    '<g style="fill:var(--techo)"><rect x="0" y="214" width="400" height="61"/></g>' +
-    '<g style="fill:var(--cal)" opacity=".92"><rect x="14" y="222" width="64" height="53"/><rect x="88" y="230" width="48" height="45"/><rect x="262" y="226" width="58" height="49"/><rect x="330" y="232" width="56" height="43"/>' +
-    '<path d="M150 275 V214 H250 V275 H222 V246 a22 22 0 0 0 -44 0 V275 Z"/><rect x="186" y="190" width="28" height="26"/><path d="M182 192 L200 176 L218 192 Z"/></g>' +
-    '<circle cx="200" cy="203" r="6" style="fill:var(--techo)"/>' +
-    '<rect width="400" height="275" fill="url(#' + id + 'f)"/></svg>';
+  return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<defs><linearGradient id="' + id + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--cielo-2)"/><stop offset=".75" style="stop-color:var(--cielo-1)"/></linearGradient>' +
+    '<linearGradient id="' + id + 'v" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--volcan-2)"/><stop offset=".55" style="stop-color:var(--volcan)"/></linearGradient>' +
+    '<linearGradient id="' + id + 'f" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient></defs>' +
+    '<rect width="400" height="300" fill="url(#' + id + 's)"/>' +
+    '<circle cx="318" cy="70" r="26" style="fill:var(--cal)" opacity=".55"/>' +
+    '<path d="M30 222 L188 70 Q200 60 212 70 L370 222 Z" fill="url(#' + id + 'v)"/>' +
+    '<path d="M188 70 Q200 60 212 70 L226 84 L214 80 L206 88 L198 80 L188 88 L176 82 Z" style="fill:var(--cal)" opacity=".85"/>' +
+    '<path d="M0 222 L80 196 L150 212 L230 190 L310 210 L400 196 L400 300 L0 300 Z" style="fill:var(--volcan-2)" opacity=".9"/>' +
+    '<g style="fill:var(--techo)"><path d="M0 238 L60 226 L120 238 Z"/><path d="M262 236 L326 222 L400 236 Z"/><rect x="0" y="236" width="400" height="64"/></g>' +
+    '<g style="fill:var(--cal)"><rect x="10" y="240" width="96" height="60"/><rect x="272" y="240" width="118" height="60"/>' +
+    '<path d="M132 300 V232 H268 V300 H232 V266 a32 32 0 0 0 -64 0 V300 Z"/><rect x="182" y="204" width="36" height="30"/><path d="M178 206 L200 188 L222 206 Z"/></g>' +
+    '<circle cx="200" cy="219" r="6.5" style="fill:var(--techo)"/>' +
+    '<g style="fill:var(--techo)" opacity=".55"><rect x="26" y="256" width="14" height="22" rx="7"/><rect x="58" y="256" width="14" height="22" rx="7"/><rect x="292" y="256" width="14" height="22" rx="7"/><rect x="324" y="256" width="14" height="22" rx="7"/><rect x="356" y="256" width="14" height="22" rx="7"/></g>' +
+    '<rect width="400" height="300" fill="url(#' + id + 'f)"/></svg>';
 }
 // Espacio provisional de foto: color del guardián que lo recomienda, la silueta del volcán y el ícono de la categoría.
 function photoArt(cat, gid) {
   var id = 'p' + (++uid), g = gid || 'kej';
+  var scene = cat === 'cafe'
+    ? '<path d="M96 240 V120 a64 64 0 0 1 128 0 V240" style="fill:var(--cal)" opacity=".55"/><rect x="60" y="176" width="200" height="8" rx="4" style="fill:var(--basalto)" opacity=".18"/>' +
+      '<path d="M134 136 h46 v28 a20 20 0 0 1 -20 20 h-6 a20 20 0 0 1 -20 -20 z M180 144 h6 a10 10 0 0 1 0 20 h-6" style="fill:none;stroke:var(--basalto)" stroke-opacity=".45" stroke-width="5" stroke-linejoin="round"/>' +
+      '<path d="M146 122 q-6 -10 0 -20 M160 122 q-6 -10 0 -20 M174 122 q-6 -10 0 -20" style="fill:none;stroke:var(--basalto)" stroke-opacity=".3" stroke-width="4" stroke-linecap="round"/>'
+    : cat === 'comida'
+    ? '<circle cx="160" cy="132" r="64" style="fill:var(--cal)" opacity=".65"/><circle cx="160" cy="132" r="42" style="fill:none;stroke:var(--basalto)" stroke-opacity=".25" stroke-width="4"/>' +
+      '<path d="M76 84 v30 a10 10 0 0 0 20 0 v-30 M86 84 v100 M236 84 c-14 6 -16 30 -14 50 h14 v50" style="fill:none;stroke:var(--basalto)" stroke-opacity=".4" stroke-width="5" stroke-linecap="round"/>'
+    : '<path d="M70 240 V120 H250 V240 H190 V176 a30 30 0 0 0 -60 0 V240 Z" style="fill:var(--cal)" opacity=".6"/><path d="M140 120 V92 a20 20 0 0 1 40 0 V120 Z" style="fill:var(--cal)" opacity=".6"/>' +
+      '<path d="M70 120 H250" style="stroke:var(--basalto)" stroke-opacity=".25" stroke-width="5"/><circle cx="160" cy="98" r="7" style="fill:var(--basalto)" opacity=".2"/>';
   return '<svg class="art g-' + g + '" viewBox="0 0 320 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
-    '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--gs)"/><stop offset="1" style="stop-color:var(--piedra-2)"/></linearGradient></defs>' +
-    '<rect width="320" height="240" fill="url(#' + id + ')"/>' +
-    '<path d="M40 240 L150 120 Q160 110 170 120 L280 240 Z" style="fill:var(--basalto)" opacity=".07"/>' +
-    '<g transform="translate(124 84) scale(3)" style="stroke:var(--basalto)" stroke-opacity=".38" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">' + IP[CAT_ICON[cat] || 'pin'] + '</g></svg>';
+    '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--tint-' + (cat === 'comida' || cat === 'cultura' ? cat : 'cafe') + ')"/><stop offset="1" style="stop-color:var(--piedra-2)"/></linearGradient></defs>' +
+    '<rect width="320" height="240" fill="url(#' + id + ')"/><path d="M0 240 L120 150 Q140 136 160 150 L320 240 Z" style="fill:var(--basalto)" opacity=".05"/>' + scene + '</svg>';
 }
 function phHTML(p, t, ratio) {
   var g = p.g[0] || 'kej';
@@ -790,10 +827,10 @@ function phHTML(p, t, ratio) {
 // ===================== MAPA ESQUEMÁTICO DE LA CUADRÍCULA =====================
 // Avenidas norte-sur (1a al oriente … 7a al poniente) y calles oriente-poniente (1a al norte …).
 // Parque Central entre la 4a y la 5a Calle y la 4a y la 5a Avenida. Fuentes: Wikivoyage y Revue Magazine (consultadas el 23-oct-2026).
-var MAP = { cw: 46, ch: 38, avs: 7, cas: 8 };
-MAP.W = MAP.cw * MAP.avs; MAP.H = MAP.ch * MAP.cas;
-function mx(av) { return MAP.W - (av - 0.5) * MAP.cw; }
-function my(ca) { return (ca - 0.5) * MAP.ch; }
+var MAP = { cw: 44, ch: 37, avs: 7, cas: 8, ox: 26, oy: 18 };
+MAP.W = MAP.ox + MAP.cw * MAP.avs; MAP.H = MAP.oy + MAP.ch * MAP.cas;
+function mx(av) { return MAP.ox + (MAP.avs - av + 0.5) * MAP.cw; }
+function my(ca) { return MAP.oy + (ca - 0.5) * MAP.ch; }
 function ord(n, lang) { return lang === 'en' ? n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th') : n + 'a'; }
 function pathThrough(pts) {
   var d = '';
@@ -814,8 +851,11 @@ function mapSVG(opts) {
     s += '<rect class="' + (i === 4 && j === 4 ? 'park' : 'block') + '" x="' + x1 + '" y="' + y1 + '" width="' + (x2 - x1) + '" height="' + (y2 - y1) + '" rx="3"/>';
   }
   if (opts.labels) {
-    for (i = 1; i <= MAP.avs; i++) s += '<text class="lbl" x="' + mx(i) + '" y="11" text-anchor="middle">' + ord(i, opts.lang) + (opts.lang === 'en' ? ' Av' : ' Av') + '</text>';
-    for (j = 1; j < MAP.cas; j++) s += '<text class="lbl" x="4" y="' + (my(j) - 3) + '">' + ord(j, opts.lang) + (opts.lang === 'en' ? ' St' : ' C') + '</text>';
+    for (i = 1; i <= MAP.avs; i++) s += '<text class="lbl" x="' + mx(i) + '" y="12" text-anchor="middle">' + ord(i, opts.lang) + ' Av</text>';
+    for (j = 1; j < MAP.cas; j++) s += '<text class="lbl" x="3" y="' + (my(j) + 3) + '">' + ord(j, opts.lang) + (opts.lang === 'en' ? ' St' : ' C') + '</text>';
+    if (!(opts.stops || []).length) s += '<text class="lbl park-lbl" x="' + ((mx(4) + mx(5)) / 2) + '" y="' + ((my(4) + my(5)) / 2 + 3) + '" text-anchor="middle">Parque</text>';
+    var nx = MAP.W - 14, ny = MAP.H - 30;
+    s += '<g class="north"><path d="M' + nx + ' ' + (ny - 11) + ' l5 11 h-10 z"/><text class="lbl" x="' + nx + '" y="' + (ny + 11) + '" text-anchor="middle">N</text></g>';
   }
   (opts.routes || []).forEach(function (r) {
     var pts = r.ids.map(function (id) { return P[id] && P[id].pos; }).filter(Boolean);
@@ -1313,12 +1353,13 @@ function explorarHTML() {
 function culturaHTML() {
   var t = T();
   return backBtn() + '<div class="pagehead"><span class="eyebrow">Cholq\'ij · Ab\' · Popol Wuj</span><h1>' + esc(t.cultureTitle) + '</h1><p>' + esc(t.cultureSub) + '</p></div>' +
+    '<figure class="artbox" data-art="cholqij">' + cholqijArt() + '<figcaption><b>260</b> ' + esc(S.lang === 'en' ? 'days · 13 numbers × 20 nawales. In blue, four nawales 5 days apart: the Year Bearers take turns that way (Iq\' → Kej → E\' → No\'j).' : 'días · 13 números × 20 nawales. En añil, cuatro nawales separados por 5 días: así se turnan los cargadores del año (Iq\' → Kej → E\' → No\'j).') + infoHTML('cult') + '</figcaption></figure>' +
     '<button type="button" class="tile" data-go="nawales" style="min-height:auto">' + icon('calendar') + '<span><b>' + esc(t.nawalsTitle) + '</b><small>' + esc(t.nawalsSub) + '</small></span></button>' +
     '<div class="cards">' + Object.keys(TIPS).filter(function (id) { return TIPS[id].cat === 'cultura'; }).map(tipCard).join('') + '</div>';
 }
 function costumbresHTML() {
   var t = T();
-  return backBtn() + '<div class="pagehead"><h1>' + esc(t.customsTitle) + '</h1><p>' + esc(t.customsSub) + '</p></div>' +
+  return backBtn() + '<div class="ph" style="aspect-ratio:16/8" data-art="costumbres">' + heroArt() + '</div><div class="pagehead"><h1>' + esc(t.customsTitle) + '</h1><p>' + esc(t.customsSub) + '</p></div>' +
     '<div class="cards">' + Object.keys(TIPS).filter(function (id) { return TIPS[id].cat === 'costumbre'; }).map(tipCard).join('') + '</div>';
 }
 function nawalesHTML() {
@@ -1338,6 +1379,7 @@ function nawalHTML() {
 function guardianesHTML() {
   var t = T(), lang = L();
   return backBtn() + '<div class="pagehead"><div class="sec-head"><h1>' + esc(t.guardsTitle) + '</h1>' + infoHTML('guard') + '</div><p>' + esc(t.guardsSub) + '</p></div>' +
+    '<figure class="artbox" data-art="rumbos">' + compassArt() + '</figure>' +
     ORDER.map(function (id) { var g = G[id];
       return '<article class="gfull g-' + id + '" data-gcard="' + id + '">' + portrait(id, 76) + '<div><h2>' + esc(g.name) + '</h2><small class="muted">' + esc(g.tag[lang]) + '</small><dl>' +
         [[t.dValue, g.value[lang]], [t.dDir, g.dir[lang]], [t.dRole, g.role[lang]], [t.dSpeaks, g.speaks[lang]], [t.dRecs, g.recs[lang]], [t.dPdf, g.pdf[lang]]].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +

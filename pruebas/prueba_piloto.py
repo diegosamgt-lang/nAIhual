@@ -293,6 +293,7 @@ def main():
         page.click('[data-tab="inicio"]')
         page.click('[data-go="cultura"]')
         check(M + ' Cultura maya: consejos con ⓘ y acceso a los nawales', page.locator('.tipcard').count() == 9 and page.locator('.tipcard details.info').count() == 9)
+        check(M + ' Cultura maya: la imagen de los 260 días (13 × 20)', page.locator('[data-art="cholqij"] > svg circle').count() == 260)
         page.click('[data-go="nawales"]')
         check(M + ' Los 20 nawales, con los 4 guardianes resaltados', page.locator('.nawal').count() == 20 and page.locator('.nawal.guard').count() == 4)
         check(M + ' Aviso: nAIhual no calcula tu nawal', 'no calcula tu nawal' in page.inner_text('main'))
@@ -306,6 +307,7 @@ def main():
         page.click('[data-go="guardianes"]')
         gs = page.locator('.gfull h2').all_inner_texts()
         check(M + ' Guardianes: 4 en orden, con rumbo y ⓘ', gs == GUARDIANES and 'Oriente · rojo' in page.inner_text('main') and page.locator('details.info[data-info="guard"]').count() == 1, gs)
+        check(M + ' Guardianes: la rueda de rumbos con los 4 retratos', page.locator('[data-art="rumbos"] svg.portrait').count() == 4)
         check(M + ' 390 px sin desplazamiento horizontal (Guardianes)', no_hscroll(page))
 
         # Aliados
