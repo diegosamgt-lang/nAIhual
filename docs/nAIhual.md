@@ -239,6 +239,15 @@ Nacen del resumen viejo: simbología del número 4 y las direcciones.
 - ⚠️ Límites: las estrellas de Google no se leen solas (la API cobra; sin gasto en Maps) → se anotan a mano con fecha si están en una fuente pública. Instagram suele bloquear la lectura sin cuenta (❓ por probar) → el fundador pega texto o captura. Guardar opiniones = datos de personas → en el visor privado se pueden guardar en la base de datos del artifact; en pública hace falta aviso de privacidad.
 - ❓ Por decidir: 7) estrellas anotadas a mano con fecha (recomendado) o sin estrellas · 8) opiniones guardadas en el visor privado para probar (recomendado) o todavía no.
 
+### Corrección del fundador: opciones con contexto, no ranking (23-oct-2026) · ⏸️ PAUSA
+- ✅ No es «confiá en el criterio del fundador». Es que quien viene a Guatemala **entienda por qué es tan especial** y la disfrute **de forma consciente**: apoyar al comedor que lleva años, al artesano, a los niños de las bandas, preservar raíces y tradiciones; no al que ya factura miles.
+- ✅ nAIhual **no pone uno por encima de otro**: muestra las opciones con su contexto (cadena, nacional, familiar, de tradición, desde cuándo) y la persona elige.
+  - Ejemplo del fundador · pan: San Martín (guatemalteca, mainstream) · Viejo Café (antigüeña, cadena con varias tiendas en Antigua) · Le Fournil (francesa, de guatemaltecos) · panadería de doña Gaby (pan guatemalteco de tradición). ❓ Los datos de cadena y sucursales se verifican con fuente pública; los adjetivos («cara», «gentrificada», «el mejor») son opiniones y van firmadas por quien las dice.
+  - Ejemplo · pollo: Pollo Campero está en todo el mundo; en Antigua están Barriga Llena y Por su Pollo.
+- ✅ **«Recomendado por nAIhual» = una persona real lo probó** (agente o visitante). Se ve quién es y qué dijo. No es «nAIhual lo sabe todo como Google».
+- ✅ Cada persona que opina tiene un **perfil corto** («ama el pan», «viaja con niños») para que quien lee decida si ese review le sirve.
+- Reparto: Claude pone el contexto con fuente (datos). Las personas ponen las opiniones (firmadas). El fundador y sus agentes arrancan las primeras opiniones.
+
 ## 4. Producto (lo que existe)
 
 **App vigente: nAIhual 2.0 (23-oct-2026)** · reconstrucción total en 4 ciclos (prompt: `docs/prompts/prompt-claude-reconstruccion.md`).
