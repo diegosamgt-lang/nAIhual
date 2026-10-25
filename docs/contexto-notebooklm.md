@@ -1,6 +1,6 @@
 # nAIhual 3.0 — Contexto para NotebookLM (fuente principal)
 
-> **Para NotebookLM:** esta es la **fuente principal y más nueva** del cuaderno (versión 3.0, 24-oct-2026). Si otra fuente dice algo distinto sobre el proyecto, **manda esta**. Las fuentes de cosmovisión maya siguen valiendo como investigación, pero todo lo maya lleva \* hasta que lo valide un tata (Ajq'ij). La escribió Claude con el fundador.
+> **Para NotebookLM:** esta es la **fuente principal y más nueva** del cuaderno (versión 3.0, 24-oct-2026). Si otra fuente dice algo distinto sobre el proyecto, **manda esta**. Las fuentes de cosmovisión maya siguen valiendo como investigación, pero todo lo maya lleva \* hasta que lo valide un tata (Ajq'ij). La escribió Claude con Diego.
 
 ## 1. Qué es
 - nAIhual es **un modelo, no solo una app**: turismo consciente y comunitario. Nace en Antigua Guatemala y se puede llevar a otros pueblos.
@@ -8,9 +8,9 @@
 - Frase: «Viaja directo a la raíz.» El nombre junta *nahual* + *IA*; es nombre propio del proyecto (se le consultará también al tata).
 
 ## 2. Intención y corazón
-- Para el más alto bien de Guatemala, de su comunidad y del fundador, con luz, amor y la mayor consciencia posible.
+- Para el más alto bien de Guatemala, de su comunidad y de Diego, con luz, amor y la mayor consciencia posible.
 - Respeto a las culturas ancestrales e indígenas, y también a las ladinas, latinas, mestizas y extranjeras, con un límite: primero va el bien común de la naturaleza, los animales y todo lo que habita el entorno.
-- No apropiarse de la cultura maya: exponerla a través de **su** verdad, no absoluta. El fundador es mestizo y no la conoce desde dentro.
+- No apropiarse de la cultura maya: exponerla a través de **su** verdad, no absoluta. Diego es mestizo y no la conoce desde dentro.
 - **Lo opuesto a imponer:** dar contexto y no decir que algo es mejor porque sí.
 - La riqueza de Guatemala está en sus paisajes, pero es gracias a su gente. Que el visitante trate con la misma dignidad al artesano, al tuctuquero, a la mesera y a la vendedora del mercado.
 - Nadie tiene la razón absoluta, tampoco nAIhual.
@@ -34,7 +34,7 @@ Orden: **No'j → Iq' → Kej → E'**. Empieza No'j y sigue hasta que el visita
 | Kej | Poniente · negro | Práctico, firme | Rutas a pie, naturaleza, mercados; seguridad y emergencias (contactos, sin política). |
 | E' | Sur · amarillo | Alentador, guía | Artesanos, comida con carácter, comunidades. |
 
-- Los cuatro elementos (fuego, aire, tierra, agua): el fundador dice que los mayas sí los usan. Quedan con \* hasta que el tata los valide.
+- Los cuatro elementos (fuego, aire, tierra, agua): Diego dice que los mayas sí los usan. Quedan con \* hasta que el tata los valide.
 - B'atz' y Ajpu no son guardianes; siguen como 2 de los 20 nawales.
 
 ## 5. Límites con la cosmovisión
@@ -50,7 +50,7 @@ Orden: **No'j → Iq' → Kej → E'**. Empieza No'j y sigue hasta que el visita
 - El detalle que cada agente le cuenta a nAIhual es privado y sirve para aprender.
 
 ## 7. Personas
-- El fundador es la beta de todo. Después vienen los agentes: personas reales, casi todas locales, que prueban, opinan y arman playlists.
+- Diego es la beta de todo. Después vienen los agentes: personas reales, casi todas locales, que prueban, opinan y arman playlists.
 
 ## 8. Sostener el modelo (pendiente de evolución y planificación)
 - El visitante usa nAIhual **gratis**.

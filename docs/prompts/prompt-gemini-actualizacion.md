@@ -12,6 +12,6 @@ Pegá esto **antes** de `prompt-gemini-nAIhual.md` si vas a trabajar con Gemini.
 > 6. Portada: «Qué es nAIhual» («La riqueza de Guatemala está en sus paisajes, y es gracias a su gente.») y la **brújula del paisaje**: Cerro de la Cruz al norte, Volcán de Agua al sur, Fuego y Acatenango al poniente, por donde sale el sol al oriente. Ningún otro punto sin fuente.
 > 7. Una capa a la vez. Capa actual: conocimiento (catálogo con fuente y fecha, primera ola: Llegué, Transporte, Hotel, Comida, Qué hay cerca).
 > 8. Nunca pongas una llave de API en el navegador.
-> 9. Si algo de lo que pide el fundador choca con estas reglas, decíselo de frente antes de construir.
+> 9. Si algo de lo que pide Diego choca con estas reglas, decíselo de frente antes de construir.
 >
 > La fuente de verdad es `docs/nAIhual.md` (Parte 1 · Bases) del repositorio `diegosamgt-lang/nAIhual`.

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* =====================================================================
-   nAIhual 3.2 · sistema visual (tokens). Cambiar un token cambia toda la app.
+   nAIhual 3.3 · sistema visual (tokens). Cambiar un token cambia toda la app.
    Concepto: Antigua en piedra, cal y basalto. Muros encalados (fondo), basalto volcánico (tinta),
    añil de fachada (acento de rutas y enlaces) y los cuatro colores de los guardianes por rumbo*.
    Layout: app de celular en una columna (máx. 560px). Cada pantalla abre con una imagen, un mapa o una ilustración.
@@ -23,7 +23,7 @@
   --line: rgba(29,33,37,.12); --line-2: rgba(29,33,37,.22);
   --anil: #2f4b7c; --anil-soft: #dfe5f0; --on-anil: #ffffff;
   --band: #1d2125; --band-ink: #f3f1ec; --band-muted: rgba(243,241,236,.66);
-  --tint-cafe: #f1dfbd; --tint-comida: #efd3c6; --tint-cultura: #d9e1ee;
+  --tint-cafe: #f1dfbd; --tint-comida: #efd3c6; --tint-cultura: #d9e1ee; --tint-noche: #dcd6ea; --tint-postres: #f3dde3; --tint-parque: #d7e6d3;
   --cielo-1: #f6d9b8; --cielo-2: #c9d4e3; --volcan: #6f7d8f; --volcan-2: #4f5b6b; --techo: #b4664b;
   /* color · estados */
   --heart: #b4462f; --ok: #2f6b4f; --ok-soft: #dcebe2;
@@ -55,7 +55,7 @@
   --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
   --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
   --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
-  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b;
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b; --tint-noche: #2a2538; --tint-postres: #3a2229; --tint-parque: #1f3121;
   --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
   --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
   --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
@@ -71,7 +71,7 @@
   --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
   --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
   --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
-  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b;
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b; --tint-noche: #2a2538; --tint-postres: #3a2229; --tint-parque: #1f3121;
   --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
   --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
   --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
@@ -214,6 +214,11 @@ details.info[open] { flex-basis: 100%; }
 .bform .check { flex-direction: row; align-items: center; gap: 10px; min-height: 44px; }
 .bform .check input { width: 22px; height: 22px; }
 .bitem { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: var(--r-md); background: var(--papel); border: 1px solid var(--line); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 60; display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 16px; border-radius: var(--r-pill); background: var(--band); color: var(--band-ink); box-shadow: 0 8px 24px rgba(0,0,0,.18); font-weight: 600; font-size: 14.5px; max-width: calc(100vw - 32px); }
+.toast[hidden] { display: none; }
+.toast span { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.toast .btn { background: var(--band-ink); color: var(--band); border-color: transparent; }
+.toast.bad { background: var(--check-soft); color: var(--check); }
 .bitem small { color: var(--ink-3); font-family: var(--f-data); font-size: 11.5px; }
 .biz { display: flex; flex-direction: column; gap: 10px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--band); color: var(--band-ink); }
 .biz h2 { font-size: var(--t-lg); }
@@ -223,7 +228,7 @@ details.info[open] { flex-basis: 100%; }
 .foot { font-size: 11.5px; color: var(--ink-3); text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center; }
 .foot .linkbtn { border: 0; background: none; padding: 12px 8px; min-height: 44px; cursor: pointer; text-decoration: underline; color: var(--ink-3); font-size: 12px; }
 
-/* ---------- retrato abstracto de guardián (espacio para el arte final del fundador) ---------- */
+/* ---------- retrato abstracto de guardián (espacio para el arte final de Diego) ---------- */
 .portrait { flex: none; display: block; border-radius: 50%; }
 .portrait .ring { fill: var(--gc); stroke: var(--line-2); stroke-width: 1; }
 .portrait .inner { fill: none; stroke: var(--go); stroke-opacity: .55; stroke-width: 1.5; }
@@ -438,21 +443,21 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.2 · 24-oct-2026';
-var INSTR_VERSION = 'reglas-fijas 3.1';
+var VERSION = 'nAIhual 3.3 · 25-oct-2026';
+var INSTR_VERSION = 'reglas-fijas 3.3';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
 // Dos modos. Sin configuración = pública (lo más seguro).
 var MODE = CFG.modo === 'vista_previa' || (CFG.modo === undefined && CFG.vista_previa === true) ? 'vista_previa' : 'publica';
 var PREVIEW = MODE === 'vista_previa';
 var INTERNAL = PREVIEW;
-// Beta del fundador: solo en vista previa. Lo que anota queda en la base de datos del visor (o en este teléfono si no hay visor).
+// Beta: solo en vista previa. Lo que anota queda en la base de datos del visor (o en este teléfono si no hay visor).
 var BETA_ON = PREVIEW && CFG.beta_fundador !== false;
 function w(es, en) { return { es: es, en: en }; }
 
-// ===================== GUARDIANES (aprobados por el fundador · no se cambian) =====================
+// ===================== GUARDIANES (aprobados por Diego · no se cambian) =====================
 // Orden del turno: No'j → Iq' → Kej → E'. Rumbo, color y valor: pendientes de validación cultural (*).
-// rumbo: hacia dónde apunta el punto del retrato abstracto (este, norte, oeste, sur). El arte final lo hace el fundador.
+// rumbo: hacia dónde apunta el punto del retrato abstracto (este, norte, oeste, sur). El arte final lo hace Diego.
 var ORDER = ['noj', 'iq', 'kej', 'e'];
 var G = {
   noj: { name: "No'j", rumbo: 'este', tag: w('te cuenta el porqué', 'tells you the why'), value: w('La sabiduría', 'Wisdom'), role: w('Comprender', 'Understand'), speaks: w('Maestro cercano, reflexivo', 'A friendly, reflective teacher'), dir: w('Oriente · rojo', 'East · red'),
@@ -472,7 +477,7 @@ var G = {
 // ===================== CATÁLOGO (vive en data/lugares.js) =====================
 // Publicado = estado «publicado» + nombre, dirección, enlace de Maps, fuente, fecha y quién verificó.
 // Modo pública: solo lo publicado. Vista previa: todo lo cargado, con «por verificar». Pausado y retirado nunca se cargan.
-var CATS = { cultura: 1, cafe: 1, comida: 1 };
+var CATS = { cultura: 1, cafe: 1, comida: 1, noche: 1, postres: 1, parque: 1 };
 var MAPS_RE = /^https:\/\/(www\.google\.[a-z.]+\/maps|maps\.google\.[a-z.]+|maps\.app\.goo\.gl|goo\.gl\/maps)(\/|\?|$)/;
 var P = {}, PIDS = [];
 (window.NAIHUAL_LUGARES || []).forEach(function (r) {
@@ -653,9 +658,9 @@ var X3 = {
     sensorOn: 'Mover con el teléfono', sensorOff: 'Dejar quieta', sensorWait: 'Esperando el sensor del teléfono…', sensorCal: 'Apuntá la parte de arriba del teléfono a un volcán y tocá su nombre.', sensorLive: 'Se mueve con el teléfono.', sensorNo: 'Este teléfono no deja usar el sensor aquí. Tocá el volcán que ves y la brújula gira.',
     testTitle: 'Probar la brújula (beta)', testBody: 'Parate en un lugar donde veás los volcanes. Teléfono derecho, con la parte de arriba apuntando a cada uno. Tocá su nombre cuando lo tengás enfrente. Primero el Volcán de Agua.', testNeed: 'Para medir, primero tocá «Mover con el teléfono».',
     testFirst: 'Primero apuntá al Volcán de Agua.', expected: 'Esperado', measured: 'Medido', diff: 'Diferencia', testSave: 'Guardar la prueba', testSaved: 'Prueba guardada. Claude la puede leer.', match: '¿La brújula coincide con lo que ves?', yes: 'Sí', more: 'Más o menos', no: 'No', cerroMeasured: 'Cerro de la Cruz, medido:',
-    betaKicker: 'Beta del fundador', betaTitle: 'Alimentá nAIhual', betaBody: 'Marcá lo que te gustó, avisá si un dato está mal o agregá un lugar. Claude lo lee, lo verifica y lo pasa al catálogo.',
+    betaKicker: 'Tu beta', betaTitle: 'Alimentá nAIhual', betaBody: 'Marcá lo que te gustó, avisá si un dato está mal o agregá un lugar. Claude lo lee, lo verifica y lo pasa al catálogo.',
     betaOpen: 'Abrir la beta', betaCount: function (n) { return n === 1 ? '1 anotación' : n + ' anotaciones'; },
-    liked: 'Te gustó', like: 'Me gustó', likedTag: 'Le gustó al fundador', wrong: 'Dato mal', note: 'Nota',
+    liked: 'Te gustó', like: 'Me gustó', likedTag: 'Te gustó', wrong: 'Dato mal', note: 'Nota',
     betaFicha: 'Beta · ¿qué sabés de este lugar?', kind: 'Tipo', text: 'Qué querés anotar', save: 'Guardar anotación',
     addTitle: 'Agregar un lugar', name: 'Nombre del lugar', mapsLink: 'Enlace de Google Maps (Compartir → Copiar enlace)', moment: 'Momento del viaje', didLike: 'Me gustó', addNote: 'Nota corta, en tus palabras', addBtn: 'Agregar',
     moments: [['llegue', 'Llegué'], ['transporte', 'Transporte'], ['hotel', 'Hotel'], ['comida', 'Comida'], ['cerca', 'Qué hay cerca'], ['otro', 'Otro']],
@@ -663,7 +668,10 @@ var X3 = {
     savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
     kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo', brujula: 'Prueba de la brújula' },
     iaTag: 'Según la IA · confirmá en Google', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
-    confirm: 'Confirmar', remove: 'Borrar', confirmed: 'Confirmado', toConfirm: 'Por confirmar', noLearned: 'Todavía no aprendió nada. Platicá con un guía.',
+    confirm: 'Confirmar', remove: 'Borrar', confirmed: 'Confirmado', toConfirm: 'Por confirmar', toResearch: 'Claude lo va a investigar',
+    rev: { entro: 'Claude: entró al catálogo', no_entro: 'Claude: no entró', revisado: 'Claude: revisado', sin: 'Sin revisar todavía' },
+    toastSaved: 'Guardado en tu beta', toastSee: 'Ver', toastFail: 'No se pudo guardar',
+    howTitle: 'Qué pasa con lo que anotás', how: ['Se guarda aquí, en la base de datos de tu visor privado.', 'Decile a Claude «leé la beta».', 'Claude lo verifica con fuente y lo pasa al catálogo.', 'Cada anotación queda marcada: entró, no entró (y por qué) o sin revisar.'], noLearned: 'Todavía no aprendió nada. Platicá con un guía.',
     notebooks: 'Libretas cargadas', notebooksBody: function (n) { return n ? n + (n === 1 ? ' libreta de tu Drive, cargada por Claude.' : ' libretas de tu Drive, cargadas por Claude.') : 'Todavía no hay libretas. Cuando tengás una en tu Drive, Claude la lee y la carga aquí.'; }
   },
   en: {
@@ -676,9 +684,9 @@ var X3 = {
     sensorOn: 'Move with the phone', sensorOff: 'Keep still', sensorWait: 'Waiting for the phone sensor…', sensorCal: 'Point the top of the phone at a volcano and tap its name.', sensorLive: 'It moves with the phone.', sensorNo: 'This phone does not allow the sensor here. Tap the volcano you see and the compass turns.',
     testTitle: 'Test the compass (beta)', testBody: 'Stand where you can see the volcanoes. Phone upright, top pointing at each one. Tap its name when it is in front of you. Agua volcano first.', testNeed: 'To measure, first tap «Move with the phone».',
     testFirst: 'First point at Agua volcano.', expected: 'Expected', measured: 'Measured', diff: 'Difference', testSave: 'Save the test', testSaved: 'Test saved. Claude can read it.', match: 'Does the compass match what you see?', yes: 'Yes', more: 'Sort of', no: 'No', cerroMeasured: 'Cerro de la Cruz, measured:',
-    betaKicker: 'Founder beta', betaTitle: 'Feed nAIhual', betaBody: 'Mark what you liked, flag wrong data or add a place. Claude reads it, checks it and adds it to the catalog.',
+    betaKicker: 'Your beta', betaTitle: 'Feed nAIhual', betaBody: 'Mark what you liked, flag wrong data or add a place. Claude reads it, checks it and adds it to the catalog.',
     betaOpen: 'Open the beta', betaCount: function (n) { return n === 1 ? '1 note' : n + ' notes'; },
-    liked: 'You liked it', like: 'I liked it', likedTag: 'The founder liked it', wrong: 'Wrong data', note: 'Note',
+    liked: 'You liked it', like: 'I liked it', likedTag: 'You liked it', wrong: 'Wrong data', note: 'Note',
     betaFicha: 'Beta · what do you know about this place?', kind: 'Type', text: 'What do you want to note', save: 'Save note',
     addTitle: 'Add a place', name: 'Place name', mapsLink: 'Google Maps link (Share → Copy link)', moment: 'Moment of the trip', didLike: 'I liked it', addNote: 'Short note, in your words', addBtn: 'Add',
     moments: [['llegue', 'Just arrived'], ['transporte', 'Getting around'], ['hotel', 'Hotel'], ['comida', 'Food'], ['cerca', 'Nearby'], ['otro', 'Other']],
@@ -686,7 +694,10 @@ var X3 = {
     savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
     kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place', brujula: 'Compass test' },
     iaTag: 'From the AI · check on Google', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
-    confirm: 'Confirm', remove: 'Delete', confirmed: 'Confirmed', toConfirm: 'To confirm', noLearned: 'Nothing learned yet. Chat with a guide.',
+    confirm: 'Confirm', remove: 'Delete', confirmed: 'Confirmed', toConfirm: 'To confirm', toResearch: 'Claude will research it',
+    rev: { entro: 'Claude: added to the catalog', no_entro: 'Claude: not added', revisado: 'Claude: reviewed', sin: 'Not reviewed yet' },
+    toastSaved: 'Saved in your beta', toastSee: 'See', toastFail: 'Could not save',
+    howTitle: 'What happens with your notes', how: ['They are saved here, in your private viewer’s database.', 'Tell Claude «read the beta».', 'Claude checks them with a source and adds them to the catalog.', 'Each note is marked: added, not added (and why) or not reviewed.'], noLearned: 'Nothing learned yet. Chat with a guide.',
     notebooks: 'Loaded notebooks', notebooksBody: function (n) { return n ? n + (n === 1 ? ' notebook from your Drive, loaded by Claude.' : ' notebooks from your Drive, loaded by Claude.') : 'No notebooks yet. When you have one in your Drive, Claude reads it and loads it here.'; }
   }
 };
@@ -703,7 +714,7 @@ var STR = {
     chips: [['cafe', 'Quiero un café'], ['empezar', 'Recién llegué'], ['horas', 'Tengo 3 horas'], ['comida', 'Dónde comer'], ['dia', 'Un día completo'], ['cultura', 'Cultura maya'], ['costumbres', 'Costumbres de aquí']],
     placeholder: 'Preguntale lo que quieras…', send: 'Enviar', switchChip: 'Otro guía', talk: 'Hablar con',
     welcome: '¿Qué tenés ganas de hacer en Antigua?', takeover: 'Ahora te guío yo. ¿Qué buscás?',
-    place: { cultura: 'Monumento', cafe: 'Café', comida: 'Comida' }, route: 'Ruta a pie', plan: 'Plan', tip: 'Costumbre', culture: 'Cultura',
+    place: { cultura: 'Monumento', cafe: 'Café', comida: 'Comida', noche: 'De noche', postres: 'Pan y postres', parque: 'Parque' }, route: 'Ruta a pie', plan: 'Plan', tip: 'Costumbre', culture: 'Cultura',
     maps: 'Vamos', info: 'Info', mapsAria: function (n) { return 'Cómo llegar a ' + n + ' (abre Google Maps)'; },
     verified: function (d) { return 'Verificado · ' + d; }, verifiedBody: function (src, who) { return 'Fuente: ' + src + '. Lo comprobó ' + who + '.'; },
     toCheck: 'Por verificar', toCheckBody: 'Vista previa: esta ficha todavía no está comprobada. El visitante no la ve.',
@@ -713,7 +724,7 @@ var STR = {
     coffeeSoon: 'Estoy probando los cafés uno por uno.', coffeeReady: 'Mientras, esta ruta ya está lista:',
     save: 'Guardar', saved: 'Guardado', back: 'Volver', recBy: 'Preguntale a', inRoutes: 'Está en estas rutas',
     exploreTitle: 'Explorar Antigua', exploreSub: 'Lugares, rutas, cultura y costumbres.', search: 'Buscar en Antigua…',
-    filters: [['all', 'Todo'], ['route', 'Rutas'], ['cafe', 'Cafés'], ['comida', 'Comida'], ['cultura', 'Monumentos'], ['tip', 'Cultura y costumbres']], filtersLabel: 'Filtros',
+    filters: [['all', 'Todo'], ['route', 'Rutas'], ['cafe', 'Cafés'], ['comida', 'Comida'], ['postres', 'Pan y postres'], ['noche', 'De noche'], ['parque', 'Parques'], ['cultura', 'Monumentos'], ['tip', 'Cultura y costumbres']], filtersLabel: 'Filtros',
     noResults: 'Nada con esa búsqueda. Probá otra palabra.', emptyCat: 'Esta parte todavía la estoy probando.',
     cultureTitle: 'Cultura maya', cultureSub: 'Cómo se cuenta el tiempo y qué significan los días.',
     nawalsTitle: 'Los 20 nawales del Cholq\'ij', nawalsSub: 'Los significados de los días, no de las personas. nAIhual no calcula tu nawal: eso lo hace un Ajq\'ij.',
@@ -745,7 +756,7 @@ var STR = {
     chips: [['cafe', 'I want a coffee'], ['empezar', 'Just arrived'], ['horas', 'I have 3 hours'], ['comida', 'Where to eat'], ['dia', 'A full day'], ['cultura', 'Maya culture'], ['costumbres', 'Local customs']],
     placeholder: 'Ask anything…', send: 'Send', switchChip: 'Another guide', talk: 'Talk to',
     welcome: 'What do you feel like doing in Antigua?', takeover: 'I’m your guide now. What are you after?',
-    place: { cultura: 'Monument', cafe: 'Café', comida: 'Food' }, route: 'Walking route', plan: 'Plan', tip: 'Custom', culture: 'Culture',
+    place: { cultura: 'Monument', cafe: 'Café', comida: 'Food', noche: 'Night', postres: 'Bread and sweets', parque: 'Park' }, route: 'Walking route', plan: 'Plan', tip: 'Custom', culture: 'Culture',
     maps: 'Let’s go', info: 'Info', mapsAria: function (n) { return 'Directions to ' + n + ' (opens Google Maps)'; },
     verified: function (d) { return 'Verified · ' + d; }, verifiedBody: function (src, who) { return 'Source: ' + src + '. Checked by ' + who + '.'; },
     toCheck: 'To be checked', toCheckBody: 'Preview: this listing hasn’t been checked yet. Visitors don’t see it.',
@@ -755,7 +766,7 @@ var STR = {
     coffeeSoon: 'I’m testing the cafés one by one.', coffeeReady: 'Meanwhile, this route is ready:',
     save: 'Save', saved: 'Saved', back: 'Back', recBy: 'Ask', inRoutes: 'Part of these routes',
     exploreTitle: 'Explore Antigua', exploreSub: 'Places, routes, culture and customs.', search: 'Search Antigua…',
-    filters: [['all', 'All'], ['route', 'Routes'], ['cafe', 'Cafés'], ['comida', 'Food'], ['cultura', 'Monuments'], ['tip', 'Culture and customs']], filtersLabel: 'Filters',
+    filters: [['all', 'All'], ['route', 'Routes'], ['cafe', 'Cafés'], ['comida', 'Food'], ['postres', 'Bread and sweets'], ['noche', 'Night'], ['parque', 'Parks'], ['cultura', 'Monuments'], ['tip', 'Culture and customs']], filtersLabel: 'Filters',
     noResults: 'Nothing matches that. Try another word.', emptyCat: 'I’m still testing this part.',
     cultureTitle: 'Maya culture', cultureSub: 'How time is counted and what the days mean.',
     nawalsTitle: 'The 20 nawales of the Cholq\'ij', nawalsSub: 'The meanings of the days, not of people. nAIhual does not work out your nawal: that is the work of an Ajq\'ij.',
@@ -834,7 +845,7 @@ function icon(n, cls) { return '<svg class="ico' + (cls ? ' ' + cls : '') + '" v
 var CAT_ICON = { cafe: 'coffee', comida: 'food', cultura: 'arch' };
 
 // ===================== ARTE (todo con los tokens; sin glifos ni símbolos culturales) =====================
-// Retrato abstracto de guardián: círculo en su color y un punto hacia su rumbo*. Espacio para el arte final del fundador.
+// Retrato abstracto de guardián: círculo en su color y un punto hacia su rumbo*. Espacio para el arte final de Diego.
 var RUMBO_XY = { este: [42.5, 30], norte: [30, 17.5], oeste: [17.5, 30], sur: [30, 42.5] };
 function portrait(gid, size) {
   var p = RUMBO_XY[G[gid].rumbo];
@@ -850,7 +861,7 @@ function compassArt() {
     ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 32) + ' ' + (q[1] - 32) + ')">' + portrait(g, 64) + '</g><text class="lbl" x="' + (q[0] + (g === 'noj' ? -42 : g === 'kej' ? 42 : 0)) + '" y="' + (q[1] + (g === 'iq' ? 44 : g === 'e' ? -38 : 4)) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
     '<text x="150" y="155" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text></svg>';
 }
-// Brújula del paisaje (idea del fundador, 24-oct): los rumbos de los guardianes* y lo que se ve desde Antigua.
+// Brújula del paisaje (idea de Diego, 24-oct): los rumbos de los guardianes* y lo que se ve desde Antigua.
 // Ángulos (grados desde el norte, en el sentido del reloj) calculados desde el Parque Central (14.55689, -90.73368)
 // con las coordenadas de Wikipedia: Agua 14°27′54″N 90°44′35″W · Fuego 14°28′29″N 90°52′51″W · Acatenango 14°30′03″N 90°52′33″W.
 // El Cerro de la Cruz no tiene coordenadas publicadas: va con ≈ y se mide con la prueba de la brújula.
@@ -1213,9 +1224,9 @@ function aiData() {
     guardianes: ORDER.map(function (id) { var g = G[id]; return { id: id, nombre: g.name, es: g.value.es + ' *', hace: g.role.es, habla: g.speaks.es, recomienda: g.recs.es, rumbo_y_color: g.dir.es + ' *' }; }),
     // Paso 1: lo que nAIhual ya sabe.
     catalogo: PIDS.filter(function (id) { return visible(P[id]); }).map(function (id) { var p = P[id];
-      return { id: id, nombre: p.name, categoria: p.cat, direccion: p.addr || null, estado: isPub(p) ? 'verificado (' + p.fuente + ', ' + p.fecha + ')' : 'por verificar', lo_que_dijo_el_fundador: p.why.es || null,
-        le_gusto_al_fundador: mine(id, 'gusta').length > 0, notas_del_fundador: mine(id, 'nota').concat(mine(id, 'dato')).map(function (x) { return x.texto; }), patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
-    lugares_que_agrego_el_fundador: BETA.items.filter(function (x) { return x.tipo === 'nuevo'; }).map(function (x) { return { nombre: x.nombre, momento: x.momento || null, le_gusto: !!x.gusta, nota: x.texto || null }; }),
+      return { id: id, nombre: p.name, categoria: p.cat, direccion: p.addr || null, estado: isPub(p) ? 'verificado (' + p.fuente + ', ' + p.fecha + ')' : 'por verificar', frase: p.why.es || null, fuente: p.fuente ? p.fuente + (p.fuenteUrl ? ' (' + p.fuenteUrl + ')' : '') : null,
+        le_gusto_a_quien_pregunta: mine(id, 'gusta').length > 0, notas_de_la_beta: mine(id, 'nota').concat(mine(id, 'dato')).map(function (x) { return x.texto; }), patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
+    lugares_agregados_en_la_beta: BETA.items.filter(function (x) { return x.tipo === 'nuevo'; }).map(function (x) { return { nombre: x.nombre, momento: x.momento || null, le_gusto: !!x.gusta, nota: x.texto || null }; }),
     libretas: LIBRETAS,
     aprendido_confirmado: learnedConfirmed(),
     consejos: Object.keys(TIPS).map(function (id) { return { id: id, texto: TIPS[id].body.es, cultural_pendiente_de_validacion: !!TIPS[id].star }; }),
@@ -1224,14 +1235,14 @@ function aiData() {
 }
 function aiRules(gid) {
   var g = G[gid];
-  return 'Sos nAIhual, un agente turístico-cultural de Antigua Guatemala, en la prueba privada del fundador. ' +
+  return 'Sos nAIhual, un agente turístico-cultural de Antigua Guatemala, en una prueba privada. ' +
     'Respondés como el guía de turno, ' + g.name + ' (' + g.role.es + '; habla ' + g.speaks.es.toLowerCase() + '; recomienda: ' + g.recs.es + ').\n' +
     'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
     'Orden para buscar (obligatorio):\n' +
-    '1. Primero lo que nAIhual ya sabe: «catalogo», «lugares_que_agrego_el_fundador», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
+    '1. Primero lo que nAIhual ya sabe: «catalogo», «lugares_agregados_en_la_beta», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
     '2. Si ahí no está, respondé con lo que vos sabés de Antigua, como un agente de verdad: lugares reales que conocés, con su contexto. Ponelos en «otros» (nombre exacto del lugar y por qué). La app les pone la etiqueta «Según la IA · confirmá en Google». No inventes lugares: si no conocés uno que sirva, decilo.\n' +
     'Reglas:\n' +
-    '- Sos guía, no juez. Resumí lo que dijeron las personas (el fundador, agentes) y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
+    '- Sos guía, no juez. Resumí lo que dijeron las personas (la beta, agentes) y las fuentes públicas del catálogo y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
     '- Nunca afirmes horarios, precios, si abre hoy ni qué platos tiene el menú: decí «confirmalo en Google Maps» o «en su menú», una sola vez.\n' +
     '- Lo cultural maya lleva * porque falta que lo valide un tata (Ajq\'ij). Nunca le digas a nadie «cuál es su nawal».\n' +
     '- Emergencias o salud: sugerí preguntar en el hospedaje; no des números de teléfono.\n' +
@@ -1239,8 +1250,9 @@ function aiRules(gid) {
     '- No repitas un consejo que ya diste en esta plática. «consejos» solo si de verdad suma.\n' +
     '- Si la pregunta es ambigua, una pregunta breve. Las «opciones» suenan a persona, no a menú (por ejemplo «¿Algo dulce cerca?»), sin palabras como «pendiente de validación».\n' +
     '- Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si te escriben en inglés, respondé en inglés.\n' +
-    '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección del fundador). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
-    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "otros": [{"nombre": string, "porque": string}], "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos]}\n\n' +
+    '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección de quien pregunta). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
+    '- «no_se»: true si no tenías información suficiente para responder bien; esa pregunta queda en la lista para que Claude la investigue y la cargue con su fuente.\n' +
+    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "otros": [{"nombre": string, "porque": string}], "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos], "no_se": boolean}\n\n' +
     'DATOS:\n' + JSON.stringify(aiData());
 }
 // Revisión de lo que devuelve Claude antes de mostrarlo.
@@ -1260,6 +1272,7 @@ function aiClean(r) {
   return { texto: texto, lugares: lugares, otros: otros, consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 1),
     cultural: r.cultural === true, suficiente: r.suficiente === true,
     opciones: (Array.isArray(r.opciones) ? r.opciones : []).map(function (o) { return String(o).trim().slice(0, 60); }).filter(Boolean).slice(0, 3),
+    no_se: r.no_se === true,
     aprendido: (Array.isArray(r.aprendido) ? r.aprendido : []).filter(function (x) { return typeof x === 'string' && x.trim(); }).map(function (x) { return x.trim().slice(0, 200); }).slice(0, 2) };
 }
 // Lugar que nombra la IA y no está en el catálogo: «Vamos» abre la ruta en Google Maps desde donde está la persona; «Info» lo busca en Google Maps.
@@ -1278,6 +1291,7 @@ function askClaude(text, rulesMsg, pend) {
     if (!out) { rulesMsg.aiNote = 'aiBad'; finish(rulesMsg); return; }
     AI.turns.push({ role: 'user', content: text }, { role: 'assistant', content: out.texto });
     learnAdd(out.aprendido, text, pend.from);
+    if (out.no_se) learnAdd(['Pregunta sin respuesta: ' + text.slice(0, 160)], text, pend.from, 'por_investigar');
     var cards = out.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(out.consejos.map(function (id) { return { key: 't:' + id }; }));
     finish({ from: pend.from, intro: pend.intro, kind: 'ai', ai: out,
       meta: { proveedor: 'Claude (prueba privada en el visor)', instrucciones: INSTR_VERSION + ' + claude-2', intencion: rulesMsg.intent || rulesMsg.gap || 'libre', fuentes: sourcesOf(cards), suficiente: out.suficiente, aclaracion: out.opciones.length > 0 } });
@@ -1291,11 +1305,11 @@ function askClaude(text, rulesMsg, pend) {
 }
 
 function termsHTML(rows) { return '<dl class="terms">' + rows.map(function (r) { return '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>'; }).join('') + '</dl>'; }
-// ===================== BETA DEL FUNDADOR (solo vista previa) =====================
-// Lo que anota el fundador: «me gustó», «dato mal», notas y lugares nuevos. Nada se publica solo:
+// ===================== BETA (solo vista previa) =====================
+// Lo que se anota en la beta: «me gustó», «dato mal», notas y lugares nuevos. Nada se publica solo:
 // Claude lo lee (base de datos del visor, colección «beta»), lo verifica con fuente y lo pasa al catálogo.
 var BETA = { items: [], db: null, where: 'local', msg: '' };
-// Libretas de conocimiento del fundador (Google Docs). Claude las lee del Drive y las carga en data/libretas.js; la libreta es la fuente.
+// Libretas de conocimiento (Google Docs de Diego). Claude las lee del Drive y las carga en data/libretas.js; la libreta es la fuente.
 var LIBRETAS = (Array.isArray(window.NAIHUAL_LIBRETAS) ? window.NAIHUAL_LIBRETAS : []).filter(function (l) { return l && typeof l.titulo === 'string'; });
 // Lo que nAIhual aprende de las pláticas: entra «por confirmar»; solo lo confirmado se usa para responder (bases B10).
 var LEARN = { items: [] };
@@ -1317,6 +1331,7 @@ if (BETA_ON) {
         BETA.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; });
         betaRefresh();
       }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
+      googleProbe();
       db.collection('aprendido').onSnapshot(function (snap) {
         LEARN.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; });
         betaRefresh();
@@ -1330,23 +1345,23 @@ function betaToggleLike(pid) {
   var id = 'gusta-' + pid, has = betaLiked(pid);
   if (BETA.db) {
     var ref = BETA.db.doc('beta/' + id);
-    (has ? ref.delete() : ref.set({ tipo: 'gusta', lugar: pid, nombre: P[pid] ? P[pid].name : pid, fecha: new Date().toISOString() })).catch(function () { BETA.msg = 'saveFail'; render({ keep: true }); });
+    (has ? ref.delete() : ref.set({ tipo: 'gusta', lugar: pid, nombre: P[pid] ? P[pid].name : pid, fecha: new Date().toISOString() })).then(function () { toast(true); }, function () { BETA.msg = 'saveFail'; toast(false); render({ keep: true }); });
     return;
   }
   BETA.items = has ? BETA.items.filter(function (x) { return !(x.tipo === 'gusta' && x.lugar === pid); }) : BETA.items.concat([{ _id: id, tipo: 'gusta', lugar: pid, nombre: P[pid] ? P[pid].name : pid, fecha: new Date().toISOString() }]);
-  betaSaveLocal(); render({ keep: true });
+  betaSaveLocal(); render({ keep: true }); toast(true);
 }
 function betaAdd(item) {
   item.fecha = new Date().toISOString();
   BETA.msg = '';
-  if (BETA.db) return BETA.db.collection('beta').add(item).then(function () { BETA.msg = 'savedOk'; render({ keep: true }); }, function () { BETA.msg = 'saveFail'; render({ keep: true }); });
+  if (BETA.db) return BETA.db.collection('beta').add(item).then(function () { BETA.msg = 'savedOk'; render({ keep: true }); toast(true); }, function () { BETA.msg = 'saveFail'; render({ keep: true }); toast(false); });
   item._id = 'local-' + Date.now();
-  BETA.items = BETA.items.concat([item]); betaSaveLocal(); BETA.msg = 'savedOk'; render({ keep: true });
+  BETA.items = BETA.items.concat([item]); betaSaveLocal(); BETA.msg = 'savedOk'; render({ keep: true }); toast(true);
 }
-function learnAdd(list, pregunta, gid) {
+function learnAdd(list, pregunta, gid, estado) {
   if (!BETA_ON || !list.length) return;
   list.forEach(function (texto) {
-    var it = { texto: texto, pregunta: String(pregunta).slice(0, 200), guia: gid, estado: 'por_confirmar', fecha: new Date().toISOString() };
+    var it = { texto: texto, pregunta: String(pregunta).slice(0, 200), guia: gid, estado: estado || 'por_confirmar', fecha: new Date().toISOString() };
     if (BETA.db) { BETA.db.collection('aprendido').add(it).catch(function () {}); return; }
     it._id = 'local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6); LEARN.items = LEARN.items.concat([it]); learnSaveLocal();
   });
@@ -1356,13 +1371,30 @@ function learnSet(id, estado) {
   LEARN.items = estado ? LEARN.items.map(function (x) { if (x._id === id) x.estado = estado; return x; }) : LEARN.items.filter(function (x) { return x._id !== id; });
   learnSaveLocal(); render({ keep: true });
 }
+// Prueba una vez por visita si el visor deja conectarse a Google (Places). Sin llave: solo mira si la conexión pasa o la bloquean.
+function googleProbe() {
+  if (!BETA.db || googleProbe.done) return; googleProbe.done = true;
+  var save = function (estado, detalle) { BETA.db.doc('diagnostico/google').set({ estado: estado, detalle: String(detalle).slice(0, 200), fecha: new Date().toISOString() }).catch(function () {}); };
+  try { fetch('https://places.googleapis.com/v1/places:searchText', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"textQuery":"Antigua Guatemala"}' })
+    .then(function (r) { save('se_conecta', 'respuesta ' + r.status); }, function (e) { save('bloqueado', e && e.message || 'sin detalle'); }); } catch (e) { save('bloqueado', e.message); }
+}
 function learnedConfirmed() { return LEARN.items.filter(function (x) { return x.estado === 'confirmado'; }).map(function (x) { return x.texto; }); }
+// «revision» la escribe Claude cuando lee la beta: { estado: 'entro' | 'no_entro' | 'revisado', nota, fecha }.
+function revTag(it) { var x = X(), r = it.revision; if (!r || !x.rev[r.estado]) return '<span class="tag" data-rev="sin">' + esc(x.rev.sin) + '</span>'; return '<span class="tag' + (r.estado === 'entro' ? ' ok' : '') + '" data-rev="' + esc(r.estado) + '">' + esc(x.rev[r.estado]) + '</span>'; }
+function revNote(it) { var r = it.revision; return r && r.nota ? '<p class="note" data-rev-nota>' + esc(r.nota) + '</p>' : ''; }
+// Aviso corto de confirmación después de guardar.
+function toast(ok) {
+  var x = X(), d = document.getElementById('toast');
+  if (!d) { d = document.createElement('div'); d.id = 'toast'; d.setAttribute('role', 'status'); document.body.appendChild(d); }
+  d.className = 'toast' + (ok ? '' : ' bad'); d.innerHTML = '<span>' + (ok ? icon('check', 'sm') : '') + esc(ok ? x.toastSaved : x.toastFail) + '</span>' + (ok && S.view !== 'beta' ? '<button type="button" class="btn" data-go="beta">' + esc(x.toastSee) + '</button>' : '');
+  d.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { d.hidden = true; }, 4000);
+}
 function betaMsg() { return BETA.msg ? '<p class="note" role="status" data-beta-msg="' + BETA.msg + '">' + esc(X()[BETA.msg]) + '</p>' : ''; }
 function betaFichaHTML(p) {
   var x = X(), on = betaLiked(p.id);
   return '<section class="beta-card" data-beta-ficha="' + esc(p.id) + '"><span class="eyebrow">' + esc(x.betaFicha) + '</span>' +
     '<div class="row"><button type="button" class="btn" data-beta-like="' + esc(p.id) + '" aria-pressed="' + on + '">' + icon('heart', 'sm' + (on ? ' fill' : '')) + esc(on ? x.liked : x.like) + '</button></div>' +
-    '<form class="bform" data-bform="ficha" data-lugar="' + esc(p.id) + '"><label>' + esc(x.kind) + '<select name="tipo"><option value="dato">' + esc(x.wrong) + '</option><option value="nota">' + esc(x.note) + '</option></select></label>' +
+    '<form class="bform" data-bform="ficha" data-lugar="' + esc(p.id) + '"><label>' + esc(x.kind) + '<select name="tipo"><option value="nota">' + esc(x.note) + '</option><option value="dato">' + esc(x.wrong) + '</option></select></label>' +
     '<label>' + esc(x.text) + '<textarea name="texto" required maxlength="600"></textarea></label><button type="submit" class="btn primary">' + esc(x.save) + '</button></form>' + betaMsg() + '</section>';
 }
 function betaCard() {
@@ -1374,6 +1406,7 @@ function betaHTML() {
   var x = X(), items = BETA.items.slice().sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); });
   return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
     '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
+    '<details class="panel" data-beta-how><summary><b>' + esc(x.howTitle) + '</b></summary><ol>' + x.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></details>' +
     '<section class="sec"><h2>' + esc(x.addTitle) + '</h2><form class="bform" data-bform="nuevo">' +
       '<label>' + esc(x.name) + '<input type="text" name="nombre" required maxlength="120" autocomplete="off"></label>' +
       '<label>' + esc(x.mapsLink) + '<input type="url" name="maps" inputmode="url" autocomplete="off" placeholder="https://maps.app.goo.gl/…"></label>' +
@@ -1382,14 +1415,14 @@ function betaHTML() {
       '<label>' + esc(x.addNote) + '<textarea name="texto" maxlength="600"></textarea></label>' +
       '<button type="submit" class="btn primary">' + esc(x.addBtn) + '</button></form>' + betaMsg() + '</section>' +
     '<section class="sec" data-learned><h2>' + esc(x.learned) + '</h2><p class="muted">' + esc(x.learnedBody) + '</p>' + (LEARN.items.length ? '<div class="list">' + LEARN.items.slice().sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }).map(function (it) {
-      var ok = it.estado === 'confirmado';
-      return '<div class="bitem" data-learn="' + esc(it.estado) + '"><span class="tags"><span class="tag' + (ok ? ' ok' : ' check') + '">' + esc(ok ? x.confirmed : x.toConfirm) + '</span></span><p>' + esc(it.texto) + '</p>' + (it.pregunta ? '<small>«' + esc(it.pregunta) + '»</small>' : '') +
-        '<div class="row">' + (ok ? '' : '<button type="button" class="btn primary" data-learn-ok="' + esc(it._id) + '">' + esc(x.confirm) + '</button>') + '<button type="button" class="btn" data-learn-del="' + esc(it._id) + '">' + esc(x.remove) + '</button></div></div>'; }).join('') + '</div>' : '<p class="note">' + esc(x.noLearned) + '</p>') + '</section>' +
+      var ok = it.estado === 'confirmado', inv = it.estado === 'por_investigar';
+      return '<div class="bitem" data-learn="' + esc(it.estado) + '"><span class="tags"><span class="tag' + (ok ? ' ok' : ' check') + '">' + esc(ok ? x.confirmed : inv ? x.toResearch : x.toConfirm) + '</span>' + revTag(it) + '</span><p>' + esc(it.texto) + '</p>' + revNote(it) + (it.pregunta ? '<small>«' + esc(it.pregunta) + '»</small>' : '') +
+        '<div class="row">' + (ok || inv ? '' : '<button type="button" class="btn primary" data-learn-ok="' + esc(it._id) + '">' + esc(x.confirm) + '</button>') + '<button type="button" class="btn" data-learn-del="' + esc(it._id) + '">' + esc(x.remove) + '</button></div></div>'; }).join('') + '</div>' : '<p class="note">' + esc(x.noLearned) + '</p>') + '</section>' +
     '<section class="sec" data-libretas><h2>' + esc(x.notebooks) + ' · ' + LIBRETAS.length + '</h2><p class="muted">' + esc(x.notebooksBody(LIBRETAS.length)) + '</p>' + (LIBRETAS.length ? '<div class="list">' + LIBRETAS.map(function (l) { return '<div class="bitem"><b>' + esc(l.titulo) + '</b><small>' + esc((l.fuente || '') + (l.fecha ? ' · ' + l.fecha : '')) + '</small></div>'; }).join('') + '</div>' : '') + '</section>' +
     '<section class="sec"><h2>' + esc(x.list) + ' · ' + items.length + '</h2>' + (items.length ? '<div class="list">' + items.map(function (it) {
       var mom = x.moments.filter(function (m) { return m[0] === it.momento; })[0];
-      return '<div class="bitem" data-beta-item="' + esc(it.tipo) + '"><span class="tags"><span class="tag">' + esc(x.kinds[it.tipo] || it.tipo) + '</span>' + (mom ? '<span class="tag">' + esc(mom[1]) + '</span>' : '') + (it.gusta ? '<span class="tag like">' + esc(x.didLike) + '</span>' : '') + '</span>' +
-        '<b>' + esc(it.nombre || (P[it.lugar] ? P[it.lugar].name : '—')) + '</b>' + (it.texto ? '<p>' + esc(it.texto) + '</p>' : '') +
+      return '<div class="bitem" data-beta-item="' + esc(it.tipo) + '"><span class="tags"><span class="tag">' + esc(x.kinds[it.tipo] || it.tipo) + '</span>' + revTag(it) + (mom ? '<span class="tag">' + esc(mom[1]) + '</span>' : '') + (it.gusta ? '<span class="tag like">' + esc(x.didLike) + '</span>' : '') + '</span>' +
+        '<b>' + esc(it.nombre || (P[it.lugar] ? P[it.lugar].name : '—')) + '</b>' + (it.texto ? '<p>' + esc(it.texto) + '</p>' : '') + revNote(it) +
         (it.maps && safeHttp(it.maps) ? '<a class="linkish" href="' + esc(it.maps) + '" target="_blank" rel="noopener">' + esc(T().maps) + '</a>' : '') +
         '<small>' + esc(String(it.fecha || '').slice(0, 10)) + '</small></div>'; }).join('') + '</div>' : '<p class="note">' + esc(x.none) + '</p>') + '</section>';
 }
@@ -1412,7 +1445,7 @@ var SECS = [['revision', 'Revisión de fichas'], ['textos', 'Textos para aprobar
 // Las 6 capas del modelo (bases B16) y la monetización primaria (B14). Regla 4: una capa a la vez.
 var CAPAS = [
   ['Bases', 'Qué es nAIhual, intención, pilares, guardianes, personas, arquitectura.', 'ok', 'Fijadas el 24-oct-2026'],
-  ['Conocimiento', 'Catálogo con fuente y fecha, primera ola del viaje (Llegué, Transporte, Hotel, Comida, Qué hay cerca) y brújula del paisaje.', 'now', 'Capa actual · empieza con la beta del fundador'],
+  ['Conocimiento', 'Catálogo con fuente y fecha, primera ola del viaje (Llegué, Transporte, Hotel, Comida, Qué hay cerca) y brújula del paisaje.', 'now', 'Capa actual · empieza con la beta de Diego'],
   ['Red de confianza', 'Agentes con su permiso, «me gusta», reseñas y playlists. El ciclo de aprendizaje.', 'next', 'Después'],
   ['Cuidado', 'Accesibilidad, emergencias y eventos, todo comprobado con fuente y fecha.', 'next', 'Después'],
   ['Comunidad', 'Visibilidad justa, guía para comunidades escrita con ellas, talleres gratis.', 'next', 'Después'],
@@ -1424,7 +1457,7 @@ var CYCLE = [
   ['La persona puede indicar, si quiere, si la respuesta le sirvió.', 'off', 'Diseño futuro / no activo. Solo hay una demostración abajo.'],
   ['El sistema agrupa señales para ver preguntas frecuentes, información que falta y aclaraciones útiles.', 'off', 'Diseño futuro / no activo. Requiere aviso de privacidad, consentimiento y datos sin identificar a nadie.'],
   ['El sistema propone mejoras a respuestas, reglas, fuentes o filtros.', 'off', 'Diseño futuro / no activo. Una propuesta nunca se aplica sola.'],
-  ['Una persona revisa y aprueba cada cambio antes de aplicarlo.', 'off', 'Hoy lo hace el fundador con Claude, a mano, en los archivos de datos.'],
+  ['Una persona revisa y aprueba cada cambio antes de aplicarlo.', 'off', 'Hoy lo hace Diego con Claude, a mano, en los archivos de datos.'],
   ['Cada cambio queda versionado, se prueba contra casos anteriores y se puede revertir.', 'part', 'Hoy: copias en «versiones/» y pruebas automáticas del recorrido piloto. Falta guardar casos de preguntas reales.']
 ];
 var LAYERS = [
@@ -1432,8 +1465,8 @@ var LAYERS = [
   ['Orquestador del agente', 'Recibe la pregunta, aplica las reglas, llama al proveedor y arma la respuesta con las fichas que el modo permite: en pública, solo las publicadas.', 'Hoy: dentro de index.html'],
   ['Proveedor de respuestas (intercambiable)', 'Hoy: reglas fijas, sin IA. En vista previa, dentro del visor de Claude: Claude, con la cuenta de quien la abre y solo con los datos de la app (claude_responde en config.js). Mañana: Gemini u otro, siempre detrás de un servidor propio que guarda la llave. El navegador nunca tiene una llave.', 'Hoy: RulesProvider'],
   ['Conocimiento', 'Catálogo de lugares y registro de fuentes. Solo lo publicado o revisado puede respaldar una respuesta.', 'Hoy: data/lugares.js y data/fuentes.js'],
-  ['Libretas y lo aprendido', 'Paso 1 del orden de búsqueda: libretas del fundador (Google Docs, cargadas por Claude en data/libretas.js) y lo que nAIhual aprendió de las pláticas, solo si el fundador lo confirmó. Paso 2: lo que sabe la IA, con «Según la IA · confirmá en Google».', 'Hoy: data/libretas.js y la colección «aprendido» del visor'],
-  ['Beta del fundador', 'Me gustó, dato mal, notas y lugares nuevos que anota el fundador. Claude los lee, los verifica y los pasa al catálogo. No se publican solos.', 'Hoy: base de datos del visor privado; fuera del visor, solo en este teléfono'],
+  ['Libretas y lo aprendido', 'Paso 1 del orden de búsqueda: libretas de Diego (Google Docs, cargadas por Claude en data/libretas.js) y lo que nAIhual aprendió de las pláticas, solo si se confirmó en la beta. Paso 2: lo que sabe la IA, con «Según la IA · confirmá en Google».', 'Hoy: data/libretas.js y la colección «aprendido» del visor'],
+  ['Beta', 'Me gustó, dato mal, notas y lugares nuevos que se anotan en la beta. Claude los lee, los verifica y los pasa al catálogo. No se publican solos.', 'Hoy: base de datos del visor privado; fuera del visor, solo en este teléfono'],
   ['Mapa', 'Google Maps para ubicar y llegar: enlaces gratis, sin llave. Sin estrellas dentro de nAIhual. La brújula del paisaje es dibujo propio.', 'Hoy: enlaces de Google Maps y mapa esquemático'],
   ['Reglas', 'No inventar · * cultural pendiente · † histórico pendiente · patrocinio siempre marcado · el pago no cambia el orden · sin emergencias sin fuente oficial.', 'Hoy: en el orquestador y en los datos'],
   ['Registro de cada respuesta', 'Qué proveedor respondió, con qué versión de instrucciones, qué fuentes la respaldan y si faltó información.', 'Hoy: solo en memoria y en esta vista; no se guarda ni se envía']
@@ -1644,7 +1677,7 @@ function fichaHTML() {
     (routes.length ? '<section class="sec"><h2 style="font-size:17px">' + esc(t.inRoutes) + '</h2>' + routes.map(routeRow).join('') + '</section>' : '');
 }
 // ===================== VISTA INTERNA DEL EQUIPO (solo vista previa) =====================
-// Textos nuevos de la 2.0 para que el fundador los apruebe (antes → ahora).
+// Textos nuevos de la 2.0 para que Diego los apruebe (antes → ahora).
 var COPY = [
   ['Tarjeta «Círculo de Aliados Fundadores» en Inicio', '«Qué es nAIhual»: «La riqueza de Guatemala está en sus paisajes, y es gracias a su gente.»', 'Inicio (3.0)'],
   ['Rueda de rumbos sola', 'Brújula del paisaje: Cerro de la Cruz, Volcán de Agua, Fuego · Acatenango, sale el sol', 'Inicio (3.0)'],
@@ -1665,7 +1698,7 @@ var COPY = [
 function lastMeta() { for (var i = S.msgs.length - 1; i >= 0; i--) if (S.msgs[i].meta) return S.msgs[i].meta; return null; }
 function secRevision() {
   var pubN = PIDS.filter(function (id) { return isPub(P[id]); }).length;
-  var groups = [['cafe', 'Cafés'], ['comida', 'Comida'], ['cultura', 'Monumentos']];
+  var groups = [['cafe', 'Cafés'], ['comida', 'Comida'], ['postres', 'Pan y postres'], ['noche', 'De noche'], ['parque', 'Parques'], ['cultura', 'Monumentos']];
   return '<section><h2>Revisión de fichas</h2><p>En modo pública el visitante solo ve lo publicado. Publicadas hoy: <strong>' + pubN + ' de ' + PIDS.length + '</strong>. Tocá una ficha para verla.</p></section>' +
     groups.map(function (g) {
       var ids = PIDS.filter(function (id) { return P[id].cat === g[0]; });
@@ -1741,7 +1774,7 @@ function swatch(name, use) {
   return '<div class="sw"><i style="background:var(' + name + ')"></i><b>' + esc(use) + '</b><code>' + esc(name) + ' · ' + esc(v) + '</code></div>';
 }
 function secSistema() {
-  return '<section><h2>Sistema visual 2.0</h2><p>Piedra, cal y basalto, con el añil de las fachadas como acento y los cuatro colores de los guardianes. Todo sale de los tokens al inicio del estilo. El arte final lo define el fundador.</p>' +
+  return '<section><h2>Sistema visual 2.0</h2><p>Piedra, cal y basalto, con el añil de las fachadas como acento y los cuatro colores de los guardianes. Todo sale de los tokens al inicio del estilo. El arte final lo define Diego.</p>' +
     '<div class="status plain"><span>Los ejemplos de esta pantalla son ficticios y solo sirven para diseñar. No están en el catálogo.</span></div></section>' +
     '<section><h3>Color</h3><div class="swatches">' + [['--cal', 'Cal (fondo)'], ['--papel', 'Papel'], ['--piedra', 'Piedra'], ['--basalto', 'Basalto (texto)'], ['--ink-2', 'Texto 2'], ['--ink-3', 'Texto 3'], ['--anil', 'Añil (rutas)'], ['--volcan', 'Volcán'], ['--techo', 'Teja'], ['--heart', 'Guardado ♥'], ['--ok', 'Verificado'], ['--check', 'Por verificar'], ['--sponsor-bg', 'Patrocinado'], ['--future-bg', 'Diseño futuro']].map(function (s) { return swatch(s[0], s[1]); }).join('') + '</div>' +
     '<p>Guardianes (color por rumbo*, pendiente de validación cultural):</p><div class="swatches">' + ORDER.map(function (g) { return swatch('--g-' + g, G[g].name); }).join('') + '</div></section>' +
