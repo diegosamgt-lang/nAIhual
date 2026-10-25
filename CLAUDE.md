@@ -25,6 +25,9 @@
 ## Cuando Diego dice «leé la beta»
 Seguí el proceso de `docs/nAIhual.md` (Parte 4): leer → verificar con fuente → cargar al catálogo → marcar cada anotación con su revisión en la base del visor → investigar lo «por investigar» → anotar en el registro → publicar y guardar → reportar.
 
+## Cuando Diego dice «cargá el directorio»
+Leé el archivo (Excel o Google Sheets), quitá duplicados contra `app/data/lugares.js`, no copiés calificaciones ni reseñas, guardá fuente y enlace, cargalo al catálogo, anotá en el registro, probá, publicá y guardá.
+
 ## Reglas que más se rompen
 - Nunca inventes lugares, horarios, precios ni significados culturales.
 - Lo maya pasa por un tata (Ajq'ij): lleva \* hasta que él lo valide. Historia lleva † hasta tener fuente oficial.

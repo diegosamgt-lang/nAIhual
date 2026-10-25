@@ -201,7 +201,7 @@ Orden fijo: **No'j → Iq' → Kej → E'**. Empieza No'j y sigue hasta que el v
   - Con fuente (Lonely Planet, OK Antigua):
     - Cerro de la Cruz al norte, al final de la 1a Avenida Norte.
     - Volcán de Agua al sur.
-    - Fuego y Acatenango al poniente.
+    - Fuego y Acatenango al suroeste (corregido el 25-oct: antes decía «al poniente»).
     - El oriente es por donde sale el sol.
   - ✅ **Ángulos exactos** (calculados el 24-oct desde el centro de Antigua, 14.55689, -90.73368, con las coordenadas de Wikipedia): Volcán de Agua 185.6° (10.3 km) · Fuego 240.0° (18.3 km) · Acatenango 247.9° (16.5 km). Fuego y Acatenango quedan al suroeste, no al oeste. ❓ El centro sale de un mapa de Bookaway (Plus Code H748+QG4), no de una fuente oficial. Si estás lejos del centro, el ángulo cambia unos grados.
   - ❓ El Cerro de la Cruz no tiene coordenadas publicadas: se dibuja con ≈ y se mide con la prueba de la brújula.
@@ -297,28 +297,32 @@ Tata (cultura)                                accesibilidad            playlists
 | A15 | **Libreta viva dentro de nAIhual** (propuesta de otra IA que Diego pegó, 24-oct) y pregunta: ¿Gemini es más barato?, ¿cómo hacer una IA que aprenda de las interacciones? | Corrección: la otra IA dijo que «no existe ninguna forma en todo Google» de leer NotebookLM. No es exacto: NotebookLM Enterprise tiene API oficial (Google Cloud), y la app de Gemini y Workspace Studio ya leen cuadernos. Lo que sí es cierto: el NotebookLM normal no se conecta a una app tuya. La libreta viva es buena idea y se parece a la beta; tiene que vivir en la base de datos (no solo en el teléfono) para que la lean la IA y los turistas. Gemini: su API tiene un nivel gratis con límites (❓ fuentes secundarias), pero en el nivel gratis Google puede usar lo que se le manda para mejorar sus productos: choca con la privacidad de los visitantes. Aprender de las interacciones: la IA no cambia por dentro; crece su libreta (guardar lo aprendido → una persona revisa → la IA lo lee antes de responder). ✅ Aclarado: el «cancelado, no habrá Docs» lo escribió Gemini, no Diego. |
 | A16 | **Libretas de conocimiento en Google Docs** (Diego, 24-oct): las conecta en su Drive para que Claude las lea sin releer el chat, y las va alimentando. | ✅ Esta sesión de Claude puede leer Google Docs del Drive de Diego. ⚠️ La app no: los turistas no tienen acceso a su Drive. Flujo propuesto: Diego escribe en la libreta → Claude la lee y la carga al conocimiento de la app → la app responde. La libreta es la fuente; lo que tiene la app es una copia que siempre sale de ahí. Ventaja: el Drive es privado (los datos de personas pueden vivir ahí y no en GitHub, que es público). |
 | A17 | **El viaje imaginado: «quiero un buen crème brûlée, estoy en un Airbnb cerca del hotel Pensativo»** (Diego, 24-oct). nAIhual saluda, busca en su cerebro, responde el guardián de turno con su carácter, con botones «Vamos» e «Info». | ✅ Resuelto por Diego: los guías son guías, no jueces (B8); lo que aprende de sí misma queda «por confirmar» (B10). Detalle del análisis: (1) darle a No'j «gusto por las texturas» lo convierte en un personaje que opina de comida; choca con «recomendado = una persona real lo probó» y con B8 (No'j no califica lugares). Propuesta: el guardián **cuenta** lo que dijeron personas reales, con su propia voz, sin opinar como si hubiera comido. (2) «Aprende de cada respuesta» sin revisión: si guarda sus propias respuestas, repite sus errores. Propuesta: lo que aprende de sí misma entra como «por confirmar» hasta que una persona lo confirme. (3) Las palabras pueden variar; los datos no. (4) Un plato en un menú cambia como un precio: no se afirma; se dice «confirmalo en su menú o en Google Maps». (5) «Cerca de» necesita la ubicación de los dos lugares en el conocimiento. «Vamos» (Google Maps desde donde está la persona) e «Info» (ficha) son fáciles. |
-| A18 | **PAUSA (Diego, 25-oct): cada sugerencia pide un tap de confirmación** («¿Fuiste?» Sí / No) y un comentario. | ✅ Coherente con B10 (el ciclo de aprendizaje). Propuesta: después de «Vamos», la tarjeta pregunta «¿Fuiste?»; con «Sí», pide el comentario. ❓ Esperando CONSTRUYE. |
-| A19 | ✅ **Decidido por Diego (25-oct):** sello «Referencia web: [fuente]» con su enlace, «Probado por [nombre]» cuando alguien fue, y el botón «Confirmalo en Google Maps». Sin validación de Google. Nunca «no verificado» de cara al visitante, porque perjudica al negocio (B7). ✅ Lugares sin fuente: Claude les busca una referencia web a cada uno; mientras tanto no llevan sello, solo el botón «Confirmalo en Google Maps». | Se construye con el próximo CONSTRUYE. |
-| A20 | ✅ **Decidido por Diego (25-oct):** deslizador de 0 a 10 (0 = «meh», 10 = «lo mejor que he probado»; cuidado con los 10), **privado**: sirve para que nAIhual aprenda los gustos de cada persona; nunca se muestra como puntaje ni ordena la lista. Lo público sigue siendo «me gusta» y comentarios. Notas guardadas y fotos (las de personas, solo con permiso). | Se construye con el próximo CONSTRUYE. |
-| A21 | **La beta pasa a ser el panel de todos los agentes**: rápido, interactivo, fácil y bonito. | ⚠️ Abrirla a los agentes es la capa 3 (regla 4) y pide su permiso (A4). ❓ Además, para entrar al visor privado cada agente necesita una cuenta de Claude y que Diego le comparta la app. Se puede mejorar el panel ya, probándolo Diego primero. |
-| A22 | **Guía de orientación por calles** (texto traído por Diego, 25-oct): guardada en `docs/fuentes/orientacion-calles-antigua-2026-10-25.md`. | ✅ Coincide con lo calculado para la brújula: Fuego y Acatenango al suroeste. ⚠️ Corrige textos que todavía dicen «al poniente»: B11 de este documento, el prompt de Gemini y el contexto de NotebookLM (se corrigen con el próximo CONSTRUYE). ❓ Sus fuentes no traen enlace; Claude no las abrió. Propuesta: cargarla al conocimiento del chat (paso 1) para que responda «¿cómo leo una dirección?». |
+| A18 | ✅ **Hecho en 3.4:** después de «Vamos», «¿Fuiste?» Sí, fui / Todavía no; «Sí» abre «Tu visita» con número privado, comentario y foto. | |
+| A19 | ✅ **Hecho en 3.4:** sello «Referencia web» con su fuente; sin «Por verificar» de cara a la persona. Lugares sin fuente: sin sello (quedan Komori y Nikolo). | |
+| A20 | ✅ **Hecho en 3.4:** número de 0 a 10 privado (aviso en el 10), notas guardadas y fotos en el visor. El chat lo usa para aprender y nunca lo dice. | |
+| A21 | 🟡 **Mejorado en 3.4:** panel de la beta con «Anotar rápido», agregar lugar plegado y borrar. ⚠️ Abrirlo a los agentes sigue siendo la capa 3: su permiso (A4) y una cuenta de Claude para cada uno. | |
+| A22 | ✅ **Hecho en 3.4:** la guía de orientación está cargada al chat (libreta) y se corrigió «al poniente» por «al suroeste». ❓ Sus fuentes siguen sin enlace. | |
 
 ---
 
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
-**App vigente: nAIhual 3.3** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
+**App vigente: nAIhual 3.4** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
 - **Dos modos** (`modo` en `app/data/config.js`):
   - **Vista previa** (hoy): todo el catálogo con sello «Por verificar», vista interna del equipo, beta de Diego y Claude respondiendo lo que se escribe libre.
   - **Pública**: solo lo verificado, sin vista interna, sin beta y sin Claude.
 - **Pestañas:** Inicio (portada, qué es nAIhual, brújula del paisaje, guardianes, rutas, accesos) · Rutas (mapa esquemático y Google Maps a pie) · Guía (chat con el guardián de turno) · Guardados (♥ y plan a pie).
 - **Chat con el orden de búsqueda (nuevo en 3.1):** primero el catálogo, tus notas, tus libretas y lo aprendido confirmado. Si no está ahí, lo que sabe la IA, en una tarjeta «Según la IA · confirmá en Google». Cada lugar trae «Vamos» (Google Maps) e «Info». Los guías resumen lo que dijeron las personas, sin opinar. No repite consejos. Solo en el visor privado: en la versión pública responden las reglas fijas.
+- **Directorio (nuevo en 3.4):** 204 lugares. 171 vienen del directorio que armó Diego con búsquedas de Google Maps (25-oct): nombre, tipo, dirección, enlace y web. No se copian calificaciones ni reseñas (B6).
+- **Sello (nuevo en 3.4):** «Referencia web» con su fuente y enlace. Ya no dice «Por verificar» ni «Le falta» de cara a la persona; eso queda en la vista interna.
+- **«¿Fuiste?» (nuevo en 3.4):** después de «Vamos», abajo aparece «¿Fuiste a …?» Sí, fui / Todavía no. «Sí» abre «Tu visita»: número de 0 a 10 (privado, con aviso en el 10), comentario y foto.
+- **Panel de la beta (nuevo en 3.4):** «Anotar rápido» (buscás un lugar y anotás tu visita), «Agregar un lugar que no está», número y foto en cada nota, «Borrar» en cada anotación.
 - **Brújula que gira (nuevo en 3.2):** ángulos exactos de Agua, Fuego y Acatenango; tocás el que ves y gira; «Mover con el teléfono» la calibra con ese volcán y la hace seguir al teléfono. En la beta, «Probar la brújula»: apuntás a cada volcán, compara lo esperado con lo medido, mide el Cerro de la Cruz y lo guarda para que Claude lo lea.
 - **Lo aprendido (nuevo en 3.1):** después de cada respuesta de Claude, nAIhual anota hasta 2 cosas nuevas como «por confirmar». En la beta las confirmás o las borrás; solo lo confirmado se usa.
 - **Libretas (nuevo en 3.1):** `app/data/libretas.js`. Claude copia ahí tus libretas de Google Docs; todavía no hay ninguna.
 - **Beta de Diego (nueva en 3.0):** «me gustó», «dato mal» y «nota» en cada ficha, y «agregar un lugar» con su enlace de Google Maps y su momento del viaje.
-- **Copias para volver atrás:** `versiones/visor-app-1.0`, `versiones/app-1.1-piloto`, `versiones/app-1.2`, `versiones/app-2.0`, `versiones/app-3.0`, `versiones/app-3.1`, `versiones/app-3.2`.
+- **Copias para volver atrás:** `versiones/visor-app-1.0`, `versiones/app-1.1-piloto`, `versiones/app-1.2`, `versiones/app-2.0`, `versiones/app-3.0`, `versiones/app-3.1`, `versiones/app-3.2`, `versiones/app-3.3`.
 
 ## Circuitos
 Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qué circuito cierra esto?»**
@@ -342,7 +346,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | 6 | Retorno | Entra dinero → el % va a las familias → el gasto se publica con su recibo | ⬜ |
 
 ## Catálogo
-- 33 lugares, todos en «borrador». Los 21 primeros (frases de Diego): 16 con dirección, 5 sin dirección, sin fuente. Los 12 nuevos (25-oct): con fuente pública y enlace; falta que una persona los pruebe.
+- 204 lugares, todos en «borrador»: 110 de comida, 47 cafés, 31 de pan y postres, 5 de noche, 3 parques y 8 monumentos. 202 tienen referencia web (Komori y Nikolo todavía no). 13 de los primeros tomaron su enlace y su dirección del directorio de Google Maps; Once Once sale «temporalmente cerrado» según Google Maps.
 - 8 monumentos †, 3 rutas a pie †, cultura \* (Cholq'ij, 20 nawales con aviso de que no describen personas).
 - Sin datos todavía: naturaleza, talleres y artesanía, mercados, aventura, seguridad.
 
@@ -366,6 +370,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 - App de archivos simples (sin instalación). Pruebas: `python3 pruebas/prueba_piloto.py`.
 - ✅ Gemini: la llave nunca va en el navegador; va detrás de un servidor propio (ai.google.dev/gemini-api/docs/api-key).
 - ✅ NotebookLM: API oficial solo en la versión Enterprise. La versión normal no se conecta a apps.
+- ✅ Medido el 25-oct desde la app de Diego: el visor de Claude **bloquea** la conexión a Google (Places). Google en vivo (paso 3) necesita un servidor propio.
 - ✅ Google Maps: enlaces universales gratis y sin llave. ❓ Las estrellas por API costarían unos $20 por cada 1,000 consultas después de 1,000 gratis al mes (visto el 24-oct), y las reglas de Google prohíben usarlas sobre un mapa que no sea de Google. Por eso no se usan (B6).
 - Código: GitHub `diegosamgt-lang/nAIhual`, rama `claude/awesome-carson-sz5k9i`.
 
@@ -404,7 +409,13 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 ## Registro de la beta
 | Fecha | Qué se leyó | Resultado |
 |---|---|---|
+| 25-oct-2026 (tarde) | Directorio de Diego: 185 fichas de Google Maps (archivo Excel, 13 búsquedas) | ✅ 171 lugares nuevos al catálogo; 13 de los que ya estaban tomaron su enlace y dirección; 2 temporalmente cerrados quedaron fuera. Sin calificaciones ni reseñas (B6). ✅ «Bacilico pizzería» = «Restaurante Basilico», Avenida del Comendador 27 (directorio): falta que Diego confirme que es ese. ✅ Referencias web para los monumentos y Patio de la Primera. ✅ Prueba de conexión a Google desde el visor: **bloqueado** (el paso 3 necesita un servidor propio). |
 | 25-oct-2026 | 4 anotaciones y 10 cosas aprendidas (primera prueba de Diego en el celular) | ✅ 12 lugares nuevos con fuente pública: 4 de noche (Café No Sé, Antigua Brewing Company, Ulew, Las Vibras de la Casbah), 5 de pan y postres (Doña Luisa Xicotencatl, La Cenicienta, Santa Clara, Viena, Zenique) y 3 parques (Tanque La Unión, Plazuela San Sebastián, Parque La Merced). ❌ «Bacilico pizzería»: no encontrado en búsqueda web; falta el enlace de Google Maps. 🟡 La nota de Siena Luz («Nice») quedó como «dato mal» por error del formulario: corregido, ahora arranca en «Nota». ❓ Lo aprendido sobre Hector's Bistro y la cerveza parece dudoso: no confirmar sin revisar. |
+
+## Dónde se guarda cada cosa (Diego, 25-oct: «lo más fácil y barato»)
+- **Preguntas, lo aprendido, notas, visitas, números de 0 a 10 y fotos:** en la base de datos del visor privado. Es gratis, Claude la lee y la escribe, y Diego la edita en la beta (borrar, anotar de nuevo). Si Diego quiere verla en una hoja, Claude le arma una copia para leer; la base sigue mandando.
+- **Lugares:** `app/data/lugares.js`. Los directorios que trae Diego (Excel o Google Sheets) se cargan con «cargá el directorio»: Claude lo lee, quita duplicados, no copia calificaciones y lo pasa al catálogo.
+- **Una sola fuente por dato:** lo que llega de afuera se copia hacia adentro; no se mantienen dos versiones editables.
 
 ## Formato para el directorio de Antigua (para el agente aparte de Diego)
 Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON con:
@@ -418,6 +429,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 ---
 
 # PARTE 5 · HISTORIAL
+
+**nAIhual 3.4 — 25-oct-2026 (CONSTRUYE):** directorio de 171 lugares de Google Maps (sin calificaciones); «Referencia web» en lugar de «Por verificar»; «¿Fuiste?» después de «Vamos»; «Tu visita» con número de 0 a 10 privado, comentario y foto; panel de la beta con búsqueda rápida y borrar; la guía de orientación cargada al chat; el chat manda solo los lugares que tienen que ver con la pregunta (máximo 60); «al poniente» → «al suroeste». ✅ 207/207 pruebas. ✅ Medido: el visor bloquea la conexión a Google.
 
 **nAIhual 3.3 — 25-oct-2026 (CONSTRUYE):** 12 lugares nuevos de fuente pública (de noche, pan y postres, parques) con sus filtros; aviso «Guardado en tu beta» con «Ver»; cada anotación muestra si Claude la revisó; «Qué pasa con lo que anotás» en la beta; el formulario de la ficha arranca en «Nota»; cuando la IA no sabe, la pregunta queda «para investigar»; prueba de si el visor deja conectarse a Google; sin la palabra «fundador» en pantalla. ✅ 196/196 pruebas.
 
