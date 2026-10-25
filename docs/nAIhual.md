@@ -287,7 +287,7 @@ Tata (cultura)                                accesibilidad            playlists
 | A4 | Permiso de cada agente para aparecer y qué datos suyos se guardan. | Preguntarle a cada uno antes de la capa 3. |
 | A5 | Primer contacto con un tata. | Es el objetivo del 30-nov. |
 | A6 | La red de agentes: de 9, 3 son guatemaltecos (por lo que contó Diego) y ninguno es de comunidad ni artesano. | Sumar a alguien de comunidad y a un artesano antes de abrir reseñas. |
-| A7 | El nombre «nAIhual» viene de *nahual*. | Preguntarle también al tata. |
+| A7 | El nombre «nAIhual» viene de *nahual*. | Preguntarle también al tata. Plan B si el tata dice que no (Claude, 25-oct, ❓ sin revisar si los nombres están libres): sin palabras sagradas: Raíz, Puente, Panchoy, Ceiba, Chapín, Patojo, Quetzal; con palabras mayas (también pasan por el tata y por hablantes): Utz, B'e, Mecapal. |
 | A8 | ✅ Verificado el 24-oct: **el repositorio de GitHub es público.** Los nombres y datos de los agentes se quitaron de los archivos, pero siguen en el historial de cambios ya subido. | Diego lo pasa a privado en GitHub (Settings → Change visibility). Sin eso, cualquiera puede ver el historial. |
 | A9 | Reglas para las reseñas de visitantes: qué no se publica, quién revisa, cómo responde un negocio. | Antes de la capa 3. |
 | A10 | Figura legal para el retorno a familias. | Contador o abogado, cuando haya ingresos. |
