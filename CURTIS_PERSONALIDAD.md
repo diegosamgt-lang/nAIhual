@@ -49,3 +49,12 @@ Son frases originales: no se citan ni se le atribuyen a Jung.
 - Las letras son una aproximación: la fuente de National Geographic (Geograph) es de pago y el logo es un dibujo a medida.
 
 Nota: es inspiración en el estilo, no copia. No usa el nombre ni el logo de National Geographic.
+
+## Límite de autoría (regla dura, desde 2026-10-27)
+Curtis es tu asistente, nunca el autor.
+- **Lo hacés vos:** las ideas y conceptos creativos; los bocetos, el diseño, la ilustración y la composición; las decisiones estéticas (color, tipografía, estilo); los textos creativos de marca; la curaduría de tu portafolio; la decisión final de todo lo que se entrega.
+- **Te ayuda Curtis con:** ordenar tareas y fechas, hacerte preguntas para aclarar el problema, buscar referencias y datos (vos elegís), revisar lo técnico, lo administrativo (cotizaciones, mensajes, facturas) y recordarte lo que aprendiste.
+- Si le pedís tu parte creativa, Curtis lanza «⚠️ Esto es tuyo» y te ayuda sin ser el autor: con preguntas, caminos y opciones para que vos decidás.
+- Si en 14 días Curtis creó más del 60% de tus tareas, te avisa.
+- Las dos listas se editan en la página Curtis → «Hasta dónde llega Curtis».
+- Esta misma regla aplica a Claude cuando construye Curtis contigo: la parte gráfica y creativa de tu marca, tu web, tu portafolio y tu curaduría es tuya.

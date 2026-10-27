@@ -14,17 +14,19 @@
   --f-mark: "Fira Sans Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
   --r: 16px; --r-sm: 10px; --side: 252px;
   --c-in: #1f78b4; --c-out: #d0731f; --rule: rgba(26,31,27,.85);
+  --rose: #c2577a; --plum: #7a5aa0; --teal: #2a8a84; --sky: #3f8fd0; --olive: #8c8a2e; --coral: #e07a5f;
+  --rose-t: #9c3a5d; --plum-t: #5d4282; --teal-t: #1f6a65; --sky-t: #2a6aa0; --olive-t: #5f5d18; --coral-t: #a8482f;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #121512; --surface: #1b1f1b; --surface-2: #252a25; --ink: #eef0ea; --muted: #9ea397; --line: rgba(255,255,255,.09);
   --yellow: #ffcf47; --forest: #5e9a78; --moss: #a3b86f; --clay: #e0805f; --earth: #dcab5f; --lake: #6fb0cc; --sand: #4a4434;
   --forest-t: #86c3a0; --moss-t: #b9cc85; --clay-t: #ef9c80; --earth-t: #e8bf7c; --lake-t: #8fc6dd; --yellow-t: #ffd866;
-  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); } }
+  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); --rose: #e88aa7; --plum: #b49ad6; --teal: #5fc0b8; --sky: #7ab8ea; --olive: #c2c05a; --coral: #f0a089; --rose-t: #f0a9bf; --plum-t: #c8b3e6; --teal-t: #8ad6cf; --sky-t: #a3cff2; --olive-t: #d6d48a; --coral-t: #f5bba9; } }
 :root[data-theme="dark"] {
   --bg: #121512; --surface: #1b1f1b; --surface-2: #252a25; --ink: #eef0ea; --muted: #9ea397; --line: rgba(255,255,255,.09);
   --yellow: #ffcf47; --forest: #5e9a78; --moss: #a3b86f; --clay: #e0805f; --earth: #dcab5f; --lake: #6fb0cc; --sand: #4a4434;
   --forest-t: #86c3a0; --moss-t: #b9cc85; --clay-t: #ef9c80; --earth-t: #e8bf7c; --lake-t: #8fc6dd; --yellow-t: #ffd866;
-  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); }
+  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); --rose: #e88aa7; --plum: #b49ad6; --teal: #5fc0b8; --sky: #7ab8ea; --olive: #c2c05a; --coral: #f0a089; --rose-t: #f0a9bf; --plum-t: #c8b3e6; --teal-t: #8ad6cf; --sky-t: #a3cff2; --olive-t: #d6d48a; --coral-t: #f5bba9; }
 
 body { background: var(--bg); color: var(--ink); font-family: var(--f-ui); font-size: 15.5px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -504,6 +506,37 @@ h1, h2, h3 { font-family: var(--f-head); font-weight: 600; letter-spacing: -.01e
 .ccard-t { font-family: var(--f-head); font-weight: 650; font-size: 1.25rem; overflow-wrap: anywhere; }
 .nudge-card { display: grid; gap: 10px; border-left: 4px solid var(--yellow); }
 .pcard.pcard-new { border: 2px dashed var(--line); }
+.pcard:not(.pcard-new) { box-shadow: var(--shadow), inset 4px 0 0 var(--pc, transparent); }
+.nav-p { box-shadow: inset 3px 0 0 var(--pc, transparent); }
+.nav-p[aria-current="page"] { box-shadow: var(--shadow), inset 3px 0 0 var(--pc, var(--yellow)); }
+.ask-bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 12px; box-shadow: var(--shadow); }
+.ask-bar input { border: 0; background: var(--surface-2); border-radius: 999px; padding: 10px 14px; min-width: 0; width: 100%; box-sizing: border-box; }
+.ask-bar input:focus { outline: 2px solid var(--ink); }
+.ask-bar .chips { grid-column: 1 / -1; }
+.ask-bar-ico { display: grid; place-items: center; }
+.girando .ic { animation: girar .8s linear infinite; } @keyframes girar { to { transform: rotate(360deg); } }
+.aviso-autoria { display: grid; gap: 3px; border-left: 4px solid var(--clay); background: color-mix(in srgb, var(--clay) 10%, var(--surface)); border-radius: 0 12px 12px 0; padding: 10px 12px; font-size: .88rem; }
+.aviso-autoria b { color: var(--clay-t); }
+.lim-col textarea { line-height: 1.6; }
+.curtis-proj > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; font-size: 1.05rem; }
+.curtis-proj > summary::-webkit-details-marker { display: none; }
+.curtis-proj > summary .hint { margin-left: auto; }
+.cp-ico { font-size: 1.4rem; }
+.curtis-proj[open] { display: grid; gap: 14px; }
+.cp-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); align-items: start; }
+.cp-col { display: grid; gap: 10px; min-width: 0; }
+.cp-col textarea { border: 0; background: var(--surface-2); border-radius: 12px; padding: 10px 12px; width: 100%; box-sizing: border-box; font: inherit; }
+.cp-col textarea:focus { outline: 2px solid var(--ink); }
+.cp-duda { margin: 0; font-family: var(--f-head); font-style: italic; font-size: 1.05rem; }
+.cp-qs { margin: 0; padding-left: 1.2rem; display: grid; gap: 10px; }
+.cp-qs li { display: grid; gap: 6px; } .cp-qs b { font-weight: 650; }
+.cp-hist summary, .cp-auto summary { cursor: pointer; font-size: .84rem; color: var(--muted); font-weight: 600; }
+.cp-h { display: grid; gap: 2px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .86rem; }
+.cp-h p { margin: 0; color: var(--muted); white-space: pre-wrap; }
+.cp-auto pre { white-space: pre-wrap; font-family: var(--f-ui); font-size: .84rem; background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 6px 0 0; }
+.md-view { background: var(--bg); border-radius: 12px; padding: 10px 14px; max-height: 16rem; overflow: auto; font-size: .9rem; }
+.md-view h2 { font-size: 1.2rem; margin: 4px 0; } .md-view h3 { font-size: 1rem; margin: 10px 0 2px; font-family: var(--f-ui); } .md-view p { margin: 0 0 6px; } .md-view ul { margin: 0 0 6px; padding-left: 1.1rem; }
+.md-ed { width: 100%; box-sizing: border-box; border: 0; background: var(--surface-2); border-radius: 12px; padding: 12px; font-family: ui-monospace, Menlo, monospace; font-size: .86rem; line-height: 1.5; }
 @media (max-width: 560px) { .hero .ring-box { display: none; } }
 .mas-bg { place-items: end stretch; padding: 0; }
 .mas { width: 100%; max-width: none; border-radius: 20px 20px 0 0; padding: 14px 14px calc(18px + env(safe-area-inset-bottom, 0px)); gap: 4px; }
@@ -668,8 +701,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   const ESTADOS = ['por hacer', 'en proceso', 'esperando', 'listo'];
   const TIPOS = { tarea: 'Tarea', reunion: 'Reunión', bitacora: 'Bitácora NIHR', 'meta-mes': 'Meta del mes', 'meta-año': 'Meta del año' };
   const META = ['meta-mes', 'meta-año'];
-  const COLORES = ['forest', 'moss', 'lake', 'earth', 'clay', 'yellow'];
-  const EMOJIS = ['🌿', '🌲', '🏔️', '🌊', '🌾', '🍃', '🪨', '🌙', '☀️', '🦋', '🐚', '🌺', '🎨', '✏️', '📐', '🧩', '📦', '🏢', '💼', '📊', '🎬', '📸', '📝', '💡'];
+  const COLORES = ['forest', 'moss', 'lake', 'earth', 'clay', 'yellow', 'rose', 'plum', 'teal', 'sky', 'olive', 'coral'];
+  const EMOJIS = ['🌿', '🌲', '🏔️', '🌊', '🌾', '🍃', '🪨', '🌙', '☀️', '🦋', '🐚', '🌺', '🌵', '🍄', '🐿️', '🦉', '🐝', '🌋', '🎨', '🖌️', '✏️', '🖍️', '📐', '✂️', '🧩', '🖼️', '🃏', '🎴', '📦', '🏷️', '🧵', '☕', '🏢', '💼', '📊', '💰', '🧾', '🤝', '📣', '🌐', '💻', '📱', '🎬', '📸', '🎧', '📝', '📚', '🔎', '💡', '🧠', '🚀', '🎯', '⭐', '🔥', '❤️', '🇬🇹', '✈️', '🏛️', '🎓', '🧪'];
   const TAG_ICONS = ['tag', 'leaf', 'mountain', 'star', 'flag', 'users', 'folder', 'sparkle', 'book', 'receipt'];
   const CATEGORIAS = ['Branding', 'Logo', 'Editorial', 'Redes sociales', 'Web', 'Ilustración', 'Video', 'NIHR'];
   const SECCIONES_BASE = ['Brief', 'Diseño', 'Revisión', 'Entrega'];
@@ -686,7 +719,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   const SUG_T = ['¿Por dónde empiezo?', 'Partila en pasos chicos', 'Dame feedback de cómo voy'];
   const SUG_P = ['Ordená este proyecto en tareas', '¿Cuánto debería cobrar por esto?', 'Armá las carpetas de trabajo en Drive'];
   const SUG_C = ['¿Cómo voy esta semana?', 'Revisemos mi LinkedIn', 'Ayudame a ordenar mi Drive de la NIHR', '¿Qué errores repito?'];
-  const MEM_TIPOS = { precio: ['Precio', 'receipt', 'earth'], tiempo: ['Tiempo', 'clock', 'lake'], horario: ['Horario', 'sun', 'yellow'], error: ['Error que repito', 'alert', 'clay'], mejora: ['Área de mejora', 'trend', 'moss'], motivacion: ['Me motiva', 'leaf', 'forest'], pasos: ['Pasos repetidos', 'list', 'lake'], cliente: ['Cliente', 'users', 'earth'], otro: ['Nota', 'book', 'moss'] };
+  const MEM_TIPOS = { precio: ['Precio', 'receipt', 'earth'], tiempo: ['Tiempo', 'clock', 'lake'], horario: ['Horario', 'sun', 'yellow'], error: ['Error que repito', 'alert', 'clay'], mejora: ['Área de mejora', 'trend', 'moss'], motivacion: ['Me motiva', 'leaf', 'forest'], pasos: ['Pasos repetidos', 'list', 'lake'], cliente: ['Cliente', 'users', 'earth'], limite: ['Límite de autoría', 'flag', 'clay'], otro: ['Nota', 'book', 'moss'] };
   const FRASES = [
     'Lo que evitás hacer también te está diciendo algo. Escuchalo… y después hacelo igual.', 'Tu sombra no es el problema: el problema es dejarla manejar el calendario.',
     'Nadie se ordena por fuera sin ordenarse un poco por dentro. Empezá por una tarea.', 'La distracción es el inconsciente pidiendo atención. Anotala y volvé.',
@@ -734,7 +767,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     package: 'M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8', quote: 'M7 7h4v4c0 3-1 5-4 6M15 7h4v4c0 3-1 5-4 6',
     brain: 'M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1',
     external: 'M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6',
-    dots: 'M5 12h.01M12 12h.01M19 12h.01', edit: 'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z', image: 'M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15 9h.01', cards: 'M8 3h10a2 2 0 0 1 2 2v12M5 7h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z',
+    dots: 'M5 12h.01M12 12h.01M19 12h.01', refresh: 'M20 11a8 8 0 0 0-14.9-3.9L4 9M4 4v5h5M4 13a8 8 0 0 0 14.9 3.9L20 15M20 20v-5h-5', edit: 'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z', image: 'M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15 9h.01', cards: 'M8 3h10a2 2 0 0 1 2 2v12M5 7h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z',
   };
 
   // ================= estado =================
@@ -833,6 +866,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   const folderIdFrom = (p) => (p && (p.driveFolderId || (String(p.driveUrl || '').match(/folders\/([\w-]+)/) || [])[1])) || '';
   const esLicencia = (p) => /licen|ilustr/i.test((p && p.categoria) || '');
   const colorVar = (c) => 'var(--' + (COLORES.includes(c) ? c : 'moss') + ')';
+  const colorDe = (p) => { const t = (p.etiquetas || []).map((id) => S.etiquetas.find((x) => x.id === id)).find(Boolean); return colorVar(t ? t.color : p.color); };
   const ajuste = (k, def) => (S.ajustes[k] == null || S.ajustes[k] === '' ? def : S.ajustes[k]);
   const lines = (t) => String(t || '').split('\n').map((s) => s.trim()).filter(Boolean);
   const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -1069,6 +1103,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     trabadas().filter((it) => Date.now() - (it.actualizado || 0) > 3 * 864e5).slice(0, 1).forEach((it) => out.push({ icon: 'pause', text: 'Hace ' + Math.floor((Date.now() - it.actualizado) / 864e5) + ' días esperás' + (it.con_quien ? ' a ' + it.con_quien : '') + ' por «' + it.titulo + '». ¿Le escribís hoy?', go: () => openItem(it.id, 'ask') }));
     proyActivos().filter((p) => isDay(p.entrega) && diffDays(p.entrega) >= 0 && diffDays(p.entrega) <= 3 && !p.driveUrl).slice(0, 1).forEach((p) => out.push({ icon: 'package', text: '«' + p.nombre + '» se entrega ' + countdown(p.entrega) + '. Prepará la entrega.', go: () => go('proyecto', p.id) }));
     proyActivos().filter((p) => proyStats(p).total === 0).slice(0, 1).forEach((p) => out.push({ icon: 'sparkle', text: '«' + p.nombre + '» no tiene tareas. ¿Curtis te lo ordena?', go: () => { S.drawer = { kind: 'chat-proyecto', id: p.id, focus: 'ask' }; renderDrawer(true); } }));
+    const dl = delegacion(); if (dl.alto) out.push({ icon: 'flag', text: '⚠️ Curtis creó ' + dl.deCurtis + ' de tus ' + dl.total + ' tareas en 14 días. ¿Seguís decidiendo vos?', go: () => go('curtis') });
     const uc = ajuste('ultimaCopia', ''); if (S.mcp && S.fileArgs && S.items.length >= 5 && (!uc || diffDays(uc) <= -7)) out.push({ icon: 'package', text: uc ? 'Hace ' + -diffDays(uc) + ' días que no guardás copia de Curtis. Es un toque.' : 'Guardá tu primera copia de Curtis en Drive. Es un toque.', go: () => { guardarCopia(); } });
     const atr = hoyStats().antes; if (atr.length >= 3) out.push({ icon: 'alert', text: 'Tenés ' + atr.length + ' atrasadas. Pasalas a hoy y empezá limpio.', go: () => go('tareas') });
     return out.slice(0, 2);
@@ -1128,7 +1163,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   }
   function renderNav() {
     const cur = S.view === 'proyecto' || S.view === 'area' ? 'proyectos' : S.view;
-    const navP = (p, sub) => h('button', { type: 'button', class: 'nav-btn' + (sub ? ' nav-sub' : ''), 'aria-current': S.view === 'proyecto' && S.proyectoId === p.id ? 'page' : null, onclick: () => go('proyecto', p.id) },
+    const navP = (p, sub) => h('button', { type: 'button', class: 'nav-btn nav-p' + (sub ? ' nav-sub' : ''), style: '--pc:' + colorDe(p), 'aria-current': S.view === 'proyecto' && S.proyectoId === p.id ? 'page' : null, onclick: () => go('proyecto', p.id) },
       h('span', { class: 'nav-emoji', text: p.icono || '📁' }), h('span', { class: 'nav-txt', text: p.nombre || 'Sin nombre' }), h('span', { class: 'dot', style: 'margin-left:auto;background:' + URG_COLOR[urgencia(p.entrega, '').k] }));
     const sinArea = proyActivos().filter((p) => !p.area || !area(p.area));
     const pendN = pendientesOrden().length;
@@ -1145,6 +1180,13 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     put($('#tabbar'), NAV.filter(([k]) => !MAS.includes(k)).map(([k, l, ic]) => h('button', { type: 'button', class: 'tab-btn', 'aria-current': cur === k ? 'page' : null, onclick: () => go(k) }, icon(ic, 'lg'), l)),
       h('button', { type: 'button', class: 'tab-btn', 'aria-current': MAS.includes(cur) ? 'page' : null, 'aria-label': 'Más: Registro, Foco, Curtis y Ajustes', onclick: abrirMas }, icon('dots', 'lg'), MAS.includes(cur) ? NAV.find(([k]) => k === cur)[1] : 'Más'));
   }
+  async function actualizarTodo(btn) {
+    if (btn) { btn.disabled = true; btn.classList.add('girando'); }
+    try { if (S.mcp) { S.gcal.cals = null; await cargarGcal(true); } } catch (e) { /* sigue */ }
+    renderNav(); renderMain(true); renderDrawer();
+    toast('Todo al día · ' + new Date().toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }));
+  }
+  const btnActualizar = () => h('button', { type: 'button', class: 'btn soft', title: 'Volver a leer proyectos, tareas y calendario', onclick: (ev) => actualizarTodo(ev.currentTarget) }, icon('refresh', 'sm'), 'Actualizar');
   function abrirMas() {
     const it = (k, l, ic, sub, fn) => h('button', { type: 'button', class: 'mas-row', onclick: () => { hideModal(); fn ? fn() : go(k); } }, icon(ic, 'lg'), h('span', {}, h('b', { text: l }), h('small', { text: sub })));
     showModal(h('div', { class: 'modal-bg mas-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
@@ -1333,7 +1375,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   function fraseHoy() { return S.frase && S.frase.fecha === hoy() ? S.frase.texto : FRASES[dayOfYear() % FRASES.length]; }
   function viewInicio() {
     const hr = new Date().getHours();
-    const saludo = hr < 12 ? 'Buenos días' : hr < 19 ? 'Buenas tardes' : 'Buenas noches';
+    const saludo = hr < 5 ? '¿Qué onda, desvelado?' : hr < 12 ? '¡Qué onda!' : hr < 19 ? '¿Qué onda, cómo va?' : '¿Qué onda? Ya casi';
     const { pend, hechas, antes } = hoyStats();
     const total = pend.length + hechas.length;
     const now = pendientesOrden()[0];
@@ -1359,10 +1401,18 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         : (loading ? null : h('div', { class: 'now-strip' }, h('span', { class: 'now-label' }, icon('arrow', 'sm'), 'Ahora'), h('p', { class: 'muted', style: 'margin:0', text: 'Nada pendiente. Tocá + para anotar lo próximo.' }))),
     );
     const hoyList = [...antes, ...pend.filter((x) => x.fecha === hoy())];
+    const askBar = S.sample && !S.sampleOff ? (() => {
+      const inp = h('input', { type: 'text', placeholder: 'Preguntale a Curtis… (sabe de tus proyectos, citas y dinero)', 'aria-label': 'Preguntale a Curtis' });
+      const enviar = (q) => { const t = String(q || inp.value).trim(); if (!t) return; go('curtis'); setTimeout(() => ask('c:general', t), 60); };
+      inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); enviar(); } });
+      return h('div', { class: 'ask-bar' }, h('span', { class: 'ask-bar-ico' }, logo(26)), inp, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Preguntar', onclick: () => enviar() }, icon('send')),
+        h('div', { class: 'chips' }, ['¿Qué hago ahora?', '¿Qué se me está olvidando?', 'Ordená mi semana'].map((q) => h('button', { type: 'button', class: 'chip', onclick: () => enviar(q) }, q))));
+    })() : null;
     const citas = gcalDel(hoy());
     const manana = gcalDel(addDays(hoy(), 1));
     return [
       hero,
+      askBar,
       h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Citas de hoy' }), gcalEstado()),
         citas.length ? h('div', { class: 'card pad', style: 'padding-block:6px' }, citas.map(meetRow))
           : h('p', { class: 'empty card', text: S.gcal.ok ? 'Hoy no tenés citas.' + (manana.length ? ' Mañana: ' + manana.map((e) => evHora(e) + ' ' + e.titulo).join(' · ') + '.' : '') : S.gcal.err || 'Conectá Google Calendar para ver tus citas aquí.' })),
@@ -1471,7 +1521,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   document.addEventListener('click', (ev) => { if (S.pmenu && !(ev.target.closest && ev.target.closest('.pwrap'))) { S.pmenu = null; renderMain(true); } });
   function pcardInner(p) {
     const s = proyStats(p);
-    return h('button', { type: 'button', class: 'pcard', onclick: () => go('proyecto', p.id) },
+    return h('button', { type: 'button', class: 'pcard', style: '--pc:' + colorDe(p), onclick: () => go('proyecto', p.id) },
       h('div', { class: 'pcard-cover', style: 'background:linear-gradient(135deg,' + colorVar(p.color) + ', color-mix(in srgb,' + colorVar(p.color) + ' 40%, var(--surface)))' }, h('span', { class: 'pcard-emoji', text: p.icono || '📁' })),
       h('div', { class: 'pcard-b' },
         h('p', { class: 'pcard-t', text: p.nombre || 'Sin nombre' }),
@@ -1493,7 +1543,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const fin = S.proyectos.filter((p) => p.estado === 'terminado' && pasaFiltro(p)).sort((a, b) => (b.entregado || '').localeCompare(a.entregado || ''));
     const conArea = S.areas.map((a) => ({ a, ps: act.filter((p) => p.area === a.id) }));
     const sueltos = act.filter((p) => !p.area || !area(p.area));
-    return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Áreas y proyectos, por entrega' }), h('h1', { text: 'Proyectos' })), h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => nuevaArea() }, icon('grid', 'sm'), 'Área'), h('button', { type: 'button', class: 'btn forest', onclick: nuevoProyecto }, icon('plus', 'sm'), 'Nuevo proyecto'))),
+    return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Áreas y proyectos, por entrega' }), h('h1', { text: 'Proyectos' })), h('div', { class: 'row-actions' }, btnActualizar(), h('button', { type: 'button', class: 'btn soft', onclick: () => nuevaArea() }, icon('grid', 'sm'), 'Área'), h('button', { type: 'button', class: 'btn forest', onclick: nuevoProyecto }, icon('plus', 'sm'), 'Nuevo proyecto'))),
       tabs, filtroBar(),
       S.areas.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Áreas' }), h('span', { class: 'hint', text: 'La sombrilla de tus proyectos grandes' })), h('div', { class: 'gallery areas' }, S.areas.map(acard))) : h('p', { class: 'hint area-tip', text: '¿Un cliente o trabajo con varios proyectos adentro, como la NIHR? Creá un «Área»: es la sombrilla que los agrupa. Los proyectos terminan; el área sigue.' }),
       conArea.filter((x) => x.ps.length).map((x) => h('section', {}, h('div', { class: 'sec-h' }, h('h2', {}, h('button', { type: 'button', class: 'link-h', onclick: () => go('area', x.a.id) }, (x.a.icono || '🗂️') + ' ' + (x.a.nombre || ''))), h('span', { class: 'hint', text: x.ps.length + (x.ps.length === 1 ? ' proyecto' : ' proyectos') })), h('div', { class: 'gallery' }, x.ps.map(pcard)))),
@@ -1554,7 +1604,6 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       h('button', { type: 'button', class: 'btn soft', onclick: () => crearCarpetasBoton(p.id) }, icon('folder', 'sm'), p.driveFolderId ? 'Agregar carpetas de trabajo' : 'Carpetas de trabajo en Drive'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => { const ya = S.cotizaciones.filter((c) => c.proyecto === p.id).sort((a, b) => (b.actualizado || 0) - (a.actualizado || 0))[0]; if (ya) abrirCot(ya); else nuevaCotizacion({ titulo: 'Cotización — ' + (p.nombre || 'proyecto'), cliente: p.cliente || '', proyecto: p.id, contexto: p.descripcion || '', lineas: [{ id: uid(), tipo: 'titulo', texto: p.nombre || 'Propuesta' }] }); } }, icon('receipt', 'sm'), S.cotizaciones.some((c) => c.proyecto === p.id) ? 'Ver cotización' : 'Cotizar'),
       !esLicencia(p) && !ilusIds.length ? h('button', { type: 'button', class: 'btn soft', onclick: () => abrirLicencia(p.id) }, icon('image', 'sm'), 'Licenciar ilustraciones') : null,
-      h('button', { type: 'button', class: 'btn soft', onclick: () => { S.drawer = { kind: 'chat-proyecto', id: p.id, focus: 'ask' }; renderDrawer(true); } }, icon('sparkle', 'sm'), 'Curtis del proyecto'),
       plantillaCat && !ts.length ? h('button', { type: 'button', class: 'btn ok', onclick: async () => { for (const l of lines(plantillaCat)) await addItem({ titulo: l, proyecto: p.id, seccion: secs[0].id }); toast('Pasos de ' + p.categoria + ' cargados'); } }, icon('list', 'sm'), 'Cargar pasos de ' + p.categoria) : null);
     const head = h('div', { class: 'page-h' },
       h('div', { class: 'seg', role: 'group', 'aria-label': 'Vista del proyecto' },
@@ -1590,9 +1639,9 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       });
     }
     return [
-      h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft small', onclick: () => go('proyectos') }, icon('back', 'sm'), 'Proyectos'), p.area && area(p.area) ? h('button', { type: 'button', class: 'btn soft small', onclick: () => go('area', p.area) }, h('span', { text: area(p.area).icono || '🗂️' }), 'Área ' + area(p.area).nombre) : null),
+      h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft small', onclick: () => go('proyectos') }, icon('back', 'sm'), 'Proyectos'), h('button', { type: 'button', class: 'btn soft small', onclick: (ev) => actualizarTodo(ev.currentTarget) }, icon('refresh', 'sm'), 'Actualizar'), p.area && area(p.area) ? h('button', { type: 'button', class: 'btn soft small', onclick: () => go('area', p.area) }, h('span', { text: area(p.area).icono || '🗂️' }), 'Área ' + area(p.area).nombre) : null),
       h('div', {}, cover, h('div', { class: 'p-head' }, emojiBtn, S.emojiOpen ? h('div', { class: 'emoji-grid' }, EMOJIS.map((e) => h('button', { type: 'button', 'aria-label': 'Ícono ' + e, onclick: () => { S.emojiOpen = false; patchProyecto(p.id, { icono: e }); } }, e))) : null, title)),
-      props, franjaDinero(p), ilusSec, desc, tools, archSec, head, body,
+      props, curtisProyecto(p), franjaDinero(p), ilusSec, desc, tools, archSec, head, body,
       h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn ghost small', onclick: () => borrarProyecto(p.id) }, icon('trash', 'sm'), 'Borrar proyecto')),
     ];
   }
@@ -1721,6 +1770,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Tu asistente' }), h('h1', { text: 'Curtis' })), h('button', { type: 'button', class: 'btn soft small', onclick: abrirAjustes }, icon('sliders', 'sm'), 'Ajustes y etiquetas')),
       h('p', { class: 'quote', style: 'max-width:46ch' }, icon('quote'), h('span', { text: 'Voy aprendiendo cómo trabajás para ayudarte a hacer menos de lo repetitivo y cobrar mejor lo que hacés.' })),
       aiSummary(),
+      seccionLimites(),
       guia(),
       h('section', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, icon('brain'), 'Así trabajás'), h('span', { class: 'hint', text: 'Calculado de tus datos' })),
         ins.map((x) => h('div', { class: 'insight' }, icon(x.icon), h('div', { style: 'display:grid;gap:6px' }, h('span', { text: x.text }), x.action ? h('button', { type: 'button', class: 'btn soft small', style: 'justify-self:start', onclick: x.action.fn }, x.action.label) : null)))),
@@ -1917,7 +1967,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   // ================= Curtis (IA) =================
   function perfil() {
     return 'Sos Curtis, el socio de estudio de un diseñador gráfico e ilustrador de Guatemala (freelance en diseño corporativo para empresas grandes y medio tiempo a distancia en la NIHR, con mínimo de horas al mes). Tiene TDAH y vos lo entendés a fondo: te reís del caos con él (nunca de él) y lo acompañás con técnicas concretas: partir en pasos chicos, regla de 2 minutos, cuerpo presente (te quedás con él en un bloque de foco), estacionamiento de ardillas (anotar la distracción y volver), primero lo feo, bloques de tiempo en su mejor horario, hecho es mejor que perfecto. Sos experto en productos digitales, marcas, branding, diseño gráfico, ilustración, y en cómo cobrar y licenciar su trabajo. Meta: que trabaje ordenado, cobre bien y consiga clientes (LinkedIn primero).\n'
-      + 'Personalidad: chistoso y amigable, pero ordenado, estricto, puntual y resolutivo. Tu tono: un explorador de National Geographic documentando el caos creativo, con frases introspectivas al estilo de Carl Jung (la sombra, el inconsciente, darle sentido a lo que hace) y un giro de humor. Cómo respondés: español de Guatemala, de vos. Corto: máximo 5 líneas o 3 pasos. Una cosa a la vez. Sin palabras técnicas. Sin halagos vacíos ni logros falsos: si algo está mal o un precio está bajo, lo decís directo. Siempre cerrá con el siguiente paso concreto y cuándo hacerlo. No inventes datos: si falta algo, hacé una sola pregunta.\n';
+      + 'Personalidad: chistoso y amigable, pero ordenado, estricto, puntual y resolutivo. Tu tono: un explorador de National Geographic documentando el caos creativo, con frases introspectivas al estilo de Carl Jung (la sombra, el inconsciente, darle sentido a lo que hace) y un giro de humor. Cómo respondés: español de Guatemala, de vos. Corto: máximo 5 líneas o 3 pasos. Una cosa a la vez. Sin palabras técnicas. Sin halagos vacíos ni logros falsos: si algo está mal o un precio está bajo, lo decís directo. Siempre cerrá con el siguiente paso concreto y cuándo hacerlo. No inventes datos: si falta algo, hacé una sola pregunta.\n' + limitesTexto();
   }
   const lineaTarea = (x) => '- ' + (x.titulo || 'Sin título') + ' [' + x.estado + (x.fecha ? ', ' + x.fecha : '') + (x.con_quien ? ', ' + x.con_quien : '') + (x.prioridad === 'alta' ? ', prioridad alta' : '') + ']';
   function memoriaTexto() {
@@ -1930,7 +1980,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const ar = p.area ? area(p.area) : null; const dm = dineroProyecto(p);
     return 'PROYECTO: ' + (p.icono || '') + ' ' + (p.nombre || '') + (ar ? '\nÁrea: ' + ar.nombre : '') + '\nDinero: cobro final ' + money(dm.final) + ', facturado ' + money(dm.facturado) + ', cobrado ' + money(dm.cobrado) + '\nCliente: ' + (p.cliente || '(sin cliente)') + '\nCategoría: ' + (p.categoria || '(sin categoría)') + '\nPrecio: ' + (p.precio ? money(p.precio) : '(sin precio)') + '\nEntrega: ' + (p.entrega || '(sin fecha)') + '\nEstado: ' + p.estado
       + '\nCarpeta Drive: ' + (p.driveUrl || '(no hay)') + (p.driveFolderId ? ' (id ' + p.driveFolderId + ')' : '') + '\nCotizaciones: ' + ((p.cotizaciones || []).map((c) => c.numero + ' ' + money(c.total)).join(', ') || '(ninguna)')
-      + '\nNotas: ' + String(p.descripcion || '').slice(0, 2000) + '\n\nSECCIONES Y TAREAS:\n' + secs;
+      + '\nNotas: ' + String(p.descripcion || '').slice(0, 2000) + '\n\nCONTEXTO DEL PROYECTO (.md):\n' + String(p.contextoMd || '(sin contexto escrito)').slice(0, 3000) + '\n\nSECCIONES Y TAREAS:\n' + secs;
   }
   function contexto(key) {
     const [kind, id] = key.split(':');
@@ -1945,7 +1995,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         const p = it.proyecto ? proyecto(it.proyecto) : null; if (p) ctx += '\n\nEs parte de este proyecto:\n' + contextoProyecto(p);
       }
     } else {
-      ctx += '\nPROYECTOS ACTIVOS:\n' + (proyActivos().slice(0, 10).map((p) => '- ' + p.nombre + ' (' + (p.categoria || 'sin categoría') + ', entrega ' + (p.entrega || '—') + ', ' + proyStats(p).done + '/' + proyStats(p).total + ')').join('\n') || '(ninguno)');
+      ctx += '\nPROYECTOS ACTIVOS:\n' + (proyActivos().slice(0, 12).map((p) => '- ' + p.nombre + (p.area && area(p.area) ? ' [área ' + area(p.area).nombre + ']' : '') + ' (' + (p.categoria || 'sin categoría') + ', entrega ' + (p.entrega || '—') + ', ' + proyStats(p).done + '/' + proyStats(p).total + ')' + (p.contextoMd ? '\n  Contexto: ' + String(p.contextoMd).replace(/\s+/g, ' ').slice(0, 350) : '')).join('\n') || '(ninguno)');
     }
     if (kind === 'c') { const mes = mesActual(); ctx += '\n\nDINERO ESTE MES: cobrado ' + fmtBolsa(ingresosDelMes(mes)) + ', gastos ' + fmtBolsa(gastosDelMes(mes)) + ', por cobrar ' + fmtBolsa(porCobrar()) + '. Áreas: ' + (S.areas.map((a) => a.nombre).join(', ') || '(ninguna)') + '. Clientes: ' + (S.clientes.map((c) => c.nombre).slice(0, 20).join(', ') || '(ninguno)') + '.'; }
     if (kind !== 'i' && S.servicios.length) ctx += '\n\nSU CATÁLOGO DE SERVICIOS (Precios):\n' + S.servicios.slice(0, 40).map((x) => '- ' + (x.titulo || '') + (x.subtitulo ? ' — ' + x.subtitulo : '') + ' [' + grupoDe(x) + '] ' + money(Number(x.precio) || 0) + ' ' + (x.unidad || '') + (x.formato ? ' · entrega: ' + x.formato : '') + ' (id ' + x.id + ')' + (x.descripcion ? '\n  ' + String(x.descripcion).slice(0, 300) : '\n  (sin descripción)')).join('\n');
@@ -1983,9 +2033,15 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         inputSchema: { type: 'object', properties: { tareas: { type: 'array', items: { type: 'object', properties: { titulo: { type: 'string' }, seccion_id: { type: 'string' }, fecha: { type: 'string', description: 'AAAA-MM-DD; si no, hoy' }, prioridad_alta: { type: 'boolean' } }, required: ['titulo'] } } }, required: ['tareas'] },
         execute: async (input) => {
           const list = Array.isArray(input.tareas) ? input.tareas.slice(0, 20) : []; const p = proyecto(projId);
-          for (const t of list) { const sec = p && (p.secciones || []).some((s) => s.id === String(t.seccion_id)) ? String(t.seccion_id) : p && p.secciones && p.secciones[0] ? p.secciones[0].id : ''; await addItem({ titulo: String(t.titulo || '').slice(0, 200), proyecto: projId, seccion: sec, fecha: isDay(t.fecha) ? String(t.fecha) : hoy(), prioridad: t.prioridad_alta ? 'alta' : '' }); }
+          for (const t of list) { const sec = p && (p.secciones || []).some((s) => s.id === String(t.seccion_id)) ? String(t.seccion_id) : p && p.secciones && p.secciones[0] ? p.secciones[0].id : ''; await addItem({ titulo: String(t.titulo || '').slice(0, 200), proyecto: projId, seccion: sec, fecha: isDay(t.fecha) ? String(t.fecha) : hoy(), prioridad: t.prioridad_alta ? 'alta' : '', origen: 'curtis' }); }
           note('Agregó ' + list.length + (list.length === 1 ? ' tarea' : ' tareas')); return { creadas: list.length };
         } },
+      ...(projId ? [{ name: 'actualizar_contexto_proyecto', description: 'Reemplaza el contexto (.md corto) del proyecto actual con una versión actualizada: qué es, para quién, objetivo, decisiones, dudas abiertas. Úsalo cuando aprendás algo importante del proyecto. Sin inventar.',
+        inputSchema: { type: 'object', properties: { markdown: { type: 'string' } }, required: ['markdown'] },
+        execute: async (input) => { const pr = proyecto(projId); const md = String(input.markdown || '').trim(); if (!pr || md.length < 10) return { ok: false }; await patchProyecto(projId, { contextoMd: md.slice(0, 8000), contextoAnterior: pr.contextoMd || '', contextoFecha: hoy() }); note('Actualizó el contexto del proyecto'); return { ok: true }; } }] : []),
+      ...(kind === 'c' ? [{ name: 'anotar_limite', description: 'Anota una cosa en sus límites de autoría: lado "yo" (lo que hace él) o "curtis" (con lo que lo ayudás).',
+        inputSchema: { type: 'object', properties: { lado: { type: 'string', enum: ['yo', 'curtis'] }, texto: { type: 'string' } }, required: ['lado', 'texto'] },
+        execute: async (input) => { const l = limites(); const lado = input.lado === 'curtis' ? 'curtis' : 'yo'; const t = String(input.texto || '').trim().slice(0, 120); if (!t) return { ok: false }; const nl = Object.assign({}, l, { [lado]: [...l[lado], t].slice(-20) }); S.ajustes = Object.assign({}, S.ajustes, { limites: nl }); await saveAjustes({ limites: nl }); note('Anotó un límite: ' + t); return { ok: true }; } }] : []),
       { name: 'anotar_aprendizaje', description: 'Guarda algo que aprendiste del usuario para recordarlo siempre. Una idea corta por llamada.',
         inputSchema: { type: 'object', properties: { tipo: { type: 'string', enum: Object.keys(MEM_TIPOS) }, texto: { type: 'string' } }, required: ['tipo', 'texto'] },
         execute: async (input) => { await addMemoria(String(input.tipo), String(input.texto || ''), 'curtis'); note('Anotó: ' + String(input.texto || '').slice(0, 60)); return { ok: true }; } },
@@ -2033,7 +2089,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       } });
     if (kind === 'i') tools.push({ name: 'agregar_pasos', description: 'Parte la tarea actual en pasos chicos: cada paso queda como tarea dentro de ella.',
       inputSchema: { type: 'object', properties: { pasos: { type: 'array', items: { type: 'string' } } }, required: ['pasos'] },
-      execute: async (input) => { const it = item(id); if (!it) throw new Error('La tarea ya no existe'); const pasos = (Array.isArray(input.pasos) ? input.pasos : []).slice(0, 15).map((t) => String(t).slice(0, 200)).filter(Boolean); const raiz = it.padre && item(it.padre) ? item(it.padre) : it; for (const t of pasos) await addItem({ titulo: t, proyecto: raiz.proyecto || '', seccion: raiz.seccion || '', padre: raiz.id }); note('Agregó ' + pasos.length + ' pasos'); return { agregados: pasos.length }; } });
+      execute: async (input) => { const it = item(id); if (!it) throw new Error('La tarea ya no existe'); const pasos = (Array.isArray(input.pasos) ? input.pasos : []).slice(0, 15).map((t) => String(t).slice(0, 200)).filter(Boolean); const raiz = it.padre && item(it.padre) ? item(it.padre) : it; for (const t of pasos) await addItem({ titulo: t, proyecto: raiz.proyecto || '', seccion: raiz.seccion || '', padre: raiz.id, origen: 'curtis' }); note('Agregó ' + pasos.length + ' pasos'); return { agregados: pasos.length }; } });
     if (projId) tools.push(
       { name: 'crear_carpetas_de_trabajo', description: 'Crea la carpeta del proyecto actual en Drive («Cliente — Proyecto (año-mes)») con sus subcarpetas de trabajo. Pide permiso antes.',
         inputSchema: { type: 'object', properties: { carpetas: { type: 'array', items: { type: 'string' } } } },
@@ -2046,7 +2102,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   async function ask(key, question) {
     if (!S.sample || S.asking.has(key)) return;
     const history = chatOf(key).slice(-MAX_CHAT);
-    const turns = [{ role: 'user', content: contexto(key) }, ...history.map((m) => ({ role: m.rol === 'claude' ? 'assistant' : 'user', content: m.texto })), { role: 'user', content: question }];
+    const autoria = esAutoria(question); if (autoria) registrarAviso(question);
+    const turns = [{ role: 'user', content: contexto(key) }, ...history.map((m) => ({ role: m.rol === 'claude' ? 'assistant' : 'user', content: m.texto })), { role: 'user', content: question + (autoria ? '\n\n[El panel detectó que esto puede ser su parte creativa: respetá el límite de autoría, empezá con «⚠️ Esto es tuyo:» y ayudalo sin ser el autor.]' : '') }];
     const st = { question, text: '', ctl: new AbortController(), tools: [] };
     S.asking.set(key, st); S.chatErr.delete(key); renderChatBox(key);
     try {
@@ -2055,7 +2112,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       const { text } = await S.sample(turns, opts);
       const at = Date.now(); const extra = st.tools.length ? '\n\n(' + st.tools.join(' · ') + ')' : '';
       S.asking.delete(key);
-      await saveChat(key, [...history, { rol: 'yo', texto: question, at }, { rol: 'claude', texto: text + extra, at: at + 1 }].slice(-MAX_CHAT));
+      await saveChat(key, [...history, { rol: 'yo', texto: question, at }, autoria ? { rol: 'claude', texto: '⚠️ Aviso de autoría: esto suena a tu parte creativa. Te ayudo con preguntas y opciones; lo que firmás lo hacés vos.', at: at + 1 } : null, { rol: 'claude', texto: text + extra, at: at + 2 }].filter(Boolean).slice(-MAX_CHAT));
     } catch (e) { S.asking.delete(key); if (!e || e.code !== 'cancelled') S.chatErr.set(key, sampleErr(e)); }
     renderChatBox(key);
   }
@@ -3693,7 +3750,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const prox = act.filter((p) => isDay(p.entrega)).sort((x, y) => x.entrega.localeCompare(y.entrega))[0];
     const pend = tareas().filter((t) => isOpen(t) && ps.some((p) => p.id === t.proyecto)).length;
     return h('button', { type: 'button', class: 'acard', style: '--ac:' + colorVar(a.color), onclick: () => go('area', a.id) },
-      h('span', { class: 'acard-k' }, 'Área'),
+      h('span', { class: 'acard-k' }, a.fijada ? '★ Área principal' : 'Área'),
       h('span', { class: 'acard-t' }, h('span', { class: 'acard-e', text: a.icono || '🗂️' }), a.nombre || 'Sin nombre'),
       h('span', { class: 'trow-m' }, h('span', { text: act.length + (act.length === 1 ? ' proyecto activo' : ' proyectos activos') }), h('span', { text: pend + ' pendientes' }), prox ? urgPill(prox.entrega, '', 'Próxima ') : null));
   }
@@ -3786,6 +3843,157 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         h('span', { class: 'trow-m' }, h('span', { text: st.ps.length + (st.ps.length === 1 ? ' proyecto' : ' proyectos') }), st.cobrado ? h('span', { text: 'cobrado ' + money(st.cobrado) }) : null, st.pendiente ? h('span', { class: 'u soon', text: 'por cobrar ' + money(st.pendiente) }) : null, c.zohoId ? h('span', { text: '✓ Zoho' }) : null)); }))
         : h('div', { class: 'card pad empty-state' }, icon('users', 'lg'), h('h3', { text: 'Tus clientes, en un solo lugar' }), h('p', { class: 'hint', text: 'Guardá cada cliente una vez y conectalo a sus proyectos. Así ves cuánto te ha pagado y cuánto te debe.' })),
     ];
+  }
+
+  // ================= LÍMITES DE AUTORÍA: lo tuyo es tuyo =================
+  const LIMITES_BASE = {
+    yo: ['Las ideas y conceptos creativos', 'Bocetos, diseño, ilustración y composición', 'Decisiones estéticas: color, tipografía, estilo', 'Los textos creativos de marca y el tono de mis piezas', 'La curaduría: qué entra y qué no en mi portafolio', 'La decisión final de todo lo que se entrega'],
+    curtis: ['Ordenar tareas, fechas y prioridades', 'Hacerme preguntas para aclarar el problema', 'Buscar referencias y datos (yo elijo)', 'Revisar lo técnico: formato, color, resolución, nombres', 'Lo administrativo: cotizaciones, mensajes, facturas', 'Recordarme lo que aprendí y mis errores'],
+  };
+  const limites = () => { const l = ajuste('limites', null); return { yo: (l && Array.isArray(l.yo) && l.yo.length ? l.yo : LIMITES_BASE.yo), curtis: (l && Array.isArray(l.curtis) && l.curtis.length ? l.curtis : LIMITES_BASE.curtis) }; };
+  function limitesTexto() {
+    const l = limites();
+    return '\nLÍMITE DE AUTORÍA (regla dura): vos sos su asistente, nunca el autor. ES DE ÉL: ' + l.yo.join('; ') + '. VOS AYUDÁS CON: ' + l.curtis.join('; ') + '. En lo creativo das preguntas, caminos u opciones para que él decida y cree; no entregás la idea, el concepto, el diseño ni el texto creativo final. Si te pide hacer su parte creativa, empezá con «⚠️ Esto es tuyo:» y proponé cómo ayudarlo sin ser el autor. Si él te corrige sobre qué es suyo, anotalo con anotar_limite.\n';
+  }
+  const RE_AUTORIA = /\b(dise[ñn][aá](me|lo|la)?|dibuj[aá]|ilustr[aá](me)?|hac[eé](me)? (el|un|la|mi) (logo|dise[ñn]o|concepto|ilustraci[oó]n|portafolio|paleta|marca)|cre[aá](me)? (el|un|la|mi) (logo|concepto|dise[ñn]o|nombre|marca|ilustraci[oó]n|paleta|estilo)|invent[aá](me)?|gener[aá](me)? (ideas|conceptos|nombres|el concepto|la idea)|escrib[ií](me)? (el|un|mi) (concepto|manifiesto|slogan|eslogan|copy creativo)|propon[eé](me)? (el|un) (concepto|estilo|nombre)|(eleg[ií]|decid[ií]) vos|hac[eé]lo vos|haceme todo|curá(me)? (mi|el) portafolio)\b/i;
+  const esAutoria = (t) => RE_AUTORIA.test(String(t || ''));
+  function registrarAviso(texto) {
+    const n = (Number(ajuste('avisosAutoria', 0)) || 0) + 1;
+    S.ajustes = Object.assign({}, S.ajustes, { avisosAutoria: n }); saveAjustes({ avisosAutoria: n });
+    addMemoria('limite', 'Pidió que Curtis hiciera algo creativo suyo: «' + String(texto).slice(0, 120) + '». Curtis lo frenó y lo ayudó sin ser el autor.', 'auto');
+  }
+  // ¿Curtis está armando casi todo? (tareas creadas por Curtis en 14 días)
+  function delegacion() {
+    const desde = Date.now() - 14 * 864e5;
+    const ts = tareas().filter((t) => (t.creado || 0) > desde);
+    const deCurtis = ts.filter((t) => t.origen === 'curtis').length;
+    return { total: ts.length, deCurtis, alto: ts.length >= 8 && deCurtis / ts.length > 0.6 };
+  }
+  function avisoAutoriaEl() {
+    return h('div', { class: 'aviso-autoria', role: 'note' }, h('b', { text: '⚠️ Aviso de autoría' }), h('span', { text: 'Esto suena a tu parte creativa. Curtis te va a ayudar con preguntas y opciones, no con el resultado final. Lo que firmás, lo hacés vos.' }));
+  }
+  function seccionLimites() {
+    const l = limites(); const dl = delegacion(); const av = Number(ajuste('avisosAutoria', 0)) || 0;
+    const lista = (key, titulo, ic) => { const t = h('textarea', { rows: '6', 'aria-label': titulo }, l[key].join('\n')); t.addEventListener('change', () => { const nl = Object.assign({}, limites(), { [key]: lines(t.value).slice(0, 20) }); S.ajustes = Object.assign({}, S.ajustes, { limites: nl }); saveAjustes({ limites: nl }); toast('Límites guardados'); }); return h('label', { class: 'field lim-col' }, h('span', {}, icon(ic, 'sm'), ' ' + titulo), t); };
+    return h('section', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, '🤝 Hasta dónde llega Curtis'), h('span', { class: 'hint', text: av ? av + (av === 1 ? ' aviso de autoría' : ' avisos de autoría') : 'Sin avisos todavía' })),
+      dl.alto ? h('div', { class: 'aviso-autoria' }, h('b', { text: '⚠️ Ojo' }), h('span', { text: 'En 14 días Curtis creó ' + dl.deCurtis + ' de tus ' + dl.total + ' tareas. ¿Seguís decidiendo vos qué se hace? Revisalas y quedate con las tuyas.' })) : null,
+      h('p', { class: 'hint', text: 'Curtis es tu asistente, no el autor. Una línea por cosa; Curtis lo respeta en todos los chats y te avisa si le pedís tu parte creativa.' }),
+      h('div', { class: 'two' }, lista('yo', 'Esto lo hago yo', 'edit'), lista('curtis', 'Esto me ayuda Curtis', 'sparkle')));
+  }
+
+  // ================= CURTIS EN CADA PROYECTO: contexto .md y preguntas =================
+  function estadoMd(p) {
+    const ts = tareas().filter((t) => t.proyecto === p.id); const ok = ts.filter((t) => t.estado === 'listo'); const ab = ts.filter((t) => t.estado !== 'listo');
+    const prox = ab.filter((t) => isDay(t.fecha)).sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(0, 4);
+    const m = dineroProyecto(p); const ar = p.area ? area(p.area) : null;
+    const reu = S.items.filter((x) => x.tipo === 'reunion' && x.proyecto === p.id).sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))[0];
+    const arch = S.archivos.filter((a) => a.proyecto === p.id).length;
+    return ['- Estado: ' + ({ activo: 'activo', pausa: 'en pausa', terminado: 'entregado' }[p.estado] || 'activo') + (ar ? ' · área ' + ar.nombre : '') + (p.cliente ? ' · cliente ' + p.cliente : ''),
+      '- Entrega: ' + (isDay(p.entrega) ? fmtDate(p.entrega, { day: 'numeric', month: 'long' }) + ' (' + countdown(p.entrega) + ')' : 'sin fecha'),
+      '- Avance: ' + ok.length + ' de ' + ts.length + ' tareas listas',
+      prox.length ? '- Lo que sigue: ' + prox.map((t) => t.titulo + ' (' + fmtDate(t.fecha, { day: 'numeric', month: 'short' }) + ')').join('; ') : '- Lo que sigue: nada con fecha',
+      ok.length ? '- Último terminado: ' + ok.sort((a, b) => (b.terminado || 0) - (a.terminado || 0))[0].titulo : null,
+      m.final ? '- Dinero: cobro final ' + money(m.final) + ', cobrado ' + money(m.cobrado) + (m.falta ? ', falta ' + money(m.falta) : '') : null,
+      reu ? '- Última reunión: ' + (reu.titulo || '') + ' (' + fmtDate(reu.fecha, { day: 'numeric', month: 'short' }) + ')' : null,
+      arch ? '- Archivos subidos: ' + arch : null].filter(Boolean).join('\n');
+  }
+  const contextoMdCompleto = (p) => (String(p.contextoMd || '').trim() || '# ' + (p.nombre || 'Proyecto') + '\n\n(Todavía sin contexto escrito.)') + '\n\n## Así va (se actualiza solo)\n' + estadoMd(p);
+  function editarContexto(pid) {
+    const p = proyecto(pid); if (!p) return;
+    const ta = h('textarea', { rows: '16', class: 'md-ed', placeholder: '# ' + (p.nombre || 'Proyecto') + '\n\n## Qué es\n\n## Para quién\n\n## Objetivo\n\n## Decisiones\n\n## Dudas abiertas' }, p.contextoMd || '');
+    showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
+      h('div', { class: 'modal wide', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Contexto del proyecto' },
+        h('h3', {}, icon('book'), 'Contexto de ' + (p.nombre || 'el proyecto')),
+        h('p', { class: 'hint', text: 'Un .md corto: qué es, para quién, objetivo, decisiones y dudas. Curtis lo lee siempre y lo actualiza cuando aprende algo nuevo. «Así va» se agrega solo.' }), ta,
+        h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn soft', onclick: hideModal }, 'Cancelar'),
+          h('button', { type: 'button', class: 'btn forest', onclick: () => { patchProyecto(pid, { contextoMd: ta.value.trim().slice(0, 20000), contextoAnterior: p.contextoMd || '', contextoFecha: hoy() }); hideModal(); toast('Contexto guardado'); } }, 'Guardar')))), hideModal);
+    ta.focus();
+  }
+  async function subirMd(pid, file) {
+    const p = proyecto(pid); if (!p || !file) return;
+    if (file.size > 200000) { toast('Ese archivo es muy grande para contexto. Usá uno corto.'); return; }
+    const txt = (await file.text()).trim().slice(0, 20000);
+    const aplicar = () => { patchProyecto(pid, { contextoMd: txt, contextoAnterior: p.contextoMd || '', contextoFecha: hoy() }); toast('Contexto cargado de «' + file.name + '»'); };
+    if (String(p.contextoMd || '').trim()) confirmar('¿Reemplazo el contexto actual?', 'Se usa «' + file.name + '». El anterior queda guardado: podés deshacerlo.', 'Reemplazar', aplicar); else aplicar();
+  }
+  async function contextoADrive(pid) {
+    const p = proyecto(pid); if (!p) return;
+    if (!(S.mcp && S.fileArgs)) { toast('Desde esta vista no se puede guardar en Drive.'); return; }
+    const dest = folderIdFrom(p); const nombre = 'Contexto — ' + String(p.nombre || 'proyecto').replace(/[\\/:*?"<>|]/g, '-') + '.md';
+    const ok = await pedirPermiso('¿Guardo el contexto en tu Drive?', [dest ? 'En la carpeta del proyecto.' : 'En «' + BANDEJA + '».', 'Archivo: ' + nombre], 'Sí, guardalo');
+    if (!ok) return;
+    try { const fid = dest || await bandejaId(); const f = await subirArchivo(new Blob([contextoMdCompleto(p)], { type: 'text/markdown' }), fid, nombre); toast('Contexto guardado en Drive'); if (f.viewUrl) patchProyecto(pid, { contextoUrl: f.viewUrl }); }
+    catch (e) { toast(e && e.code ? mcpErr(e, 'Google Drive') : 'No se pudo guardar.'); }
+  }
+  const mdHtml = (md) => String(md || '').split('\n').map((l) => { const t = esc(l); if (/^### /.test(l)) return '<h4>' + t.slice(4) + '</h4>'; if (/^## /.test(l)) return '<h3>' + t.slice(3) + '</h3>'; if (/^# /.test(l)) return '<h2>' + t.slice(2) + '</h2>'; if (/^\s*[-*] /.test(l)) return '<li>' + t.replace(/^\s*[-*] /, '') + '</li>'; return t.trim() ? '<p>' + t + '</p>' : ''; }).join('').replace(/(<li>.*?<\/li>)+/g, (m) => '<ul>' + m + '</ul>');
+  // estado de la consulta en curso, por proyecto (solo en esta pantalla)
+  const consultas = new Map();
+  function curtisProyecto(p) {
+    const st = consultas.get(p.id) || { paso: 'duda', duda: '', preguntas: [], respuestas: [], res: null, pensando: false, aviso: false };
+    consultas.set(p.id, st);
+    const redraw = () => { const box = document.getElementById('curtis-proj'); if (box) { const n = curtisProyecto(proyecto(p.id) || p); n.open = true; box.replaceWith(n); } };
+    const fileIn = h('input', { type: 'file', accept: '.md,.markdown,.txt,text/markdown,text/plain', hidden: true, onchange: (ev) => { const f = ev.target.files[0]; ev.target.value = ''; subirMd(p.id, f); } });
+    const preview = h('div', { class: 'md-view' }); preview.innerHTML = mdHtml(String(p.contextoMd || '').trim() || '*Todavía no hay contexto. Escribilo, subí un .md o hacé una consulta: Curtis lo arma con tus respuestas.*');
+    let cuerpo;
+    if (!S.sample || S.sampleOff) cuerpo = h('p', { class: 'hint', text: 'Curtis no está disponible en esta vista.' });
+    else if (st.paso === 'duda') {
+      const ta = h('textarea', { rows: '3', placeholder: 'Contame una idea, duda o problema del proyecto. Ej.: «no sé cómo presentar las 3 propuestas al cliente»', 'aria-label': 'Tu duda' }, st.duda);
+      ta.addEventListener('input', () => { st.duda = ta.value; st.aviso = esAutoria(ta.value); const a = document.getElementById('cp-aviso'); if (a) a.hidden = !st.aviso; });
+      cuerpo = [ta, h('div', { id: 'cp-aviso', hidden: st.aviso ? null : true }, avisoAutoriaEl()),
+        h('button', { type: 'button', class: 'btn forest', disabled: st.pensando ? true : null, onclick: async () => {
+          if (!st.duda.trim()) { toast('Escribí primero tu duda.'); return; }
+          st.pensando = true; redraw();
+          if (esAutoria(st.duda)) registrarAviso(st.duda);
+          try {
+            const r = await S.sample.json(perfil() + limitesTexto() + '\nCONTEXTO DEL PROYECTO:\n' + contextoMdCompleto(p) + memoriaTexto() + '\n\nÉl te escribe esta idea, duda o problema: «' + st.duda.trim().slice(0, 1500) + '».\nAntes de sugerir, necesitás entender. Hacé entre 2 y 5 preguntas cortas y concretas (una sola cosa cada una), que te ayuden a entender el problema. No preguntes lo que ya dice el contexto. Respondé SOLO con JSON: {"preguntas": ["¿…?", "¿…?"]}', { cache: false });
+            const qs = (r && Array.isArray(r.preguntas) ? r.preguntas : []).map((x) => String(x).trim()).filter(Boolean).slice(0, 5);
+            if (!qs.length) throw { code: 'invalid_json' };
+            st.preguntas = qs; st.respuestas = qs.map(() => ''); st.paso = 'preguntas';
+          } catch (e) { toast(sampleErr(e)); }
+          st.pensando = false; redraw();
+        } }, icon('sparkle', 'sm'), st.pensando ? 'Curtis está pensando…' : 'Que Curtis me pregunte')];
+    } else if (st.paso === 'preguntas') {
+      cuerpo = [h('p', { class: 'cp-duda', text: '«' + st.duda.trim() + '»' }),
+        h('ol', { class: 'cp-qs' }, st.preguntas.map((q, i) => { const a = h('textarea', { rows: '2', 'aria-label': q, placeholder: 'Tu respuesta (podés dejarla en blanco)' }, st.respuestas[i] || ''); a.addEventListener('input', () => { st.respuestas[i] = a.value; }); return h('li', {}, h('b', { text: q }), a); })),
+        h('div', { class: 'row-actions' },
+          h('button', { type: 'button', class: 'btn forest', disabled: st.pensando ? true : null, onclick: async () => {
+            st.pensando = true; redraw();
+            const qa = st.preguntas.map((q, i) => '- ' + q + '\n  → ' + (String(st.respuestas[i] || '').trim() || '(sin respuesta)')).join('\n');
+            try {
+              const r = await S.sample.json(perfil() + limitesTexto() + '\nCONTEXTO DEL PROYECTO:\n' + contextoMdCompleto(p) + memoriaTexto() + '\n\nSU DUDA: «' + st.duda.trim().slice(0, 1500) + '»\nTUS PREGUNTAS Y SUS RESPUESTAS:\n' + qa + '\n\nAhora respondé SOLO con JSON así: {"sugerencia": "máximo 6 líneas, de vos, con el siguiente paso concreto; respetá el límite de autoría", "contexto": "el contexto del proyecto en Markdown, actualizado con lo que aprendiste (máximo 25 líneas: # nombre, ## Qué es, ## Para quién, ## Objetivo, ## Decisiones, ## Dudas abiertas; no inventes nada que él no haya dicho)", "aprendizajes": ["hasta 2 cosas cortas sobre cómo trabaja él, o vacío"], "pasos": ["hasta 3 pasos cortos que él podría hacer, o vacío"], "autoria": false}. Poné "autoria": true si te pidió hacer su parte creativa.', { cache: false });
+              if (!r || !r.sugerencia) throw { code: 'invalid_json' };
+              st.res = { sugerencia: String(r.sugerencia).trim(), pasos: (Array.isArray(r.pasos) ? r.pasos : []).map(String).filter(Boolean).slice(0, 3), autoria: !!r.autoria };
+              const cur = proyecto(p.id) || p; const patch = { consultas: [...(cur.consultas || []), { fecha: hoy(), duda: st.duda.trim().slice(0, 800), qa: st.preguntas.map((q, i) => ({ q, a: String(st.respuestas[i] || '').slice(0, 600) })), sugerencia: st.res.sugerencia.slice(0, 1500) }].slice(-10) };
+              if (r.contexto && String(r.contexto).trim().length > 20) Object.assign(patch, { contextoMd: String(r.contexto).trim().slice(0, 8000), contextoAnterior: cur.contextoMd || '', contextoFecha: hoy() });
+              await patchProyecto(p.id, patch);
+              for (const a of (Array.isArray(r.aprendizajes) ? r.aprendizajes : []).slice(0, 2)) if (String(a).trim()) await addMemoria('otro', String(a), 'curtis', { proyecto: p.id });
+              if (st.res.autoria && !esAutoria(st.duda)) registrarAviso(st.duda);
+              st.paso = 'listo';
+            } catch (e) { toast(sampleErr(e)); }
+            st.pensando = false; redraw();
+          } }, icon('sparkle', 'sm'), st.pensando ? 'Curtis está pensando…' : 'Listo, sugerime'),
+          h('button', { type: 'button', class: 'btn soft', onclick: () => { st.paso = 'duda'; redraw(); } }, 'Volver'))];
+    } else {
+      const r = st.res || { sugerencia: '', pasos: [] };
+      cuerpo = [r.autoria ? avisoAutoriaEl() : null, h('div', { class: 'review' }, h('b', {}, icon('sparkle', 'sm'), ' Curtis sugiere'), h('p', { style: 'margin:0;white-space:pre-wrap', text: r.sugerencia })),
+        r.pasos.length ? h('div', { class: 'field' }, h('span', { text: 'Pasos que podrías hacer (vos decidís)' }), h('div', { class: 'chips' }, r.pasos.map((t) => h('button', { type: 'button', class: 'chip', onclick: async (ev) => { ev.currentTarget.disabled = true; await addItem({ titulo: t.slice(0, 200), proyecto: p.id, seccion: (p.secciones && p.secciones[0] && p.secciones[0].id) || '' }); toast('Paso agregado'); } }, icon('plus', 'sm'), t)))) : null,
+        h('p', { class: 'hint', text: '✓ Actualicé el contexto del proyecto con lo que me contaste.' }),
+        h('button', { type: 'button', class: 'btn soft', style: 'justify-self:start', onclick: () => { consultas.delete(p.id); redraw(); } }, 'Nueva consulta')];
+    }
+    const hist = (p.consultas || []).slice(-3).reverse();
+    const det = h('details', { class: 'card pad curtis-proj', id: 'curtis-proj', open: st.open || st.paso !== 'duda' ? true : null },
+      h('summary', {}, h('span', { class: 'cp-ico', text: '🧠' }), h('b', { text: 'Curtis del proyecto' }), h('span', { class: 'hint', text: p.contextoFecha ? 'contexto al ' + fmtDate(p.contextoFecha, { day: 'numeric', month: 'short' }) : 'sin contexto todavía' })),
+      h('div', { class: 'cp-grid' },
+        h('div', { class: 'cp-col' }, h('p', { class: 'block-h' }, icon('help', 'sm'), 'Una duda, una idea o un problema'), cuerpo,
+          hist.length ? h('details', { class: 'cp-hist' }, h('summary', { text: 'Consultas anteriores (' + (p.consultas || []).length + ')' }), hist.map((c) => h('div', { class: 'cp-h' }, h('small', { text: fmtDate(c.fecha, { day: 'numeric', month: 'short' }) }), h('b', { text: c.duda }), h('p', { text: c.sugerencia })))) : null),
+        h('div', { class: 'cp-col' }, h('p', { class: 'block-h' }, icon('book', 'sm'), 'Contexto del proyecto (.md)'), preview,
+          h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft small', onclick: () => editarContexto(p.id) }, icon('edit', 'sm'), 'Editar'), h('button', { type: 'button', class: 'btn soft small', onclick: () => fileIn.click() }, icon('upload', 'sm'), 'Subir .md'), fileIn,
+            S.mcp && S.fileArgs ? h('button', { type: 'button', class: 'btn soft small', onclick: () => contextoADrive(p.id) }, icon('folder', 'sm'), 'Guardar en Drive') : null,
+            p.contextoAnterior != null && p.contextoAnterior !== (p.contextoMd || '') ? h('button', { type: 'button', class: 'btn ghost small', onclick: () => { patchProyecto(p.id, { contextoMd: p.contextoAnterior || '', contextoAnterior: p.contextoMd || '' }); toast('Volví al contexto anterior'); } }, 'Deshacer') : null),
+          h('details', { class: 'cp-auto' }, h('summary', { text: 'Así va (se actualiza solo)' }), h('pre', { text: estadoMd(p) })),
+          h('button', { type: 'button', class: 'btn ghost small', style: 'justify-self:start', onclick: () => { S.drawer = { kind: 'chat-proyecto', id: p.id, focus: 'ask' }; renderDrawer(true); } }, icon('sparkle', 'sm'), 'Chat libre con Curtis'))));
+    det.addEventListener('toggle', () => { st.open = det.open; });
+    return det;
   }
 
   // ================= Zoho =================
@@ -3928,7 +4136,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     db.collection('etiquetas').onSnapshot((snap) => { S.etiquetas = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => (a.creado || 0) - (b.creado || 0)); renderAll(); }, () => {});
     db.collection('ilustraciones').onSnapshot((snap) => { S.ilustraciones = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'proyectos' || S.view === 'proyecto') renderMain(); }, () => {});
     const enVista = (...vs) => vs.includes(S.view);
-    db.collection('areas').onSnapshot((snap) => { S.areas = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => (a.creado || 0) - (b.creado || 0)); S.loadedAreas = true; renderNav(); if (enVista('proyectos', 'proyecto', 'area')) renderMain(); }, () => {});
+    db.collection('areas').onSnapshot((snap) => { S.areas = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => (!!b.fijada - !!a.fijada) || (a.creado || 0) - (b.creado || 0)); S.loadedAreas = true; renderNav(); if (enVista('proyectos', 'proyecto', 'area')) renderMain(); }, () => {});
     db.collection('clientes').onSnapshot((snap) => { S.clientes = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('proyectos', 'proyecto', 'area', 'precios')) renderMain(); }, () => {});
     db.collection('facturas').onSnapshot((snap) => { S.facturas = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('proyectos', 'proyecto', 'area', 'precios')) renderMain(); if (S.cotId) { const box = document.getElementById('fac-box'); if (box && S.cotDraft) { const nb = bloqueFacturasCot(S.cotDraft); nb.id = 'fac-box'; box.replaceWith(nb); } } }, () => {});
     db.collection('suscripciones').onSnapshot((snap) => { S.suscripciones = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('precios')) renderMain(); }, () => {});

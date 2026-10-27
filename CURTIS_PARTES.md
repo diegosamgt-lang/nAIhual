@@ -1,6 +1,6 @@
 # CURTIS — resumen del proyecto
 
-> Actualizado: 2026-10-22 · versión 8
+> Actualizado: 2026-10-27 · versión 9
 > Panel: https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW (privado, solo vos lo abrís y lo editás)
 > Archivo: `tablero/curtis.html` · Datos y conexiones: `TABLERO_TRASPASO.md` · Personalidad: `CURTIS_PERSONALIDAD.md`
 >
@@ -245,3 +245,21 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
   - Copia de seguridad: Ajustes → «Guardar copia en Drive» (archivo en «Curtis · Copias»). Si pasan 7 días sin copia, aparece un aviso.
   - Factura legal: no encontré que Zoho emita la FEL de Guatemala. Curtis lleva el control y cada factura tiene un campo para el número FEL de la SAT.
   - Pruebas: 124/124 nuevas + 31/31 de v4. Drive: comprobado con una búsqueda real (solo lectura) que responde como el panel espera.
+- 2026-10-27 · Tus pedidos, ordenados:
+  1. Un botón para actualizar los proyectos.
+  2. Curtis en Inicio.
+  3. Saludo más tuyo: «¿Qué onda?» en vez de «Buenos días».
+  4. En cada proyecto, un desplegable de Curtis: escribís una idea, duda o problema; Curtis te hace hasta 5 preguntas para entenderlo y después te sugiere. Cada proyecto tiene un contexto corto en .md que se actualiza solo con tus avances.
+  5. Que Curtis sea una inteligencia aparte con contexto de todo lo que hacés, como Jarvis, sin nada caro ni complicado.
+  6. Un apartado más grande que un proyecto: tu página web, tu portafolio y tu curaduría.
+  7. Límite de autoría: lo gráfico y creativo es tuyo. Si Curtis está haciendo casi todo por vos, que lance el aviso y aprenda hasta dónde puede llegar sin ser el autor.
+  8. Más emojis; la barrita de color de cada proyecto con el color de su etiqueta; más colores para etiquetas.
+- 2026-10-27 · **v9**:
+  - «Actualizar» en Proyectos y en cada proyecto.
+  - Caja «Preguntale a Curtis» en Inicio.
+  - El saludo ahora es «¿Qué onda?» y cambia según la hora.
+  - «Curtis del proyecto»: desplegable con cuestionario de 2 a 5 preguntas, sugerencia, pasos que agregás vos con un toque, contexto .md (editar, subir .md, guardar en Drive, deshacer) y «Así va», que se arma solo. El contexto de cada proyecto entra en todos los chats.
+  - Límites de autoría: aviso en chats y consultas, contador, aviso de delegación y listas editables. Curtis las respeta siempre.
+  - Área principal «Mi estudio» con Página web, Portafolio y Curaduría.
+  - 12 colores y 60 emojis. La barrita de color de cada proyecto (en el menú y en las tarjetas) usa el color de su primera etiqueta.
+  - Pruebas: 142/142 nuevas + 31/31 de v4.
