@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>nAIhual Prototipo 0</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:wght@400;600;700&display=swap">
+<style>
+/* Layout: una columna de celular (máx. 460px), muro de pines en 2 columnas tipo Pinterest, barra flotante abajo. Sistema visual Organic. */
+:root {
+  --bg: #f5ead8; --surface: #ebddc5; --card: #f9f4ed;
+  --ink: #201e1d; --ink-2: #474238; --ink-3: #645c50;
+  --accent: #c67139; --accent-hover: #b2622d; --on-accent: #f5ead8;
+  --cult: #ffe1d0; --cult-ink: #643312;
+  --cafe: #f0fae1; --cafe-ink: #3d472b;
+  --food: #ccdbb2; --food-ink: #272e1b;
+  --tip: #e1eecc; --tip-ink: #272e1b;
+  --nawal: #ffc6a5; --nawal-ink: #402310;
+  --band: #201e1d; --band-ink: #f5ead8; --band-muted: #dcd3c4; --band-kicker: #ffc6a5;
+  --star: #8c491a; --hist: #3d472b;
+  --divider: rgba(32,30,29,.16);
+  --shadow-sm: 0 1px 2px rgba(46,43,37,.14);
+  --shadow-lg: 0 12px 32px rgba(46,43,37,.22);
+  --font-heading: "Caprasimo", Georgia, serif;
+  --font-body: "Figtree", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1d1a17; --surface: #2b2621; --card: #26221e;
+  --ink: #f2e8d8; --ink-2: #d8ccb9; --ink-3: #b3a690;
+  --accent: #e08a52; --accent-hover: #eb9a66; --on-accent: #1d1a17;
+  --cult: #4a2c18; --cult-ink: #ffd9c2;
+  --cafe: #2e3a22; --cafe-ink: #e1eecc;
+  --food: #3b4a2b; --food-ink: #eef5e0;
+  --tip: #33402a; --tip-ink: #e8f2d6;
+  --nawal: #5c3219; --nawal-ink: #ffe1d0;
+  --band: #0f0d0c; --band-ink: #f2e8d8; --band-muted: #c0b6a5; --band-kicker: #f6a06b;
+  --star: #f6a06b; --hist: #aebf92;
+  --divider: rgba(242,232,216,.18);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow-lg: 0 12px 32px rgba(0,0,0,.5);
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #1d1a17; --surface: #2b2621; --card: #26221e;
+  --ink: #f2e8d8; --ink-2: #d8ccb9; --ink-3: #b3a690;
+  --accent: #e08a52; --accent-hover: #eb9a66; --on-accent: #1d1a17;
+  --cult: #4a2c18; --cult-ink: #ffd9c2;
+  --cafe: #2e3a22; --cafe-ink: #e1eecc;
+  --food: #3b4a2b; --food-ink: #eef5e0;
+  --tip: #33402a; --tip-ink: #e8f2d6;
+  --nawal: #5c3219; --nawal-ink: #ffe1d0;
+  --band: #0f0d0c; --band-ink: #f2e8d8; --band-muted: #c0b6a5; --band-kicker: #f6a06b;
+  --star: #f6a06b; --hist: #aebf92;
+  --divider: rgba(242,232,216,.18);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow-lg: 0 12px 32px rgba(0,0,0,.5);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+button, input { font-family: inherit; color: inherit; }
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 400; text-wrap: balance; margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.app { max-width: 460px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; overflow-x: clip;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 18px 8px; }
+.logo { all: unset; cursor: pointer; font-family: var(--font-heading); font-size: 24px; line-height: 1; }
+.logo:focus-visible { outline: 3px solid var(--accent); }
+.seg { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--card); }
+.seg button { border: 0; cursor: pointer; padding: 7px 13px; border-radius: 999px; font-size: 13px; font-weight: 600; background: transparent; color: var(--ink-2); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+main { flex: 1; padding-bottom: 120px; }
+
+.hero { position: relative; padding: 14px 4px 4px; }
+.hero::after { content: ""; position: absolute; right: -86px; top: -30px; width: 170px; height: 170px; border-radius: 50%; background: var(--tip); z-index: -1; }
+.hero h1 { font-size: 32px; line-height: 1.08; max-width: 12ch; }
+.proto { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.search { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 0 16px; min-height: 50px; border-radius: 999px; background: var(--card); box-shadow: var(--shadow-sm); }
+.search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; }
+.chips { display: flex; gap: 8px; overflow-x: auto; margin: 14px -16px 16px; padding: 0 16px 4px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 0; cursor: pointer; min-height: 40px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 600; background: var(--card); color: var(--ink-2); }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+
+.grid { column-count: 2; column-gap: 12px; }
+.pin { display: inline-block; width: 100%; margin: 0 0 16px; break-inside: avoid; cursor: pointer; vertical-align: top; }
+.pin-img { position: relative; border-radius: 22px; overflow: hidden; display: flex; align-items: flex-end; padding: 12px; }
+.pin-img .glyph { font-family: var(--font-heading); font-size: 44px; line-height: 1; opacity: .55; }
+.tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--card); color: var(--ink-2); }
+.pin-img .tag { position: absolute; left: 8px; top: 8px; }
+.heart { position: absolute; right: 6px; bottom: 6px; width: 44px; height: 44px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: var(--bg); box-shadow: var(--shadow-sm); }
+.heart svg { fill: none; stroke: var(--accent); }
+.heart[aria-pressed="true"] svg, .btn[aria-pressed="true"] svg { fill: var(--accent); }
+.pin-cap { padding: 8px 6px 0; display: flex; flex-direction: column; gap: 3px; }
+.pin-cap b { font-size: 14.5px; line-height: 1.25; }
+.pin-cap span { font-size: 12.5px; line-height: 1.35; color: var(--ink-3); }
+.pin-tip { position: relative; padding: 18px 16px 60px; border-radius: 22px; }
+.pin-tip .k { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.pin-tip p { margin: 8px 0 0; font-family: var(--font-heading); font-size: 17px; line-height: 1.3; }
+.t-cult { background: var(--cult); color: var(--cult-ink); }
+.t-cafe { background: var(--cafe); color: var(--cafe-ink); }
+.t-food { background: var(--food); color: var(--food-ink); }
+.t-tip { background: var(--tip); color: var(--tip-ink); }
+.t-nawal { background: var(--nawal); color: var(--nawal-ink); }
+
+.note { margin: 6px 4px 0; font-size: 12.5px; line-height: 1.45; }
+.note.star { color: var(--star); } .note.hist { color: var(--hist); }
+.muted { color: var(--ink-3); }
+.empty-q { margin: 10px 4px; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+
+.biz { margin-top: 26px; padding: 22px 20px; border-radius: 32px; background: var(--band); color: var(--band-ink); display: flex; flex-direction: column; gap: 10px; }
+.biz .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.biz .kicker { color: var(--band-kicker); }
+.biz .tag { background: var(--accent); color: var(--on-accent); }
+.biz h2 { font-size: 22px; line-height: 1.2; }
+.biz p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--band-muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 20px; border-radius: 999px; font-size: 15.5px; font-weight: 600; cursor: pointer; text-decoration: none; border: 1.5px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: transparent; border-color: var(--divider); color: var(--ink); }
+.btn-ghost { background: transparent; color: var(--accent); padding: 0 6px; min-height: 44px; }
+.btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.btn svg { fill: none; stroke: currentColor; }
+.btn-secondary svg.h { stroke: var(--accent); }
+.biz .btn { align-self: flex-start; min-height: 46px; }
+
+.d-img { height: 200px; margin-top: 8px; border-radius: 32px; display: flex; align-items: flex-end; padding: 20px; }
+.d-img .glyph { font-family: var(--font-heading); font-size: 72px; line-height: 1; opacity: .5; }
+.d-body { padding: 18px 4px 0; }
+.d-body .kicker { color: var(--accent); }
+.d-body h1 { margin-top: 6px; font-size: 30px; line-height: 1.1; }
+.d-body > p { margin: 10px 0 0; font-size: 15.5px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
+.d-addr { font-size: 13.5px !important; color: var(--ink-3) !important; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.actions .btn-primary { flex: 1; }
+.facts { margin: 18px 0 0; display: grid; gap: 10px; }
+.fact { background: var(--card); border-radius: 22px; padding: 14px 18px; }
+.fact dt { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.fact dd { margin: 4px 0 0; font-size: 15px; line-height: 1.45; }
+.warn { margin: 16px 0 0; padding: 14px 18px; border-radius: 22px; border: 1.5px dashed var(--star); color: var(--star); font-size: 13.5px; line-height: 1.45; }
+
+.stops { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.stops li { display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 12px; align-items: start; }
+.num { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-heading); font-size: 19px; }
+.stop { background: var(--card); border-radius: 26px; padding: 16px 18px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.stop .tag { align-self: flex-start; }
+.stop .nm { all: unset; cursor: pointer; font-family: var(--font-heading); font-size: 20px; line-height: 1.2; }
+.stop .ad { font-size: 13px; color: var(--ink-3); }
+.stop p { margin: 2px 0 0; font-size: 14.5px; line-height: 1.5; }
+.stop .btn { align-self: flex-start; min-height: 44px; padding: 0 16px; font-size: 14.5px; }
+.inroutes { margin: 26px 4px 10px; font-size: 18px; }
+.rlink { all: unset; box-sizing: border-box; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 0 18px; border-radius: 999px; background: var(--cult); color: var(--cult-ink); font-weight: 700; margin-bottom: 8px; }
+.rlink svg { fill: none; stroke: currentColor; flex: none; }
+.respect { margin: 14px 4px 0; font-size: 13px; line-height: 1.5; color: var(--ink-3); }
+
+.para-head { padding: 14px 4px 18px; }
+.para-head h1 { font-size: 32px; line-height: 1.08; }
+.para-head p { margin: 8px 0 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+.emptybox { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 26px 22px; border-radius: 32px; background: var(--tip); color: var(--tip-ink); }
+.emptybox .ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); }
+.emptybox .ic svg { fill: none; stroke: var(--accent); }
+.emptybox b { font-family: var(--font-heading); font-weight: 400; font-size: 21px; line-height: 1.2; }
+.emptybox span { font-size: 14.5px; line-height: 1.5; }
+.plan { background: var(--card); border-radius: 32px; padding: 20px 18px 18px; box-shadow: var(--shadow-sm); }
+.plan .kicker { color: var(--accent); }
+.plan h2 { margin-top: 6px; font-size: 24px; line-height: 1.15; }
+.plan > p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+.plan ol { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.plan li button { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: grid; grid-template-columns: 40px minmax(0,1fr); gap: 12px; align-items: center; }
+.plan .num { width: 40px; height: 40px; font-size: 17px; }
+.plan li b { display: block; font-size: 15px; }
+.plan li small { font-size: 12.5px; color: var(--ink-3); }
+.plan .btn { margin-top: 16px; width: 100%; }
+.saved-h { margin: 26px 4px 12px; font-size: 20px; }
+
+nav.tabs { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); width: min(420px, calc(100% - 28px)); display: flex; gap: 6px; padding: 6px; border-radius: 999px; background: var(--band); box-shadow: var(--shadow-lg); z-index: 5; }
+nav.tabs button { flex: 1; border: 0; cursor: pointer; min-height: 48px; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14.5px; font-weight: 700; background: transparent; color: var(--band-muted); }
+nav.tabs button[aria-current="page"] { background: var(--bg); color: var(--ink); }
+nav.tabs svg { fill: none; stroke: currentColor; }
+footer.ver { margin: 28px 4px 0; font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+@media (prefers-reduced-motion: no-preference) { .pin, .btn, .chip { transition: transform .15s ease, background-color .15s ease; } .pin:active { transform: scale(.98); } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <button class="logo" id="logo" type="button">nAIhual</button>
+    <div class="seg" role="group" aria-label="Idioma / Language">
+      <button type="button" id="lang-es" data-lang="es">ES</button>
+      <button type="button" id="lang-en" data-lang="en">EN</button>
+    </div>
+  </header>
+  <main id="main"></main>
+  <nav class="tabs" aria-label="Secciones">
+    <button type="button" id="tab-feed" data-tab="feed"></button>
+    <button type="button" id="tab-para" data-tab="para"></button>
+  </nav>
+</div>
+<script>
+(function () {
+'use strict';
+var VERSION = 'Prototipo 0 · 18-oct-2026';
+var BIZ_WHATSAPP = ''; // Falta el número del fundador. Vacío = botón desactivado.
+
+var STR = {
+  es: {
+    feedTitle: 'Antigua, a tu manera', proto: 'Prototipo 0 · en prueba', search: 'Buscá rutas, cafés, ruinas, nawales…',
+    fAll: 'Todo', fRoute: 'Rutas', fCultura: 'Cultura', fNawal: 'Nawales', fCafe: 'Cafés', fComida: 'Comida', fTip: 'Consejos',
+    route: 'Ruta', tip: 'Consejo', catCultura: 'Cultura', catCafe: 'Pausa para café', catComida: 'Para comer', catNawal: 'Nawal', collection: 'Colección',
+    save: 'Guardar', saved: 'Guardado',
+    noResults: 'Todavía no tenemos nada con esa búsqueda. Probá con otra palabra.',
+    starNote: '* Información cultural por confirmar con un Ajq\'ij.', histNote: '† Dato histórico por confirmar con fuente oficial.',
+    bizTag: 'Patrocinado', bizKicker: 'Para negocios de Antigua', bizTitle: 'Plan Fundador',
+    bizBody: 'Los negocios fundadores pagan Q250 al mes durante 3 meses. Solo 5 lugares. Tu negocio aparece en las rutas con tu historia y tu ubicación, siempre marcado como patrocinado.',
+    bizCta: 'Quiero ser fundador', bizPending: 'Contacto pendiente', bizMsg: 'Hola, quiero información del Plan Fundador de nAIhual.',
+    paraTitle: 'Para vos', paraSub: 'Lo que guardás arma tu plan.',
+    emptyTitle: 'Todavía no guardaste nada', emptyBody: 'Tocá el corazón en las rutas, lugares y consejos que te gusten. Con eso armamos un plan a tu medida.', explore: 'Explorar',
+    yourPlan: 'Armado para vos', yourPlanTitle: 'Tu plan en Antigua', savedTitle: 'Guardados',
+    because: function (n, top) { return 'Guardaste ' + n + ' ' + (n === 1 ? 'pin' : 'pines') + '. Lo que más te interesa: ' + top + '. Revisá el orden en el mapa.'; },
+    fullRoute: 'Abrir ruta completa a pie', openMaps: 'Abrir en Google Maps', howToGet: 'Cómo llegar',
+    back: 'Volver', inRoutes: 'Aparece en estas rutas', stops: 'paradas a pie', addrPending: 'Dirección por confirmar',
+    respect: 'Caminá con respeto: estas calles son casa de mucha gente. Confirmá horarios en Google Maps antes de ir.',
+    tabFeed: 'Explorar', tabPara: 'Para vos',
+    nawalsTitle: 'Los 20 nawales del Cholq\'ij', nawalsSub: '20 energías de los días',
+    nawalsIntro: 'Un nawal es la energía o espíritu vital de los elementos de la naturaleza y de los días. Cada uno tiene luz (virtudes) y sombra (desafíos).',
+    nSymbol: 'Símbolo / elemento', nAnimal: 'Animal asociado', nLight: 'Luz / vocación', nShadow: 'Sombra / desafío',
+    nawalWarn: 'Estos son los significados de los días, no una descripción de personas. nAIhual no te dice «cuál es tu nawal»: eso lo hace un Ajq\'ij.',
+    enNote: '', ver: VERSION + '. Construido, sin probar en un celular real.'
+  },
+  en: {
+    feedTitle: 'Antigua, your way', proto: 'Prototype 0 · testing', search: 'Search routes, cafés, ruins, nawales…',
+    fAll: 'All', fRoute: 'Routes', fCultura: 'Culture', fNawal: 'Nawales', fCafe: 'Cafés', fComida: 'Food', fTip: 'Tips',
+    route: 'Route', tip: 'Tip', catCultura: 'Culture', catCafe: 'Coffee break', catComida: 'Food', catNawal: 'Nawal', collection: 'Collection',
+    save: 'Save', saved: 'Saved',
+    noResults: 'Nothing matches that search yet. Try another word.',
+    starNote: '* Cultural information pending confirmation by an Ajq\'ij.', histNote: '† Historical detail pending confirmation with an official source.',
+    bizTag: 'Sponsored', bizKicker: 'For Antigua businesses', bizTitle: 'Founder Plan',
+    bizBody: 'Founding businesses pay Q250 a month for 3 months. Only 5 spots. Your business appears in the routes with your story and location, always marked as sponsored.',
+    bizCta: 'I want to be a founder', bizPending: 'Contact coming soon', bizMsg: 'Hi, I would like information about the nAIhual Founder Plan.',
+    paraTitle: 'For you', paraSub: 'What you save builds your plan.',
+    emptyTitle: 'Nothing saved yet', emptyBody: 'Tap the heart on routes, places and tips you like. We use that to build a plan for you.', explore: 'Explore',
+    yourPlan: 'Built for you', yourPlanTitle: 'Your plan in Antigua', savedTitle: 'Saved',
+    because: function (n, top) { return 'You saved ' + n + ' ' + (n === 1 ? 'pin' : 'pins') + '. What you like most: ' + top + '. Check the order on the map.'; },
+    fullRoute: 'Open full walking route', openMaps: 'Open in Google Maps', howToGet: 'Directions',
+    back: 'Back', inRoutes: 'Part of these routes', stops: 'stops on foot', addrPending: 'Address to be confirmed',
+    respect: 'Walk with respect: these streets are home to many people. Check opening hours in Google Maps before you go.',
+    tabFeed: 'Explore', tabPara: 'For you',
+    nawalsTitle: 'The 20 nawales of the Cholq\'ij', nawalsSub: '20 energies of the days',
+    nawalsIntro: 'A nawal is the energy or vital spirit of the elements of nature and of the days. Each has a light side (virtues) and a shadow side (challenges).',
+    nSymbol: 'Symbol / element', nAnimal: 'Associated animal', nLight: 'Light / calling', nShadow: 'Shadow / challenge',
+    nawalWarn: 'These are the meanings of the days, not descriptions of people. nAIhual does not tell you "what your nawal is": that is the work of an Ajq\'ij.',
+    enNote: 'English translation not yet reviewed by a native speaker.', ver: VERSION + '. Built, not yet tested on a real phone.'
+  }
+};
+
+function w(es, en) { return { es: es, en: en }; }
+
+// Lugares: frases textuales del fundador. Direcciones verificadas en web (17-oct). addr null = sin verificar, no entra en rutas ni planes.
+var P = {
+  parque: { cat: 'cultura', hist: true, name: 'Parque Central', addr: 'Entre 4a y 5a Calle, 4a y 5a Avenida', why: w('La plaza principal. A su alrededor están la Catedral, el Palacio de los Capitanes Generales y el Ayuntamiento.', 'The main square, framed by the Cathedral, the Palace of the Captains General and City Hall.') },
+  catedral: { cat: 'cultura', hist: true, name: 'Catedral de San José', addr: 'Lado oriente del Parque Central', why: w('Se empezó a construir en 1545. Los terremotos de 1773 la dañaron: una parte sigue siendo iglesia y otra quedó en ruinas.', 'Construction began in 1545. After the 1773 earthquakes, part is still a church and part remains in ruins.') },
+  palacio: { cat: 'cultura', hist: true, name: 'Palacio de los Capitanes Generales', addr: 'Lado sur del Parque Central', why: w('Fue la sede del gobierno colonial de la Capitanía General de Guatemala.', 'Seat of the colonial government of the Captaincy General of Guatemala.') },
+  arco: { cat: 'cultura', hist: true, name: 'Arco de Santa Catalina', addr: '5a Avenida Norte', why: w('Del siglo XVII. Unía dos partes de un convento para que las monjas cruzaran la calle sin ser vistas.', 'From the 17th century. It joined two parts of a convent so the nuns could cross the street unseen.') },
+  merced: { cat: 'cultura', hist: true, name: 'Iglesia de La Merced', addr: '1a Calle Poniente y 6a Avenida Norte', why: w('Iglesia barroca del siglo XVIII, amarilla y con su fachada cubierta de relieves blancos.', 'An 18th-century baroque church, yellow, its façade covered in white relief work.') },
+  capuchinas: { cat: 'cultura', hist: true, name: 'Convento de las Capuchinas', addr: '2a Avenida Norte y 2a Calle Oriente', why: w('Ruinas de un convento del siglo XVIII con una torre circular de celdas.', 'Ruins of an 18th-century convent with a circular tower of cells.') },
+  santaclara: { cat: 'cultura', hist: true, name: 'Ruinas de Santa Clara', addr: '2a Avenida Sur y 6a Calle Oriente', why: w('Convento de las clarisas. Enfrente está el tanque Unión, lavaderos públicos de la época colonial.', 'Convent of the Poor Clares. Across the street is Tanque Unión, the colonial-era public washbasins.') },
+  sanfrancisco: { cat: 'cultura', hist: true, name: 'Iglesia de San Francisco el Grande', addr: '1a Avenida Sur y 7a Calle Oriente', why: w('Aquí está la tumba del Santo Hermano Pedro de San José de Betancur.', 'Home to the tomb of Saint Hermano Pedro de San José de Betancur.') },
+  doce: { cat: 'cafe', name: '12 Onzas', addr: '4a Calle Oriente 5', why: w('No falla con el café, expertos catadores.', 'Never misses with coffee. Expert cuppers.') },
+  artista: { cat: 'cafe', name: 'Artista de Café', addr: '5a Avenida Sur 34B', why: w('No falla con el café, expertos catadores, pero con una forma super aesthetic de comunicar el amor por el café.', 'Never misses with coffee, with a super aesthetic way of sharing their love for it.') },
+  komori: { cat: 'cafe', name: 'Komori', addr: null, why: w('Literal el mejor matcha.', 'Literally the best matcha.') },
+  siena: { cat: 'cafe', name: 'Siena Luz', addr: '6a Avenida Norte', why: w('La vibe con filosofía y literatura combinada con el mejor café es una experiencia top.', 'Philosophy and literature vibes plus the best coffee: a top experience.') },
+  fatcat: { cat: 'cafe', name: 'Fat Cat Coffee House', addr: '4a Calle Oriente, frente a 12 Onzas', why: w('Especialistas en café.', 'Coffee specialists.') },
+  alegria: { cat: 'cafe', name: 'Alegría Café', addr: null, why: w('Especialistas en café.', 'Coffee specialists.') },
+  coffea: { cat: 'cafe', name: 'Coffea Cafés Especiales', addr: '6a Calle Oriente 18A', why: w('Especialistas en café. Entre las 100 mejores coffee shops del mundo.', 'Coffee specialists. Among the world’s 100 best coffee shops.') },
+  cazador: { cat: 'comida', name: 'El Cazador Italiano', addr: '3a Avenida Norte 1B, detrás de la Catedral', why: w('Lo mejor si querés la mejor pizza tradicional italiana o panadería italiana.', 'The place for the best traditional Italian pizza or Italian bakery.') },
+  once: { cat: 'comida', name: 'Once Once', addr: '2a Calle Oriente 22', why: w('Lugar vegano/vegetariano que recomiendo sobre todas las cosas. Cualquier plato de ahí es perfecto.', 'A vegan/vegetarian spot I recommend above all. Any dish there is perfect.') },
+  hectors: { cat: 'comida', name: 'Hector’s Bistro', addr: null, why: w('Un 10 en casi todos los platos, aparte de buen ambiente y una cervecería artesanal dentro.', 'A 10 on almost every dish, plus a great vibe and a craft brewery inside.') },
+  nikolo: { cat: 'comida', name: 'Nikolo', addr: null, why: w('Fancy cuisine literal. No decepciona.', 'Literally fancy cuisine. Never disappoints.') },
+  pina: { cat: 'comida', name: 'Y Tu Piña También', addr: null, why: w('Todo con piña y punto. Perfecto si querés algo diferentemente chill.', 'Everything with pineapple, period. Perfect for something differently chill.') },
+  patio: { cat: 'comida', name: 'Patio de la Primera', addr: '1a Avenida Sur 17C', why: w('De todo un poco, pero sobresale el ambiente y lo instagrameable del lugar.', 'A bit of everything, but the vibe and how photogenic it is stand out.') }
+};
+
+var ROUTES = {
+  centro: { stops: ['parque', 'catedral', 'doce', 'palacio', 'arco', 'merced'], kicker: w('Una mañana', 'A morning'), title: w('El corazón de Antigua', 'The heart of Antigua'), intro: w('La plaza, la Catedral y el Arco, con un café de especialidad a media mañana.', 'The square, the Cathedral and the Arch, with a specialty coffee mid-morning.') },
+  conventos: { stops: ['capuchinas', 'once', 'santaclara', 'sanfrancisco', 'patio'], kicker: w('Una tarde', 'An afternoon'), title: w('Conventos del oriente', 'Convents to the east'), intro: w('Tres ruinas y una iglesia viva en el lado tranquilo de la ciudad. Termina con cena en un patio.', 'Three ruins and a living church on the quiet side of town. Ends with dinner in a courtyard.') },
+  norte: { stops: ['catedral', 'cazador', 'arco', 'merced', 'siena'], kicker: w('Un par de horas', 'A couple of hours'), title: w('Del Arco a La Merced', 'From the Arch to La Merced'), intro: w('La calle más fotografiada de Antigua, a paso lento, con pausas para comer y leer.', 'Antigua’s most photographed street, slowly, with stops to eat and read.') }
+};
+
+// Consejos y cosmovisión. Textos culturales tomados del Documento Consolidado (PDF), marcados con * hasta que los valide un Ajq'ij.
+var TIPS = {
+  cholqij: { cat: 'cultura', star: true, body: w('El Cholq\'ij, el calendario sagrado maya, tiene 260 días: 13 números por 20 nawales.', 'The Cholq\'ij, the sacred Maya calendar, has 260 days: 13 numbers times 20 nawales.') },
+  foto: { cat: 'general', body: w('Antes de fotografiar a alguien, pedí permiso. Un «¿puedo?» basta.', 'Before photographing someone, ask first. A simple “may I?” is enough.') },
+  winaq: { cat: 'cultura', star: true, body: w('Los mayas cuentan en base 20. Un Winaq (20) son los dedos de las manos y de los pies.', 'The Maya count in base 20. One Winaq (20) is all the fingers and toes.') },
+  horario: { cat: 'general', body: w('Los horarios cambian. Confirmalos en Google Maps antes de salir.', 'Opening hours change. Check them in Google Maps before you head out.') },
+  rukux: { cat: 'cultura', star: true, body: w('Ruk\'u\'x Kaj y Ruk\'u\'x Ulew: el Corazón del Cielo y el Corazón de la Tierra, fuerzas creadoras junto al Corazón del Agua y del Fuego.', 'Ruk\'u\'x Kaj and Ruk\'u\'x Ulew: the Heart of Sky and the Heart of Earth, creative forces alongside the Heart of Water and of Fire.') },
+  maiz: { cat: 'cultura', star: true, body: w('En el Popol Wuj, la humanidad está hecha de maíz. Por eso el ser humano y la naturaleza no se separan.', 'In the Popol Wuj, humanity is made of maize, so people and nature cannot be separated.') },
+  nikaj: { cat: 'cultura', star: true, body: w('El cero maya, Nik\'aj, se dibuja como una concha o una flor. No es vacío: es plenitud, semilla y ciclo completo.', 'The Maya zero, Nik\'aj, is drawn as a shell or a flower. It is not emptiness: it means fullness, seed and a completed cycle.') },
+  ab: { cat: 'cultura', star: true, body: w('El Ab\' es el calendario solar de 365 días: 18 meses de 20 días, más los 5 días del Wayeb\'.', 'The Ab\' is the 365-day solar calendar: 18 months of 20 days, plus the 5 days of the Wayeb\'.') },
+  rueda: { cat: 'cultura', star: true, body: w('Juntos, el Cholq\'ij y el Ab\' forman la Rueda Calendárica: un ciclo de 52 años, 18,980 días.', 'Together, the Cholq\'ij and the Ab\' form the Calendar Round: a 52-year cycle of 18,980 days.') },
+  cargadores: { cat: 'cultura', star: true, body: w('Solo cuatro nawales pueden abrir el año solar: los Cargadores del Año. En el altiplano guatemalteco son Iq\', Kej, E y No\'j.', 'Only four nawales can open the solar year: the Year Bearers. In the Guatemalan highlands they are Iq\', Kej, E and No\'j.') }
+};
+
+// Los 20 nawales: tabla del Documento Consolidado, en su orden. Inglés traducido por Claude, sin revisar.
+var NAWALES = [
+  ['batz', "B'atz'", w('Hilo del tiempo, tejido, origen', 'Thread of time, weaving, origin'), w('Mono', 'Monkey'), w('Maestro de artes, tejedor del tiempo, guía familiar', 'Master of the arts, weaver of time, family guide'), w('Terquedad, ambición material, sarcasmo', 'Stubbornness, material ambition, sarcasm')],
+  ['e', 'E', w('Camino, destino, estructura corporal', 'Path, destiny, the body’s structure'), w('Gato de monte, puma', 'Wildcat, puma'), w('Guía de viajeros, líder nato, orador', 'Guide of travelers, natural leader, speaker'), w('Impaciencia, inestabilidad emocional', 'Impatience, emotional instability')],
+  ['aj', 'Aj', w('Cañaveral, hogar, linaje, autoridad', 'Cane field, home, lineage, authority'), w('Armadillo', 'Armadillo'), w('Protector de niños, mediador, sabio', 'Protector of children, mediator, wise one'), w('Chisme, celos, manipulación', 'Gossip, jealousy, manipulation')],
+  ['ix', "I'x", w('Jaguar, energía terrestre, altar', 'Jaguar, earth energy, altar'), w('Jaguar', 'Jaguar'), w('Intuición, sagacidad, fuerza de la Tierra', 'Intuition, shrewdness, strength of the Earth'), w('Orgullo, impulsividad, reserva excesiva', 'Pride, impulsiveness, excessive reserve')],
+  ['tzikin', "Tz'ikin", w('Pájaro, quetzal, abundancia', 'Bird, quetzal, abundance'), w('Aves rapaces, quetzal', 'Birds of prey, quetzal'), w('Visión a larga distancia, imán de fortuna', 'Far-reaching vision, a magnet for fortune'), w('Inconstancia, egoísmo, dispersión', 'Inconstancy, selfishness, scattered focus')],
+  ['ajmaq', 'Ajmaq', w('Búho, perdón, ancestros, sabiduría', 'Owl, forgiveness, ancestors, wisdom'), w('Búho, abeja, buitre', 'Owl, bee, vulture'), w('Conciencia de faltas, perdón, mente analítica', 'Awareness of one’s faults, forgiveness, analytical mind'), w('Autocomplacencia, cobardía, lentitud', 'Self-indulgence, cowardice, slowness')],
+  ['noj', "No'j", w('Mente, pensamiento, sabiduría', 'Mind, thought, wisdom'), w('Coyote, lobo, pájaro carpintero', 'Coyote, wolf, woodpecker'), w('Inteligencia analítica, buen consejo, ciencia', 'Analytical intelligence, good counsel, science'), w('Inflexibilidad, orgullo intelectual', 'Inflexibility, intellectual pride')],
+  ['tijax', 'Tijax', w('Obsidiana, filo de la verdad, sanación', 'Obsidian, the edge of truth, healing'), w('Peztucán, pez espada', 'Peztucán, swordfish'), w('Discernimiento radical, capacidad médica', 'Sharp discernment, a gift for medicine'), w('Carácter tajante, pleitos, franqueza hiriente', 'Cutting temper, quarrels, hurtful bluntness')],
+  ['kawoq', 'Kawoq', w('Tormenta, lluvia de bendición, familia', 'Storm, rain of blessing, family'), w('Tortuga', 'Turtle'), w('Integración familiar, fertilidad, sanación', 'Family unity, fertility, healing'), w('Temperamento explosivo, conflictos', 'Explosive temper, conflict')],
+  ['ajpu', 'Ajpu', w('El Sol, cazador célebre, autoridad', 'The Sun, the famed hunter, authority'), w('Espíritu humano / Sol', 'Human spirit / Sun'), w('Autoridad moral, fuerza renovadora, metas', 'Moral authority, renewing strength, goals'), w('Autocracia, soberbia, exigencia extrema', 'Autocracy, arrogance, extreme demands')],
+  ['imox', 'Imox', w('Aguas primordiales, subconsciente', 'Primordial waters, the subconscious'), w('Cocodrilo', 'Crocodile'), w('Receptividad espiritual, intuición poética', 'Spiritual receptiveness, poetic intuition'), w('Inestabilidad emocional, confusión mental', 'Emotional instability, mental confusion')],
+  ['iq', "Iq'", w('Viento, aliento de vida, purificación', 'Wind, breath of life, purification'), w('Colibrí', 'Hummingbird'), w('Dinamismo, limpieza energética, comunicación', 'Dynamism, energetic cleansing, communication'), w('Volubilidad, carácter impetuoso', 'Fickleness, impetuous character')],
+  ['aqabal', "Aq'ab'al", w('Amanecer, aurora, luz renovadora', 'Dawn, daybreak, renewing light'), w('Murciélago, guacamaya', 'Bat, macaw'), w('Claridad mental, renovación de esperanza', 'Mental clarity, renewed hope'), w('Indecisión, propensión al ocultamiento', 'Indecision, a tendency to hide')],
+  ['kat', "K'at", w('Red, cautiverio, reunión de la cosecha', 'Net, captivity, gathering of the harvest'), w('Lagartija, araña', 'Lizard, spider'), w('Organización, abundancia, resolución', 'Organization, abundance, resolve'), w('Atadura por apegos, enredos emocionales', 'Bound by attachments, emotional tangles')],
+  ['kan', 'Kan', w('Serpiente de fuego, fuerza vital', 'Fire serpent, life force'), w('Serpiente', 'Serpent'), w('Sabiduría profunda, transformación, justicia', 'Deep wisdom, transformation, justice'), w('Impulsividad violenta, rencor, irascibilidad', 'Violent impulsiveness, resentment, irritability')],
+  ['kame', 'Kame', w('Mente ritual, transición, antepasados', 'Ritual mind, transition, ancestors'), w('Tecolote, búho', 'Owl'), w('Serenidad ante crisis, protección ancestral', 'Calm in a crisis, protection of the ancestors'), w('Melancolía, vulnerabilidad física', 'Melancholy, physical vulnerability')],
+  ['kej', 'Kej', w('Venado, 4 pilares del cosmos', 'Deer, the 4 pillars of the cosmos'), w('Venado', 'Deer'), w('Solidez moral, sostén comunitario, agilidad', 'Moral strength, support for the community, agility'), w('Rigidez de juicio, dominación autoritaria', 'Rigid judgment, authoritarian control')],
+  ['qanil', "Q'anil", w('Semilla, germinación, estrella', 'Seed, germination, star'), w('Conejo', 'Rabbit'), w('Fertilidad, amor incondicional, prosperidad', 'Fertility, unconditional love, prosperity'), w('Impaciencia por ver frutos de inmediato', 'Impatience to see results right away')],
+  ['toj', 'Toj', w('Ofrenda, pago divino, ceremonia', 'Offering, sacred payment, ceremony'), w('Puma, jaguar negro', 'Puma, black jaguar'), w('Restablecimiento del equilibrio, devoción', 'Restoring balance, devotion'), w('Padecimiento por falta de pago espiritual', 'Suffering from unpaid spiritual debts')],
+  ['tzi', "Tz'i'", w('Perro, guardián de la ley y justicia', 'Dog, guardian of law and justice'), w('Perro, mapache', 'Dog, raccoon'), w('Lealtad inquebrantable, sentido de equidad', 'Unbreakable loyalty, a sense of fairness'), w('Juzgamiento severo, venganza, celos', 'Harsh judgment, revenge, jealousy')]
+];
+var N = {};
+NAWALES.forEach(function (r, i) { N[r[0]] = { n: i + 1, name: r[1], symbol: r[2], animal: r[3], light: r[4], shadow: r[5] }; });
+
+var ORDER = ['r:centro', 'p:doce', 't:cholqij', 'p:capuchinas', 'c:nawales', 'p:once', 'r:conventos', 't:rukux', 'p:artista', 't:foto', 'p:arco', 'p:siena', 't:maiz', 'p:cazador', 'r:norte', 'p:coffea', 't:winaq', 'p:merced', 't:nikaj', 'p:patio', 'p:fatcat', 'p:santaclara', 't:ab', 'p:komori', 't:horario', 'p:sanfrancisco', 't:rueda', 'p:hectors', 'p:catedral', 't:cargadores', 'p:nikolo', 'p:alegria', 'p:palacio', 'p:pina', 'p:parque']
+  .concat(NAWALES.map(function (r) { return 'n:' + r[0]; }));
+var HEIGHTS = [230, 170, 200, 250, 160, 210];
+var CAT = {
+  cultura: { cls: 't-cult', key: 'catCultura' },
+  cafe: { cls: 't-cafe', key: 'catCafe' },
+  comida: { cls: 't-food', key: 'catComida' },
+  general: { cls: 't-tip', key: 'tip' },
+  nawal: { cls: 't-nawal', key: 'catNawal' }
+};
+var LS = 'naihual.p0';
+
+function q(p) { return [p.name, p.addr, 'Antigua Guatemala'].filter(Boolean).join(', '); }
+function mapsUrl(p) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q(p)); }
+function routeUrl(ids) {
+  var qs = ids.map(function (id) { return encodeURIComponent(q(P[id])); });
+  return 'https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=' + qs[0] + '&destination=' + qs[qs.length - 1] + (qs.length > 2 ? '&waypoints=' + qs.slice(1, -1).join('%7C') : '');
+}
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+var ICON = {
+  heart: '<svg width="20" height="20" viewBox="0 0 24 24" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+  nav: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>',
+  pin: '<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>',
+  back: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>',
+  arrow: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+  grid: '<svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>'
+};
+
+var S = { tab: 'feed', detail: null, prev: 'feed', lang: 'es', filter: 'all', query: '', saved: [], pref: { cultura: 0, cafe: 0, comida: 0 } };
+try {
+  var st0 = JSON.parse(localStorage.getItem(LS) || 'null');
+  if (st0) { S.saved = st0.saved || []; S.lang = st0.lang === 'en' ? 'en' : 'es'; Object.assign(S.pref, st0.pref || {}); }
+} catch (e) {}
+function persist() { try { localStorage.setItem(LS, JSON.stringify({ saved: S.saved, pref: S.pref, lang: S.lang })); } catch (e) {} }
+
+function cats(key) {
+  var k = key.split(':')[0], id = key.split(':')[1];
+  if (k === 'r') return ROUTES[id].stops.map(function (s) { return P[s].cat; });
+  if (k === 'p') return [P[id].cat];
+  if (k === 't') return TIPS[id].cat === 'general' ? [] : [TIPS[id].cat];
+  return ['cultura'];
+}
+function bump(key, n) { cats(key).forEach(function (c) { S.pref[c] = (S.pref[c] || 0) + n; }); }
+function toggle(key) {
+  var has = S.saved.indexOf(key) >= 0;
+  S.saved = has ? S.saved.filter(function (x) { return x !== key; }) : S.saved.concat([key]);
+  bump(key, has ? -3 : 3); persist(); render();
+}
+function open(key) {
+  if (S.tab !== 'detail') S.prev = S.tab;
+  S.detail = key; S.tab = 'detail'; bump(key, 1); persist(); render(); window.scrollTo(0, 0);
+}
+function go(tab) { S.tab = tab; S.detail = null; render(); window.scrollTo(0, 0); }
+
+function marks(o) { return (o.star ? ' *' : '') + (o.hist ? ' †' : ''); }
+
+function pinOf(key, i) {
+  var t = STR[S.lang], L = S.lang, k = key.split(':')[0], id = key.split(':')[1];
+  var b = { key: key, h: HEIGHTS[i % HEIGHTS.length] };
+  if (k === 'r') { var r = ROUTES[id]; return Object.assign(b, { type: 'route', img: true, cls: 't-cult', label: t.route, glyph: r.stops.length, title: r.title[L] + ' †', sub: r.stops.length + ' ' + t.stops, text: r.title[L] + ' ' + r.intro[L], hist: true }); }
+  if (k === 'p') { var p = P[id], c = CAT[p.cat]; return Object.assign(b, { type: p.cat, img: true, cls: c.cls, label: t[c.key], glyph: p.name.charAt(0), title: p.name + marks(p), sub: p.why[L], text: p.name + ' ' + p.why[L], hist: !!p.hist }); }
+  if (k === 'c') return Object.assign(b, { type: 'cultura', img: true, cls: 't-nawal', label: t.collection, glyph: '20', title: t.nawalsTitle + ' *', sub: t.nawalsSub, text: t.nawalsTitle + ' nawal nahual', star: true });
+  if (k === 'n') { var nw = N[id]; return Object.assign(b, { type: 'nawal', img: true, cls: 't-nawal', label: t.catNawal, glyph: nw.n, title: nw.name + ' *', sub: nw.symbol[L], text: nw.name + ' nawal nahual ' + nw.symbol[L] + ' ' + nw.animal[L], star: true }); }
+  var tp = TIPS[id]; return Object.assign(b, { type: 'tip', img: false, cls: CAT[tp.cat].cls, label: t.tip, body: tp.body[L] + marks(tp), text: tp.body[L], star: !!tp.star });
+}
+
+function pinHTML(p) {
+  var t = STR[S.lang], on = S.saved.indexOf(p.key) >= 0;
+  var heart = '<button type="button" class="heart" data-toggle="' + p.key + '" aria-pressed="' + on + '" aria-label="' + esc(on ? t.saved : t.save) + '">' + ICON.heart + '</button>';
+  if (!p.img) return '<div class="pin" data-open="' + p.key + '" role="button" tabindex="0"><div class="pin-tip ' + p.cls + '"><span class="k">' + esc(p.label) + '</span><p>' + esc(p.body) + '</p>' + heart + '</div></div>';
+  return '<div class="pin" data-open="' + p.key + '" role="button" tabindex="0"><div class="pin-img ' + p.cls + '" style="height:' + p.h + 'px"><span class="tag">' + esc(p.label) + '</span><span class="glyph" aria-hidden="true">' + esc(p.glyph) + '</span>' + heart + '</div>' +
+    '<div class="pin-cap"><b>' + esc(p.title) + '</b><span>' + esc(p.sub) + '</span></div></div>';
+}
+function notesHTML(list) {
+  var t = STR[S.lang], h = '';
+  if (list.some(function (p) { return p.star; })) h += '<p class="note star">' + esc(t.starNote) + '</p>';
+  if (list.some(function (p) { return p.hist; })) h += '<p class="note hist">' + esc(t.histNote) + '</p>';
+  if (S.lang === 'en') h += '<p class="note muted">' + esc(t.enNote) + '</p>';
+  return h;
+}
+function gridHTML(list) { return '<div class="grid">' + list.map(pinHTML).join('') + '</div>'; }
+
+function feedHTML() {
+  var t = STR[S.lang], qy = S.query.trim().toLowerCase(), f = S.filter;
+  var all = ORDER.map(pinOf);
+  var list = all.filter(function (p) {
+    var okF = f === 'all' ? p.type !== 'nawal' : f === 'route' ? p.type === 'route' : f === 'tip' ? p.type === 'tip' : f === 'nawal' ? p.type === 'nawal' : (p.type === f && p.type !== 'route' && p.type !== 'tip');
+    if (qy) okF = (f === 'all' || okF) && p.text.toLowerCase().indexOf(qy) >= 0;
+    return okF;
+  });
+  var fdefs = [['all', t.fAll], ['route', t.fRoute], ['cultura', t.fCultura], ['nawal', t.fNawal], ['cafe', t.fCafe], ['comida', t.fComida], ['tip', t.fTip]];
+  var wa = BIZ_WHATSAPP.replace(/\D/g, '');
+  var biz = wa ? '<a class="btn btn-primary" href="https://wa.me/' + wa + '?text=' + encodeURIComponent(t.bizMsg) + '" target="_blank" rel="noopener">' + esc(t.bizCta) + '</a>'
+               : '<span class="btn btn-primary" aria-disabled="true">' + esc(t.bizPending) + '</span>';
+  return '<div class="hero"><h1>' + esc(t.feedTitle) + '</h1><span class="proto">' + esc(t.proto) + '</span></div>' +
+    '<label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>' +
+    '<input id="q" type="search" autocomplete="off" placeholder="' + esc(t.search) + '" value="' + esc(S.query) + '" aria-label="' + esc(t.search) + '"></label>' +
+    '<div class="chips" role="group">' + fdefs.map(function (d) { return '<button type="button" class="chip" data-filter="' + d[0] + '" aria-pressed="' + (f === d[0]) + '">' + esc(d[1]) + '</button>'; }).join('') + '</div>' +
+    (list.length ? gridHTML(list) : '<p class="empty-q">' + esc(t.noResults) + '</p>') + notesHTML(list) +
+    '<section class="biz"><div class="row"><span class="kicker">' + esc(t.bizKicker) + '</span><span class="tag">' + esc(t.bizTag) + '</span></div><h2>' + esc(t.bizTitle) + '</h2><p>' + esc(t.bizBody) + '</p>' + biz + '</section>' +
+    '<footer class="ver">' + esc(t.ver) + '</footer>';
+}
+
+function planIds() {
+  var pool = [];
+  S.saved.forEach(function (key) { var k = key.split(':')[0], id = key.split(':')[1]; if (k === 'p') pool.push(id); if (k === 'r') ROUTES[id].stops.forEach(function (s) { pool.push(s); }); });
+  var used = {}, pref = S.pref;
+  function pick(cat) {
+    var ok = function (x) { return P[x].cat === cat && !used[x] && P[x].addr; };
+    var id = pool.filter(ok)[0] || Object.keys(P).filter(ok)[0];
+    if (id) used[id] = true;
+    return id;
+  }
+  var a = (pref.cafe || 0) >= (pref.comida || 0) ? 'cafe' : 'comida', b = a === 'cafe' ? 'comida' : 'cafe';
+  var seq = ['cultura', a, 'cultura', (pref.cultura || 0) > (pref.cafe || 0) + (pref.comida || 0) ? 'cultura' : a, b];
+  return seq.map(pick).filter(Boolean);
+}
+
+function paraHTML() {
+  var t = STR[S.lang], saved = ORDER.map(pinOf).filter(function (p) { return S.saved.indexOf(p.key) >= 0; });
+  var h = '<div class="para-head"><h1>' + esc(t.paraTitle) + '</h1><p>' + esc(t.paraSub) + '</p></div>';
+  if (!saved.length) return h + '<div class="emptybox"><span class="ic">' + ICON.heart + '</span><b>' + esc(t.emptyTitle) + '</b><span>' + esc(t.emptyBody) + '</span><button type="button" class="btn btn-primary" data-go="feed">' + esc(t.explore) + '</button></div>';
+  var ids = planIds(), pref = S.pref;
+  var top = ['cultura', 'cafe', 'comida'].sort(function (x, y) { return (pref[y] || 0) - (pref[x] || 0); })[0];
+  h += '<div class="plan"><span class="kicker">' + esc(t.yourPlan) + '</span><h2>' + esc(t.yourPlanTitle) + '</h2><p>' + esc(t.because(saved.length, t[CAT[top].key].toLowerCase())) + '</p><ol>' +
+    ids.map(function (id, i) { var p = P[id], c = CAT[p.cat]; return '<li><button type="button" data-open="p:' + id + '"><span class="num ' + c.cls + '">' + (i + 1) + '</span><span><b>' + esc(p.name) + '</b><small>' + esc(t[c.key]) + '</small></span></button></li>'; }).join('') +
+    '</ol>' + (ids.length > 1 ? '<a class="btn btn-primary" href="' + routeUrl(ids) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.fullRoute) + '</a>' : '') + '</div>';
+  return h + '<h3 class="saved-h">' + esc(t.savedTitle) + '</h3>' + gridHTML(saved) + notesHTML(saved);
+}
+
+function detailHTML() {
+  var t = STR[S.lang], L = S.lang, key = S.detail, k = key.split(':')[0], id = key.split(':')[1];
+  var on = S.saved.indexOf(key) >= 0;
+  var saveBtn = '<button type="button" class="btn btn-secondary" data-toggle="' + key + '" aria-pressed="' + on + '"><svg class="h" width="18" height="18" viewBox="0 0 24 24" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + esc(on ? t.saved : t.save) + '</button>';
+  var h = '<button type="button" class="btn btn-ghost" data-back>' + ICON.back + esc(t.back) + '</button>';
+  var star = false, hist = false;
+  function head(cls, glyph, kicker, title, body) {
+    return (cls ? '<div class="d-img ' + cls + '"><span class="glyph" aria-hidden="true">' + esc(glyph) + '</span></div>' : '') +
+      '<section class="d-body"><span class="kicker">' + esc(kicker) + '</span><h1>' + esc(title) + '</h1>' + (body ? '<p>' + esc(body) + '</p>' : '');
+  }
+  if (k === 'r') {
+    var r = ROUTES[id]; hist = true;
+    h += head('t-cult', r.stops.length, r.kicker[L], r.title[L], r.intro[L]) +
+      '<div class="actions"><a class="btn btn-primary" href="' + routeUrl(r.stops) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.fullRoute) + '</a>' + saveBtn + '</div></section>' +
+      '<ol class="stops">' + r.stops.map(function (sid, i) { var p = P[sid], c = CAT[p.cat]; return '<li><span class="num ' + c.cls + '">' + (i + 1) + '</span><div class="stop"><span class="tag ' + c.cls + '">' + esc(t[c.key]) + '</span><button type="button" class="nm" data-open="p:' + sid + '">' + esc(p.name) + '</button><span class="ad">' + esc(p.addr || t.addrPending) + '</span><p>' + esc(p.why[L] + marks(p)) + '</p><a class="btn btn-secondary" href="' + mapsUrl(p) + '" target="_blank" rel="noopener">' + ICON.pin + esc(t.howToGet) + '</a></div></li>'; }).join('') + '</ol>';
+  } else if (k === 'p') {
+    var p = P[id], c = CAT[p.cat]; hist = !!p.hist;
+    var routes = Object.keys(ROUTES).filter(function (rid) { return ROUTES[rid].stops.indexOf(id) >= 0; });
+    h += head(c.cls, p.name.charAt(0), t[c.key], p.name, p.why[L] + marks(p)) + '<p class="d-addr">' + esc(p.addr || t.addrPending) + '</p>' +
+      '<div class="actions"><a class="btn btn-primary" href="' + mapsUrl(p) + '" target="_blank" rel="noopener">' + ICON.nav + esc(t.openMaps) + '</a>' + saveBtn + '</div></section>' +
+      (routes.length ? '<h3 class="inroutes">' + esc(t.inRoutes) + '</h3>' + routes.map(function (rid) { return '<button type="button" class="rlink" data-open="r:' + rid + '">' + esc(ROUTES[rid].title[L]) + ICON.arrow + '</button>'; }).join('') : '');
+  } else if (k === 'c') {
+    star = true;
+    h += head('t-nawal', '20', t.collection, t.nawalsTitle + ' *', t.nawalsIntro) + '<div class="actions">' + saveBtn + '</div></section>' +
+      '<p class="warn">' + esc(t.nawalWarn) + '</p>' +
+      '<div style="margin-top:18px">' + NAWALES.map(function (row) { var nw = N[row[0]]; return '<button type="button" class="rlink" data-open="n:' + row[0] + '"><span>' + nw.n + ' · ' + esc(nw.name) + ' <span style="font-weight:400">— ' + esc(nw.animal[L]) + '</span></span>' + ICON.arrow + '</button>'; }).join('') + '</div>';
+  } else if (k === 'n') {
+    var nw = N[id]; star = true;
+    h += head('t-nawal', nw.n, t.catNawal + ' ' + nw.n + ' / 20', nw.name + ' *', '') + '<div class="actions">' + saveBtn + '</div></section>' +
+      '<dl class="facts">' + [[t.nSymbol, nw.symbol], [t.nAnimal, nw.animal], [t.nLight, nw.light], [t.nShadow, nw.shadow]].map(function (f) { return '<div class="fact"><dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1][L]) + '</dd></div>'; }).join('') + '</dl>' +
+      '<p class="warn">' + esc(t.nawalWarn) + '</p>' +
+      '<button type="button" class="rlink" style="margin-top:16px" data-open="c:nawales">' + esc(t.nawalsTitle) + ICON.arrow + '</button>';
+  } else {
+    var tp = TIPS[id]; star = !!tp.star;
+    h += head(null, '', t.tip, tp.body[L] + marks(tp), '') + '<div class="actions">' + saveBtn + '</div></section>';
+  }
+  if (star) h += '<p class="note star" style="margin-top:20px">' + esc(t.starNote) + '</p>';
+  if (hist) h += '<p class="note hist" style="margin-top:20px">' + esc(t.histNote) + '</p>';
+  if (L === 'en') h += '<p class="note muted">' + esc(t.enNote) + '</p>';
+  return h + '<p class="respect">' + esc(t.respect) + '</p>';
+}
+
+var main = document.getElementById('main');
+function render() {
+  var t = STR[S.lang];
+  document.documentElement.lang = S.lang;
+  ['es', 'en'].forEach(function (l) { document.getElementById('lang-' + l).setAttribute('aria-pressed', String(S.lang === l)); });
+  var paraOn = S.tab === 'para' || (S.tab === 'detail' && S.prev === 'para');
+  var tf = document.getElementById('tab-feed'), tp = document.getElementById('tab-para');
+  tf.innerHTML = ICON.grid + esc(t.tabFeed); tp.innerHTML = ICON.heart.replace('width="20" height="20"', 'width="18" height="18"') + esc(t.tabPara + (S.saved.length ? ' · ' + S.saved.length : ''));
+  if (paraOn) { tp.setAttribute('aria-current', 'page'); tf.removeAttribute('aria-current'); } else { tf.setAttribute('aria-current', 'page'); tp.removeAttribute('aria-current'); }
+  var hadFocus = document.activeElement && document.activeElement.id === 'q', caret = hadFocus ? document.activeElement.selectionStart : 0;
+  main.innerHTML = S.tab === 'feed' ? feedHTML() : S.tab === 'para' ? paraHTML() : detailHTML();
+  if (hadFocus) { var qi = document.getElementById('q'); if (qi) { qi.focus(); try { qi.setSelectionRange(caret, caret); } catch (e) {} } }
+}
+
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-toggle],[data-open],[data-filter],[data-go],[data-back],[data-lang],[data-tab]');
+  if (!el) { if (e.target.closest('#logo')) go('feed'); return; }
+  if (el.hasAttribute('data-toggle')) { e.stopPropagation(); toggle(el.getAttribute('data-toggle')); return; }
+  if (el.hasAttribute('data-open')) { open(el.getAttribute('data-open')); return; }
+  if (el.hasAttribute('data-filter')) { var f = el.getAttribute('data-filter'); S.filter = f; if (S.pref[f] !== undefined) S.pref[f]++; persist(); render(); return; }
+  if (el.hasAttribute('data-go')) { go(el.getAttribute('data-go')); return; }
+  if (el.hasAttribute('data-back')) { go(S.prev || 'feed'); return; }
+  if (el.hasAttribute('data-lang')) { S.lang = el.getAttribute('data-lang'); persist(); render(); return; }
+  if (el.hasAttribute('data-tab')) { go(el.getAttribute('data-tab')); }
+});
+document.addEventListener('keydown', function (e) {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.pin[data-open]')) { e.preventDefault(); open(e.target.getAttribute('data-open')); }
+});
+document.addEventListener('input', function (e) { if (e.target.id === 'q') { S.query = e.target.value; render(); } });
+
+render();
+})();
+</script>
+</body>
+</html>

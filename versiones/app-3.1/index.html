@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>nAIhual</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* =====================================================================
+   nAIhual 3.1 · sistema visual (tokens). Cambiar un token cambia toda la app.
+   Concepto: Antigua en piedra, cal y basalto. Muros encalados (fondo), basalto volcánico (tinta),
+   añil de fachada (acento de rutas y enlaces) y los cuatro colores de los guardianes por rumbo*.
+   Layout: app de celular en una columna (máx. 560px). Cada pantalla abre con una imagen, un mapa o una ilustración.
+   ===================================================================== */
+:root {
+  /* color · base */
+  --cal: #f3f1ec; --papel: #ffffff; --piedra: #e7e3db; --piedra-2: #d8d2c6;
+  --basalto: #1d2125; --ink-2: #474c52; --ink-3: #62676d;
+  --line: rgba(29,33,37,.12); --line-2: rgba(29,33,37,.22);
+  --anil: #2f4b7c; --anil-soft: #dfe5f0; --on-anil: #ffffff;
+  --band: #1d2125; --band-ink: #f3f1ec; --band-muted: rgba(243,241,236,.66);
+  --tint-cafe: #f1dfbd; --tint-comida: #efd3c6; --tint-cultura: #d9e1ee;
+  --cielo-1: #f6d9b8; --cielo-2: #c9d4e3; --volcan: #6f7d8f; --volcan-2: #4f5b6b; --techo: #b4664b;
+  /* color · estados */
+  --heart: #b4462f; --ok: #2f6b4f; --ok-soft: #dcebe2;
+  --check: #8a5a14; --check-soft: #f5ead2;        /* por verificar (solo vista previa) */
+  --sponsor-bg: #efe3c8; --sponsor-ink: #4d3a10;  /* Patrocinado · Aliado Fundador */
+  --future-bg: #e6e3f0; --future-ink: #3c3561;    /* diseño futuro / no activo */
+  /* color · guardianes (color por rumbo*, pendiente de validación cultural) */
+  --g-noj: #b3402f; --g-iq: #ffffff; --g-kej: #23262a; --g-e: #e2b33c;
+  --g-noj-on: #ffffff; --g-iq-on: #1d2125; --g-kej-on: #ffffff; --g-e-on: #1d2125;
+  --g-noj-soft: #f5e1dc; --g-iq-soft: #ffffff; --g-kej-soft: #e3e3e1; --g-e-soft: #f7ecce;
+  /* tipografía: títulos con carácter, texto legible, datos y calles en monoespaciada */
+  --f-display: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
+  --f-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --t-2xs: 11px; --t-xs: 12px; --t-sm: 13.5px; --t-base: 15.5px; --t-md: 17px; --t-lg: 21px; --t-xl: 28px; --t-2xl: 38px;
+  --lh-tight: 1.08; --lh-snug: 1.25; --lh-body: 1.5;
+  /* espacio (múltiplos de 4) y forma */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-7: 32px; --s-8: 44px;
+  --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px; --r-pill: 999px;
+  --tap: 44px;
+  --shadow-1: 0 1px 2px rgba(20,24,28,.06), 0 6px 18px rgba(20,24,28,.06);
+  --shadow-2: 0 10px 30px rgba(20,24,28,.16);
+  /* movimiento */
+  --ease: cubic-bezier(.2,.7,.2,1); --dur-1: .18s; --dur-2: .35s; --dur-route: 1.4s;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --cal: #121518; --papel: #1b1f23; --piedra: #262b30; --piedra-2: #333940;
+  --basalto: #eceae4; --ink-2: #c3c1ba; --ink-3: #9c9a93;
+  --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
+  --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
+  --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b;
+  --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
+  --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
+  --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
+  --g-noj: #e07a68; --g-iq: #f3f2ef; --g-kej: #0b0c0d; --g-e: #e5b94a;
+  --g-noj-on: #121518; --g-iq-on: #121518; --g-kej-on: #eceae4; --g-e-on: #121518;
+  --g-noj-soft: #3a221d; --g-iq-soft: #2c2f33; --g-kej-soft: #0e1012; --g-e-soft: #362b13;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.5); --shadow-2: 0 10px 30px rgba(0,0,0,.5);
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --cal: #121518; --papel: #1b1f23; --piedra: #262b30; --piedra-2: #333940;
+  --basalto: #eceae4; --ink-2: #c3c1ba; --ink-3: #9c9a93;
+  --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
+  --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
+  --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b;
+  --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
+  --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
+  --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
+  --g-noj: #e07a68; --g-iq: #f3f2ef; --g-kej: #0b0c0d; --g-e: #e5b94a;
+  --g-noj-on: #121518; --g-iq-on: #121518; --g-kej-on: #eceae4; --g-e-on: #121518;
+  --g-noj-soft: #3a221d; --g-iq-soft: #2c2f33; --g-kej-soft: #0e1012; --g-e-soft: #362b13;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.5); --shadow-2: 0 10px 30px rgba(0,0,0,.5);
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--cal); color: var(--basalto); font-family: var(--f-body); font-size: var(--t-base); line-height: var(--lh-body); -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; color: inherit; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-family: var(--f-display); font-weight: 700; letter-spacing: -.02em; line-height: var(--lh-tight); text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+svg { display: block; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--anil); outline-offset: 2px; border-radius: 6px; }
+.eyebrow { font-family: var(--f-data); font-size: var(--t-2xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.muted { color: var(--ink-3); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ico { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ico.sm { width: 16px; height: 16px; }
+
+/* ---------- estructura ---------- */
+.app { max-width: 560px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 8; background: color-mix(in srgb, var(--cal) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding-block: 10px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--cal); }
+.wordmark { all: unset; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: -.03em; }
+.wordmark i { font-style: normal; color: var(--anil); }
+.top-actions { display: flex; align-items: center; gap: var(--s-2); }
+.seg { display: flex; padding: 2px; border-radius: var(--r-pill); background: var(--piedra); }
+.seg button { border: 0; cursor: pointer; min-width: 44px; min-height: 44px; padding: 0 10px; border-radius: var(--r-pill); font-size: 12.5px; font-weight: 700; background: transparent; color: var(--ink-2); }
+.seg button[aria-pressed="true"] { background: var(--papel); color: var(--basalto); box-shadow: var(--shadow-1); }
+.sos { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border-radius: var(--r-pill); border: 1.5px solid var(--heart); color: var(--heart); background: transparent; font-weight: 700; font-size: 13px; cursor: pointer; }
+main { flex: 1; display: flex; flex-direction: column; gap: var(--s-6); padding-block: var(--s-2) 120px; min-width: 0; }
+main.chat { padding-bottom: 230px; gap: var(--s-4); }
+@media (prefers-reduced-motion: no-preference) { main.enter > * { animation: rise var(--dur-2) var(--ease) both; } main.enter > *:nth-child(2) { animation-delay: .04s; } main.enter > *:nth-child(3) { animation-delay: .08s; } main.enter > *:nth-child(n+4) { animation-delay: .12s; } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: no-preference) { .msg.new { animation: rise var(--dur-2) var(--ease) both; } }
+
+/* ---------- navegación inferior ---------- */
+nav.tabs { position: fixed; z-index: 9; left: 50%; transform: translateX(-50%); bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: min(480px, calc(100% - 24px));
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 2px; padding: 6px; border-radius: var(--r-xl); background: var(--band); box-shadow: var(--shadow-2); }
+nav.tabs button { border: 0; cursor: pointer; min-height: 52px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: transparent; color: var(--band-muted); font-size: 11.5px; font-weight: 700; }
+nav.tabs button[aria-current="page"] { background: var(--band-ink); color: var(--band); }
+nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
+
+/* ---------- botones y chips ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--tap); padding: 0 18px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--papel); color: var(--basalto); font-weight: 700; font-size: 14.5px; text-decoration: none; cursor: pointer; }
+.btn.primary { background: var(--basalto); color: var(--cal); border-color: transparent; }
+.btn.anil { background: var(--anil); color: var(--on-anil); border-color: transparent; }
+.btn.ghost { background: transparent; }
+.btn.block { width: 100%; }
+.btn.big { min-height: 58px; font-size: 17px; border-radius: 20px; padding: 0 22px; }
+.btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.chip { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--papel); color: var(--basalto); font-size: 14px; font-weight: 600; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--basalto); color: var(--cal); border-color: transparent; }
+.chip.pilot { background: var(--anil); color: var(--on-anil); border-color: transparent; }
+.chip.switch { border-style: dashed; }
+.chips { display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px; }
+.chips::-webkit-scrollbar { display: none; }
+.heart { position: absolute; top: 10px; right: 10px; z-index: 2; width: 44px; height: 44px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: color-mix(in srgb, var(--papel) 92%, transparent); box-shadow: var(--shadow-1); color: var(--heart); }
+.heart[aria-pressed="true"] .ico { fill: var(--heart); }
+.btn .ico.fill, .heart .ico { stroke: var(--heart); }
+
+/* ---------- etiquetas, sello e información ---------- */
+.tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--r-pill); font-size: var(--t-2xs); font-weight: 700; letter-spacing: .02em; background: var(--piedra); color: var(--ink-2); white-space: nowrap; }
+.tag.check { background: var(--check-soft); color: var(--check); border: 1px dashed currentColor; }
+.tag.sp { background: var(--sponsor-bg); color: var(--sponsor-ink); }
+.tag.future { background: var(--future-bg); color: var(--future-ink); }
+.tag.ok { background: var(--ok-soft); color: var(--ok); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+details.seal, details.info { font-size: var(--t-sm); }
+details.seal summary, details.info summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+details.seal summary::-webkit-details-marker, details.info summary::-webkit-details-marker { display: none; }
+details.seal summary { padding: 4px 12px; border-radius: var(--r-pill); font-weight: 700; font-size: 12.5px; }
+details.seal.ok summary { background: var(--ok-soft); color: var(--ok); }
+details.seal.pending summary { background: var(--check-soft); color: var(--check); border: 1px dashed currentColor; }
+details.seal p, details.info p { margin-top: 6px; color: var(--ink-2); font-size: 13px; }
+details.info summary { width: 44px; height: 44px; justify-content: center; border-radius: 50%; color: var(--ink-3); border: 1px solid var(--line-2); background: var(--papel); }
+details.info[open] { flex-basis: 100%; }
+
+/* ---------- imagen de lugar (foto o espacio provisional) ---------- */
+.ph { position: relative; overflow: hidden; border-radius: var(--r-lg); background: var(--piedra); aspect-ratio: 4 / 3; max-width: 100%; }
+.ph svg.art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ph .ph-note { position: absolute; left: 10px; bottom: 10px; font-family: var(--f-data); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--r-pill); background: color-mix(in srgb, var(--papel) 85%, transparent); color: var(--ink-3); }
+.ph .ph-cat { position: absolute; left: 10px; top: 10px; }
+
+/* ---------- inicio ---------- */
+.hero { position: relative; margin: 0 -16px; padding: 0 16px; display: flex; flex-direction: column; gap: var(--s-4); }
+.hero-art { position: relative; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 4 / 3; max-width: 100%; background: var(--cielo-2); }
+.hero-art svg { width: 100%; height: 100%; }
+.hero-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--s-5); display: flex; flex-direction: column; gap: 6px; }
+.hero-copy h1 { font-size: clamp(26px, 8vw, var(--t-2xl)); color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); max-width: 15ch; }
+.hero-copy p { color: rgba(255,255,255,.92); font-weight: 600; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
+.cta-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2); }
+.sec { display: flex; flex-direction: column; gap: var(--s-3); }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); }
+.sec-head h2 { font-size: var(--t-lg); }
+.linkish { all: unset; cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; font-size: var(--t-sm); font-weight: 700; color: var(--anil); }
+.rail { display: flex; gap: var(--s-3); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px 6px; }
+.rail::-webkit-scrollbar { display: none; }
+.route-card { all: unset; box-sizing: border-box; cursor: pointer; scroll-snap-align: start; flex: none; width: min(78vw, 300px); display: flex; flex-direction: column; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); overflow: hidden; }
+.route-card .map { aspect-ratio: 1 / .78; }
+.route-card .rc-body { padding: var(--s-3) var(--s-4) var(--s-4); display: flex; flex-direction: column; gap: 4px; }
+.route-card .rc-title { font-family: var(--f-display); font-weight: 700; letter-spacing: -.02em; font-size: var(--t-md); line-height: 1.15; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.tile { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); min-height: 128px; padding: var(--s-4); border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
+.tile .ico { width: 26px; height: 26px; color: var(--anil); }
+.tile b { font-family: var(--f-display); font-size: var(--t-md); letter-spacing: -.01em; line-height: 1.15; }
+.tile small { display: block; color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
+.guard-strip { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--s-2); }
+.gbtn { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: var(--s-3) 4px; border-radius: var(--r-md); text-align: center; }
+.gbtn b { font-family: var(--f-display); font-size: 15px; }
+.gbtn small { font-size: 11.5px; color: var(--ink-3); line-height: 1.25; }
+.gbtn[aria-current="true"] { background: var(--papel); box-shadow: var(--shadow-1); }
+.tag.like { background: var(--g-noj-soft); color: var(--basalto); }
+.intro-card { display: flex; flex-direction: column; gap: 6px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--band); color: var(--band-ink); }
+.intro-card h2 { font-size: var(--t-lg); }
+.intro-card p { color: var(--band-muted); font-size: 14.5px; }
+.brujula { display: grid; gap: var(--s-3); }
+.brujula .art { background: var(--papel); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 8px; }
+.brujula .art > svg { display: block; width: 100%; height: auto; max-width: 420px; margin: 0 auto; }
+.brujula .note { font-size: 12.5px; }
+.beta-card { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: var(--r-md); border: 1.5px dashed var(--line-2); background: var(--papel); }
+.beta-card .row { display: flex; flex-wrap: wrap; gap: 8px; }
+.bform { display: flex; flex-direction: column; gap: 10px; }
+.bform label { display: flex; flex-direction: column; gap: 4px; font-size: var(--t-sm); font-weight: 600; color: var(--ink-2); }
+.bform input[type=text], .bform input[type=url], .bform select, .bform textarea { font: inherit; font-size: 16px; font-weight: 400; color: var(--basalto); background: var(--papel); border: 1px solid var(--line-2); border-radius: var(--r-md); padding: 10px 12px; min-height: 44px; width: 100%; }
+.bform textarea { min-height: 76px; resize: vertical; }
+.bform .check { flex-direction: row; align-items: center; gap: 10px; min-height: 44px; }
+.bform .check input { width: 22px; height: 22px; }
+.bitem { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: var(--r-md); background: var(--papel); border: 1px solid var(--line); }
+.bitem small { color: var(--ink-3); font-family: var(--f-data); font-size: 11.5px; }
+.biz { display: flex; flex-direction: column; gap: 10px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--band); color: var(--band-ink); }
+.biz h2 { font-size: var(--t-lg); }
+.biz p { color: var(--band-muted); font-size: 14.5px; }
+.biz .tag { background: var(--band-ink); color: var(--band); align-self: flex-start; }
+.biz .btn { align-self: flex-start; background: var(--band-ink); color: var(--band); border-color: transparent; }
+.foot { font-size: 11.5px; color: var(--ink-3); text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.foot .linkbtn { border: 0; background: none; padding: 12px 8px; min-height: 44px; cursor: pointer; text-decoration: underline; color: var(--ink-3); font-size: 12px; }
+
+/* ---------- retrato abstracto de guardián (espacio para el arte final del fundador) ---------- */
+.portrait { flex: none; display: block; border-radius: 50%; }
+.portrait .ring { fill: var(--gc); stroke: var(--line-2); stroke-width: 1; }
+.portrait .inner { fill: none; stroke: var(--go); stroke-opacity: .55; stroke-width: 1.5; }
+.portrait .dot { fill: var(--go); }
+.g-noj { --gc: var(--g-noj); --go: var(--g-noj-on); --gs: var(--g-noj-soft); }
+.g-iq { --gc: var(--g-iq); --go: var(--g-iq-on); --gs: var(--g-iq-soft); }
+.g-kej { --gc: var(--g-kej); --go: var(--g-kej-on); --gs: var(--g-kej-soft); }
+.g-e { --gc: var(--g-e); --go: var(--g-e-on); --gs: var(--g-e-soft); }
+
+/* ---------- mapa esquemático ---------- */
+.map { position: relative; width: 100%; background: var(--piedra); }
+.map svg { width: 100%; height: 100%; display: block; }
+.map .block { fill: var(--papel); }
+.map .park { fill: var(--ok-soft); stroke: var(--ok); stroke-opacity: .35; }
+.map .street { stroke: var(--piedra-2); stroke-width: 1; }
+.map .lbl { font-family: var(--f-data); font-size: 9px; fill: var(--ink-3); letter-spacing: .04em; }
+.map .park-lbl { fill: var(--ok); font-size: 8.5px; text-transform: uppercase; }
+.map .north path { fill: var(--basalto); }
+.map .route { fill: none; stroke: var(--anil); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.map .route.faint { stroke: var(--ink-3); stroke-opacity: .28; stroke-width: 2.5; }
+.map .stop circle { fill: var(--basalto); stroke: var(--papel); stroke-width: 2; }
+.map .stop text { font-family: var(--f-data); font-size: 10px; font-weight: 600; fill: var(--cal); text-anchor: middle; dominant-baseline: central; }
+.map .stop.aprox circle { stroke-dasharray: 2 2; }
+.map .pin circle { fill: var(--anil); stroke: var(--papel); stroke-width: 3; }
+.map .note { position: absolute; left: 8px; bottom: 8px; font-family: var(--f-data); font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase; padding: 3px 7px; border-radius: var(--r-pill); background: color-mix(in srgb, var(--papel) 88%, transparent); color: var(--ink-3); }
+@media (prefers-reduced-motion: no-preference) { .map .route.draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw var(--dur-route) var(--ease) forwards .15s; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* ---------- rutas ---------- */
+.mapframe { border-radius: var(--r-xl); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 1 / .95; max-width: 100%; }
+.stops { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s-2); counter-reset: st; }
+.stops li button { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 34px minmax(0,1fr) auto; gap: var(--s-3); align-items: center; padding: 10px 12px; border-radius: var(--r-md); background: var(--papel); border: 1px solid var(--line); }
+.stops .n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--basalto); color: var(--cal); font-family: var(--f-data); font-weight: 600; font-size: 13px; }
+.stops b { display: block; font-size: 15px; line-height: 1.25; }
+.stops small { color: var(--ink-3); font-size: 12.5px; }
+
+/* ---------- tarjetas de lugar ---------- */
+.pcard { position: relative; display: flex; flex-direction: column; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); overflow: hidden; }
+.pcard .ph { border-radius: 0; aspect-ratio: 16 / 9; }
+.pcard .pc-body { padding: var(--s-3) var(--s-4) var(--s-4); display: flex; flex-direction: column; gap: 6px; }
+.pcard h3 { font-size: var(--t-md); line-height: var(--lh-snug); }
+.pcard p { font-size: 14.5px; color: var(--ink-2); }
+.pcard .addr { font-size: 13px; color: var(--ink-3); }
+.pcard .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: 4px; }
+.tipcard { position: relative; padding: var(--s-4) 56px var(--s-4) var(--s-4); border-radius: var(--r-lg); background: var(--piedra); display: flex; flex-direction: column; gap: 6px; }
+.tipcard p { font-size: 15.5px; font-weight: 600; line-height: 1.38; }
+.rcard { display: grid; grid-template-columns: 92px minmax(0,1fr); gap: var(--s-3); align-items: center; padding: 10px; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
+.rcard .map { width: 92px; height: 92px; border-radius: var(--r-md); overflow: hidden; }
+.rcard b { font-family: var(--f-display); font-size: 16px; display: block; }
+.rcard .btn { margin-top: 6px; min-height: 38px; font-size: 13.5px; padding: 0 14px; }
+
+/* ---------- guía (chat) ---------- */
+.guide-head { position: sticky; top: calc(58px + env(safe-area-inset-top, 0px)); z-index: 6; margin: 0 -16px; padding: 6px 16px 10px; background: color-mix(in srgb, var(--cal) 94%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: var(--s-3); }
+.guide-head .who { flex: 1; min-width: 0; }
+.guide-head b { font-family: var(--f-display); font-size: 18px; display: block; }
+.guide-head small { color: var(--ink-3); font-size: 12.5px; }
+.minis { display: flex; gap: 4px; }
+.minis button { all: unset; cursor: pointer; border-radius: 50%; padding: 8px; opacity: .5; }
+.minis button[aria-current="true"] { opacity: 1; box-shadow: 0 0 0 2px var(--basalto); }
+.msg { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; scroll-margin-top: 140px; }
+.msg .by { display: flex; align-items: center; gap: var(--s-2); font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
+.bubble { align-self: flex-start; max-width: 100%; padding: 12px 16px; border-radius: 6px var(--r-lg) var(--r-lg) var(--r-lg); background: var(--gs); border: 1px solid var(--line); font-size: 15.5px; }
+.bubble p + p { margin-top: 6px; }
+.me { align-self: flex-end; max-width: 85%; padding: 10px 15px; border-radius: var(--r-lg) 6px var(--r-lg) var(--r-lg); background: var(--basalto); color: var(--cal); }
+.cards { display: flex; flex-direction: column; gap: var(--s-3); }
+.dock { position: fixed; z-index: 7; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, var(--cal) 82%, transparent); padding-top: 16px; padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+.dock-in { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+form.ask { display: flex; gap: var(--s-2); align-items: center; padding: 5px 5px 5px 16px; border-radius: var(--r-pill); background: var(--papel); border: 1px solid var(--line-2); box-shadow: var(--shadow-1); }
+form.ask input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; min-height: 40px; }
+form.ask button { flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--basalto); color: var(--cal); }
+.thinking { display: inline-flex; gap: 4px; align-items: center; }
+.thinking i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
+@media (prefers-reduced-motion: no-preference) { .thinking i { animation: blink 1s infinite; } .thinking i:nth-child(2) { animation-delay: .15s; } .thinking i:nth-child(3) { animation-delay: .3s; } }
+@keyframes blink { 50% { opacity: .25; } }
+.empty { display: flex; flex-direction: column; gap: var(--s-3); align-items: flex-start; padding: var(--s-5); border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
+.empty .art { width: 100%; max-width: 100%; border-radius: var(--r-md); overflow: hidden; aspect-ratio: 16 / 7; }
+.empty b { font-family: var(--f-display); font-size: var(--t-md); }
+.empty p { color: var(--ink-2); font-size: 14.5px; }
+
+/* ---------- páginas ---------- */
+.pagehead { display: flex; flex-direction: column; gap: 6px; }
+.pagehead h1 { font-size: var(--t-xl); }
+.pagehead p { color: var(--ink-2); }
+.back { align-self: flex-start; }
+.search { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 16px; border-radius: var(--r-pill); background: var(--papel); border: 1px solid var(--line-2); }
+.search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; }
+.grid { column-count: 2; column-gap: var(--s-3); }
+.grid > * { break-inside: avoid; margin-bottom: var(--s-3); display: block; }
+.pin { all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; position: relative; }
+.pin .ph { border-radius: var(--r-md); }
+.pin .cap { padding: 8px 2px 0; display: flex; flex-direction: column; gap: 3px; }
+.pin .cap b { font-size: 14.5px; line-height: 1.25; }
+.pin .cap small { font-size: 12.5px; color: var(--ink-3); line-height: 1.35; }
+.pin.tip { padding: var(--s-4); border-radius: var(--r-md); background: var(--piedra); }
+.pin.tip p { font-weight: 600; font-size: 14.5px; line-height: 1.38; }
+.d-hero { margin: 0 -16px; }
+.d-hero .ph { border-radius: 0; aspect-ratio: 4 / 3; }
+.d-body { display: flex; flex-direction: column; gap: var(--s-3); }
+.d-body h1 { font-size: var(--t-xl); }
+.d-body .lead { font-size: var(--t-md); color: var(--ink-2); }
+.d-body .addr { font-size: var(--t-sm); color: var(--ink-3); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.actions .btn.primary, .actions .btn.anil { flex: 1; }
+.minimap { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; max-width: 100%; }
+.asklist { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.facts { margin: 0; display: grid; gap: var(--s-2); }
+.facts div { padding: 12px 16px; border-radius: var(--r-md); background: var(--papel); border: 1px solid var(--line); }
+.facts dt { font-family: var(--f-data); font-size: var(--t-2xs); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.facts dd { margin: 3px 0 0; }
+.note { font-size: 13px; color: var(--ink-3); }
+.artbox { margin: 0; display: flex; flex-direction: column; gap: 10px; padding: var(--s-4); border-radius: var(--r-xl); background: var(--papel); border: 1px solid var(--line); }
+.artbox > svg { width: 100%; height: auto; max-height: 300px; }
+.artbox figcaption { display: block; font-size: 13.5px; color: var(--ink-2); }
+.artbox figcaption details.info { display: inline-block; vertical-align: middle; margin-left: 4px; }
+.artbox figcaption b { font-family: var(--f-data); font-size: 15px; color: var(--basalto); }
+.nawal-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--s-2); }
+.nawal { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 10px; align-items: center; padding: 10px 12px; border-radius: var(--r-md); background: var(--papel); border: 1px solid var(--line); }
+.nawal .n { font-family: var(--f-data); font-weight: 600; font-size: 13px; color: var(--ink-3); }
+.nawal b { display: block; font-family: var(--f-display); font-size: 16px; }
+.nawal small { color: var(--ink-3); font-size: 12px; }
+.nawal.guard { border-color: var(--line-2); background: var(--gs); }
+.gfull { display: grid; grid-template-columns: 76px minmax(0,1fr); gap: var(--s-4); padding: var(--s-4); border-radius: var(--r-lg); background: var(--gs); border: 1px solid var(--line); }
+.gfull h2 { font-size: var(--t-lg); }
+.gfull dl { margin: 6px 0 0; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 3px 10px; font-size: var(--t-sm); }
+.gfull dt { color: var(--ink-3); }
+.gfull dd { margin: 0; }
+dialog { border: 0; padding: 0; border-radius: var(--r-xl); width: min(480px, calc(100% - 32px)); max-height: 85vh; background: var(--cal); color: var(--basalto); box-shadow: var(--shadow-2); }
+dialog::backdrop { background: rgba(0,0,0,.45); }
+.dlg { padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-3); }
+.dlg h2 { font-size: var(--t-lg); }
+
+/* ---------- documentos largos (Aliados y vista interna) ---------- */
+.doc { display: flex; flex-direction: column; gap: var(--s-5); }
+.doc section { display: flex; flex-direction: column; gap: 10px; }
+.doc h2 { font-size: 20px; }
+.doc h3 { font-size: 16px; }
+.doc p, .doc li { color: var(--ink-2); font-size: 14.5px; }
+.doc ul, .doc ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.doc strong { color: var(--basalto); }
+.status { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: var(--r-md); background: var(--sponsor-bg); color: var(--sponsor-ink); font-size: var(--t-sm); }
+.status b { font-size: 14.5px; }
+.status.future { background: var(--future-bg); color: var(--future-ink); }
+.status.plain { background: var(--piedra); color: var(--basalto); }
+.terms { margin: 0; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+.terms div { background: var(--papel); padding: 12px 14px; display: grid; grid-template-columns: minmax(0, 9em) minmax(0,1fr); gap: 12px; }
+.terms dt { font-size: var(--t-sm); color: var(--ink-3); font-weight: 600; }
+.terms dd { margin: 0; font-size: 14.5px; }
+.panel { background: var(--papel); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.panel.demo { border-style: dashed; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.inbanner { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border-radius: var(--r-md); background: var(--future-bg); color: var(--future-ink); font-size: var(--t-sm); font-weight: 600; }
+.inbanner .btn { min-height: 38px; font-size: 13.5px; }
+.rowlink { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: var(--r-sm); background: var(--papel); border: 1px solid var(--line); }
+.rowlink b { font-size: 15px; }
+.check { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 12.5px; color: var(--ink-3); }
+.check .no { color: var(--check); font-weight: 600; }
+.list { display: flex; flex-direction: column; gap: var(--s-2); }
+.layer { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; padding: 12px 14px; border-radius: var(--r-sm); background: var(--papel); border: 1px solid var(--line); }
+.layer .n, .flow li::before { width: 28px; height: 28px; border-radius: 50%; background: var(--piedra); display: grid; place-items: center; font-family: var(--f-data); font-weight: 600; font-size: 12.5px; }
+.layer b { display: block; font-size: 15px; }
+.layer p { font-size: 13.5px; }
+.flow { list-style: none; padding: 0 !important; counter-reset: f; }
+.flow li { counter-increment: f; display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; align-items: start; }
+.flow li::before { content: counter(f); }
+.flow li .tag { margin-top: 4px; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--s-2); }
+.sw { display: flex; flex-direction: column; gap: 6px; padding: 10px; border-radius: var(--r-sm); background: var(--papel); border: 1px solid var(--line); font-size: var(--t-xs); min-width: 0; }
+.sw i { display: block; height: 40px; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--line); }
+.sw code { font-family: var(--f-data); font-size: 11px; color: var(--ink-3); overflow-wrap: anywhere; }
+.scale { display: flex; flex-direction: column; gap: 6px; }
+.scale div { display: grid; grid-template-columns: 90px minmax(0,1fr); gap: 10px; align-items: baseline; }
+.scale small { font-family: var(--f-data); font-size: 11px; color: var(--ink-3); }
+.bar { display: block; height: 12px; border-radius: 3px; background: var(--anil); }
+.row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+.copyrow { display: grid; gap: 4px; padding: 12px 14px; border-radius: var(--r-sm); background: var(--papel); border: 1px solid var(--line); }
+.copyrow s { color: var(--ink-3); }
+.copyrow b { font-weight: 600; }
+.ext { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <button type="button" class="wordmark" data-go="inicio" aria-label="nAIhual · Inicio">n<i>AI</i>hual</button>
+    <div class="top-actions">
+      <button type="button" class="sos" id="sos" data-sos hidden></button>
+      <div class="seg" role="group" aria-label="Idioma / Language">
+        <button type="button" id="lang-es" data-lang="es">ES</button>
+        <button type="button" id="lang-en" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+  <main id="main" aria-live="polite"></main>
+</div>
+<div class="dock" id="dock" hidden>
+  <div class="dock-in">
+    <div class="chips" id="chips"></div>
+    <form class="ask" id="ask" autocomplete="off">
+      <input id="q" type="text" maxlength="200">
+      <button type="submit" id="send"></button>
+    </form>
+  </div>
+</div>
+<nav class="tabs" id="tabs" aria-label="Secciones"></nav>
+<dialog id="dlg"><div class="dlg" id="dlg-body"></div></dialog>
+
+<!-- Datos: se editan en data/, no aquí. config.js = modo · lugares.js = catálogo · fuentes.js = registro de fuentes -->
+<script src="data/config.js"></script>
+<script src="data/lugares.js"></script>
+<script src="data/fuentes.js"></script>
+<script src="data/libretas.js"></script>
+<script>
+(function () {
+'use strict';
+var VERSION = 'nAIhual 3.1 · 24-oct-2026';
+var INSTR_VERSION = 'reglas-fijas 3.1';
+var PILOT_MAX = 3;
+var CFG = window.NAIHUAL_CONFIG || {};
+// Dos modos. Sin configuración = pública (lo más seguro).
+var MODE = CFG.modo === 'vista_previa' || (CFG.modo === undefined && CFG.vista_previa === true) ? 'vista_previa' : 'publica';
+var PREVIEW = MODE === 'vista_previa';
+var INTERNAL = PREVIEW;
+// Beta del fundador: solo en vista previa. Lo que anota queda en la base de datos del visor (o en este teléfono si no hay visor).
+var BETA_ON = PREVIEW && CFG.beta_fundador !== false;
+function w(es, en) { return { es: es, en: en }; }
+
+// ===================== GUARDIANES (aprobados por el fundador · no se cambian) =====================
+// Orden del turno: No'j → Iq' → Kej → E'. Rumbo, color y valor: pendientes de validación cultural (*).
+// rumbo: hacia dónde apunta el punto del retrato abstracto (este, norte, oeste, sur). El arte final lo hace el fundador.
+var ORDER = ['noj', 'iq', 'kej', 'e'];
+var G = {
+  noj: { name: "No'j", rumbo: 'este', tag: w('te cuenta el porqué', 'tells you the why'), value: w('La sabiduría', 'Wisdom'), role: w('Comprender', 'Understand'), speaks: w('Maestro cercano, reflexivo', 'A friendly, reflective teacher'), dir: w('Oriente · rojo', 'East · red'),
+    recs: w('Historia y monumentos, cosmovisión maya, costumbres', 'History and monuments, Maya worldview, local customs'),
+    pdf: w('Mente, pensamiento, sabiduría · Coyote, lobo, pájaro carpintero', 'Mind, thought, wisdom · Coyote, wolf, woodpecker') },
+  iq: { name: "Iq'", rumbo: 'norte', tag: w('te da los primeros pasos', 'gives you first steps'), value: w('El viento', 'The wind'), role: w('Comunicar', 'Communicate'), speaks: w('Fresco, directo, renovador', 'Fresh, direct, renewing'), dir: w('Norte · blanco', 'North · white'),
+    recs: w('Primeros pasos, pausas, qué contar del viaje, hablar con la gente', 'First steps, breaks, what to share from your trip, talking with people'),
+    pdf: w('Viento, aliento de vida, purificación · Colibrí', 'Wind, breath of life, purification · Hummingbird') },
+  kej: { name: 'Kej', rumbo: 'oeste', tag: w('te ordena el camino', 'puts your path in order'), value: w('El equilibrio', 'Balance'), role: w('Explorar', 'Explore'), speaks: w('Práctico, firme, ordenado', 'Practical, steady, orderly'), dir: w('Poniente · negro', 'West · black'),
+    recs: w('Rutas a pie, naturaleza y mercados', 'Walking routes, nature and markets'),
+    pdf: w('Venado, 4 pilares del cosmos · Venado', 'Deer, the 4 pillars of the cosmos · Deer') },
+  e: { name: "E'", rumbo: 'sur', tag: w('te lleva por el mejor camino', 'takes you the best way'), value: w('El camino', 'The path'), role: w('Guiar', 'Guide'), speaks: w('Alentador, orador, guía', 'Encouraging, a speaker, a guide'), dir: w('Sur · amarillo', 'South · yellow'),
+    recs: w('Artesanos y talleres, la mejor opción, comida con carácter, comunidades cercanas', 'Artisans and workshops, the best option, food with character, nearby communities'),
+    pdf: w('Camino, destino, estructura corporal · Gato de monte, puma', 'Path, destiny, the body’s structure · Wildcat, puma') }
+};
+
+// ===================== CATÁLOGO (vive en data/lugares.js) =====================
+// Publicado = estado «publicado» + nombre, dirección, enlace de Maps, fuente, fecha y quién verificó.
+// Modo pública: solo lo publicado. Vista previa: todo lo cargado, con «por verificar». Pausado y retirado nunca se cargan.
+var CATS = { cultura: 1, cafe: 1, comida: 1 };
+var MAPS_RE = /^https:\/\/(www\.google\.[a-z.]+\/maps|maps\.google\.[a-z.]+|maps\.app\.goo\.gl|goo\.gl\/maps)(\/|\?|$)/;
+var P = {}, PIDS = [];
+(window.NAIHUAL_LUGARES || []).forEach(function (r) {
+  if (!r || !r.id || !CATS[r.categoria] || P[r.id]) return;
+  var estado = r.estado || 'borrador';
+  if (estado === 'pausado' || estado === 'retirado') return;
+  var f = r.frase || {}, m = r.mapa || null;
+  P[r.id] = { id: r.id, cat: r.categoria, hist: !!r.historico, g: (r.guardianes || []).filter(function (g) { return ORDER.indexOf(g) >= 0; }),
+    name: String(r.nombre || '').trim(), addr: String(r.direccion || '').trim() || null, mapsLink: String(r.maps_url || '').trim(),
+    fuente: String(r.fuente || '').trim(), fuenteUrl: String(r.fuente_url || '').trim(), fecha: String(r.fecha_verificacion || '').trim(), verifico: String(r.verifico || '').trim(),
+    estado: estado, patro: r.patrocinado === true, pendiente: String(r.pendiente || '').trim(), foto: String(r.foto || '').trim(), fotoCredito: String(r.foto_credito || '').trim(),
+    horario: r.fuente_horario ? String(r.horario || '').trim() : '', precio: r.fuente_precio ? String(r.precio || '').trim() : '',
+    pos: m && isFinite(m.avenida) && isFinite(m.calle) ? { av: +m.avenida, ca: +m.calle, aprox: !!m.aprox } : null,
+    why: { es: f.es || '', en: f.en || f.es || '' } };
+  if (P[r.id].name) PIDS.push(r.id); else delete P[r.id];
+});
+function validDate(s) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s); if (!m) return false;
+  var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  return d.getUTCMonth() === +m[2] - 1 && d.getTime() <= Date.now();
+}
+function mapsUrl(p) {
+  if (!p || !p.addr) return '';
+  if (p.mapsLink) return MAPS_RE.test(p.mapsLink) ? p.mapsLink : '';
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.name, p.addr, 'Antigua Guatemala'].join(', '));
+}
+function missing(p) {
+  var m = [];
+  if (p.estado !== 'publicado') m.push('estado «publicado»');
+  if (!p.addr) m.push('dirección');
+  if (p.addr && !mapsUrl(p)) m.push('enlace de Maps válido');
+  if (!p.fuente) m.push('fuente');
+  if (!validDate(p.fecha)) m.push('fecha de verificación');
+  if (!p.verifico) m.push('quién verificó');
+  return m;
+}
+function isPub(p) { return !!p && !missing(p).length; }
+// Lo que se puede ver en este modo.
+function visible(p) { return !!p && (PREVIEW || isPub(p)); }
+// Recorrido «Quiero un café»: pública = hasta 3 publicados. Vista previa = publicados primero y después los que tienen dirección, marcados «por verificar».
+function pilotCafes() {
+  var pub = PIDS.filter(function (id) { return P[id].cat === 'cafe' && isPub(P[id]); });
+  if (PREVIEW) pub = pub.concat(PIDS.filter(function (id) { return P[id].cat === 'cafe' && !isPub(P[id]) && P[id].addr; }));
+  return pub.slice(0, PILOT_MAX);
+}
+
+// ===================== FUENTES (vive en data/fuentes.js) =====================
+var SRC = {};
+(window.NAIHUAL_FUENTES || []).forEach(function (f) { if (f && f.id) SRC[f.id] = f; });
+
+// ===================== RUTAS (paradas del catálogo) =====================
+var ROUTES = {
+  centro: { g: ['e'], stops: ['parque', 'catedral', 'doce', 'palacio', 'arco', 'merced'], kicker: w('Una mañana', 'A morning'), title: w('El corazón de Antigua', 'The heart of Antigua'), intro: w('La plaza, la Catedral y el Arco, con un café a media mañana.', 'The square, the Cathedral and the Arch, with a coffee mid-morning.') },
+  conventos: { g: ['kej', 'noj'], stops: ['capuchinas', 'once', 'santaclara', 'sanfrancisco', 'patio'], kicker: w('Una tarde', 'An afternoon'), title: w('Conventos del oriente', 'Convents to the east'), intro: w('Dos ruinas de conventos y una iglesia viva en el lado oriente. Cierra con cena en un patio.', 'Two convent ruins and a living church on the east side. Ends with dinner in a courtyard.') },
+  norte: { g: ['kej'], stops: ['catedral', 'cazador', 'arco', 'merced', 'siena'], kicker: w('Un par de horas', 'A couple of hours'), title: w('Del Arco a La Merced', 'From the Arch to La Merced'), intro: w('La calle del Arco a paso lento, con pausas para comer y leer.', 'The Arch street at an easy pace, with stops to eat and read.') }
+};
+// Una ruta se ve si todas sus paradas se ven en este modo y tienen dirección.
+Object.keys(ROUTES).forEach(function (id) { if (!ROUTES[id].stops.every(function (s) { return visible(P[s]) && P[s].addr; })) delete ROUTES[id]; });
+function routeVerified(r) { return r.stops.every(function (s) { return isPub(P[s]); }); }
+
+// ===================== CONSEJOS =====================
+// costumbre = práctico (pantalla «Costumbres de aquí») · cultura = cosmovisión (pantalla «Cultura maya»). src = fuente que lo respalda.
+var TIPS = {
+  foto: { cat: 'costumbre', g: ['iq', 'e'], body: w('Para fotografiar a alguien, preguntá primero. Un «¿puedo?» basta.', 'To photograph someone, ask first. A simple “may I?” is enough.') },
+  horario: { cat: 'costumbre', g: ['kej'], body: w('Los horarios cambian. Confirmalos en Google Maps antes de ir.', 'Opening hours change. Check them in Google Maps before you go.') },
+  cholqij: { cat: 'cultura', star: true, src: ['consolidado'], g: ['iq', 'noj'], body: w('El Cholq\'ij, el calendario sagrado maya, tiene 260 días: 13 números por 20 nawales.', 'The Cholq\'ij, the sacred Maya calendar, has 260 days: 13 numbers times 20 nawales.') },
+  winaq: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Los mayas cuentan en base 20. Un Winaq (20) son los dedos de las manos y de los pies.', 'The Maya count in base 20. One Winaq (20) is all the fingers and toes.') },
+  rukux: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Ruk\'u\'x Kaj y Ruk\'u\'x Ulew: el Corazón del Cielo y el Corazón de la Tierra, fuerzas creadoras junto al Corazón del Agua y del Fuego.', 'Ruk\'u\'x Kaj and Ruk\'u\'x Ulew: the Heart of Sky and the Heart of Earth, creative forces alongside the Heart of Water and of Fire.') },
+  maiz: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('En el Popol Wuj, la humanidad está hecha de maíz. Por eso el ser humano y la naturaleza no se separan.', 'In the Popol Wuj, humanity is made of maize, so people and nature cannot be separated.') },
+  nikaj: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj', 'iq'], body: w('El cero maya, Nik\'aj, se dibuja como una concha o una flor. No es vacío: es plenitud, semilla y ciclo completo.', 'The Maya zero, Nik\'aj, is drawn as a shell or a flower. It is not emptiness: it means fullness, seed and a completed cycle.') },
+  ab: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('El Ab\' es el calendario solar de 365 días: 18 meses de 20 días, más los 5 días del Wayeb\'.', 'The Ab\' is the 365-day solar calendar: 18 months of 20 days, plus the 5 days of the Wayeb\'.') },
+  rueda: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Juntos, el Cholq\'ij y el Ab\' forman la Rueda Calendárica: un ciclo de 52 años, 18,980 días.', 'Together, the Cholq\'ij and the Ab\' form the Calendar Round: a 52-year cycle of 18,980 days.') },
+  cargadores: { cat: 'cultura', star: true, src: ['consolidado', 'notebooklm-cargadores'], g: ['noj'], body: w('Solo cuatro nawales pueden abrir el año solar: los Cargadores del Año. En el altiplano guatemalteco son Iq\', Kej, E\' y No\'j: los cuatro guardianes de nAIhual.', 'Only four nawales can open the solar year: the Year Bearers. In the Guatemalan highlands they are Iq\', Kej, E\' and No\'j: the four nAIhual guardians.') },
+  nawalpersona: { cat: 'cultura', star: true, src: ['consolidado'], g: ['noj'], body: w('Los nawales son los significados de los días. Decirle a alguien «cuál es su nawal» le corresponde a un Ajq\'ij.', 'Nawales are the meanings of the days. Telling someone "what their nawal is" is the work of an Ajq\'ij.') }
+};
+// 20 nawales: tabla del Documento Consolidado. Inglés traducido por Claude, sin revisar.
+var NAWALES = [
+  ['batz', "B'atz'", w('Hilo del tiempo, tejido, origen', 'Thread of time, weaving, origin'), w('Mono', 'Monkey'), w('Maestro de artes, tejedor del tiempo, guía familiar', 'Master of the arts, weaver of time, family guide'), w('Terquedad, ambición material, sarcasmo', 'Stubbornness, material ambition, sarcasm')],
+  ['e', "E'", w('Camino, destino, estructura corporal', 'Path, destiny, the body’s structure'), w('Gato de monte, puma', 'Wildcat, puma'), w('Guía de viajeros, líder nato, orador', 'Guide of travelers, natural leader, speaker'), w('Impaciencia, inestabilidad emocional', 'Impatience, emotional instability')],
+  ['aj', 'Aj', w('Cañaveral, hogar, linaje, autoridad', 'Cane field, home, lineage, authority'), w('Armadillo', 'Armadillo'), w('Protector de niños, mediador, sabio', 'Protector of children, mediator, wise one'), w('Chisme, celos, manipulación', 'Gossip, jealousy, manipulation')],
+  ['ix', "I'x", w('Jaguar, energía terrestre, altar', 'Jaguar, earth energy, altar'), w('Jaguar', 'Jaguar'), w('Intuición, sagacidad, fuerza de la Tierra', 'Intuition, shrewdness, strength of the Earth'), w('Orgullo, impulsividad, reserva excesiva', 'Pride, impulsiveness, excessive reserve')],
+  ['tzikin', "Tz'ikin", w('Pájaro, quetzal, abundancia', 'Bird, quetzal, abundance'), w('Aves rapaces, quetzal', 'Birds of prey, quetzal'), w('Visión a larga distancia, imán de fortuna', 'Far-reaching vision, a magnet for fortune'), w('Inconstancia, egoísmo, dispersión', 'Inconstancy, selfishness, scattered focus')],
+  ['ajmaq', 'Ajmaq', w('Búho, perdón, ancestros, sabiduría', 'Owl, forgiveness, ancestors, wisdom'), w('Búho, abeja, buitre', 'Owl, bee, vulture'), w('Conciencia de faltas, perdón, mente analítica', 'Awareness of one’s faults, forgiveness, analytical mind'), w('Autocomplacencia, cobardía, lentitud', 'Self-indulgence, cowardice, slowness')],
+  ['noj', "No'j", w('Mente, pensamiento, sabiduría', 'Mind, thought, wisdom'), w('Coyote, lobo, pájaro carpintero', 'Coyote, wolf, woodpecker'), w('Inteligencia analítica, buen consejo, ciencia', 'Analytical intelligence, good counsel, science'), w('Inflexibilidad, orgullo intelectual', 'Inflexibility, intellectual pride')],
+  ['tijax', 'Tijax', w('Obsidiana, filo de la verdad, sanación', 'Obsidian, the edge of truth, healing'), w('Peztucán, pez espada', 'Peztucán, swordfish'), w('Discernimiento radical, capacidad médica', 'Sharp discernment, a gift for medicine'), w('Carácter tajante, pleitos, franqueza hiriente', 'Cutting temper, quarrels, hurtful bluntness')],
+  ['kawoq', 'Kawoq', w('Tormenta, lluvia de bendición, familia', 'Storm, rain of blessing, family'), w('Tortuga', 'Turtle'), w('Integración familiar, fertilidad, sanación', 'Family unity, fertility, healing'), w('Temperamento explosivo, conflictos', 'Explosive temper, conflict')],
+  ['ajpu', 'Ajpu', w('El Sol, cazador célebre, autoridad', 'The Sun, the famed hunter, authority'), w('Espíritu humano / Sol', 'Human spirit / Sun'), w('Autoridad moral, fuerza renovadora, metas', 'Moral authority, renewing strength, goals'), w('Autocracia, soberbia, exigencia extrema', 'Autocracy, arrogance, extreme demands')],
+  ['imox', 'Imox', w('Aguas primordiales, subconsciente', 'Primordial waters, the subconscious'), w('Cocodrilo', 'Crocodile'), w('Receptividad espiritual, intuición poética', 'Spiritual receptiveness, poetic intuition'), w('Inestabilidad emocional, confusión mental', 'Emotional instability, mental confusion')],
+  ['iq', "Iq'", w('Viento, aliento de vida, purificación', 'Wind, breath of life, purification'), w('Colibrí', 'Hummingbird'), w('Dinamismo, limpieza energética, comunicación', 'Dynamism, energetic cleansing, communication'), w('Volubilidad, carácter impetuoso', 'Fickleness, impetuous character')],
+  ['aqabal', "Aq'ab'al", w('Amanecer, aurora, luz renovadora', 'Dawn, daybreak, renewing light'), w('Murciélago, guacamaya', 'Bat, macaw'), w('Claridad mental, renovación de esperanza', 'Mental clarity, renewed hope'), w('Indecisión, propensión al ocultamiento', 'Indecision, a tendency to hide')],
+  ['kat', "K'at", w('Red, cautiverio, reunión de la cosecha', 'Net, captivity, gathering of the harvest'), w('Lagartija, araña', 'Lizard, spider'), w('Organización, abundancia, resolución', 'Organization, abundance, resolve'), w('Atadura por apegos, enredos emocionales', 'Bound by attachments, emotional tangles')],
+  ['kan', 'Kan', w('Serpiente de fuego, fuerza vital', 'Fire serpent, life force'), w('Serpiente', 'Serpent'), w('Sabiduría profunda, transformación, justicia', 'Deep wisdom, transformation, justice'), w('Impulsividad violenta, rencor, irascibilidad', 'Violent impulsiveness, resentment, irritability')],
+  ['kame', 'Kame', w('Mente ritual, transición, antepasados', 'Ritual mind, transition, ancestors'), w('Tecolote, búho', 'Owl'), w('Serenidad ante crisis, protección ancestral', 'Calm in a crisis, protection of the ancestors'), w('Melancolía, vulnerabilidad física', 'Melancholy, physical vulnerability')],
+  ['kej', 'Kej', w('Venado, 4 pilares del cosmos', 'Deer, the 4 pillars of the cosmos'), w('Venado', 'Deer'), w('Solidez moral, sostén comunitario, agilidad', 'Moral strength, support for the community, agility'), w('Rigidez de juicio, dominación autoritaria', 'Rigid judgment, authoritarian control')],
+  ['qanil', "Q'anil", w('Semilla, germinación, estrella', 'Seed, germination, star'), w('Conejo', 'Rabbit'), w('Fertilidad, amor incondicional, prosperidad', 'Fertility, unconditional love, prosperity'), w('Impaciencia por ver frutos de inmediato', 'Impatience to see results right away')],
+  ['toj', 'Toj', w('Ofrenda, pago divino, ceremonia', 'Offering, sacred payment, ceremony'), w('Puma, jaguar negro', 'Puma, black jaguar'), w('Restablecimiento del equilibrio, devoción', 'Restoring balance, devotion'), w('Padecimiento por falta de pago espiritual', 'Suffering from unpaid spiritual debts')],
+  ['tzi', "Tz'i'", w('Perro, guardián de la ley y justicia', 'Dog, guardian of law and justice'), w('Perro, mapache', 'Dog, raccoon'), w('Lealtad inquebrantable, sentido de equidad', 'Unbreakable loyalty, a sense of fairness'), w('Juzgamiento severo, venganza, celos', 'Harsh judgment, revenge, jealousy')]
+];
+var N = {};
+NAWALES.forEach(function (r, i) { N[r[0]] = { n: i + 1, name: r[1], symbol: r[2], animal: r[3], light: r[4], shadow: r[5] }; });
+var GUARDIAN_NAWAL = { noj: 'noj', iq: 'iq', kej: 'kej', e: 'e' };
+
+// ===================== RESPUESTAS DE LOS GUARDIANES (propuesta de Claude 2.0, por aprobar) =====================
+// Cortas y concretas, solo con datos del catálogo. items: 'p:id' lugar · 'r:id' ruta · 't:id' consejo · plan: lugares en orden.
+// «cafe» es el recorrido piloto: muestra pilotCafes(). Si algo de la respuesta no se puede mostrar en este modo, se dice otra cosa (ver reply()).
+var R = {
+  empezar: {
+    noj: { t: w('Empezá por la plaza. Antigua fue la sede de toda la Capitanía General de Guatemala, y desde el Parque Central se entiende por qué.', 'Start at the square. Antigua was the seat of the whole Captaincy General of Guatemala, and from Parque Central you’ll see why.'), items: ['p:parque', 'p:palacio', 'p:catedral'] },
+    iq: { t: w('Arrancá en el Parque Central. Desde ahí todo queda a pie.', 'Start at Parque Central. Everything is walkable from there.'), items: ['p:parque', 't:foto'] },
+    kej: { t: w('Primero, ubicate. Esta ruta te ordena el centro en un par de horas.', 'First, get your bearings. This route lays out the centre in a couple of hours.'), items: ['r:norte'] },
+    e: { t: w('Si hoy hacés una sola cosa, que sea esta ruta.', 'If you do one thing today, make it this route.'), items: ['r:centro'] }
+  },
+  horas: {
+    noj: { t: w('Dos conventos y una iglesia en el lado oriente. En unas horas los recorrés.', 'Two convents and a church on the east side. You can see them in a few hours.'), plan: ['capuchinas', 'santaclara', 'sanfrancisco'] },
+    iq: { t: w('Un arco para la foto, una iglesia amarilla y una pausa para leer.', 'An arch for the photo, a yellow church and a break to read.'), plan: ['arco', 'merced', 'siena'] },
+    kej: { t: w('Cinco paradas a pie, en este orden.', 'Five stops on foot, in this order.'), items: ['r:norte'] },
+    e: { t: w('¿Tenés la tarde? El lado oriente: dos ruinas, una iglesia y una cena.', 'Got the afternoon? The east side: two ruins, a church and dinner.'), items: ['r:conventos'] }
+  },
+  dia: {
+    noj: { t: w('Mañana, el poder colonial. Tarde, la vida de los conventos.', 'Morning: colonial power. Afternoon: convent life.'), items: ['r:centro', 'r:conventos'] },
+    iq: { t: w('Arrancá en la plaza y cerrá en un patio.', 'Start at the square and end in a courtyard.'), items: ['r:centro', 'r:conventos'] },
+    kej: { t: w('Un día, dos rutas, en este orden.', 'One day, two routes, in this order.'), items: ['r:centro', 'r:conventos'] },
+    e: { t: w('Las dos rutas en un día. Vos podés.', 'Both routes in one day. You’ve got this.'), items: ['r:centro', 'r:conventos'] }
+  },
+  cafe: {
+    noj: { t: w('Para sentarte a pensar un rato:', 'To sit and think for a while:') },
+    iq: { t: w('Buena pausa. Aquí van:', 'Good call for a break. Here you go:') },
+    kej: { t: w('Te los dejo en orden:', 'Here they are, in order:') },
+    e: { t: w('Directo a lo bueno:', 'Straight to the good stuff:') }
+  },
+  comida: {
+    noj: { t: w('Tres opciones distintas: vegana, italiana o de ambiente.', 'Three different options: vegan, Italian or atmosphere.'), items: ['p:once', 'p:cazador', 'p:patio'] },
+    iq: { t: w('Un patio para comer y quedarte platicando.', 'A courtyard to eat and stay chatting.'), items: ['p:patio'] },
+    kej: { t: w('Vegana y vegetariana, en el lado oriente.', 'Vegan and vegetarian, on the east side.'), items: ['p:once'] },
+    e: { t: w('Pizza italiana de verdad, detrás de la Catedral.', 'Real Italian pizza, right behind the Cathedral.'), items: ['p:cazador'] }
+  },
+  cultura: {
+    noj: { t: w('En el Popol Wuj la humanidad está hecha de maíz. Empezá por aquí:', 'In the Popol Wuj humanity is made of maize. Start here:'), items: ['t:rukux', 't:maiz', 't:nikaj'] },
+    iq: { t: w('Algo para contar de tu viaje: así se cuenta el tiempo maya.', 'Something to share from your trip: how Maya time is counted.'), items: ['t:cholqij', 't:nikaj'] },
+    kej: { t: w('Dos ruinas y una iglesia viva, a pie y en orden.', 'Two ruins and a living church, on foot and in order.'), items: ['r:conventos'] },
+    e: { t: w('Si vas a ver una sola ruina, que sea esta: la torre circular de celdas.', 'If you see only one ruin, make it this one: the circular tower of cells.'), items: ['p:capuchinas'] }
+  },
+  costumbres: {
+    noj: { t: w('Los nawales son los significados de los días, no etiquetas para personas.', 'Nawales are the meanings of the days, not labels for people.'), items: ['t:nawalpersona', 't:foto'] },
+    iq: { t: w('Para una foto de alguien, primero preguntá.', 'For a photo of someone, ask first.'), items: ['t:foto'] },
+    kej: { t: w('Dos cosas prácticas antes de salir:', 'Two practical things before you head out:'), items: ['t:foto', 't:horario'] },
+    e: { t: w('Directo, antes de salir:', 'Straight up, before you head out:'), items: ['t:foto', 't:horario'] }
+  }
+};
+var GAPS = { naturaleza: w('naturaleza y miradores', 'nature and viewpoints'), arte: w('talleres y artesanía', 'workshops and crafts'), mercado: w('mercados', 'markets'), aventura: w('aventura y volcanes', 'adventure and volcanoes') };
+var GAP_VOICE = {
+  noj: w('De {x} todavía no tengo nada que pueda recomendarte con confianza.', 'I don’t have anything on {x} I can recommend with confidence yet.'),
+  iq: w('De {x} todavía no tengo nada. No te voy a inventar.', 'Nothing on {x} yet. I won’t make it up.'),
+  kej: w('De {x} todavía no tengo lugares probados.', 'I don’t have tried-and-tested places for {x} yet.'),
+  e: w('Ahí todavía no te puedo llevar: de {x} no tengo nada probado.', 'I can’t take you there yet: nothing tested on {x}.')
+};
+var CLARIFY = {
+  noj: w('¿Qué te gustaría conocer?', 'What would you like to discover?'),
+  iq: w('Contame un poco más. ¿Qué buscás?', 'Tell me a bit more. What are you after?'),
+  kej: w('Para ordenarte el camino, elegí una:', 'To lay out the way, pick one:'),
+  e: w('¿Hacia dónde vamos?', 'Where are we heading?')
+};
+// Cuando una respuesta nombra algo que todavía no se puede mostrar (modo pública), no se inventa otra cosa.
+var NOT_YET = w('Esta parte la estoy terminando de probar.', 'I’m still testing this part.');
+var MEANWHILE = w('Mientras, te cuento de la cultura maya o de las costumbres de aquí.', 'Meanwhile, I can tell you about Maya culture or local customs.');
+var SAFETY = w('Para temas de seguridad, preguntá en tu hospedaje o en la oficina de turismo local.', 'For safety questions, ask at your lodging or the local tourist office.');
+
+// ===================== TEXTOS DE PANTALLA (propuesta 2.0, por aprobar) =====================
+// Textos nuevos de la 3.0.
+var X3 = {
+  es: {
+    introKicker: 'Qué es nAIhual', introTitle: 'La riqueza de Guatemala está en sus paisajes, y es gracias a su gente.',
+    introBody: 'nAIhual te da contexto para que elijás con conciencia: de quién es, desde cuándo, qué lo hace especial. No impone y no pone a uno encima de otro.',
+    compass: 'Brújula del paisaje', compassBody: 'Mirá hacia dónde está cada cosa y vas a saber dónde estás.',
+    compassNote: 'Fuentes: Lonely Planet y OK Antigua (24-oct-2026). * Rumbos y colores de los guardianes, por validar con un tata (Ajq’ij).',
+    north: 'Cerro de la Cruz', south: 'Volcán de Agua', west: 'Fuego · Acatenango', east: 'Sale el sol',
+    betaKicker: 'Beta del fundador', betaTitle: 'Alimentá nAIhual', betaBody: 'Marcá lo que te gustó, avisá si un dato está mal o agregá un lugar. Claude lo lee, lo verifica y lo pasa al catálogo.',
+    betaOpen: 'Abrir la beta', betaCount: function (n) { return n === 1 ? '1 anotación' : n + ' anotaciones'; },
+    liked: 'Te gustó', like: 'Me gustó', likedTag: 'Le gustó al fundador', wrong: 'Dato mal', note: 'Nota',
+    betaFicha: 'Beta · ¿qué sabés de este lugar?', kind: 'Tipo', text: 'Qué querés anotar', save: 'Guardar anotación',
+    addTitle: 'Agregar un lugar', name: 'Nombre del lugar', mapsLink: 'Enlace de Google Maps (Compartir → Copiar enlace)', moment: 'Momento del viaje', didLike: 'Me gustó', addNote: 'Nota corta, en tus palabras', addBtn: 'Agregar',
+    moments: [['llegue', 'Llegué'], ['transporte', 'Transporte'], ['hotel', 'Hotel'], ['comida', 'Comida'], ['cerca', 'Qué hay cerca'], ['otro', 'Otro']],
+    list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
+    savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
+    kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo' },
+    iaTag: 'Según la IA · confirmá en Google', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
+    confirm: 'Confirmar', remove: 'Borrar', confirmed: 'Confirmado', toConfirm: 'Por confirmar', noLearned: 'Todavía no aprendió nada. Platicá con un guía.',
+    notebooks: 'Libretas cargadas', notebooksBody: function (n) { return n ? n + (n === 1 ? ' libreta de tu Drive, cargada por Claude.' : ' libretas de tu Drive, cargadas por Claude.') : 'Todavía no hay libretas. Cuando tengás una en tu Drive, Claude la lee y la carga aquí.'; }
+  },
+  en: {
+    introKicker: 'What nAIhual is', introTitle: 'Guatemala’s wealth is in its landscapes, and it is thanks to its people.',
+    introBody: 'nAIhual gives you context so you choose consciously: whose it is, since when, what makes it special. It does not impose and does not rank one over another.',
+    compass: 'Landscape compass', compassBody: 'See where each landmark is and you will know where you are.',
+    compassNote: 'Sources: Lonely Planet and OK Antigua (Oct 24, 2026). * Guardians’ directions and colors, pending validation by a tata (Ajq’ij).',
+    north: 'Cerro de la Cruz', south: 'Agua volcano', west: 'Fuego · Acatenango', east: 'Sunrise',
+    betaKicker: 'Founder beta', betaTitle: 'Feed nAIhual', betaBody: 'Mark what you liked, flag wrong data or add a place. Claude reads it, checks it and adds it to the catalog.',
+    betaOpen: 'Open the beta', betaCount: function (n) { return n === 1 ? '1 note' : n + ' notes'; },
+    liked: 'You liked it', like: 'I liked it', likedTag: 'The founder liked it', wrong: 'Wrong data', note: 'Note',
+    betaFicha: 'Beta · what do you know about this place?', kind: 'Type', text: 'What do you want to note', save: 'Save note',
+    addTitle: 'Add a place', name: 'Place name', mapsLink: 'Google Maps link (Share → Copy link)', moment: 'Moment of the trip', didLike: 'I liked it', addNote: 'Short note, in your words', addBtn: 'Add',
+    moments: [['llegue', 'Just arrived'], ['transporte', 'Getting around'], ['hotel', 'Hotel'], ['comida', 'Food'], ['cerca', 'Nearby'], ['otro', 'Other']],
+    list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
+    savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
+    kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place' },
+    iaTag: 'From the AI · check on Google', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
+    confirm: 'Confirm', remove: 'Delete', confirmed: 'Confirmed', toConfirm: 'To confirm', noLearned: 'Nothing learned yet. Chat with a guide.',
+    notebooks: 'Loaded notebooks', notebooksBody: function (n) { return n ? n + (n === 1 ? ' notebook from your Drive, loaded by Claude.' : ' notebooks from your Drive, loaded by Claude.') : 'No notebooks yet. When you have one in your Drive, Claude reads it and loads it here.'; }
+  }
+};
+function X() { return X3[S.lang]; }
+var STR = {
+  es: {
+    tagline: 'Viaja directo a la raíz.', heroTitle: 'Antigua, con cuatro guías que la conocen.',
+    tabs: { inicio: 'Inicio', rutas: 'Rutas', guia: 'Guía', guardados: 'Guardados' },
+    coffee: 'Quiero un café', arrived: 'Recién llegué',
+    todayGuide: 'Elegí quién te guía', routes: 'Rutas a pie', seeAll: 'Ver todas', explore: 'Explorar Antigua',
+    tiles: { lugares: ['Explorar', 'Cafés, comida, monumentos y rutas'], cultura: ['Cultura maya', 'El tiempo maya y los 20 nawales'], costumbres: ['Costumbres de aquí', 'Lo práctico para moverte'], guardianes: ['Los guardianes', 'Quiénes son los cuatro'] },
+    routesSoon: 'Las rutas vienen en camino', routesSoonBody: 'Estoy terminando de probar cada parada.',
+    stops: 'paradas', openRoute: 'Abrir ruta a pie en Google Maps', mapNote: 'Esquema · no a escala', aprox: 'posición aproximada',
+    chips: [['cafe', 'Quiero un café'], ['empezar', 'Recién llegué'], ['horas', 'Tengo 3 horas'], ['comida', 'Dónde comer'], ['dia', 'Un día completo'], ['cultura', 'Cultura maya'], ['costumbres', 'Costumbres de aquí']],
+    placeholder: 'Preguntale lo que quieras…', send: 'Enviar', switchChip: 'Otro guía', talk: 'Hablar con',
+    welcome: '¿Qué tenés ganas de hacer en Antigua?', takeover: 'Ahora te guío yo. ¿Qué buscás?',
+    place: { cultura: 'Monumento', cafe: 'Café', comida: 'Comida' }, route: 'Ruta a pie', plan: 'Plan', tip: 'Costumbre', culture: 'Cultura',
+    maps: 'Vamos', info: 'Info', mapsAria: function (n) { return 'Cómo llegar a ' + n + ' (abre Google Maps)'; },
+    verified: function (d) { return 'Verificado · ' + d; }, verifiedBody: function (src, who) { return 'Fuente: ' + src + '. Lo comprobó ' + who + '.'; },
+    toCheck: 'Por verificar', toCheckBody: 'Vista previa: esta ficha todavía no está comprobada. El visitante no la ve.',
+    hours: 'Horario', price: 'Precio', photoSoon: 'Foto pendiente',
+    infoCult: 'Dato cultural', infoCultBody: 'Pendiente de validación con un Ajq\'ij.', infoHist: 'Dato histórico', infoHistBody: 'Pendiente de confirmar con una fuente oficial.',
+    infoGuard: 'Rumbo y color pendientes de validación cultural. La selección de los cuatro ya está aprobada.',
+    coffeeSoon: 'Estoy probando los cafés uno por uno.', coffeeReady: 'Mientras, esta ruta ya está lista:',
+    save: 'Guardar', saved: 'Guardado', back: 'Volver', recBy: 'Preguntale a', inRoutes: 'Está en estas rutas',
+    exploreTitle: 'Explorar Antigua', exploreSub: 'Lugares, rutas, cultura y costumbres.', search: 'Buscar en Antigua…',
+    filters: [['all', 'Todo'], ['route', 'Rutas'], ['cafe', 'Cafés'], ['comida', 'Comida'], ['cultura', 'Monumentos'], ['tip', 'Cultura y costumbres']], filtersLabel: 'Filtros',
+    noResults: 'Nada con esa búsqueda. Probá otra palabra.', emptyCat: 'Esta parte todavía la estoy probando.',
+    cultureTitle: 'Cultura maya', cultureSub: 'Cómo se cuenta el tiempo y qué significan los días.',
+    nawalsTitle: 'Los 20 nawales del Cholq\'ij', nawalsSub: 'Los significados de los días, no de las personas. nAIhual no calcula tu nawal: eso lo hace un Ajq\'ij.',
+    nSymbol: 'Símbolo', nAnimal: 'Animal', nLight: 'Luz', nShadow: 'Sombra', nGuardian: 'Uno de los cuatro guardianes',
+    customsTitle: 'Costumbres de aquí', customsSub: 'Lo práctico para moverte bien.',
+    guardsTitle: 'Los cuatro guardianes', guardsSub: 'Son los cuatro cargadores del año. Te guía uno a la vez, hasta que pidás a otro.',
+    dValue: 'Es', dDir: 'Rumbo y color', dRole: 'Hace', dSpeaks: 'Habla', dRecs: 'Recomienda', dPdf: 'Su nawal',
+    savedTitle: 'Guardados', savedSub: 'Lo que guardás queda solo en este teléfono.', emptySaved: 'Todavía no guardaste nada', emptySavedBody: 'Tocá el corazón en un lugar, una ruta o una costumbre.',
+    yourPlan: 'Tu plan a pie', planBody: function (n) { return n + ' paradas, en este orden.'; }, planSoon: 'Tu plan se arma con lugares que ya probé. Todavía no hay.',
+    bizTag: 'Patrocinado',
+    sos: 'Emergencias', sosTitle: 'Emergencias', sosBody: 'Pendiente de números oficiales. Se activan cuando cada número esté confirmado con su fuente oficial.', close: 'Cerrar',
+    internal: 'Vista interna', foot: VERSION, months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], or: ' o ',
+    aiThinking: 'Pensando', aiStop: 'Detener', aiBy: 'con Claude',
+    aiReady: 'Vista previa: Claude responde con tu cuenta. Lo que escribís se envía a Claude para responder. nAIhual solo guarda lo que aprende, como «por confirmar», en tu beta.',
+    aiLoading: 'Conectando con Claude…', aiOffFoot: 'Claude no está disponible aquí: responden las reglas fijas.',
+    aiLeak: 'Claude nombró un lugar por verificar; respondí con las reglas fijas.', aiBad: 'Claude no respondió bien esta vez; respondí con las reglas fijas.',
+    aiBusy: 'Claude está ocupado o llegaste a tu límite; respondí con las reglas fijas.', aiOff: 'Claude no está permitido aquí; respondo con las reglas fijas.', aiStopped: 'Detuviste a Claude; respondí con las reglas fijas.',
+    clarifyLabel: 'Opciones', clarifyOpts: [['cafe', 'Un café'], ['empezar', 'Por dónde empiezo'], ['cultura', 'Cultura maya'], ['costumbres', 'Costumbres de aquí']],
+    enNote: ''
+  },
+  en: {
+    tagline: 'Travel straight to the roots.', heroTitle: 'Antigua, with four guides who know it.',
+    tabs: { inicio: 'Home', rutas: 'Routes', guia: 'Guide', guardados: 'Saved' },
+    coffee: 'I want a coffee', arrived: 'Just arrived',
+    todayGuide: 'Choose your guide', routes: 'Walking routes', seeAll: 'See all', explore: 'Explore Antigua',
+    tiles: { lugares: ['Explore', 'Cafés, food, monuments and routes'], cultura: ['Maya culture', 'Maya time and the 20 nawales'], costumbres: ['Local customs', 'Practical tips to get around'], guardianes: ['The guardians', 'Who the four are'] },
+    routesSoon: 'Routes are on their way', routesSoonBody: 'I’m still testing every stop.',
+    stops: 'stops', openRoute: 'Open walking route in Google Maps', mapNote: 'Schematic · not to scale', aprox: 'approximate position',
+    chips: [['cafe', 'I want a coffee'], ['empezar', 'Just arrived'], ['horas', 'I have 3 hours'], ['comida', 'Where to eat'], ['dia', 'A full day'], ['cultura', 'Maya culture'], ['costumbres', 'Local customs']],
+    placeholder: 'Ask anything…', send: 'Send', switchChip: 'Another guide', talk: 'Talk to',
+    welcome: 'What do you feel like doing in Antigua?', takeover: 'I’m your guide now. What are you after?',
+    place: { cultura: 'Monument', cafe: 'Café', comida: 'Food' }, route: 'Walking route', plan: 'Plan', tip: 'Custom', culture: 'Culture',
+    maps: 'Let’s go', info: 'Info', mapsAria: function (n) { return 'Directions to ' + n + ' (opens Google Maps)'; },
+    verified: function (d) { return 'Verified · ' + d; }, verifiedBody: function (src, who) { return 'Source: ' + src + '. Checked by ' + who + '.'; },
+    toCheck: 'To be checked', toCheckBody: 'Preview: this listing hasn’t been checked yet. Visitors don’t see it.',
+    hours: 'Hours', price: 'Price', photoSoon: 'Photo coming',
+    infoCult: 'Cultural detail', infoCultBody: 'Pending validation by an Ajq\'ij.', infoHist: 'Historical detail', infoHistBody: 'Pending confirmation with an official source.',
+    infoGuard: 'Direction and colour pending cultural validation. The choice of the four is already approved.',
+    coffeeSoon: 'I’m testing the cafés one by one.', coffeeReady: 'Meanwhile, this route is ready:',
+    save: 'Save', saved: 'Saved', back: 'Back', recBy: 'Ask', inRoutes: 'Part of these routes',
+    exploreTitle: 'Explore Antigua', exploreSub: 'Places, routes, culture and customs.', search: 'Search Antigua…',
+    filters: [['all', 'All'], ['route', 'Routes'], ['cafe', 'Cafés'], ['comida', 'Food'], ['cultura', 'Monuments'], ['tip', 'Culture and customs']], filtersLabel: 'Filters',
+    noResults: 'Nothing matches that. Try another word.', emptyCat: 'I’m still testing this part.',
+    cultureTitle: 'Maya culture', cultureSub: 'How time is counted and what the days mean.',
+    nawalsTitle: 'The 20 nawales of the Cholq\'ij', nawalsSub: 'The meanings of the days, not of people. nAIhual does not work out your nawal: that is the work of an Ajq\'ij.',
+    nSymbol: 'Symbol', nAnimal: 'Animal', nLight: 'Light', nShadow: 'Shadow', nGuardian: 'One of the four guardians',
+    customsTitle: 'Local customs', customsSub: 'Practical tips to get around well.',
+    guardsTitle: 'The four guardians', guardsSub: 'They are the four Year Bearers. One guides you at a time, until you ask for another.',
+    dValue: 'Is', dDir: 'Direction and colour', dRole: 'Does', dSpeaks: 'Speaks', dRecs: 'Recommends', dPdf: 'Their nawal',
+    savedTitle: 'Saved', savedSub: 'What you save stays on this phone only.', emptySaved: 'Nothing saved yet', emptySavedBody: 'Tap the heart on a place, a route or a custom.',
+    yourPlan: 'Your walking plan', planBody: function (n) { return n + ' stops, in this order.'; }, planSoon: 'Your plan is built from places I’ve tested. None yet.',
+    bizTag: 'Sponsored',
+    sos: 'Emergency', sosTitle: 'Emergency', sosBody: 'Official numbers pending. They switch on once each number is confirmed with its official source.', close: 'Close',
+    internal: 'Team view', foot: VERSION, months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], or: ' or ',
+    aiThinking: 'Thinking', aiStop: 'Stop', aiBy: 'with Claude',
+    aiReady: 'Preview: Claude answers with your account. What you type is sent to Claude to answer. nAIhual only keeps what it learns, as «to confirm», in your beta.',
+    aiLoading: 'Connecting to Claude…', aiOffFoot: 'Claude isn’t available here: fixed rules answer.',
+    aiLeak: 'Claude named a place still to be checked; I answered with the fixed rules.', aiBad: 'Claude didn’t answer properly this time; I answered with the fixed rules.',
+    aiBusy: 'Claude is busy or you reached your limit; I answered with the fixed rules.', aiOff: 'Claude isn’t allowed here; I answer with the fixed rules.', aiStopped: 'You stopped Claude; I answered with the fixed rules.',
+    clarifyLabel: 'Options', clarifyOpts: [['cafe', 'A coffee'], ['empezar', 'Where to start'], ['cultura', 'Maya culture'], ['costumbres', 'Local customs']],
+    enNote: 'English not yet reviewed by a native speaker.'
+  }
+};
+
+// ===================== ENTENDER LA PREGUNTA (reglas fijas) =====================
+function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’`´]/g, "'"); }
+var RULES = [
+  ['seguridad', /segur|peligr|safe|danger|robo|theft|emergenc/],
+  ['naturaleza', /natur|volcan|mirador|cerro|finca|lago|lake|viewpoint|hike|hiking/],
+  ['aventura', /aventur|advent|adrenalin|\breto\b|challenge/],
+  ['arte', /arte\b|artesan|taller|tejid|tejer|clase|class|workshop|craft|\bart\b|galer/],
+  ['mercado', /mercad|market/],
+  ['cafe', /cafe|coffee|matcha|capuchino|latte/],
+  ['costumbres', /costumbr|respet|foto|photo|custom|etiquet|portar/],
+  ['comida', /donde como|que como|donde comer|comer|comida|almuerz|cena|cenar|desayun|hambre|vegan|vegetar|pizza|food|eat|lunch|dinner|breakfast|restaur|hungry/],
+  ['cultura', /cultur|histori|ruina|iglesi|convent|catedral|monument|maya|nawal|nahual|cholq|calendar|church|histor|ruin|cosmovis|popol/],
+  ['dia', /\bdia\b|un dia|todo el dia|\bday\b|itinerar/],
+  ['horas', /hora|hours|\brato\b|tiempo|cerca|near|\btime\b/],
+  ['empezar', /empiez|empez|inicio|primer|start|begin|first|llegu|arriv|\bhola\b|hello|\bhi\b/]
+];
+function detectGuardian(t) {
+  if (/\bno'?j\b/.test(t)) return 'noj';
+  if (/\biq\b/.test(t)) return 'iq';
+  if (/\bkej\b/.test(t)) return 'kej';
+  if (/(^|[^a-z'])e'(?![a-z])/.test(t)) return 'e';
+  return null;
+}
+var NEXT_RE = /\botr[oa]\b|siguiente|cambi|\bnext\b|another|someone else|switch|other guide/;
+function detectIntent(t) { for (var i = 0; i < RULES.length; i++) if (RULES[i][1].test(t)) return RULES[i][0]; return null; }
+
+// ===================== ÍCONOS (familia lineal, estilo Lucide) =====================
+var IP = {
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>',
+  map: '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14"/><path d="M15 6v14"/>',
+  chat: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+  coffee: '<path d="M10 2v2"/><path d="M14 2v2"/><path d="M6 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>',
+  food: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+  arch: '<path d="M3 21h18"/><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M9 21v-7a3 3 0 0 1 6 0v7"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  compass: '<circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/>',
+  store: '<path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/><path d="M3 9h18"/>',
+  pin: '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  nav: '<polygon points="3 11 22 2 13 21 11 13 3 11"/>',
+  arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  back: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  alert: '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  up: '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
+  grid: '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+  shuffle: '<path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/>',
+  spark: '<path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="m5.6 5.6 2.1 2.1"/><path d="m16.3 16.3 2.1 2.1"/><path d="m5.6 18.4 2.1-2.1"/><path d="m16.3 7.7 2.1-2.1"/>'
+};
+function icon(n, cls) { return '<svg class="ico' + (cls ? ' ' + cls : '') + '" viewBox="0 0 24 24" aria-hidden="true">' + IP[n] + '</svg>'; }
+var CAT_ICON = { cafe: 'coffee', comida: 'food', cultura: 'arch' };
+
+// ===================== ARTE (todo con los tokens; sin glifos ni símbolos culturales) =====================
+// Retrato abstracto de guardián: círculo en su color y un punto hacia su rumbo*. Espacio para el arte final del fundador.
+var RUMBO_XY = { este: [42.5, 30], norte: [30, 17.5], oeste: [17.5, 30], sur: [30, 42.5] };
+function portrait(gid, size) {
+  var p = RUMBO_XY[G[gid].rumbo];
+  return '<svg class="portrait g-' + gid + '" width="' + size + '" height="' + size + '" viewBox="0 0 60 60" aria-hidden="true"><circle class="ring" cx="30" cy="30" r="29"/><circle class="inner" cx="30" cy="30" r="12.5"/><circle class="dot" cx="' + p[0] + '" cy="' + p[1] + '" r="4"/></svg>';
+}
+var uid = 0;
+// Volcán de Agua (silueta) sobre los techos: es paisaje, no un símbolo cultural.
+// Rueda de rumbos*: cada guardián en su punto cardinal (Iq' norte, No'j oriente, E' sur, Kej poniente). Es un esquema, no un glifo.
+function compassArt() {
+  var pos = { iq: [150, 46], noj: [254, 150], e: [150, 254], kej: [46, 150] }, lbl = { iq: 'N', noj: 'E', e: 'S', kej: S.lang === 'en' ? 'W' : 'O' };
+  return '<svg viewBox="0 0 300 300" role="img" aria-label="Rumbos de los guardianes*">' +
+    '<circle cx="150" cy="150" r="104" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M150 40 V260 M40 150 H260" style="stroke:var(--line-2)" stroke-width="1.5"/>' +
+    ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 32) + ' ' + (q[1] - 32) + ')">' + portrait(g, 64) + '</g><text class="lbl" x="' + (q[0] + (g === 'noj' ? -42 : g === 'kej' ? 42 : 0)) + '" y="' + (q[1] + (g === 'iq' ? 44 : g === 'e' ? -38 : 4)) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
+    '<text x="150" y="155" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text></svg>';
+}
+// Brújula del paisaje (idea del fundador, 24-oct): los rumbos de los guardianes* apuntan a lo que se ve desde Antigua.
+// Fuentes: Lonely Planet y OK Antigua (Cerro de la Cruz al norte; Agua al sur; Fuego y Acatenango al poniente). El oriente: por donde sale el sol.
+function paisajeArt() {
+  var x = X(), en = S.lang === 'en';
+  var pos = { iq: [180, 92], noj: [268, 180], e: [180, 268], kej: [92, 180] };
+  var lbl = { iq: 'N', noj: en ? 'E' : 'E', e: 'S', kej: en ? 'W' : 'O' };
+  var vol = function (cx, by, w, h) { return '<path d="M' + (cx - w) + ' ' + by + ' L' + (cx - 4) + ' ' + (by - h) + ' Q' + cx + ' ' + (by - h - 4) + ' ' + (cx + 4) + ' ' + (by - h) + ' L' + (cx + w) + ' ' + by + ' Z" style="fill:var(--volcan)"/>'; };
+  return '<svg viewBox="0 0 360 380" role="img" aria-label="' + esc(x.compass + ': ' + x.north + ' (N), ' + x.east + ' (E), ' + x.south + ' (S), ' + x.west + ' (' + lbl.kej + ')') + '">' +
+    '<circle cx="180" cy="180" r="96" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M180 70 V290 M70 180 H290" style="stroke:var(--line-2)" stroke-width="1.5"/>' +
+    // Norte: Cerro de la Cruz (cerro con cruz)
+    '<path d="M130 52 Q180 14 230 52 Z" style="fill:var(--piedra-2)"/><path d="M180 16 V36 M172 23 H188" style="stroke:var(--basalto)" stroke-width="2.5" stroke-linecap="round"/>' +
+    '<text x="180" y="66" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:13px;fill:var(--basalto)">' + esc(x.north) + '</text>' +
+    // Sur: Volcán de Agua
+    vol(180, 350, 58, 38) + '<text x="180" y="372" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:13px;fill:var(--basalto)">' + esc(x.south) + '</text>' +
+    // Poniente: Fuego y Acatenango
+    vol(30, 214, 24, 28) + vol(58, 214, 20, 22) + '<text x="44" y="232" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.west.split(' · ')[0]) + '</text><text x="44" y="246" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.west.split(' · ')[1]) + '</text>' +
+    // Oriente: sale el sol
+    '<circle cx="322" cy="176" r="15" style="fill:var(--g-e)"/><text x="322" y="214" text-anchor="middle" style="font-family:var(--f-body);font-weight:700;font-size:11.5px;fill:var(--basalto)">' + esc(x.east) + '</text>' +
+    ORDER.map(function (g) { var q = pos[g]; return '<g transform="translate(' + (q[0] - 22) + ' ' + (q[1] - 22) + ')">' + portrait(g, 44) + '</g>'; }).join('') +
+    '<text x="180" y="185" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-size:15px;fill:var(--basalto)">Antigua</text>' +
+    ['iq', 'noj', 'e', 'kej'].map(function (g) { var q = pos[g], dx = g === 'noj' ? -34 : g === 'kej' ? 34 : 0, dy = g === 'iq' ? 36 : g === 'e' ? -30 : 4; return '<text x="' + (q[0] + dx) + '" y="' + (q[1] + dy) + '" text-anchor="middle" style="font-family:var(--f-data);font-size:11px;fill:var(--ink-3)">' + lbl[g] + '</text>'; }).join('') +
+    '</svg>';
+}
+// El Cholq'ij en una imagen: 260 días = 13 números × 20 nawales (dato del consejo «cholqij»).
+function cholqijArt() {
+  var s = '', i, j;
+  for (j = 0; j < 13; j++) for (i = 0; i < 20; i++) s += '<circle cx="' + (12 + i * 15) + '" cy="' + (12 + j * 15) + '" r="4.2" style="fill:' + (i === 6 || i === 11 || i === 16 || i === 1 ? 'var(--anil)' : 'var(--piedra-2)') + '"/>';
+  return '<svg viewBox="0 0 300 204" role="img" aria-label="260 días: 13 números por 20 nawales">' + s + '</svg>';
+}
+function heroArt() {
+  var id = 'h' + (++uid);
+  return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<defs><linearGradient id="' + id + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--cielo-2)"/><stop offset=".75" style="stop-color:var(--cielo-1)"/></linearGradient>' +
+    '<linearGradient id="' + id + 'v" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--volcan-2)"/><stop offset=".55" style="stop-color:var(--volcan)"/></linearGradient>' +
+    '<linearGradient id="' + id + 'f" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient></defs>' +
+    '<rect width="400" height="300" fill="url(#' + id + 's)"/>' +
+    '<circle cx="318" cy="70" r="26" style="fill:var(--cal)" opacity=".55"/>' +
+    '<path d="M30 222 L188 70 Q200 60 212 70 L370 222 Z" fill="url(#' + id + 'v)"/>' +
+    '<path d="M188 70 Q200 60 212 70 L226 84 L214 80 L206 88 L198 80 L188 88 L176 82 Z" style="fill:var(--cal)" opacity=".85"/>' +
+    '<path d="M0 222 L80 196 L150 212 L230 190 L310 210 L400 196 L400 300 L0 300 Z" style="fill:var(--volcan-2)" opacity=".9"/>' +
+    '<g style="fill:var(--techo)"><path d="M0 238 L60 226 L120 238 Z"/><path d="M262 236 L326 222 L400 236 Z"/><rect x="0" y="236" width="400" height="64"/></g>' +
+    '<g style="fill:var(--cal)"><rect x="10" y="240" width="96" height="60"/><rect x="272" y="240" width="118" height="60"/>' +
+    '<path d="M132 300 V232 H268 V300 H232 V266 a32 32 0 0 0 -64 0 V300 Z"/><rect x="182" y="204" width="36" height="30"/><path d="M178 206 L200 188 L222 206 Z"/></g>' +
+    '<circle cx="200" cy="219" r="6.5" style="fill:var(--techo)"/>' +
+    '<g style="fill:var(--techo)" opacity=".55"><rect x="26" y="256" width="14" height="22" rx="7"/><rect x="58" y="256" width="14" height="22" rx="7"/><rect x="292" y="256" width="14" height="22" rx="7"/><rect x="324" y="256" width="14" height="22" rx="7"/><rect x="356" y="256" width="14" height="22" rx="7"/></g>' +
+    '<rect width="400" height="300" fill="url(#' + id + 'f)"/></svg>';
+}
+// Espacio provisional de foto: color del guardián que lo recomienda, la silueta del volcán y el ícono de la categoría.
+function photoArt(cat, gid) {
+  var id = 'p' + (++uid), g = gid || 'kej';
+  var scene = cat === 'cafe'
+    ? '<path d="M96 240 V120 a64 64 0 0 1 128 0 V240" style="fill:var(--cal)" opacity=".55"/><rect x="60" y="176" width="200" height="8" rx="4" style="fill:var(--basalto)" opacity=".18"/>' +
+      '<path d="M134 136 h46 v28 a20 20 0 0 1 -20 20 h-6 a20 20 0 0 1 -20 -20 z M180 144 h6 a10 10 0 0 1 0 20 h-6" style="fill:none;stroke:var(--basalto)" stroke-opacity=".45" stroke-width="5" stroke-linejoin="round"/>' +
+      '<path d="M146 122 q-6 -10 0 -20 M160 122 q-6 -10 0 -20 M174 122 q-6 -10 0 -20" style="fill:none;stroke:var(--basalto)" stroke-opacity=".3" stroke-width="4" stroke-linecap="round"/>'
+    : cat === 'comida'
+    ? '<circle cx="160" cy="132" r="64" style="fill:var(--cal)" opacity=".65"/><circle cx="160" cy="132" r="42" style="fill:none;stroke:var(--basalto)" stroke-opacity=".25" stroke-width="4"/>' +
+      '<path d="M76 84 v30 a10 10 0 0 0 20 0 v-30 M86 84 v100 M236 84 c-14 6 -16 30 -14 50 h14 v50" style="fill:none;stroke:var(--basalto)" stroke-opacity=".4" stroke-width="5" stroke-linecap="round"/>'
+    : '<path d="M70 240 V120 H250 V240 H190 V176 a30 30 0 0 0 -60 0 V240 Z" style="fill:var(--cal)" opacity=".6"/><path d="M140 120 V92 a20 20 0 0 1 40 0 V120 Z" style="fill:var(--cal)" opacity=".6"/>' +
+      '<path d="M70 120 H250" style="stroke:var(--basalto)" stroke-opacity=".25" stroke-width="5"/><circle cx="160" cy="98" r="7" style="fill:var(--basalto)" opacity=".2"/>';
+  return '<svg class="art g-' + g + '" viewBox="0 0 320 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--tint-' + (cat === 'comida' || cat === 'cultura' ? cat : 'cafe') + ')"/><stop offset="1" style="stop-color:var(--piedra-2)"/></linearGradient></defs>' +
+    '<rect width="320" height="240" fill="url(#' + id + ')"/><path d="M0 240 L120 150 Q140 136 160 150 L320 240 Z" style="fill:var(--basalto)" opacity=".05"/>' + scene + '</svg>';
+}
+function phHTML(p, t, ratio) {
+  var g = p.g[0] || 'kej';
+  if (p.foto) return '<div class="ph"' + (ratio ? ' style="aspect-ratio:' + ratio + '"' : '') + '><img src="' + esc(p.foto) + '" alt="' + esc(p.name) + '" style="width:100%;height:100%;object-fit:cover">' + (p.fotoCredito ? '<span class="ph-note">' + esc(p.fotoCredito) + '</span>' : '') + '</div>';
+  return '<div class="ph"' + (ratio ? ' style="aspect-ratio:' + ratio + '"' : '') + '>' + photoArt(p.cat, g) + '<span class="ph-note">' + esc(t.photoSoon) + '</span></div>';
+}
+
+// ===================== MAPA ESQUEMÁTICO DE LA CUADRÍCULA =====================
+// Avenidas norte-sur (1a al oriente … 7a al poniente) y calles oriente-poniente (1a al norte …).
+// Parque Central entre la 4a y la 5a Calle y la 4a y la 5a Avenida. Fuentes: Wikivoyage y Revue Magazine (consultadas el 23-oct-2026).
+var MAP = { cw: 44, ch: 37, avs: 7, cas: 8, ox: 26, oy: 18 };
+MAP.W = MAP.ox + MAP.cw * MAP.avs; MAP.H = MAP.oy + MAP.ch * MAP.cas;
+function mx(av) { return MAP.ox + (MAP.avs - av + 0.5) * MAP.cw; }
+function my(ca) { return MAP.oy + (ca - 0.5) * MAP.ch; }
+function ord(n, lang) { return lang === 'en' ? n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th') : n + 'a'; }
+function pathThrough(pts) {
+  var d = '';
+  pts.forEach(function (p, i) {
+    var x = mx(p.av), y = my(p.ca);
+    if (!i) { d += 'M' + x + ' ' + y; return; }
+    var q = pts[i - 1];
+    if (q.av !== p.av && q.ca !== p.ca) d += ' L' + x + ' ' + my(q.ca);
+    d += ' L' + x + ' ' + y;
+  });
+  return d;
+}
+// opts: { routes: [{ids, faint}], stops: [ids numeradas], pin: id, labels: bool, lang }
+function mapSVG(opts) {
+  var s = '', i, j;
+  for (i = 1; i < MAP.avs; i++) for (j = 1; j < MAP.cas; j++) {
+    var x1 = mx(i + 1) + 3, x2 = mx(i) - 3, y1 = my(j) + 3, y2 = my(j + 1) - 3;
+    s += '<rect class="' + (i === 4 && j === 4 ? 'park' : 'block') + '" x="' + x1 + '" y="' + y1 + '" width="' + (x2 - x1) + '" height="' + (y2 - y1) + '" rx="3"/>';
+  }
+  if (opts.labels) {
+    for (i = 1; i <= MAP.avs; i++) s += '<text class="lbl" x="' + mx(i) + '" y="12" text-anchor="middle">' + ord(i, opts.lang) + ' Av</text>';
+    for (j = 1; j < MAP.cas; j++) s += '<text class="lbl" x="3" y="' + (my(j) + 3) + '">' + ord(j, opts.lang) + (opts.lang === 'en' ? ' St' : ' C') + '</text>';
+    if (!(opts.stops || []).length) s += '<text class="lbl park-lbl" x="' + ((mx(4) + mx(5)) / 2) + '" y="' + ((my(4) + my(5)) / 2 + 3) + '" text-anchor="middle">Parque</text>';
+    var nx = MAP.W - 14, ny = MAP.H - 30;
+    s += '<g class="north"><path d="M' + nx + ' ' + (ny - 11) + ' l5 11 h-10 z"/><text class="lbl" x="' + nx + '" y="' + (ny + 11) + '" text-anchor="middle">N</text></g>';
+  }
+  (opts.routes || []).forEach(function (r) {
+    var pts = r.ids.map(function (id) { return P[id] && P[id].pos; }).filter(Boolean);
+    if (pts.length > 1) s += '<path class="route' + (r.faint ? ' faint' : ' draw') + '" pathLength="1" d="' + pathThrough(pts) + '"/>';
+  });
+  (opts.stops || []).forEach(function (id, k) {
+    var p = P[id] && P[id].pos; if (!p) return;
+    s += '<g class="stop' + (p.aprox ? ' aprox' : '') + '"><circle cx="' + mx(p.av) + '" cy="' + my(p.ca) + '" r="10"/><text x="' + mx(p.av) + '" y="' + my(p.ca) + '">' + (k + 1) + '</text></g>';
+  });
+  if (opts.pin && P[opts.pin] && P[opts.pin].pos) { var q = P[opts.pin].pos; s += '<g class="pin"><circle cx="' + mx(q.av) + '" cy="' + my(q.ca) + '" r="9"/></g>'; }
+  var vb = opts.crop || ('0 0 ' + MAP.W + ' ' + MAP.H);
+  return '<svg viewBox="' + vb + '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' + esc(opts.label || '') + '">' + s + '</svg>';
+}
+// Recorte del mapa alrededor de un conjunto de lugares (para mapas chicos).
+function cropFor(ids, pad) {
+  var pts = ids.map(function (id) { return P[id] && P[id].pos; }).filter(Boolean);
+  if (!pts.length) return null;
+  var xs = pts.map(function (p) { return mx(p.av); }), ys = pts.map(function (p) { return my(p.ca); });
+  var x0 = Math.min.apply(null, xs) - pad, x1 = Math.max.apply(null, xs) + pad, y0 = Math.min.apply(null, ys) - pad, y1 = Math.max.apply(null, ys) + pad;
+  var w0 = x1 - x0, h0 = y1 - y0, side = Math.max(w0, h0);
+  return [(x0 + x1 - side) / 2, (y0 + y1 - side) / 2, side, side].map(function (n) { return Math.round(n); }).join(' ');
+}
+
+// ===================== ESTADO =====================
+// En el teléfono solo se guardan los ♥, el idioma y las preferencias. La conversación vive en memoria y se borra al recargar.
+var LS = 'naihual.app1';
+var S = { view: 'inicio', stack: [], lang: 'es', saved: [], pref: { cultura: 0, cafe: 0, comida: 0 }, guide: ORDER[0], msgs: [], route: null, detail: null, nawal: null, filter: 'all', query: '', sec: 'revision', demoFb: '', anim: true };
+try { var st0 = JSON.parse(localStorage.getItem(LS) || 'null'); if (st0) { S.saved = (st0.saved || []).filter(function (k) { return typeof k === 'string'; }); S.lang = st0.lang === 'en' ? 'en' : 'es'; Object.assign(S.pref, st0.pref || {}); } } catch (e) {}
+function persist() { try { localStorage.setItem(LS, JSON.stringify({ saved: S.saved, pref: S.pref, lang: S.lang })); } catch (e) {} }
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function T() { return STR[S.lang]; }
+function L() { return S.lang; }
+function routeUrl(ids) {
+  var qs = ids.map(function (id) { return encodeURIComponent([P[id].name, P[id].addr, 'Antigua Guatemala'].join(', ')); });
+  return 'https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=' + qs[0] + '&destination=' + qs[qs.length - 1] + (qs.length > 2 ? '&waypoints=' + qs.slice(1, -1).join('%7C') : '');
+}
+function fmtDate(s, lang) { var m = s.split('-'), t = STR[lang || S.lang]; return (lang || S.lang) === 'en' ? t.months[+m[1] - 1] + ' ' + (+m[2]) + ', ' + m[0] : (+m[2]) + ' ' + t.months[+m[1] - 1] + ' ' + m[0]; }
+function safeHttp(u) { return /^https?:\/\//.test(u) ? u : ''; }
+// Lo que se ve en este modo: lugares visibles, rutas que quedaron, consejos y nawales.
+function shown(key) {
+  var k = String(key).split(':')[0], id = String(key).split(':')[1];
+  return k === 'p' ? visible(P[id]) : k === 'r' ? !!ROUTES[id] : k === 't' ? !!TIPS[id] : k === 'n' ? !!N[id] : false;
+}
+function savedShown() { return S.saved.filter(shown); }
+function isSaved(key) { return S.saved.indexOf(key) >= 0; }
+function cats(key) {
+  if (!shown(key)) return [];
+  var k = key.split(':')[0], id = key.split(':')[1];
+  if (k === 'r') return ROUTES[id].stops.map(function (s) { return P[s].cat; });
+  if (k === 'p') return [P[id].cat];
+  if (k === 't') return TIPS[id].cat === 'cultura' ? ['cultura'] : [];
+  return ['cultura'];
+}
+function bump(key, n) { cats(key).forEach(function (c) { S.pref[c] = (S.pref[c] || 0) + n; }); }
+function toggle(key) {
+  var has = isSaved(key);
+  S.saved = has ? S.saved.filter(function (x) { return x !== key; }) : S.saved.concat([key]);
+  bump(key, has ? -3 : 3); persist(); render({ keep: true });
+}
+function heartBtn(key) { var t = T(), on = isSaved(key); return '<button type="button" class="heart" data-toggle="' + key + '" aria-pressed="' + on + '" aria-label="' + esc(on ? t.saved : t.save) + '">' + icon('heart') + '</button>'; }
+
+// ===================== PIEZAS =====================
+function sealHTML(p) {
+  var t = T();
+  if (isPub(p)) {
+    var u = safeHttp(p.fuenteUrl), src = u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(p.fuente) + '</a>' : esc(p.fuente);
+    return '<details class="seal ok" data-seal="ok"><summary>' + icon('check', 'sm') + esc(t.verified(fmtDate(p.fecha))) + '</summary><p>' + t.verifiedBody(src, esc(p.verifico)) +
+      (p.horario ? '<br>' + esc(t.hours) + ': ' + esc(p.horario) : '') + (p.precio ? '<br>' + esc(t.price) + ': ' + esc(p.precio) : '') + '</p></details>';
+  }
+  return '<details class="seal pending" data-seal="pending"><summary>' + esc(t.toCheck) + '</summary><p>' + esc(t.toCheckBody) + '</p></details>';
+}
+function infoHTML(kind) {
+  var t = T(), title = kind === 'hist' ? t.infoHist : t.infoCult, body = kind === 'hist' ? t.infoHistBody : kind === 'guard' ? t.infoGuard : t.infoCultBody;
+  return '<details class="info" data-info="' + kind + '"><summary aria-label="' + esc(title) + '">' + icon('info', 'sm') + '</summary><p><b>' + esc(title) + '.</b> ' + esc(body) + '</p></details>';
+}
+function mapsBtn(p, cls, label) {
+  var u = mapsUrl(p); if (!u) return '';
+  return '<a class="btn' + (cls ? ' ' + cls : '') + '" href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="' + esc(T().mapsAria(p.name)) + '">' + icon('pin', 'sm') + esc(label || T().maps) + '</a>';
+}
+function catTags(p) {
+  var t = T();
+  return '<div class="tags"><span class="tag">' + esc(t.place[p.cat]) + '</span>' + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + (betaLiked(p.id) ? '<span class="tag like" data-liked>' + esc(X().likedTag) + '</span>' : '') + '</div>';
+}
+function placeCard(p) {
+  var t = T();
+  return '<article class="pcard" data-place="' + esc(p.id) + '" data-pub="' + isPub(p) + '">' + heartBtn('p:' + p.id) +
+    '<button type="button" class="pin" data-open="p:' + p.id + '" aria-label="' + esc(p.name) + '">' + phHTML(p, t) + '</button>' +
+    '<div class="pc-body">' + catTags(p) + '<h3>' + esc(p.name) + '</h3>' + (p.why[L()] ? '<p>' + esc(p.why[L()]) + '</p>' : '') +
+    (p.addr ? '<span class="addr">' + esc(p.addr) + '</span>' : '') +
+    '<div class="row">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(p.id) + '">' + esc(t.info) + '</button>' + sealHTML(p) + (p.hist ? infoHTML('hist') : '') + '</div></div></article>';
+}
+function miniMap(ids, extra) {
+  return '<div class="map">' + mapSVG({ routes: [{ ids: ids }], stops: ids, crop: cropFor(ids, 34), label: extra || '' }) + '</div>';
+}
+function routeRow(rid) {
+  var t = T(), r = ROUTES[rid];
+  return '<div class="rcard" data-routecard="' + rid + '">' + miniMap(r.stops, r.title[L()]) + '<div><span class="eyebrow">' + esc(t.route) + ' · ' + esc(r.kicker[L()]) + '</span><b>' + esc(r.title[L()]) + '</b><span class="muted" style="font-size:13px">' + r.stops.length + ' ' + esc(t.stops) + '</span><br>' +
+    '<button type="button" class="btn" data-route="' + rid + '">' + icon('map', 'sm') + esc(S.lang === 'en' ? 'See route' : 'Ver ruta') + '</button></div></div>';
+}
+function planRow(ids) {
+  var t = T();
+  return '<div class="rcard">' + miniMap(ids) + '<div><span class="eyebrow">' + esc(t.plan) + ' · ' + ids.length + ' ' + esc(t.stops) + '</span><b>' + ids.map(function (id) { return esc(P[id].name); }).join(' · ') + '</b>' +
+    '<a class="btn anil" href="' + esc(routeUrl(ids)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(S.lang === 'en' ? 'Open on foot' : 'Abrir a pie') + '</a></div></div>';
+}
+function tipCard(id) {
+  var tp = TIPS[id];
+  return '<div class="tipcard" data-tip="' + id + '">' + heartBtn('t:' + id) + '<span class="eyebrow">' + esc(tp.cat === 'cultura' ? T().culture : T().tip) + '</span><p>' + esc(tp.body[L()]) + '</p>' + (tp.star ? infoHTML('cult') : '') + '</div>';
+}
+function empty(title, body, extra) {
+  return '<div class="empty" role="status"><div class="art map">' + mapSVG({ label: '' }) + '</div><b>' + esc(title) + '</b>' + (body ? '<p>' + esc(body) + '</p>' : '') + (extra || '') + '</div>';
+}
+function backBtn() { return '<button type="button" class="btn ghost back" data-back>' + icon('back', 'sm') + esc(T().back) + '</button>'; }
+
+// ===================== PROVEEDOR DE RESPUESTAS (intercambiable) =====================
+// Contrato: respond(pregunta, guardián) → mensaje { from, kind, intent?, gap?, intro?, meta }.
+// meta = registro: proveedor, versión de instrucciones, fuentes que la respaldan, si hubo información suficiente y si pidió aclaración.
+// Hoy: reglas fijas. En vista previa dentro del visor de Claude: Claude (ver más abajo). Mañana: Gemini detrás de un servidor propio; nunca una llave en el navegador.
+function resolve(intent, gid) {
+  var r = R[intent][gid], cards = [], hidden = false;
+  if (r.plan) { if (r.plan.every(function (id) { return visible(P[id]) && P[id].addr; })) cards.push({ plan: r.plan }); else hidden = true; }
+  (r.items || []).forEach(function (k) { if (shown(k)) cards.push({ key: k }); else if (k.charAt(0) !== 't') hidden = true; });
+  return { cards: cards, hidden: hidden };
+}
+function sourcesOf(cards) {
+  var out = [];
+  function place(id) { var p = P[id]; out.push(p.name + ' · ' + (isPub(p) ? p.fuente + ' (' + p.fecha + ')' : 'por verificar')); }
+  cards.forEach(function (c) {
+    if (c.plan) c.plan.forEach(place);
+    else { var k = c.key.split(':')[0], id = c.key.split(':')[1];
+      if (k === 'p') place(id);
+      if (k === 'r') ROUTES[id].stops.forEach(place);
+      if (k === 't') (TIPS[id].src || []).forEach(function (s) { out.push(SRC[s] ? SRC[s].titulo + ' · ' + SRC[s].estado : s); }); }
+  });
+  return out.filter(function (x, i) { return out.indexOf(x) === i; });
+}
+var RulesProvider = {
+  id: 'reglas-fijas', label: 'Reglas fijas (sin IA)', version: INSTR_VERSION,
+  respond: function (text, guide) {
+    var t = norm(text), named = detectGuardian(t), intent = detectIntent(t);
+    var target = named || (NEXT_RE.test(t) ? ORDER[(ORDER.indexOf(guide) + 1) % ORDER.length] : null);
+    var m = { from: guide };
+    if (target && target !== guide) { m.from = target; m.intro = true; }
+    if (intent && R[intent]) { m.kind = 'r'; m.intent = intent; }
+    else if (intent === 'seguridad') m.kind = 'safety';
+    else if (intent && GAPS[intent]) { m.kind = 'gap'; m.gap = intent; }
+    else m.kind = m.intro ? 'takeover' : 'clarify';
+    var meta = { proveedor: this.label, instrucciones: this.version, intencion: m.intent || m.gap || m.kind, fuentes: [], suficiente: false, aclaracion: m.kind === 'clarify' };
+    if (m.kind === 'r' && m.intent === 'cafe') { var ids = pilotCafes(); meta.fuentes = sourcesOf(ids.map(function (id) { return { key: 'p:' + id }; })); meta.suficiente = ids.length > 0; }
+    else if (m.kind === 'r') { var res = resolve(m.intent, m.from); meta.fuentes = sourcesOf(res.cards); meta.suficiente = !res.hidden && res.cards.length > 0; }
+    else if (m.kind === 'takeover') meta.suficiente = true;
+    m.meta = meta;
+    return m;
+  }
+};
+var PROVIDER = RulesProvider;
+// ===================== CLAUDE RESPONDE (solo en la prueba privada dentro del visor de Claude) =====================
+// Se enciende con «claude_responde: true» en data/config.js. Usa la función oficial del visor que le pregunta a Claude
+// con la cuenta de quien abre la página: sin llaves, sin servidor y sin pagos aparte. Fuera del visor no existe: responden las reglas fijas.
+// Claude recibe solo los datos de esta app y estas reglas. La app revisa cada respuesta: solo muestra fichas publicadas,
+// y si el texto nombra un lugar en revisión, la descarta y responde con reglas fijas. Nada se guarda en nAIhual.
+var AI_ON = PREVIEW && CFG.claude_responde === true; // solo en vista previa
+var AI = { fn: null, state: AI_ON ? 'cargando' : 'apagado', busy: false, turns: [], ctl: null };
+var AI_OFF_CODES = { not_granted: 1, sampling_disabled: 1, not_declared: 1, capability_disabled: 1, capability_removed: 1, session_expired: 1 };
+if (AI_ON && window.claude && typeof window.claude.use === 'function') {
+  window.claude.use('sample').then(function (fn) { AI.fn = fn || null; AI.state = fn ? 'listo' : 'no-disponible'; render(false); }, function () { AI.state = 'no-disponible'; render(false); });
+} else if (AI_ON) AI.state = 'no-disponible';
+function aiData() {
+  var mine = function (pid, tipo) { return BETA.items.filter(function (x) { return x.lugar === pid && x.tipo === tipo; }); };
+  return {
+    guardianes: ORDER.map(function (id) { var g = G[id]; return { id: id, nombre: g.name, es: g.value.es + ' *', hace: g.role.es, habla: g.speaks.es, recomienda: g.recs.es, rumbo_y_color: g.dir.es + ' *' }; }),
+    // Paso 1: lo que nAIhual ya sabe.
+    catalogo: PIDS.filter(function (id) { return visible(P[id]); }).map(function (id) { var p = P[id];
+      return { id: id, nombre: p.name, categoria: p.cat, direccion: p.addr || null, estado: isPub(p) ? 'verificado (' + p.fuente + ', ' + p.fecha + ')' : 'por verificar', lo_que_dijo_el_fundador: p.why.es || null,
+        le_gusto_al_fundador: mine(id, 'gusta').length > 0, notas_del_fundador: mine(id, 'nota').concat(mine(id, 'dato')).map(function (x) { return x.texto; }), patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
+    lugares_que_agrego_el_fundador: BETA.items.filter(function (x) { return x.tipo === 'nuevo'; }).map(function (x) { return { nombre: x.nombre, momento: x.momento || null, le_gusto: !!x.gusta, nota: x.texto || null }; }),
+    libretas: LIBRETAS,
+    aprendido_confirmado: learnedConfirmed(),
+    consejos: Object.keys(TIPS).map(function (id) { return { id: id, texto: TIPS[id].body.es, cultural_pendiente_de_validacion: !!TIPS[id].star }; }),
+    nawales_del_cholqij: NAWALES.map(function (r) { return r[1] + ': ' + r[2].es + ' · ' + r[3].es; })
+  };
+}
+function aiRules(gid) {
+  var g = G[gid];
+  return 'Sos nAIhual, un agente turístico-cultural de Antigua Guatemala, en la prueba privada del fundador. ' +
+    'Respondés como el guía de turno, ' + g.name + ' (' + g.role.es + '; habla ' + g.speaks.es.toLowerCase() + '; recomienda: ' + g.recs.es + ').\n' +
+    'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
+    'Orden para buscar (obligatorio):\n' +
+    '1. Primero lo que nAIhual ya sabe: «catalogo», «lugares_que_agrego_el_fundador», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
+    '2. Si ahí no está, respondé con lo que vos sabés de Antigua, como un agente de verdad: lugares reales que conocés, con su contexto. Ponelos en «otros» (nombre exacto del lugar y por qué). La app les pone la etiqueta «Según la IA · confirmá en Google». No inventes lugares: si no conocés uno que sirva, decilo.\n' +
+    'Reglas:\n' +
+    '- Sos guía, no juez. Resumí lo que dijeron las personas (el fundador, agentes) y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
+    '- Nunca afirmes horarios, precios, si abre hoy ni qué platos tiene el menú: decí «confirmalo en Google Maps» o «en su menú», una sola vez.\n' +
+    '- Lo cultural maya lleva * porque falta que lo valide un tata (Ajq\'ij). Nunca le digas a nadie «cuál es su nawal».\n' +
+    '- Emergencias o salud: sugerí preguntar en el hospedaje; no des números de teléfono.\n' +
+    '- Lo patrocinado se dice. Un pago nunca cambia lo que recomendás.\n' +
+    '- No repitas un consejo que ya diste en esta plática. «consejos» solo si de verdad suma.\n' +
+    '- Si la pregunta es ambigua, una pregunta breve. Las «opciones» suenan a persona, no a menú (por ejemplo «¿Algo dulce cerca?»), sin palabras como «pendiente de validación».\n' +
+    '- Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si te escriben en inglés, respondé en inglés.\n' +
+    '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección del fundador). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
+    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "otros": [{"nombre": string, "porque": string}], "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos]}\n\n' +
+    'DATOS:\n' + JSON.stringify(aiData());
+}
+// Revisión de lo que devuelve Claude antes de mostrarlo.
+function aiClean(r) {
+  if (!r || typeof r !== 'object' || typeof r.texto !== 'string' || !r.texto.trim()) return null;
+  var texto = r.texto.trim().slice(0, 1500);
+  function ids(list, ok, max) { return (Array.isArray(list) ? list : []).map(String).filter(function (x, i, a) { return ok(x) && a.indexOf(x) === i; }).slice(0, max); }
+  var lugares = ids(r.lugares, function (id) { return visible(P[id]); }, 3), otros = [];
+  (Array.isArray(r.otros) ? r.otros : []).forEach(function (o) {
+    if (!o || typeof o.nombre !== 'string' || !o.nombre.trim()) return;
+    var nombre = o.nombre.trim().slice(0, 80), n = norm(nombre);
+    // Si es un lugar del catálogo, se muestra su ficha.
+    var cat = PIDS.filter(function (id) { return visible(P[id]) && norm(P[id].name) === n; })[0];
+    if (cat) { if (lugares.indexOf(cat) < 0 && lugares.length < 3) lugares.push(cat); return; }
+    if (otros.length < 3 && !otros.some(function (x) { return norm(x.nombre) === n; })) otros.push({ nombre: nombre, porque: typeof o.porque === 'string' ? o.porque.trim().slice(0, 200) : '' });
+  });
+  return { texto: texto, lugares: lugares, otros: otros, consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 1),
+    cultural: r.cultural === true, suficiente: r.suficiente === true,
+    opciones: (Array.isArray(r.opciones) ? r.opciones : []).map(function (o) { return String(o).trim().slice(0, 60); }).filter(Boolean).slice(0, 3),
+    aprendido: (Array.isArray(r.aprendido) ? r.aprendido : []).filter(function (x) { return typeof x === 'string' && x.trim(); }).map(function (x) { return x.trim().slice(0, 200); }).slice(0, 2) };
+}
+// Lugar que nombra la IA y no está en el catálogo: «Vamos» abre la ruta en Google Maps desde donde está la persona; «Info» lo busca en Google Maps.
+function iaPlaceCard(o) {
+  var t = T(), x = X(), q = encodeURIComponent(o.nombre + ', Antigua Guatemala');
+  return '<article class="pcard ia" data-ia-place="' + esc(o.nombre) + '"><div class="pc-body"><div class="tags"><span class="tag check">' + esc(x.iaTag) + '</span></div><h3>' + esc(o.nombre) + '</h3>' + (o.porque ? '<p>' + esc(o.porque) + '</p>' : '') +
+    '<div class="row"><a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener" aria-label="' + esc(t.mapsAria(o.nombre)) + '">' + icon('pin', 'sm') + esc(t.maps) + '</a>' +
+    '<a class="btn" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(t.info) + '</a></div></div></article>';
+}
+function askClaude(text, rulesMsg, pend) {
+  AI.busy = true; AI.ctl = new AbortController();
+  var input = [{ role: 'user', content: aiRules(pend.from) }].concat(AI.turns.slice(-8)).concat([{ role: 'user', content: text }]);
+  function finish(m) { var i = S.msgs.indexOf(pend); if (i >= 0) S.msgs[i] = m; else S.msgs.push(m); AI.busy = false; AI.ctl = null; render(true); }
+  AI.fn.json(input, { modelTier: 'quick', cache: false, signal: AI.ctl.signal }).then(function (r) {
+    var out = aiClean(r);
+    if (!out) { rulesMsg.aiNote = 'aiBad'; finish(rulesMsg); return; }
+    AI.turns.push({ role: 'user', content: text }, { role: 'assistant', content: out.texto });
+    learnAdd(out.aprendido, text, pend.from);
+    var cards = out.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(out.consejos.map(function (id) { return { key: 't:' + id }; }));
+    finish({ from: pend.from, intro: pend.intro, kind: 'ai', ai: out,
+      meta: { proveedor: 'Claude (prueba privada en el visor)', instrucciones: INSTR_VERSION + ' + claude-2', intencion: rulesMsg.intent || rulesMsg.gap || 'libre', fuentes: sourcesOf(cards), suficiente: out.suficiente, aclaracion: out.opciones.length > 0 } });
+  }, function (e) {
+    var code = e && e.code;
+    if (code === 'cancelled') { rulesMsg.aiNote = 'aiStopped'; finish(rulesMsg); return; }
+    if (AI_OFF_CODES[code]) AI.state = 'no-disponible';
+    rulesMsg.aiNote = code === 'rate_limited' ? 'aiBusy' : AI_OFF_CODES[code] ? 'aiOff' : 'aiBad';
+    finish(rulesMsg);
+  });
+}
+
+function termsHTML(rows) { return '<dl class="terms">' + rows.map(function (r) { return '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>'; }).join('') + '</dl>'; }
+// ===================== BETA DEL FUNDADOR (solo vista previa) =====================
+// Lo que anota el fundador: «me gustó», «dato mal», notas y lugares nuevos. Nada se publica solo:
+// Claude lo lee (base de datos del visor, colección «beta»), lo verifica con fuente y lo pasa al catálogo.
+var BETA = { items: [], db: null, where: 'local', msg: '' };
+// Libretas de conocimiento del fundador (Google Docs). Claude las lee del Drive y las carga en data/libretas.js; la libreta es la fuente.
+var LIBRETAS = (Array.isArray(window.NAIHUAL_LIBRETAS) ? window.NAIHUAL_LIBRETAS : []).filter(function (l) { return l && typeof l.titulo === 'string'; });
+// Lo que nAIhual aprende de las pláticas: entra «por confirmar»; solo lo confirmado se usa para responder (bases B10).
+var LEARN = { items: [] };
+var LEARN_LS = 'naihual.aprendido';
+var BETA_LS = 'naihual.beta';
+function betaLoadLocal() { try { var a = JSON.parse(localStorage.getItem(BETA_LS) || '[]'); BETA.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.tipo === 'string'; }) : []; } catch (e) { BETA.items = []; } }
+function betaSaveLocal() { try { localStorage.setItem(BETA_LS, JSON.stringify(BETA.items)); } catch (e) {} }
+function betaTyping() { var a = document.activeElement; return !!(a && a.closest && a.closest('.bform')); }
+function betaRefresh() { if (betaTyping()) { BETA.dirty = true; return; } render({ keep: true }); }
+function learnLoadLocal() { try { var a = JSON.parse(localStorage.getItem(LEARN_LS) || '[]'); LEARN.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.texto === 'string'; }) : []; } catch (e) { LEARN.items = []; } }
+function learnSaveLocal() { try { localStorage.setItem(LEARN_LS, JSON.stringify(LEARN.items)); } catch (e) {} }
+if (BETA_ON) {
+  betaLoadLocal(); learnLoadLocal();
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('db').then(function (db) {
+      if (!db) return;
+      BETA.db = db; BETA.where = 'db';
+      db.collection('beta').onSnapshot(function (snap) {
+        BETA.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; });
+        betaRefresh();
+      }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
+      db.collection('aprendido').onSnapshot(function (snap) {
+        LEARN.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; });
+        betaRefresh();
+      }, function () { learnLoadLocal(); betaRefresh(); });
+      betaRefresh();
+    }, function () {});
+  }
+}
+function betaLiked(pid) { return BETA_ON && BETA.items.some(function (x) { return x.tipo === 'gusta' && x.lugar === pid; }); }
+function betaToggleLike(pid) {
+  var id = 'gusta-' + pid, has = betaLiked(pid);
+  if (BETA.db) {
+    var ref = BETA.db.doc('beta/' + id);
+    (has ? ref.delete() : ref.set({ tipo: 'gusta', lugar: pid, nombre: P[pid] ? P[pid].name : pid, fecha: new Date().toISOString() })).catch(function () { BETA.msg = 'saveFail'; render({ keep: true }); });
+    return;
+  }
+  BETA.items = has ? BETA.items.filter(function (x) { return !(x.tipo === 'gusta' && x.lugar === pid); }) : BETA.items.concat([{ _id: id, tipo: 'gusta', lugar: pid, nombre: P[pid] ? P[pid].name : pid, fecha: new Date().toISOString() }]);
+  betaSaveLocal(); render({ keep: true });
+}
+function betaAdd(item) {
+  item.fecha = new Date().toISOString();
+  BETA.msg = '';
+  if (BETA.db) return BETA.db.collection('beta').add(item).then(function () { BETA.msg = 'savedOk'; render({ keep: true }); }, function () { BETA.msg = 'saveFail'; render({ keep: true }); });
+  item._id = 'local-' + Date.now();
+  BETA.items = BETA.items.concat([item]); betaSaveLocal(); BETA.msg = 'savedOk'; render({ keep: true });
+}
+function learnAdd(list, pregunta, gid) {
+  if (!BETA_ON || !list.length) return;
+  list.forEach(function (texto) {
+    var it = { texto: texto, pregunta: String(pregunta).slice(0, 200), guia: gid, estado: 'por_confirmar', fecha: new Date().toISOString() };
+    if (BETA.db) { BETA.db.collection('aprendido').add(it).catch(function () {}); return; }
+    it._id = 'local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6); LEARN.items = LEARN.items.concat([it]); learnSaveLocal();
+  });
+}
+function learnSet(id, estado) {
+  if (BETA.db) { var ref = BETA.db.doc('aprendido/' + id); (estado ? ref.update({ estado: estado }) : ref.delete()).catch(function () { BETA.msg = 'saveFail'; render({ keep: true }); }); return; }
+  LEARN.items = estado ? LEARN.items.map(function (x) { if (x._id === id) x.estado = estado; return x; }) : LEARN.items.filter(function (x) { return x._id !== id; });
+  learnSaveLocal(); render({ keep: true });
+}
+function learnedConfirmed() { return LEARN.items.filter(function (x) { return x.estado === 'confirmado'; }).map(function (x) { return x.texto; }); }
+function betaMsg() { return BETA.msg ? '<p class="note" role="status" data-beta-msg="' + BETA.msg + '">' + esc(X()[BETA.msg]) + '</p>' : ''; }
+function betaFichaHTML(p) {
+  var x = X(), on = betaLiked(p.id);
+  return '<section class="beta-card" data-beta-ficha="' + esc(p.id) + '"><span class="eyebrow">' + esc(x.betaFicha) + '</span>' +
+    '<div class="row"><button type="button" class="btn" data-beta-like="' + esc(p.id) + '" aria-pressed="' + on + '">' + icon('heart', 'sm' + (on ? ' fill' : '')) + esc(on ? x.liked : x.like) + '</button></div>' +
+    '<form class="bform" data-bform="ficha" data-lugar="' + esc(p.id) + '"><label>' + esc(x.kind) + '<select name="tipo"><option value="dato">' + esc(x.wrong) + '</option><option value="nota">' + esc(x.note) + '</option></select></label>' +
+    '<label>' + esc(x.text) + '<textarea name="texto" required maxlength="600"></textarea></label><button type="submit" class="btn primary">' + esc(x.save) + '</button></form>' + betaMsg() + '</section>';
+}
+function betaCard() {
+  var x = X(), n = BETA.items.length;
+  return '<section class="beta-card" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><b>' + esc(x.betaTitle) + '</b><p>' + esc(x.betaBody) + '</p>' +
+    '<div class="row"><button type="button" class="btn primary" data-go="beta">' + esc(x.betaOpen) + '</button></div></section>';
+}
+function betaHTML() {
+  var x = X(), items = BETA.items.slice().sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); });
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
+    '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
+    '<section class="sec"><h2>' + esc(x.addTitle) + '</h2><form class="bform" data-bform="nuevo">' +
+      '<label>' + esc(x.name) + '<input type="text" name="nombre" required maxlength="120" autocomplete="off"></label>' +
+      '<label>' + esc(x.mapsLink) + '<input type="url" name="maps" inputmode="url" autocomplete="off" placeholder="https://maps.app.goo.gl/…"></label>' +
+      '<label>' + esc(x.moment) + '<select name="momento">' + x.moments.map(function (m) { return '<option value="' + m[0] + '">' + esc(m[1]) + '</option>'; }).join('') + '</select></label>' +
+      '<label class="check"><input type="checkbox" name="gusta">' + esc(x.didLike) + '</label>' +
+      '<label>' + esc(x.addNote) + '<textarea name="texto" maxlength="600"></textarea></label>' +
+      '<button type="submit" class="btn primary">' + esc(x.addBtn) + '</button></form>' + betaMsg() + '</section>' +
+    '<section class="sec" data-learned><h2>' + esc(x.learned) + '</h2><p class="muted">' + esc(x.learnedBody) + '</p>' + (LEARN.items.length ? '<div class="list">' + LEARN.items.slice().sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }).map(function (it) {
+      var ok = it.estado === 'confirmado';
+      return '<div class="bitem" data-learn="' + esc(it.estado) + '"><span class="tags"><span class="tag' + (ok ? ' ok' : ' check') + '">' + esc(ok ? x.confirmed : x.toConfirm) + '</span></span><p>' + esc(it.texto) + '</p>' + (it.pregunta ? '<small>«' + esc(it.pregunta) + '»</small>' : '') +
+        '<div class="row">' + (ok ? '' : '<button type="button" class="btn primary" data-learn-ok="' + esc(it._id) + '">' + esc(x.confirm) + '</button>') + '<button type="button" class="btn" data-learn-del="' + esc(it._id) + '">' + esc(x.remove) + '</button></div></div>'; }).join('') + '</div>' : '<p class="note">' + esc(x.noLearned) + '</p>') + '</section>' +
+    '<section class="sec" data-libretas><h2>' + esc(x.notebooks) + ' · ' + LIBRETAS.length + '</h2><p class="muted">' + esc(x.notebooksBody(LIBRETAS.length)) + '</p>' + (LIBRETAS.length ? '<div class="list">' + LIBRETAS.map(function (l) { return '<div class="bitem"><b>' + esc(l.titulo) + '</b><small>' + esc((l.fuente || '') + (l.fecha ? ' · ' + l.fecha : '')) + '</small></div>'; }).join('') + '</div>' : '') + '</section>' +
+    '<section class="sec"><h2>' + esc(x.list) + ' · ' + items.length + '</h2>' + (items.length ? '<div class="list">' + items.map(function (it) {
+      var mom = x.moments.filter(function (m) { return m[0] === it.momento; })[0];
+      return '<div class="bitem" data-beta-item="' + esc(it.tipo) + '"><span class="tags"><span class="tag">' + esc(x.kinds[it.tipo] || it.tipo) + '</span>' + (mom ? '<span class="tag">' + esc(mom[1]) + '</span>' : '') + (it.gusta ? '<span class="tag like">' + esc(x.didLike) + '</span>' : '') + '</span>' +
+        '<b>' + esc(it.nombre || (P[it.lugar] ? P[it.lugar].name : '—')) + '</b>' + (it.texto ? '<p>' + esc(it.texto) + '</p>' : '') +
+        (it.maps && safeHttp(it.maps) ? '<a class="linkish" href="' + esc(it.maps) + '" target="_blank" rel="noopener">' + esc(T().maps) + '</a>' : '') +
+        '<small>' + esc(String(it.fecha || '').slice(0, 10)) + '</small></div>'; }).join('') + '</div>' : '<p class="note">' + esc(x.none) + '</p>') + '</section>';
+}
+function betaSubmit(form) {
+  var x = X(), f = form.elements, kind = form.getAttribute('data-bform');
+  if (kind === 'ficha') {
+    var txt = String(f.texto.value || '').trim(); if (!txt) return;
+    var pid = form.getAttribute('data-lugar');
+    betaAdd({ tipo: f.tipo.value === 'dato' ? 'dato' : 'nota', lugar: pid, nombre: P[pid] ? P[pid].name : pid, texto: txt.slice(0, 600) });
+    return;
+  }
+  var nombre = String(f.nombre.value || '').trim(), maps = String(f.maps.value || '').trim();
+  if (!nombre) return;
+  if (maps && !/^https:\/\//.test(maps)) { BETA.msg = 'badLink'; render({ keep: true }); return; }
+  betaAdd({ tipo: 'nuevo', nombre: nombre.slice(0, 120), maps: maps.slice(0, 500), momento: f.momento.value, gusta: !!f.gusta.checked, texto: String(f.texto.value || '').trim().slice(0, 600) });
+}
+
+// ===================== VISTA INTERNA DEL EQUIPO (no la ve el visitante; se apaga en data/config.js) =====================
+var SECS = [['revision', 'Revisión de fichas'], ['textos', 'Textos para aprobar'], ['modelo', 'Modelo y capas'], ['aprendizaje', 'Ciclo de aprendizaje'], ['arquitectura', 'Arquitectura'], ['sistema', 'Sistema visual']];
+// Las 6 capas del modelo (bases B16) y la monetización primaria (B14). Regla 4: una capa a la vez.
+var CAPAS = [
+  ['Bases', 'Qué es nAIhual, intención, pilares, guardianes, personas, arquitectura.', 'ok', 'Fijadas el 24-oct-2026'],
+  ['Conocimiento', 'Catálogo con fuente y fecha, primera ola del viaje (Llegué, Transporte, Hotel, Comida, Qué hay cerca) y brújula del paisaje.', 'now', 'Capa actual · empieza con la beta del fundador'],
+  ['Red de confianza', 'Agentes con su permiso, «me gusta», reseñas y playlists. El ciclo de aprendizaje.', 'next', 'Después'],
+  ['Cuidado', 'Accesibilidad, emergencias y eventos, todo comprobado con fuente y fecha.', 'next', 'Después'],
+  ['Comunidad', 'Visibilidad justa, guía para comunidades escrita con ellas, talleres gratis.', 'next', 'Después'],
+  ['Crecer', 'Hotel socio con QR · retorno a familias cuando haya ingresos · otros pueblos · red social.', 'next', 'Después']
+];
+var CYCLE = [
+  ['nAIhual identifica la intención general de la pregunta.', 'on', 'Activo: reglas fijas, sin IA.'],
+  ['Si falta información, hace una aclaración breve y relevante.', 'part', 'Activo solo dentro de la conversación: si no entiende, pregunta qué buscás y ofrece opciones. No se guarda.'],
+  ['La persona puede indicar, si quiere, si la respuesta le sirvió.', 'off', 'Diseño futuro / no activo. Solo hay una demostración abajo.'],
+  ['El sistema agrupa señales para ver preguntas frecuentes, información que falta y aclaraciones útiles.', 'off', 'Diseño futuro / no activo. Requiere aviso de privacidad, consentimiento y datos sin identificar a nadie.'],
+  ['El sistema propone mejoras a respuestas, reglas, fuentes o filtros.', 'off', 'Diseño futuro / no activo. Una propuesta nunca se aplica sola.'],
+  ['Una persona revisa y aprueba cada cambio antes de aplicarlo.', 'off', 'Hoy lo hace el fundador con Claude, a mano, en los archivos de datos.'],
+  ['Cada cambio queda versionado, se prueba contra casos anteriores y se puede revertir.', 'part', 'Hoy: copias en «versiones/» y pruebas automáticas del recorrido piloto. Falta guardar casos de preguntas reales.']
+];
+var LAYERS = [
+  ['Interfaz', 'Pantallas, idioma, botones y pestañas. No sabe qué proveedor responde.', 'Hoy: index.html'],
+  ['Orquestador del agente', 'Recibe la pregunta, aplica las reglas, llama al proveedor y arma la respuesta con las fichas que el modo permite: en pública, solo las publicadas.', 'Hoy: dentro de index.html'],
+  ['Proveedor de respuestas (intercambiable)', 'Hoy: reglas fijas, sin IA. En vista previa, dentro del visor de Claude: Claude, con la cuenta de quien la abre y solo con los datos de la app (claude_responde en config.js). Mañana: Gemini u otro, siempre detrás de un servidor propio que guarda la llave. El navegador nunca tiene una llave.', 'Hoy: RulesProvider'],
+  ['Conocimiento', 'Catálogo de lugares y registro de fuentes. Solo lo publicado o revisado puede respaldar una respuesta.', 'Hoy: data/lugares.js y data/fuentes.js'],
+  ['Libretas y lo aprendido', 'Paso 1 del orden de búsqueda: libretas del fundador (Google Docs, cargadas por Claude en data/libretas.js) y lo que nAIhual aprendió de las pláticas, solo si el fundador lo confirmó. Paso 2: lo que sabe la IA, con «Según la IA · confirmá en Google».', 'Hoy: data/libretas.js y la colección «aprendido» del visor'],
+  ['Beta del fundador', 'Me gustó, dato mal, notas y lugares nuevos que anota el fundador. Claude los lee, los verifica y los pasa al catálogo. No se publican solos.', 'Hoy: base de datos del visor privado; fuera del visor, solo en este teléfono'],
+  ['Mapa', 'Google Maps para ubicar y llegar: enlaces gratis, sin llave. Sin estrellas dentro de nAIhual. La brújula del paisaje es dibujo propio.', 'Hoy: enlaces de Google Maps y mapa esquemático'],
+  ['Reglas', 'No inventar · * cultural pendiente · † histórico pendiente · patrocinio siempre marcado · el pago no cambia el orden · sin emergencias sin fuente oficial.', 'Hoy: en el orquestador y en los datos'],
+  ['Registro de cada respuesta', 'Qué proveedor respondió, con qué versión de instrucciones, qué fuentes la respaldan y si faltó información.', 'Hoy: solo en memoria y en esta vista; no se guarda ni se envía']
+];
+
+// ===================== CHAT =====================
+// El guardián activo (S.guide) sigue contestando hasta que la persona pide a otro.
+function switchTo(gid) { S.guide = gid; S.msgs.push({ from: gid, kind: 'takeover', intro: true }); }
+function ask(text, fixed) {
+  text = String(text || '').trim(); if (!text || AI.busy) return;
+  S.msgs.push({ user: text });
+  var m = PROVIDER.respond(text, S.guide);
+  S.guide = m.from;
+  // Las reglas deciden siempre el turno del guardián y el café. Lo demás lo contesta Claude cuando está disponible (solo vista previa).
+  var useAI = !fixed && AI.fn && AI.state === 'listo' && !(m.kind === 'r' && m.intent === 'cafe') && !(m.kind === 'takeover' && text.split(/\s+/).length <= 4);
+  if (!useAI) { S.msgs.push(m); render({ scroll: true }); return; }
+  var pend = { from: m.from, intro: m.intro, kind: 'thinking' };
+  S.msgs.push(pend); render({ scroll: true });
+  askClaude(text, m, pend);
+}
+function askIntent(intent) { var c = T().chips.concat(T().clarifyOpts).filter(function (x) { return x[0] === intent; })[0]; if (S.view !== 'guia') nav('guia', { silent: true }); ask(c ? c[1] : intent, true); }
+function cardsFor(list) { return list.map(function (c) { if (c.plan) return planRow(c.plan); var k = c.key.split(':')[0], id = c.key.split(':')[1]; return k === 'p' ? placeCard(P[id]) : k === 'r' ? routeRow(id) : tipCard(id); }).join(''); }
+function chipsHTML(opts, attr) { return '<div class="chips" role="group" aria-label="' + esc(T().clarifyLabel) + '">' + opts.map(function (o) { return '<button type="button" class="chip" ' + attr + '="' + esc(o[0]) + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>'; }
+function msgHTML(m, isNew) {
+  if (m.user) return '<div class="msg' + (isNew ? ' new' : '') + '"><div class="me">' + esc(m.user) + '</div></div>';
+  var t = T(), lang = L(), g = G[m.from], paras = [], cards = '', after = '';
+  if (m.kind === 'welcome') paras.push(t.welcome);
+  else if (m.kind === 'takeover') paras.push(t.takeover);
+  else if (m.kind === 'thinking') paras.push('<span class="thinking" aria-label="' + esc(t.aiThinking) + '"><i></i><i></i><i></i></span>');
+  else if (m.kind === 'r' && m.intent === 'cafe') {
+    var ids = pilotCafes();
+    if (ids.length) { paras.push(esc(R.cafe[m.from].t[lang])); cards = '<div class="cards pilot" data-count="' + ids.length + '">' + ids.map(function (id) { return placeCard(P[id]); }).join('') + '</div>'; }
+    else {
+      paras.push(esc(t.coffeeSoon));
+      var ready = Object.keys(ROUTES)[0];
+      if (ready) { paras.push(esc(t.coffeeReady)); cards = '<div class="cards">' + routeRow(ready) + '</div>'; }
+      else { paras.push(esc(MEANWHILE[lang])); after = chipsHTML(t.clarifyOpts.slice(2), 'data-chip'); }
+      cards = '<div class="pilot-empty" role="status"></div>' + cards;
+    }
+  }
+  else if (m.kind === 'r') {
+    var res = resolve(m.intent, m.from);
+    // Si la respuesta nombra algo que en este modo no se puede mostrar, no se dice.
+    if (res.hidden) { paras.push(esc(NOT_YET[lang])); if (!res.cards.length) { paras.push(esc(MEANWHILE[lang])); after = chipsHTML(t.clarifyOpts.slice(2), 'data-chip'); } }
+    else paras.push(esc(R[m.intent][m.from].t[lang]));
+    if (res.cards.length) cards = '<div class="cards">' + cardsFor(res.cards) + '</div>';
+  }
+  else if (m.kind === 'ai') {
+    m.ai.texto.split(/\n{2,}/).forEach(function (x) { if (x.trim()) paras.push(esc(x.trim())); });
+    // Un consejo que ya salió en esta plática no se vuelve a mostrar.
+    var before = S.msgs.slice(0, Math.max(0, S.msgs.indexOf(m))), seen = {};
+    before.forEach(function (x) { if (x.kind === 'ai') x.ai.consejos.forEach(function (id) { seen[id] = 1; }); });
+    var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.filter(function (id) { return !seen[id]; }).map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
+    var otros = (m.ai.otros || []).map(iaPlaceCard).join('');
+    if (list.length || otros) cards = '<div class="cards">' + cardsFor(list) + otros + '</div>';
+    if (m.ai.opciones.length) after = '<div class="chips" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';
+  }
+  else if (m.kind === 'gap') paras.push(esc(GAP_VOICE[m.from][lang].replace('{x}', GAPS[m.gap][lang]) + ' ' + MEANWHILE[lang]));
+  else if (m.kind === 'safety') paras.push(esc(SAFETY[lang]));
+  else if (m.kind === 'clarify') { paras.push(esc(CLARIFY[m.from][lang])); after = chipsHTML(t.clarifyOpts, 'data-chip'); }
+  if (m.kind === 'thinking') after = '<button type="button" class="chip" data-stop style="align-self:flex-start">' + esc(t.aiStop) + '</button>';
+  var by = m.kind === 'ai' || m.kind === 'thinking' ? ' · ' + t.aiBy : '';
+  return '<div class="msg g-' + m.from + (isNew ? ' new' : '') + '" data-kind="' + m.kind + '"><div class="by">' + portrait(m.from, 22) + '<span>' + esc(g.name + ' · ' + g.tag[lang] + by) + '</span></div>' +
+    (paras.length ? '<div class="bubble">' + paras.map(function (p) { return '<p>' + p + '</p>'; }).join('') + '</div>' : '') + cards + after +
+    (m.aiNote ? '<p class="note">' + esc(t[m.aiNote]) + '</p>' : '') + '</div>';
+}
+
+// ===================== PANTALLAS =====================
+function aiFoot() {
+  if (!AI_ON) return '';
+  var t = T();
+  return '<span data-ai="' + AI.state + '">' + esc(AI.state === 'listo' ? t.aiReady : AI.state === 'cargando' ? t.aiLoading : t.aiOffFoot) + '</span>';
+}
+function footHTML() {
+  var t = T();
+  return '<footer class="foot">' + aiFoot() + '<span>' + esc(t.foot) + (S.lang === 'en' && t.enNote ? ' · ' + esc(t.enNote) : '') + '</span>' +
+    (INTERNAL ? '<button type="button" class="linkbtn" data-go="taller">' + esc(t.internal) + '</button>' : '') + '</footer>';
+}
+function guardStrip(current) {
+  var t = T(), lang = L();
+  return '<div class="guard-strip" role="group" aria-label="' + esc(t.todayGuide) + '">' + ORDER.map(function (id) {
+    return '<button type="button" class="gbtn" data-guide="' + id + '" aria-current="' + (id === current) + '" aria-label="' + esc(t.talk + ' ' + G[id].name) + '">' + portrait(id, 52) + '<b>' + esc(G[id].name) + '</b><small>' + esc(G[id].tag[lang]) + '</small></button>';
+  }).join('') + '</div>';
+}
+function inicioHTML() {
+  var t = T(), lang = L(), rids = Object.keys(ROUTES);
+  var routes = rids.length ? '<div class="rail">' + rids.map(function (rid) {
+    var r = ROUTES[rid];
+    return '<button type="button" class="route-card" data-route="' + rid + '"><span class="map">' + mapSVG({ routes: [{ ids: r.stops }], stops: r.stops, crop: cropFor(r.stops, 40), label: r.title[lang] }) + '</span>' +
+      '<span class="rc-body"><span class="eyebrow">' + esc(r.kicker[lang]) + ' · ' + r.stops.length + ' ' + esc(t.stops) + '</span><span class="rc-title">' + esc(r.title[lang]) + '</span>' + (!routeVerified(r) ? '<span class="tags"><span class="tag check">' + esc(t.toCheck) + '</span></span>' : '') + '</span></button>';
+  }).join('') + '</div>' : empty(t.routesSoon, t.routesSoonBody);
+  var tiles = [['explorar', 'grid', 'lugares'], ['cultura', 'calendar', 'cultura'], ['costumbres', 'compass', 'costumbres'], ['guardianes', 'users', 'guardianes']];
+  return '<section class="hero"><div class="hero-art">' + heroArt() + '<div class="hero-copy"><span class="eyebrow" style="color:rgba(255,255,255,.85)">Antigua Guatemala</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
+    '<div class="cta-row"><button type="button" class="btn anil big" data-ask="cafe" id="cta-cafe">' + icon('coffee') + esc(t.coffee) + '</button><button type="button" class="btn big" data-ask="empezar">' + esc(t.arrived) + '</button></div></section>' +
+    '<section class="intro-card" data-intro><span class="eyebrow" style="color:inherit;opacity:.75">' + esc(X().introKicker) + '</span><h2>' + esc(X().introTitle) + '</h2><p>' + esc(X().introBody) + '</p></section>' +
+    (BETA_ON ? betaCard() : '') +
+    '<section class="sec"><div class="sec-head"><h2>' + esc(t.todayGuide) + '</h2>' + infoHTML('guard') + '</div>' + guardStrip(S.guide) + '</section>' +
+    '<section class="sec brujula" data-brujula><div class="sec-head"><h2>' + esc(X().compass) + '</h2>' + infoHTML('guard') + '</div><p class="muted">' + esc(X().compassBody) + '</p><div class="art">' + paisajeArt() + '</div><p class="note">' + esc(X().compassNote) + '</p></section>' +
+    '<section class="sec"><div class="sec-head"><h2>' + esc(t.routes) + '</h2>' + (rids.length ? '<button type="button" class="linkish" data-go="rutas">' + esc(t.seeAll) + '</button>' : '') + '</div>' + routes + '</section>' +
+    '<section class="sec"><div class="sec-head"><h2>' + esc(t.explore) + '</h2></div><div class="tiles">' + tiles.map(function (x) {
+      return '<button type="button" class="tile" data-go="' + x[0] + '">' + icon(x[1]) + '<span><b>' + esc(t.tiles[x[2]][0]) + '</b><small>' + esc(t.tiles[x[2]][1]) + '</small></span></button>'; }).join('') + '</div></section>' +
+    footHTML();
+}
+function rutasHTML() {
+  var t = T(), lang = L(), rids = Object.keys(ROUTES);
+  if (!rids.length) return '<div class="pagehead"><h1>' + esc(t.routes) + '</h1></div>' + empty(t.routesSoon, t.routesSoonBody);
+  var sel = ROUTES[S.route] ? S.route : rids[0], r = ROUTES[sel];
+  return '<div class="pagehead"><h1>' + esc(t.routes) + '</h1></div>' +
+    '<div class="chips" role="group" aria-label="' + esc(t.routes) + '">' + rids.map(function (rid) { return '<button type="button" class="chip" data-selroute="' + rid + '" aria-pressed="' + (rid === sel) + '">' + esc(ROUTES[rid].title[lang]) + '</button>'; }).join('') + '</div>' +
+    '<div class="mapframe map" data-map="' + sel + '">' + mapSVG({ routes: rids.filter(function (x) { return x !== sel; }).map(function (x) { return { ids: ROUTES[x].stops, faint: true }; }).concat([{ ids: r.stops }]), stops: r.stops, labels: true, lang: lang, label: r.title[lang] }) +
+      '<span class="note">' + esc(t.mapNote) + '</span></div>' +
+    '<section class="sec" data-route-detail="' + sel + '"><span class="eyebrow">' + esc(r.kicker[lang]) + ' · ' + r.stops.length + ' ' + esc(t.stops) + '</span><div class="sec-head"><h2>' + esc(r.title[lang]) + '</h2>' + infoHTML('hist') + '</div><p>' + esc(r.intro[lang]) + '</p>' +
+      (!routeVerified(r) ? '<div class="tags"><span class="tag check">' + esc(t.toCheck) + '</span></div>' : '') +
+      '<ol class="stops">' + r.stops.map(function (id, i) { var p = P[id]; return '<li><button type="button" data-open="p:' + id + '"><span class="n">' + (i + 1) + '</span><span><b>' + esc(p.name) + '</b><small>' + esc(p.addr) + (p.pos && p.pos.aprox ? ' · ' + esc(t.aprox) : '') + '</small></span>' + icon('arrow', 'sm') + '</button></li>'; }).join('') + '</ol>' +
+      '<div class="actions"><a class="btn anil" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(t.openRoute) + '</a>' +
+      '<button type="button" class="btn" data-toggle="r:' + sel + '" aria-pressed="' + isSaved('r:' + sel) + '">' + icon('heart', 'sm fill') + esc(isSaved('r:' + sel) ? t.saved : t.save) + '</button></div></section>';
+}
+function guiaHTML(scrollNew) {
+  var t = T(), g = G[S.guide], lang = L();
+  return '<div class="guide-head g-' + S.guide + '">' + portrait(S.guide, 44) + '<div class="who"><b>' + esc(g.name) + '</b><small>' + esc(g.tag[lang]) + '</small></div>' +
+    '<div class="minis" role="group" aria-label="' + esc(t.todayGuide) + '">' + ORDER.map(function (id) { return '<button type="button" data-g="' + id + '" aria-current="' + (id === S.guide) + '" aria-label="' + esc(t.talk + ' ' + G[id].name) + '">' + portrait(id, 28) + '</button>'; }).join('') + '</div></div>' +
+    S.msgs.map(function (m, i) { return msgHTML(m, scrollNew && i >= S.msgs.length - 2); }).join('') + footHTML();
+}
+function planIds() {
+  var pool = [];
+  savedShown().forEach(function (key) { var k = key.split(':')[0], id = key.split(':')[1]; if (k === 'p') pool.push(id); if (k === 'r') ROUTES[id].stops.forEach(function (s) { pool.push(s); }); });
+  var used = {}, out = [];
+  pool.forEach(function (id) { if (!used[id] && P[id] && visible(P[id]) && P[id].addr && out.length < 5) { used[id] = true; out.push(id); } });
+  return out;
+}
+function guardadosHTML() {
+  var t = T(), keys = savedShown(), h = '<div class="pagehead"><h1>' + esc(t.savedTitle) + '</h1><p>' + esc(t.savedSub) + '</p></div>';
+  if (!keys.length) return h + empty(t.emptySaved, t.emptySavedBody, '<button type="button" class="btn primary" data-go="explorar">' + icon('grid', 'sm') + esc(t.exploreTitle) + '</button>');
+  var ids = planIds();
+  h += ids.length >= 2 ? '<section class="sec"><h2>' + esc(t.yourPlan) + '</h2><p class="muted">' + esc(t.planBody(ids.length)) + '</p><div class="minimap map">' + mapSVG({ routes: [{ ids: ids }], stops: ids, crop: cropFor(ids, 40), label: t.yourPlan }) + '<span class="note">' + esc(t.mapNote) + '</span></div>' +
+    '<a class="btn anil block" href="' + esc(routeUrl(ids)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(t.openRoute) + '</a></section>'
+    : (ids.length ? '' : '<div class="empty" role="status"><b>' + esc(t.yourPlan) + '</b><p>' + esc(t.planSoon) + '</p></div>');
+  return h + '<div class="grid">' + keys.map(pinHTML).join('') + '</div>';
+}
+function pinHTML(key) {
+  var t = T(), lang = L(), k = key.split(':')[0], id = key.split(':')[1];
+  if (k === 'p') { var p = P[id]; return '<div class="pin-wrap" style="position:relative">' + heartBtn(key) + '<button type="button" class="pin" data-open="' + key + '" data-pin="' + key + '">' + phHTML(p, t, ['4/5', '1/1', '4/3'][p.name.length % 3]) + '<span class="cap"><b>' + esc(p.name) + '</b><small>' + esc(t.place[p.cat]) + (!isPub(p) ? ' · ' + esc(t.toCheck) : '') + '</small></span></button></div>'; }
+  if (k === 'r') { var r = ROUTES[id]; return '<div class="pin-wrap" style="position:relative">' + heartBtn(key) + '<button type="button" class="pin" data-route="' + id + '" data-pin="' + key + '"><span class="ph map" style="aspect-ratio:1/1;display:block">' + mapSVG({ routes: [{ ids: r.stops }], stops: r.stops, crop: cropFor(r.stops, 36), label: r.title[lang] }) + '</span><span class="cap"><b>' + esc(r.title[lang]) + '</b><small>' + esc(t.route) + ' · ' + r.stops.length + ' ' + esc(t.stops) + '</small></span></button></div>'; }
+  if (k === 't') { var tp = TIPS[id]; return '<div class="pin-wrap" style="position:relative">' + heartBtn(key) + '<div class="pin tip" data-pin="' + key + '"><span class="eyebrow">' + esc(tp.cat === 'cultura' ? t.culture : t.tip) + '</span><p style="padding-right:36px">' + esc(tp.body[lang]) + '</p>' + (tp.star ? infoHTML('cult') : '') + '</div></div>'; }
+  var nw = N[id]; return '<button type="button" class="nawal' + (GUARDIAN_NAWAL[id] ? ' guard g-' + id : '') + '" data-nawal="' + id + '" data-pin="' + key + '"><span class="n">' + nw.n + '</span><span><b>' + esc(nw.name) + '</b><small>' + esc(nw.animal[lang]) + '</small></span></button>';
+}
+var FEED = ['r:centro', 'p:doce', 't:cholqij', 'p:capuchinas', 'p:once', 'r:conventos', 't:rukux', 'p:artista', 't:foto', 'p:arco', 'p:siena', 't:maiz', 'p:cazador', 'r:norte', 'p:coffea', 't:winaq', 'p:merced', 't:nikaj', 'p:patio', 'p:fatcat', 'p:santaclara', 't:ab', 'p:komori', 't:horario', 'p:sanfrancisco', 't:rueda', 'p:hectors', 'p:catedral', 't:cargadores', 'p:nikolo', 'p:alegria', 'p:palacio', 'p:pina', 'p:parque', 't:nawalpersona']
+  .concat(PIDS.map(function (id) { return 'p:' + id; })).filter(function (k, i, a) { return a.indexOf(k) === i; });
+function explorarHTML() {
+  var t = T(), lang = L(), q = norm(S.query.trim()), f = S.filter;
+  var list = FEED.filter(shown).filter(function (key) {
+    var k = key.split(':')[0], id = key.split(':')[1], type = k === 'p' ? P[id].cat : k === 'r' ? 'route' : 'tip';
+    var ok = f === 'all' || f === type;
+    if (q) { var txt = k === 'p' ? P[id].name + ' ' + P[id].why[lang] : k === 'r' ? ROUTES[id].title[lang] + ' ' + ROUTES[id].intro[lang] : TIPS[id].body[lang]; ok = ok && norm(txt).indexOf(q) >= 0; }
+    return ok;
+  });
+  return backBtn() + '<div class="pagehead"><h1>' + esc(t.exploreTitle) + '</h1><p>' + esc(t.exploreSub) + '</p></div>' +
+    '<label class="search">' + icon('search') + '<input id="fq" type="search" autocomplete="off" placeholder="' + esc(t.search) + '" value="' + esc(S.query) + '" aria-label="' + esc(t.search) + '"></label>' +
+    '<div class="chips" role="group" aria-label="' + esc(t.filtersLabel) + '">' + t.filters.map(function (d) { return '<button type="button" class="chip" data-filter="' + d[0] + '" aria-pressed="' + (f === d[0]) + '">' + esc(d[1]) + '</button>'; }).join('') + '</div>' +
+    (list.length ? '<div class="grid">' + list.map(pinHTML).join('') + '</div>' : q ? '<p class="muted">' + esc(t.noResults) + '</p>' : empty(t.emptyCat, ''));
+}
+function culturaHTML() {
+  var t = T();
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">Cholq\'ij · Ab\' · Popol Wuj</span><h1>' + esc(t.cultureTitle) + '</h1><p>' + esc(t.cultureSub) + '</p></div>' +
+    '<figure class="artbox" data-art="cholqij">' + cholqijArt() + '<figcaption><b>260</b> ' + esc(S.lang === 'en' ? 'days · 13 numbers × 20 nawales. In blue, four nawales 5 days apart: the Year Bearers take turns that way (Iq\' → Kej → E\' → No\'j).' : 'días · 13 números × 20 nawales. En añil, cuatro nawales separados por 5 días: así se turnan los cargadores del año (Iq\' → Kej → E\' → No\'j).') + infoHTML('cult') + '</figcaption></figure>' +
+    '<button type="button" class="tile" data-go="nawales" style="min-height:auto">' + icon('calendar') + '<span><b>' + esc(t.nawalsTitle) + '</b><small>' + esc(t.nawalsSub) + '</small></span></button>' +
+    '<div class="cards">' + Object.keys(TIPS).filter(function (id) { return TIPS[id].cat === 'cultura'; }).map(tipCard).join('') + '</div>';
+}
+function costumbresHTML() {
+  var t = T();
+  return backBtn() + '<div class="ph" style="aspect-ratio:16/8" data-art="costumbres">' + heroArt() + '</div><div class="pagehead"><h1>' + esc(t.customsTitle) + '</h1><p>' + esc(t.customsSub) + '</p></div>' +
+    '<div class="cards">' + Object.keys(TIPS).filter(function (id) { return TIPS[id].cat === 'costumbre'; }).map(tipCard).join('') + '</div>';
+}
+function nawalesHTML() {
+  var t = T();
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">Cholq\'ij · 260 ' + (S.lang === 'en' ? 'days' : 'días') + '</span><h1>' + esc(t.nawalsTitle) + '</h1><p>' + esc(t.nawalsSub) + '</p></div>' +
+    '<div class="sec-head"><span class="muted" style="font-size:13px">' + esc(t.infoCult + ' · ' + t.infoCultBody) + '</span></div>' +
+    '<div class="nawal-grid">' + NAWALES.map(function (r) { return pinHTML('n:' + r[0]); }).join('') + '</div>';
+}
+function nawalHTML() {
+  var t = T(), lang = L(), id = S.nawal, nw = N[id];
+  return backBtn() + '<div class="hero-art" style="aspect-ratio:16/7;display:grid;place-items:center;background:var(--piedra)"><span style="font-family:var(--f-data);font-size:64px;font-weight:600;color:var(--ink-3)">' + nw.n + '</span></div>' +
+    '<div class="pagehead"><span class="eyebrow">' + esc(t.nawalsTitle) + ' · ' + nw.n + '/20</span><div class="sec-head"><h1>' + esc(nw.name) + '</h1>' + infoHTML('cult') + '</div>' + (GUARDIAN_NAWAL[id] ? '<p>' + esc(t.nGuardian) + '</p>' : '') + '</div>' +
+    '<dl class="facts">' + [[t.nSymbol, nw.symbol], [t.nAnimal, nw.animal], [t.nLight, nw.light], [t.nShadow, nw.shadow]].map(function (f) { return '<div><dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1][lang]) + '</dd></div>'; }).join('') + '</dl>' +
+    '<p class="note">' + esc(t.nawalsSub) + '</p>' +
+    (GUARDIAN_NAWAL[id] ? '<button type="button" class="btn primary" data-guide="' + id + '">' + icon('chat', 'sm') + esc(t.talk + ' ' + G[id].name) + '</button>' : '');
+}
+function guardianesHTML() {
+  var t = T(), lang = L();
+  return backBtn() + '<div class="pagehead"><div class="sec-head"><h1>' + esc(t.guardsTitle) + '</h1>' + infoHTML('guard') + '</div><p>' + esc(t.guardsSub) + '</p></div>' +
+    '<figure class="artbox" data-art="rumbos">' + compassArt() + '</figure>' +
+    ORDER.map(function (id) { var g = G[id];
+      return '<article class="gfull g-' + id + '" data-gcard="' + id + '">' + portrait(id, 76) + '<div><h2>' + esc(g.name) + '</h2><small class="muted">' + esc(g.tag[lang]) + '</small><dl>' +
+        [[t.dValue, g.value[lang]], [t.dDir, g.dir[lang]], [t.dRole, g.role[lang]], [t.dSpeaks, g.speaks[lang]], [t.dRecs, g.recs[lang]], [t.dPdf, g.pdf[lang]]].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
+        '</dl><button type="button" class="btn" data-guide="' + id + '" style="margin-top:10px">' + icon('chat', 'sm') + esc(t.talk + ' ' + g.name) + '</button></div></article>'; }).join('');
+}
+function fichaHTML() {
+  var t = T(), lang = L(), p = P[S.detail];
+  var routes = Object.keys(ROUTES).filter(function (rid) { return ROUTES[rid].stops.indexOf(p.id) >= 0; });
+  return backBtn() + '<div class="d-hero" style="position:relative">' + heartBtn('p:' + p.id) + phHTML(p, t) + '</div>' +
+    '<section class="d-body" data-ficha="' + esc(p.id) + '">' + catTags(p) + '<div class="sec-head"><h1>' + esc(p.name) + '</h1>' + (p.hist ? infoHTML('hist') : '') + '</div>' +
+      (p.why[lang] ? '<p class="lead">' + esc(p.why[lang]) + '</p>' : '') + (p.addr ? '<p class="addr">' + esc(p.addr) + '</p>' : '') + sealHTML(p) +
+      (PREVIEW && !isPub(p) ? '<p class="note">' + esc('Le falta: ' + missing(p).join(', ') + '.') + '</p>' : '') +
+      '<div class="actions">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-toggle="p:' + p.id + '" aria-pressed="' + isSaved('p:' + p.id) + '">' + icon('heart', 'sm fill') + esc(isSaved('p:' + p.id) ? t.saved : t.save) + '</button></div></section>' +
+    (BETA_ON ? betaFichaHTML(p) : '') +
+    (p.pos ? '<div class="minimap map">' + mapSVG({ pin: p.id, crop: cropFor([p.id], 70), label: p.name }) + '<span class="note">' + esc(t.mapNote + (p.pos.aprox ? ' · ' + t.aprox : '')) + '</span></div>' : '') +
+    (p.g.length ? '<section class="sec"><h2 style="font-size:17px">' + esc(t.recBy) + '</h2><div class="asklist">' + p.g.map(function (g) { return '<button type="button" class="chip" data-guide="' + g + '">' + portrait(g, 22) + esc(G[g].name) + '</button>'; }).join('') + '</div></section>' : '') +
+    (routes.length ? '<section class="sec"><h2 style="font-size:17px">' + esc(t.inRoutes) + '</h2>' + routes.map(routeRow).join('') + '</section>' : '');
+}
+// ===================== VISTA INTERNA DEL EQUIPO (solo vista previa) =====================
+// Textos nuevos de la 2.0 para que el fundador los apruebe (antes → ahora).
+var COPY = [
+  ['Tarjeta «Círculo de Aliados Fundadores» en Inicio', '«Qué es nAIhual»: «La riqueza de Guatemala está en sus paisajes, y es gracias a su gente.»', 'Inicio (3.0)'],
+  ['Rueda de rumbos sola', 'Brújula del paisaje: Cerro de la Cruz, Volcán de Agua, Fuego · Acatenango, sale el sol', 'Inicio (3.0)'],
+  ['«¿Cómo me porto con respeto?»', '«Costumbres de aquí»', 'Botón del chat y pantalla'],
+  ['«Caminá con respeto: estas calles son casa de mucha gente.»', 'Eliminado', 'Consejo y pie de cada ficha'],
+  ['«Soy No\'j*. Yo te cuento el porqué.»', '«No\'j · te cuenta el porqué» (etiqueta, sin presentación)', 'Chat'],
+  ['«Te voy a guiar yo por Antigua hasta que quieras hablar con otro guardián…»', '«¿Qué tenés ganas de hacer en Antigua?»', 'Bienvenida del chat'],
+  ['«Esa selección está en revisión: todavía no tengo lugares con fuente…»', '«Esta parte la estoy terminando de probar.» o «Estoy probando los cafés uno por uno. Mientras, esta ruta ya está lista:»', 'Chat, modo pública'],
+  ['«Antes de fotografiar a alguien, pedí permiso. Un «¿puedo?» basta.»', '«Para fotografiar a alguien, preguntá primero. Un «¿puedo?» basta.»', 'Costumbres'],
+  ['«reglas fijas, sin IA · arte provisional»', 'Solo la versión', 'Pie de página'],
+  ['Notas «* Información cultural por confirmar…» al pie de cada respuesta', 'Un ⓘ por tarjeta que se abre al tocarlo', 'Toda la app'],
+  ['«Viaja directo a la raíz.» como única frase de portada', '«Antigua, con cuatro guías que la conocen.» + «Viaja directo a la raíz.»', 'Inicio'],
+  ['Guardianes: letra en un círculo', 'Retrato abstracto con su color y un punto hacia su rumbo* (espacio para tu arte)', 'Toda la app'],
+  ['Respuestas de los 4 guardianes (7 temas)', 'Reescritas: más cortas y concretas, mismos lugares y datos', 'Chat'],
+  ['«Tres ruinas y una iglesia viva»', '«Dos ruinas de conventos y una iglesia viva» (corregido: en el catálogo son dos ruinas)', 'Ruta Conventos del oriente y respuestas de Kej y E\''],
+  ['«Tres historias de conventos, una junto a la otra»', '«Dos conventos y una iglesia en el lado oriente» (San Francisco es iglesia y no están pegados)', 'Respuesta de No\'j']
+];
+function lastMeta() { for (var i = S.msgs.length - 1; i >= 0; i--) if (S.msgs[i].meta) return S.msgs[i].meta; return null; }
+function secRevision() {
+  var pubN = PIDS.filter(function (id) { return isPub(P[id]); }).length;
+  var groups = [['cafe', 'Cafés'], ['comida', 'Comida'], ['cultura', 'Monumentos']];
+  return '<section><h2>Revisión de fichas</h2><p>En modo pública el visitante solo ve lo publicado. Publicadas hoy: <strong>' + pubN + ' de ' + PIDS.length + '</strong>. Tocá una ficha para verla.</p></section>' +
+    groups.map(function (g) {
+      var ids = PIDS.filter(function (id) { return P[id].cat === g[0]; });
+      return '<section><h3>' + esc(g[1]) + ' · ' + ids.length + '</h3><div class="list">' + ids.map(function (id) {
+        var p = P[id], miss = missing(p);
+        return '<button type="button" class="rowlink" data-open="p:' + id + '" data-review="' + id + '"><span class="tags"><span class="tag ' + (miss.length ? 'check' : 'ok') + '">' + (miss.length ? 'Por verificar' : 'Publicada') + '</span>' + (p.patro ? '<span class="tag sp">Patrocinado</span>' : '') + (!p.pos && p.addr ? '<span class="tag">Sin lugar en el mapa</span>' : '') + '</span><b>' + esc(p.name) + '</b>' +
+          (miss.length ? '<span class="check">Falta: ' + miss.map(function (x) { return '<span class="no">' + esc(x) + '</span>'; }).join(' · ') + '</span>' : '') +
+          (p.pendiente ? '<span class="check">' + esc(p.pendiente) + '</span>' : '') + '</button>';
+      }).join('') + '</div></section>';
+    }).join('') +
+    '<section><h3>Fuentes registradas · ' + Object.keys(SRC).length + '</h3><div class="list">' + Object.keys(SRC).map(function (id) { var f = SRC[id];
+      return '<div class="panel" data-fuente="' + esc(id) + '"><span class="tags"><span class="tag check">' + esc(f.estado) + '</span></span><b>' + esc(f.titulo) + '</b>' + termsHTML([['Archivo o URL', f.url_o_archivo || '—'], ['Fecha', f.fecha || '—'], ['Responsable', f.responsable || '—'], ['Tema', f.tema || '—'], ['Versión', f.version || '—']]) + '</div>'; }).join('') + '</div></section>';
+}
+function secTextos() {
+  return '<section><h2>Textos para aprobar</h2><p>Todo texto nuevo de la 2.0 es una propuesta. Decime cuáles quedan, cuáles cambiás y cómo.</p></section>' +
+    '<div class="list">' + COPY.map(function (c) { return '<div class="copyrow" data-copy><span class="eyebrow">' + esc(c[2]) + '</span><s>' + esc(c[0]) + '</s><b>→ ' + esc(c[1]) + '</b></div>'; }).join('') + '</div>';
+}
+function secModelo() {
+  return '<section><h2>Las 6 capas del modelo</h2><div class="status plain"><b>Regla 4 del método: terminar antes de abrir.</b><span>No se abre una capa sin cerrar la anterior.</span></div></section>' +
+    '<ol class="flow">' + CAPAS.map(function (c, i) {
+      var tag = c[2] === 'ok' ? '<span class="tag ok">' + esc(c[3]) + '</span>' : c[2] === 'now' ? '<span class="tag check">' + esc(c[3]) + '</span>' : '<span class="tag future">' + esc(c[3]) + '</span>';
+      return '<li data-capa="' + (i + 1) + '"><div><p><strong>' + (i + 1) + ' · ' + esc(c[0]) + '</strong></p>' + tag + '<p>' + esc(c[1]) + '</p></div></li>'; }).join('') + '</ol>' +
+    '<section><h2>Sostener el modelo</h2><div class="status future"><b>Pendiente de evolución y planificación</b><span>Nada de esto está activo. No hay hoteles, pagos ni ingresos.</span></div></section>' +
+    '<section class="panel" data-monet="primaria"><span class="tags"><span class="tag">Monetización primaria</span><span class="tag future">Capa 6</span></span><h3>Hotel socio con QR</h3>' +
+      '<ul><li>El visitante usa nAIhual gratis.</li><li>El hotel paga. Sus huéspedes escanean un QR diario: 3 horas de nAIhual Pro y después la versión gratis.</li><li>Pro existe solo así.</li><li>El hotel cumple las mismas reglas: local, sin cadenas, trato justo, respeto a la cultura.</li><li>El pago no cambia el orden de nada.</li></ul>' +
+      '<p><strong>Pendiente:</strong> qué tiene Pro que la gratis no tenga · precio · primer hotel.</p></section>' +
+    '<section class="panel"><h3>Ideas secundarias, sin orden ni fecha</h3><ul><li>Patrocinio, siempre marcado «Patrocinado».</li><li>Comisión transparente en experiencias con locales.</li><li>Licencia del modelo a otros destinos.</li></ul></section>' +
+    '<section class="panel"><h3>Retorno a niños y familias</h3><p>Cuando haya ingresos reales, una parte fija va a educación, celulares e internet. El porcentaje se publica, cada gasto se muestra con su recibo y la comunidad decide. No se anuncia antes de que exista.</p></section>' +
+    '<section class="panel"><h3>Fuera</h3><ul><li>El Plan Fundador de Q250: fue solo una idea.</li><li>Afiliados de plataformas grandes.</li><li>Cobrar al visitante desde el inicio.</li></ul></section>';
+}
+function secAprendizaje() {
+  var fb = S.demoFb;
+  return '<section><h2>Ciclo de aprendizaje del agente</h2><div class="status future"><b>Diseño futuro / no activo</b><span>Este prototipo no recopila, no guarda y no envía conversaciones. No hay analítica, perfiles ni memoria entre personas.</span></div></section>' +
+    '<section><h3>Los 7 pasos</h3><ol class="flow">' + CYCLE.map(function (c) {
+      var tag = c[1] === 'on' ? '<span class="tag ok">Activo</span>' : c[1] === 'part' ? '<span class="tag ok">Parcial</span>' : '<span class="tag future">No activo</span>';
+      return '<li><div><p><strong>' + esc(c[0]) + '</strong></p>' + tag + '<p>' + esc(c[2]) + '</p></div></li>'; }).join('') + '</ol></section>' +
+    '<section><h3>Cuatro cosas distintas</h3><div class="cols">' +
+      '<div class="panel"><b>Contexto de la conversación actual</b><span class="tags"><span class="tag ok">Activo</span></span><p>El guardián de turno y lo que se dijo en esta pantalla. Vive en la memoria del navegador y se borra al recargar.</p></div>' +
+      '<div class="panel"><b>Patrones entre conversaciones</b><span class="tags"><span class="tag future">No activo</span></span><p>Agrupar señales de muchas personas para ver qué falta. Requiere privacidad aprobada, consentimiento y datos sin identificar a nadie.</p></div>' +
+      '<div class="panel"><b>Actualizar la base de conocimiento</b><span class="tags"><span class="tag ok">Manual</span></span><p>Agregar o corregir fichas y fuentes. Hoy lo hace una persona, con fuente y fecha, y se prueba antes de publicar.</p></div>' +
+      '<div class="panel"><b>Reentrenar un modelo</b><span class="tags"><span class="tag future">No previsto</span></span><p>Cambiar un modelo de IA por dentro. nAIhual no lo necesita: mejora con fuentes, reglas e instrucciones con versión.</p></div>' +
+    '</div></section>' +
+    '<section><h3>Cómo se vería</h3><div class="panel demo" data-demo="aprendizaje"><span class="tag future">Datos ficticios de demostración</span>' +
+      '<p><strong>Señal agrupada (ficticia):</strong> varias personas preguntan por «café con wifi».</p>' +
+      '<p><strong>Información que falta (ficticia):</strong> las fichas no dicen si hay wifi.</p>' +
+      '<p><strong>Propuesta (ficticia):</strong> agregar el dato «wifi» con su fuente. Estado: espera revisión de una persona.</p>' +
+      '<p><strong>¿Te sirvió esta respuesta?</strong></p><div class="row"><button type="button" class="chip" data-demo-fb="si" aria-pressed="' + (fb === 'si') + '">Sí</button><button type="button" class="chip" data-demo-fb="no" aria-pressed="' + (fb === 'no') + '">No</button></div>' +
+      (fb ? '<p role="status">Demostración: no se guardó ni se envió nada.</p>' : '') +
+    '</div></section>';
+}
+function secArquitectura() {
+  var m = lastMeta();
+  return '<section><h2>Arquitectura futura</h2><div class="status future"><b>Diseño · sin servicios externos conectados</b><span>No hay Gemini, NotebookLM, Google Sheets, API de Maps ni ningún otro servicio conectado. No hay llaves en el código. La única excepción es la vista previa: dentro del visor de Claude, responde Claude con tu cuenta.</span></div></section>' +
+    '<section><h3>Capas separadas</h3><div class="list">' + LAYERS.map(function (l, i) { return '<div class="layer"><span class="n">' + (i + 1) + '</span><div><b>' + esc(l[0]) + '</b><p>' + esc(l[1]) + '</p><p class="note">' + esc(l[2]) + '</p></div></div>'; }).join('') + '</div></section>' +
+    '<section><h3>Contrato del proveedor</h3>' + termsHTML([
+      ['Recibe', 'La pregunta, el idioma, el guardián de turno, las fichas que puede usar y la versión de instrucciones.'],
+      ['Devuelve', 'El texto, las fichas usadas, las fuentes que la respaldan, si tuvo información suficiente y si pide aclaración.'],
+      ['Nunca', 'Usar fichas que el modo no permite, inventar un dato o una fuente, o cambiar el orden por un pago.'],
+      ['Si no sabe', 'Lo dice y ofrece lo que sí está probado.']]) + '</section>' +
+    '<section><h3>Registro de la última respuesta</h3>' + (m ? termsHTML([['Proveedor', m.proveedor], ['Instrucciones', m.instrucciones], ['Intención', m.intencion], ['Fuentes', m.fuentes.length ? m.fuentes.join(' | ') : 'ninguna'], ['¿Información suficiente?', m.suficiente ? 'sí' : 'no'], ['¿Pidió aclaración?', m.aclaracion ? 'sí' : 'no']]) : '<p>Todavía no hay respuestas en esta conversación. Preguntá algo en la Guía y volvé.</p>') +
+      '<p class="note">Solo en esta pantalla. No se guarda ni se envía.</p></section>' +
+    '<section><h3>Gemini (verificado el 23-oct-2026)</h3><ul>' +
+      '<li>La documentación oficial pide no poner la llave en apps web o móviles y usar un servidor propio: <a class="ext" href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/api-key</a>.</li>' +
+      '<li>Falta decidir dónde vive ese servidor, cuánto cuesta y quién lo mantiene.</li></ul></section>' +
+    '<section><h3>NotebookLM (verificado el 23-oct-2026)</h3><ul>' +
+      '<li>API oficial solo para <strong>NotebookLM Enterprise</strong>, en Google Cloud y en versión alfa: <a class="ext" href="https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks-sources" target="_blank" rel="noopener">documentación de Google Cloud</a>.</li>' +
+      '<li>Para la versión gratis o Pro no encontré una API oficial. ❓ No confirmé si la API permite hacerle preguntas al cuaderno desde una app, ni su costo.</li></ul>' +
+      '<p><strong>Flujo propuesto sin conexión:</strong> investigás en NotebookLM → lo útil se registra como fuente → una persona la revisa → recién entonces respalda respuestas.</p></section>' +
+    '<section><h3>Mapa esquemático</h3><p>Cuadrícula confirmada con dos fuentes públicas el 23-oct-2026: <a class="ext" href="https://en.wikivoyage.org/wiki/Antigua_Guatemala" target="_blank" rel="noopener">Wikivoyage</a> y <a class="ext" href="https://www.revuemag.com/walking-la-antigua/" target="_blank" rel="noopener">Revue Magazine</a>. Las posiciones salen de las direcciones del catálogo; las marcadas «aprox» no dan la esquina exacta. Es un esquema, no a escala.</p></section>';
+}
+function swatch(name, use) {
+  var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return '<div class="sw"><i style="background:var(' + name + ')"></i><b>' + esc(use) + '</b><code>' + esc(name) + ' · ' + esc(v) + '</code></div>';
+}
+function secSistema() {
+  return '<section><h2>Sistema visual 2.0</h2><p>Piedra, cal y basalto, con el añil de las fachadas como acento y los cuatro colores de los guardianes. Todo sale de los tokens al inicio del estilo. El arte final lo define el fundador.</p>' +
+    '<div class="status plain"><span>Los ejemplos de esta pantalla son ficticios y solo sirven para diseñar. No están en el catálogo.</span></div></section>' +
+    '<section><h3>Color</h3><div class="swatches">' + [['--cal', 'Cal (fondo)'], ['--papel', 'Papel'], ['--piedra', 'Piedra'], ['--basalto', 'Basalto (texto)'], ['--ink-2', 'Texto 2'], ['--ink-3', 'Texto 3'], ['--anil', 'Añil (rutas)'], ['--volcan', 'Volcán'], ['--techo', 'Teja'], ['--heart', 'Guardado ♥'], ['--ok', 'Verificado'], ['--check', 'Por verificar'], ['--sponsor-bg', 'Patrocinado'], ['--future-bg', 'Diseño futuro']].map(function (s) { return swatch(s[0], s[1]); }).join('') + '</div>' +
+    '<p>Guardianes (color por rumbo*, pendiente de validación cultural):</p><div class="swatches">' + ORDER.map(function (g) { return swatch('--g-' + g, G[g].name); }).join('') + '</div></section>' +
+    '<section><h3>Tipografía</h3><div class="scale">' +
+      '<div><small>display</small><span style="font-family:var(--f-display);font-size:var(--t-xl);font-weight:700;letter-spacing:-.02em">Bricolage Grotesque</span></div>' +
+      '<div><small>texto</small><span style="font-size:var(--t-base)">Instrument Sans para leer cómodo en el celular.</span></div>' +
+      '<div><small>datos</small><span style="font-family:var(--f-data);font-size:var(--t-sm)">IBM Plex Mono · 4a Calle Oriente</span></div></div></section>' +
+    '<section><h3>Espacio y forma</h3><div class="scale">' + [1, 2, 3, 4, 5, 6, 7, 8].map(function (n) { return '<div><small>--s-' + n + '</small><span class="bar" style="width:var(--s-' + n + ')"></span></div>'; }).join('') + '</div></section>' +
+    '<section><h3>Botones, chips y etiquetas</h3><div class="row"><span class="btn anil">Acción principal</span><span class="btn primary">Fuerte</span><span class="btn">Secundario</span><span class="btn" aria-disabled="true">Desactivado</span></div>' +
+      '<div class="row"><span class="chip pilot">Quiero un café</span><span class="chip">Pregunta lista</span><span class="chip switch">Otro guía</span></div>' +
+      '<div class="tags"><span class="tag">Café</span><span class="tag check">Por verificar</span><span class="tag ok">Verificado</span><span class="tag sp">Patrocinado</span><span class="tag ally">Aliado Fundador</span><span class="tag future">Diseño futuro / no activo</span></div></section>' +
+    '<section><h3>Retratos de los guardianes</h3><div class="row">' + ORDER.map(function (g) { return portrait(g, 56); }).join('') + '</div><p class="note">El punto apunta a su rumbo*: No\'j al oriente, Iq\' al norte, Kej al poniente, E\' al sur. Es un espacio para tu arte.</p></section>' +
+    '<section><h3>Tarjeta de lugar (ejemplo ficticio)</h3><div class="pcard" data-demo="tarjeta"><div class="ph" style="aspect-ratio:16/9">' + photoArt('cafe', 'iq') + '<span class="ph-note">Foto pendiente</span></div><div class="pc-body"><div class="tags"><span class="tag">Café</span></div><h3>Nombre de ejemplo</h3><p>Frase de ejemplo.</p><span class="addr">Dirección de ejemplo</span><div class="row"><span class="btn primary" aria-disabled="true">' + icon('pin', 'sm') + 'Cómo llegar</span><span class="tag ok">' + icon('check', 'sm') + 'Verificado · [fecha]</span></div></div></div></section>' +
+    '<section><h3>Mapa esquemático</h3><div class="minimap map">' + mapSVG({ labels: true, lang: 'es', label: 'Cuadrícula de Antigua' }) + '<span class="note">Esquema · no a escala</span></div></section>';
+}
+function tallerHTML() {
+  var sec = SECS.some(function (s) { return s[0] === S.sec; }) ? S.sec : 'revision';
+  var body = sec === 'revision' ? secRevision() : sec === 'textos' ? secTextos() : sec === 'modelo' ? secModelo() : sec === 'aprendizaje' ? secAprendizaje() : sec === 'arquitectura' ? secArquitectura() : secSistema();
+  return '<div class="inbanner" role="note"><span>Vista interna del equipo · no la ve el visitante</span><button type="button" class="btn" data-go="inicio">Volver a la app</button></div>' +
+    '<div class="chips" role="group" aria-label="Secciones internas">' + SECS.map(function (s) { return '<button type="button" class="chip" data-sec="' + s[0] + '" aria-pressed="' + (s[0] === sec) + '">' + esc(s[1]) + '</button>'; }).join('') + '</div>' +
+    '<article class="doc" id="taller-' + sec + '">' + body + '</article>' +
+    (S.lang === 'en' ? '<p class="note">The team view is only available in Spanish for now.</p>' : '');
+}
+
+// ===================== DIBUJAR Y NAVEGAR =====================
+var TABS = [['inicio', 'home'], ['rutas', 'map'], ['guia', 'chat'], ['guardados', 'heart']];
+var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, taller: tallerHTML };
+var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
+var main = document.getElementById('main');
+function render(opts) {
+  if (opts === true) opts = { scroll: true }; else if (!opts) opts = { keep: true };
+  var t = T(), v = S.view;
+  document.documentElement.lang = S.lang;
+  ['es', 'en'].forEach(function (l) { document.getElementById('lang-' + l).setAttribute('aria-pressed', String(S.lang === l)); });
+  var sos = document.getElementById('sos'); sos.hidden = !PREVIEW; sos.innerHTML = icon('alert', 'sm') + esc(t.sos);
+  var onGuia = v === 'guia';
+  document.getElementById('dock').hidden = !onGuia;
+  main.className = (onGuia ? 'chat' : '') + (opts.keep || opts.scroll ? '' : ' enter');
+  var tab = TAB_OF[v] === undefined ? null : TAB_OF[v];
+  if (v === 'ficha') tab = TAB_OF[S.stack.length ? S.stack[S.stack.length - 1].view : 'inicio'] || 'inicio';
+  var n = savedShown().length;
+  document.getElementById('tabs').innerHTML = TABS.map(function (d) {
+    return '<button type="button" data-tab="' + d[0] + '"' + (tab === d[0] ? ' aria-current="page"' : '') + '>' + icon(d[1]) + '<span>' + esc(t.tabs[d[0]]) + (d[0] === 'guardados' && n ? ' <span class="count">' + n + '</span>' : '') + '</span></button>';
+  }).join('');
+  document.getElementById('q').placeholder = t.placeholder;
+  document.getElementById('q').setAttribute('aria-label', t.placeholder);
+  var send = document.getElementById('send'); send.setAttribute('aria-label', t.send); send.innerHTML = icon('up');
+  document.getElementById('chips').innerHTML = t.chips.map(function (c, i) {
+    return (i === 1 ? '<button type="button" class="chip switch" data-next>' + icon('shuffle', 'sm') + esc(t.switchChip) + '</button>' : '') + '<button type="button" class="chip' + (c[0] === 'cafe' ? ' pilot' : '') + '" data-chip="' + c[0] + '">' + esc(c[1]) + '</button>';
+  }).join('');
+  var hadFocus = document.activeElement && document.activeElement.id === 'fq', caret = hadFocus ? document.activeElement.selectionStart : 0;
+  main.innerHTML = (VIEWS[v] || inicioHTML)(opts.scroll);
+  if (onGuia && opts.scroll) { var msgs = main.querySelectorAll('.msg'); var target = msgs[Math.max(0, msgs.length - 2)]; if (target) target.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  if (hadFocus) { var fi = document.getElementById('fq'); if (fi) { fi.focus(); try { fi.setSelectionRange(caret, caret); } catch (e) {} } }
+}
+function nav(view, o) {
+  o = o || {};
+  if (view === 'taller' && !INTERNAL) view = 'inicio';
+  if (view === 'beta' && !BETA_ON) view = 'inicio';
+  if (!o.tab && view !== S.view) S.stack.push({ view: S.view, detail: S.detail, nawal: S.nawal, route: S.route });
+  if (o.tab) S.stack = [];
+  S.view = view;
+  if (o.silent) return;
+  render({}); window.scrollTo(0, view === 'guia' ? document.body.scrollHeight : 0);
+}
+function back() {
+  var prev = S.stack.pop() || { view: 'inicio' };
+  S.view = prev.view; S.detail = prev.detail; S.nawal = prev.nawal; S.route = prev.route;
+  render({}); window.scrollTo(0, 0);
+}
+function openKey(key) {
+  var k = key.split(':')[0], id = key.split(':')[1];
+  if (k === 'p' && P[id] && (visible(P[id]))) { nav('ficha', { silent: true }); S.detail = id; bump(key, 1); persist(); render({}); window.scrollTo(0, 0); }
+  if (k === 'r' && ROUTES[id]) { S.route = id; nav('rutas'); }
+}
+
+document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); var i = document.getElementById('q'); ask(i.value); i.value = ''; });
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-toggle],[data-open],[data-route],[data-selroute],[data-filter],[data-tab],[data-go],[data-back],[data-lang],[data-chip],[data-ask],[data-next],[data-g],[data-guide],[data-sos],[data-close],[data-sec],[data-demo-fb],[data-say],[data-stop],[data-nawal],[data-beta-like],[data-learn-ok],[data-learn-del]');
+  if (!el) return;
+  var a = function (n) { return el.getAttribute(n); };
+  if (el.hasAttribute('data-learn-ok')) { learnSet(a('data-learn-ok'), 'confirmado'); return; }
+  if (el.hasAttribute('data-learn-del')) { learnSet(a('data-learn-del'), null); return; }
+  if (el.hasAttribute('data-beta-like')) { betaToggleLike(a('data-beta-like')); return; }
+  if (el.hasAttribute('data-toggle')) { e.preventDefault(); e.stopPropagation(); toggle(a('data-toggle')); return; }
+  if (el.hasAttribute('data-open')) { openKey(a('data-open')); return; }
+  if (el.hasAttribute('data-route')) { openKey('r:' + a('data-route')); return; }
+  if (el.hasAttribute('data-selroute')) { S.route = a('data-selroute'); render({}); return; }
+  if (el.hasAttribute('data-filter')) { S.filter = a('data-filter'); render({ keep: true }); return; }
+  if (el.hasAttribute('data-tab')) { nav(a('data-tab'), { tab: true }); return; }
+  if (el.hasAttribute('data-go')) { nav(a('data-go')); return; }
+  if (el.hasAttribute('data-back')) { back(); return; }
+  if (el.hasAttribute('data-lang')) { S.lang = a('data-lang'); persist(); render({ keep: true }); return; }
+  if (el.hasAttribute('data-ask')) { askIntent(a('data-ask')); return; }
+  if (el.hasAttribute('data-chip')) { askIntent(a('data-chip')); return; }
+  if (el.hasAttribute('data-say')) { ask(a('data-say')); return; }
+  if (el.hasAttribute('data-stop')) { if (AI.ctl) AI.ctl.abort(); return; }
+  if (el.hasAttribute('data-next')) { switchTo(ORDER[(ORDER.indexOf(S.guide) + 1) % ORDER.length]); render({ scroll: true }); return; }
+  if (el.hasAttribute('data-g')) { var id = a('data-g'); if (id !== S.guide) { switchTo(id); render({ scroll: true }); } return; }
+  if (el.hasAttribute('data-guide')) { var gid = a('data-guide'); if (gid !== S.guide) switchTo(gid); nav('guia', { tab: true }); return; }
+  if (el.hasAttribute('data-nawal')) { S.nawal = a('data-nawal'); nav('nawal'); return; }
+  if (el.hasAttribute('data-sec')) { S.sec = a('data-sec'); render({ keep: true }); window.scrollTo(0, 0); return; }
+  if (el.hasAttribute('data-demo-fb')) { S.demoFb = a('data-demo-fb'); render({ keep: true }); return; }
+  if (el.hasAttribute('data-sos')) { var t = T(); document.getElementById('dlg-body').innerHTML = '<h2>' + esc(t.sosTitle) + '</h2><p>' + esc(t.sosBody) + '</p><button type="button" class="btn primary" data-close>' + esc(t.close) + '</button>'; var d = document.getElementById('dlg'); if (d.showModal) d.showModal(); else d.setAttribute('open', ''); return; }
+  if (el.hasAttribute('data-close')) document.getElementById('dlg').close();
+});
+document.addEventListener('submit', function (e) { var f = e.target.closest && e.target.closest('[data-bform]'); if (!f) return; e.preventDefault(); betaSubmit(f); });
+document.addEventListener('focusout', function () { setTimeout(function () { if (BETA.dirty && !betaTyping()) { BETA.dirty = false; render({ keep: true }); } }, 0); });
+document.addEventListener('input', function (e) { if (e.target.id === 'fq') { S.query = e.target.value; render({ keep: true }); } });
+
+// Abrir una pantalla directa con un enlace: #rutas, #guia, #guardados, #explorar, #cultura, #costumbres, #nawales, #guardianes
+// y, en vista previa, #beta, #taller o una sección interna (#revision, #textos, #modelo, #aprendizaje, #arquitectura, #sistema).
+(function () {
+  var h = String(location.hash || '').slice(1);
+  if (VIEWS[h] && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !INTERNAL) && !(h === 'beta' && !BETA_ON)) S.view = h;
+  else if (INTERNAL && SECS.some(function (s) { return s[0] === h; })) { S.view = 'taller'; S.sec = h; }
+  if (S.view !== 'inicio') S.stack = [{ view: 'inicio' }];
+})();
+S.msgs.push({ from: ORDER[0], kind: 'welcome' });
+render({});
+})();
+</script>
+</body>
+</html>
