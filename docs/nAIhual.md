@@ -309,21 +309,23 @@ Tata (cultura)                                accesibilidad            playlists
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
-**App vigente: nAIhual 3.4** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
+**App vigente: nAIhual 3.5** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
 - **Dos modos** (`modo` en `app/data/config.js`):
-  - **Vista previa** (hoy): todo el catálogo con sello «Por verificar», vista interna del equipo, beta de Diego y Claude respondiendo lo que se escribe libre.
+  - **Vista previa** (hoy): todo el catálogo con su «Referencia web», vista interna del equipo, beta de Diego y Claude respondiendo lo que se escribe libre.
   - **Pública**: solo lo verificado, sin vista interna, sin beta y sin Claude.
 - **Pestañas:** Inicio (portada, qué es nAIhual, brújula del paisaje, guardianes, rutas, accesos) · Rutas (mapa esquemático y Google Maps a pie) · Guía (chat con el guardián de turno) · Guardados (♥ y plan a pie).
 - **Chat con el orden de búsqueda (nuevo en 3.1):** primero el catálogo, tus notas, tus libretas y lo aprendido confirmado. Si no está ahí, lo que sabe la IA, en una tarjeta «Según la IA · confirmá en Google». Cada lugar trae «Vamos» (Google Maps) e «Info». Los guías resumen lo que dijeron las personas, sin opinar. No repite consejos. Solo en el visor privado: en la versión pública responden las reglas fijas.
 - **Directorio (nuevo en 3.4):** 204 lugares. 171 vienen del directorio que armó Diego con búsquedas de Google Maps (25-oct): nombre, tipo, dirección, enlace y web. No se copian calificaciones ni reseñas (B6).
 - **Sello (nuevo en 3.4):** «Referencia web» con su fuente y enlace. Ya no dice «Por verificar» ni «Le falta» de cara a la persona; eso queda en la vista interna.
 - **«¿Fuiste?» (nuevo en 3.4):** después de «Vamos», abajo aparece «¿Fuiste a …?» Sí, fui / Todavía no. «Sí» abre «Tu visita»: número de 0 a 10 (privado, con aviso en el 10), comentario y foto.
-- **Panel de la beta (nuevo en 3.4):** «Anotar rápido» (buscás un lugar y anotás tu visita), «Agregar un lugar que no está», número y foto en cada nota, «Borrar» en cada anotación.
+- **Panel de la beta (nuevo en 3.4):** «Anotar rápido» (buscás un lugar y anotás tu visita), «Agregar un lugar que no está», número y foto en cada nota, «Borrar» en cada anotación (desde la 3.5 pregunta antes y borra también la foto).
+- **Privacidad (3.5):** el número de 0 a 10 no se ve en ninguna parte; a Claude le llega solo si el gusto fue alto, medio o bajo. La pregunta tal cual no se guarda: solo lo aprendido y, si no supo, qué información faltaba. Las fotos se vuelven a dibujar antes de subir (salen sin la ubicación del teléfono).
+- **Frases firmadas (3.5):** las 13 frases de opinión de Diego salen entre comillas y con «— Diego» (B7: nadie queda de juez).
 - **Brújula que gira (nuevo en 3.2):** ángulos exactos de Agua, Fuego y Acatenango; tocás el que ves y gira; «Mover con el teléfono» la calibra con ese volcán y la hace seguir al teléfono. En la beta, «Probar la brújula»: apuntás a cada volcán, compara lo esperado con lo medido, mide el Cerro de la Cruz y lo guarda para que Claude lo lea.
 - **Lo aprendido (nuevo en 3.1):** después de cada respuesta de Claude, nAIhual anota hasta 2 cosas nuevas como «por confirmar». En la beta las confirmás o las borrás; solo lo confirmado se usa.
 - **Libretas (nuevo en 3.1):** `app/data/libretas.js`. Claude copia ahí tus libretas de Google Docs; todavía no hay ninguna.
 - **Beta de Diego (nueva en 3.0):** «me gustó», «dato mal» y «nota» en cada ficha, y «agregar un lugar» con su enlace de Google Maps y su momento del viaje.
-- **Copias para volver atrás:** `versiones/visor-app-1.0`, `versiones/app-1.1-piloto`, `versiones/app-1.2`, `versiones/app-2.0`, `versiones/app-3.0`, `versiones/app-3.1`, `versiones/app-3.2`, `versiones/app-3.3`.
+- **Volver atrás:** desde la 3.5, cada versión queda en el historial de GitHub; ya no se copian en `versiones/`. Las copias viejas (1.0 a 3.3) se quedan como referencia.
 
 ## Circuitos
 Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qué circuito cierra esto?»**
@@ -347,7 +349,9 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | 6 | Retorno | Entra dinero → el % va a las familias → el gasto se publica con su recibo | ⬜ |
 
 ## Catálogo
-- 204 lugares, todos en «borrador»: 110 de comida, 47 cafés, 31 de pan y postres, 5 de noche, 3 parques y 8 monumentos. 202 tienen referencia web (Komori y Nikolo todavía no). 13 de los primeros tomaron su enlace y su dirección del directorio de Google Maps; Once Once sale «temporalmente cerrado» según Google Maps.
+- 203 lugares, todos en «borrador»: 110 de comida, 46 cafés, 31 de pan y postres, 5 de noche, 3 parques y 8 monumentos. 201 tienen referencia web (Komori y Nikolo todavía no). 13 de los primeros tomaron su enlace y su dirección del directorio de Google Maps.
+- Once Once sale «temporalmente cerrado» según Google Maps: se queda en el catálogo con su aviso, pero fuera de rutas y de las recomendaciones de comida (3.5).
+- 28-oct (3.5): se quitaron de las frases los resúmenes de reseñas y las notas internas; Café No Sé estaba dos veces y quedó una.
 - 8 monumentos †, 3 rutas a pie †, cultura \* (Cholq'ij, 20 nawales con aviso de que no describen personas).
 - Sin datos todavía: naturaleza, talleres y artesanía, mercados, aventura, seguridad.
 
@@ -415,7 +419,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | 25-oct-2026 | 4 anotaciones y 10 cosas aprendidas (primera prueba de Diego en el celular) | ✅ 12 lugares nuevos con fuente pública: 4 de noche (Café No Sé, Antigua Brewing Company, Ulew, Las Vibras de la Casbah), 5 de pan y postres (Doña Luisa Xicotencatl, La Cenicienta, Santa Clara, Viena, Zenique) y 3 parques (Tanque La Unión, Plazuela San Sebastián, Parque La Merced). ❌ «Bacilico pizzería»: no encontrado en búsqueda web; falta el enlace de Google Maps. 🟡 La nota de Siena Luz («Nice») quedó como «dato mal» por error del formulario: corregido, ahora arranca en «Nota». ❓ Lo aprendido sobre Hector's Bistro y la cerveza parece dudoso: no confirmar sin revisar. |
 
 ## Dónde se guarda cada cosa (Diego, 25-oct: «lo más fácil y barato»)
-- **Preguntas, lo aprendido, notas, visitas, números de 0 a 10 y fotos:** en la base de datos del visor privado. Es gratis, Claude la lee y la escribe, y Diego la edita en la beta (borrar, anotar de nuevo). Si Diego quiere verla en una hoja, Claude le arma una copia para leer; la base sigue mandando.
+- **Lo aprendido, lo que faltó, notas, visitas, números de 0 a 10 y fotos:** en la base de datos del visor privado (la pregunta tal cual no se guarda desde la 3.5). Es gratis, Claude la lee y la escribe, y Diego la edita en la beta (borrar, anotar de nuevo). Si Diego quiere verla en una hoja, Claude le arma una copia para leer; la base sigue mandando.
 - **Lugares:** `app/data/lugares.js`. Los directorios que trae Diego (Excel o Google Sheets) se cargan con «cargá el directorio»: Claude lo lee, quita duplicados, no copia calificaciones y lo pasa al catálogo.
 - **Una sola fuente por dato:** lo que llega de afuera se copia hacia adentro; no se mantienen dos versiones editables.
 
