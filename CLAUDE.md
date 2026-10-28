@@ -36,3 +36,4 @@ Leé el archivo (Excel o Google Sheets), quitá duplicados contra `app/data/luga
 - El repositorio es público: no escribás nombres ni datos personales de agentes u otras personas.
 - Antes de construir: «¿qué circuito cierra esto?». Una capa a la vez (regla 4: terminar antes de abrir).
 - «Listo» solo con prueba de punta a punta.
+- Cada versión nueva de la app trae un cambio visual que se note (pedido de Diego, 28-oct), para que compruebe que se actualizó.
