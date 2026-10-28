@@ -19,24 +19,11 @@
    - "pendiente": nota interna para el equipo (qué falta o qué se retiró). No la ve el visitante.
    - El visitante solo ve lugares publicados. Los borradores se revisan en la «Vista interna del equipo».
 
-   Estado al 23-oct-2026: ningún registro tiene fuente, fecha ni persona que verificó.
-   Las frases de los primeros 21 son de Diego. Las direcciones las escribió Claude en oct-2026 sin fuente registrada.
-   Por eso todos quedan en "borrador".
-   25-oct-2026: se suman 12 lugares (de noche, pan y postres, parques) de fuentes públicas (búsqueda web).
-   Llevan fuente y fuente_url; consulta_web = fecha de la búsqueda. Siguen en "borrador" hasta que una persona los pruebe.
-   25-oct-2026 (tarde): se suman 171 lugares del directorio que armó Diego con búsquedas de Google Maps
-   (nombre, tipo, dirección, enlace y web cuando había). NO se copian calificaciones ni número de reseñas:
-   nAIhual no muestra estrellas (bases B6). 13 lugares que ya estaban tomaron su enlace y su dirección de ese directorio.
-   Campos nuevos: tipo (lo que dice Google Maps), web, aviso (por ejemplo, temporalmente cerrado), consulta_web.
-   28-oct-2026 (revisión thermos): se quitaron de las frases los resúmenes de reseñas y las notas internas (pasaron a «pendiente»);
-   «Café No Sé» estaba dos veces (nose y ag116): queda «nose». Las frases que solo repetían el tipo quedaron vacías.
-   Los campos vacíos y los «false» no se escriben. maps_url solo cuando es el enlace propio del lugar; si no, la app arma
-   la búsqueda con nombre + dirección. Sin fuente_url y con fuente «Google Maps», el sello enlaza a esa búsqueda.
-   Un lugar repetido no se borra: queda «retirado» con su id (ag116).
-   frase_de: quién dijo la frase (las 13 frases de opinión de Diego). La app la muestra firmada; nunca como verdad (B7).
-   28-oct-2026 (3.7, curado con Diego: «el directorio es estorbo»): la app carga solo lo curado —las frases de Diego,
-   monumentos, parques, pan y noche con fuente, y del directorio lo que se usa (Basilico, La Bruja, Sat Nam)—.
-   Los otros 167 del directorio pasaron a data/reserva.js: la app no los carga ni se los manda a Claude. Se rescatan cuando haga falta. */
+   Otros campos: tipo (lo que dice Google Maps), web, aviso (por ejemplo, temporalmente cerrado: no entra a rutas ni recomendaciones),
+   consulta_web (fecha de la búsqueda), frase_de (quién dijo la frase: va firmada, nunca como verdad, B7).
+   Los campos vacíos y los «false» no se escriben. maps_url solo si es el enlace propio del lugar; si no, la app arma la búsqueda.
+   Un lugar repetido no se borra: queda «retirado» con su id. Lo que no está activo vive en data/reserva.js (la app no lo carga).
+   El historial de cambios del catálogo está en docs/nAIhual.md (Parte 4, registro, y Parte 5, historial). */
 window.NAIHUAL_LUGARES = [
   {"id": "parque", "mapa": {"avenida": 4.5, "calle": 4.5, "aprox": false}, "nombre": "Parque Central", "categoria": "cultura", "historico": true, "direccion": "Entre 4a y 5a Calle, 4a y 5a Avenida", "fuente": "Thoroughly Travel · iglesias, conventos y ruinas de Antigua", "fuente_url": "https://www.thoroughlytravel.com/convents-churches-antigua-ruins/", "estado": "borrador", "guardianes": ["iq", "noj"], "frase": {"es": "La plaza principal. A su alrededor están la Catedral, el Palacio de los Capitanes Generales y el Ayuntamiento.", "en": "The main square, framed by the Cathedral, the Palace of the Captains General and City Hall."}, "consulta_web": "2026-10-25", "pendiente": "Referencia web general del 25-oct-2026: confirmar que la página trate este lugar."},
   {"id": "catedral", "mapa": {"avenida": 3.55, "calle": 4.65, "aprox": false}, "nombre": "Catedral de San José", "categoria": "cultura", "historico": true, "direccion": "Lado oriente del Parque Central", "fuente": "Thoroughly Travel · iglesias, conventos y ruinas de Antigua", "fuente_url": "https://www.thoroughlytravel.com/convents-churches-antigua-ruins/", "estado": "borrador", "guardianes": ["noj"], "frase": {"es": "Se empezó a construir en 1545. Los terremotos de 1773 la dañaron: una parte sigue siendo iglesia y otra quedó en ruinas.", "en": "Construction began in 1545. After the 1773 earthquakes, part is still a church and part remains in ruins."}, "consulta_web": "2026-10-25", "pendiente": "Referencia web general del 25-oct-2026: confirmar que la página trate este lugar."},

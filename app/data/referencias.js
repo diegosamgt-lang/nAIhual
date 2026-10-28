@@ -6,7 +6,7 @@
      Sale de las coordenadas de la fuente. aprox: true = la fuente no da el punto exacto (lleva ≈).
    - mapa: para lo que cae en el borde del centro (avenida, calle), como en lugares.js.
    - lugar: si ya está en el catálogo, se usa su punto del mapa.
-   - tipo: volcan · cerro · pueblo · ruina. */
+   - tipo: volcan · cerro · pueblo · ruina · parque. */
 window.NAIHUAL_REFERENCIAS = [
   { id: 'cerro', tipo: 'cerro', nombre: 'Cerro de la Cruz', rumbo: 10, aprox: true, fuente: 'Sin coordenadas publicadas; ángulo de la brújula del paisaje (≈)' },
   { id: 'jocotenango', tipo: 'pueblo', nombre: 'Jocotenango', rumbo: 339, fuente: 'Wikipedia · Jocotenango (14°34′55″N 90°44′37″W)', fuente_url: 'https://en.wikipedia.org/wiki/Jocotenango' },

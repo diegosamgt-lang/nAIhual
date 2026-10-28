@@ -207,6 +207,16 @@ def main():
     with sync_playwright() as pw:
         browser = pw.chromium.launch(executable_path=EXE) if os.path.exists(EXE) else pw.chromium.launch()
 
+        # =============== 0. Datos: todo lo que se nombra existe ===============
+        ids = {r['id'] for r in CATALOGO}
+        code = open(os.path.join(APP, 'index.html'), encoding='utf-8').read()
+        pls = open(os.path.join(APP, 'data', 'playlists.js'), encoding='utf-8').read()
+        refs = open(os.path.join(APP, 'data', 'referencias.js'), encoding='utf-8').read()
+        nombrados = set(re.findall(r"'p:([a-z0-9]+)'", code)) | set(re.findall(r"lugar: '([a-z0-9]+)'", pls + refs)) | set(re.findall(r"paradas: \[([^\]]*)\]", pls) and re.findall(r"'([a-z0-9]+)'", ' '.join(re.findall(r"paradas: \[(.*?)\] \}", pls, re.S))))
+        nombrados -= {'cafe', 'comida', 'id'}
+        faltan = sorted(n for n in nombrados if n not in ids and not n.startswith('lugar'))
+        check('Datos: las respuestas fijas, las playlists y las referencias nombran solo lugares activos del catálogo', not faltan, faltan)
+
         # =============== A. VISTA PREVIA con el catálogo real ===============
         ctx, page, errors = new_page(browser, url)
         M = '[vista previa]'
@@ -323,6 +333,7 @@ def main():
         chat = page.inner_text('main')
         check(M + ' Guía: respuestas con tarjetas visuales (fotos provisionales, mapas, costumbres)', page.locator('main .pcard').count() >= 3 and page.locator('main .rcard').count() >= 1 and page.locator('main .tipcard').count() >= 1)
         check(M + ' Guía: sin frases de sermón ni de sistema', not [f for f in FRASES_PROHIBIDAS if f in chat], [f for f in FRASES_PROHIBIDAS if f in chat])
+        check(M + ' «Otro guía» se ve como las otras opciones del chat (no como interruptor)', page.evaluate("getComputedStyle(document.querySelector('#chips [data-next]')).borderRadius") == page.evaluate("getComputedStyle(document.querySelector('#chips [data-chip=\"cafe\"]')).borderRadius"))
         check(M + ' Guía: sin asteriscos dentro de las burbujas', all('*' not in b for b in page.locator('.bubble').all_inner_texts()))
         check(M + ' Guía: lo cultural lleva ⓘ', page.locator('main .tipcard details.info').count() >= 1)
         page.fill('#q', 'xyz qwerty')
@@ -475,6 +486,26 @@ def main():
         page.fill('[data-bform="nuevo"] input[name="nombre"]', '<img src=x onerror="window.__xss=1">')
         page.fill('[data-bform="nuevo"] textarea[name="texto"]', '<script>window.__xss=2</script>')
         page.click('[data-bform="nuevo"] button[type="submit"]')
+        page.evaluate("document.querySelector('[data-beta-new]').open = false")
+        page.click('[data-wall] [data-publish]')
+        page.click('[data-bform="post"] button[type="submit"]')
+        check(M + ' Publicar sin texto: lo dice y no cierra', 'Escribí algo' in page.inner_text('[data-post-msg]') and page.locator('#dlg[open]').count() == 1)
+        page.fill('[data-bform="post"] textarea[name="texto"]', 'Hola')
+        page.fill('[data-bform="post"] input[name="maps"]', 'https://evil.example/x')
+        page.click('[data-bform="post"] button[type="submit"]')
+        check(M + ' Publicar: el enlace tiene que ser de Google Maps', 'Google Maps' in page.inner_text('[data-post-msg]') and page.locator('#dlg[open]').count() == 1)
+        page.click('#dlg [data-close]')
+        rotos = [{'_id': 'local-roto', 'tipo': 'post', 'tema': 'lugar', 'texto': 'Viejo', 'estado': 'confirmado', 'fecha': '2026-10-01', 'orden': {'lugar': 'ag001', 'guardian': 'zzz', 'tema': 'xx'}}]
+        prev = page.evaluate('localStorage.getItem("naihual.beta")')
+        page.evaluate('r => { const a = JSON.parse(localStorage.getItem("naihual.beta") || "[]"); localStorage.setItem("naihual.beta", JSON.stringify(a.concat(r))); }', rotos)
+        page.goto(url + '#beta')
+        page.reload()
+        page.wait_for_selector('[data-wall]')
+        check(M + ' Muro: una publicación con un lugar o un guía que ya no existen no rompe la pantalla', page.locator('[data-wall] .post').count() >= 1 and 'Viejo' in page.inner_text('[data-wall]') and not errors, errors[-2:])
+        page.evaluate('p => localStorage.setItem("naihual.beta", p || "[]")', prev)
+        page.goto(url + '#beta')
+        page.reload()
+        page.wait_for_selector('[data-wall]')
         check(M + ' Seguridad: lo que se anota se muestra como texto, no como código', page.evaluate('window.__xss === undefined') and page.locator('main img[src="x"]').count() == 0 and '<img src=x' in page.inner_text('main'))
         check(M + ' 390 px sin desplazamiento horizontal (Beta)', no_hscroll(page))
         page.click('[data-tab="inicio"]')
@@ -502,7 +533,10 @@ def main():
         check(M + ' Ficha: tocar otra vez quita el «Me gustó»', page.locator('[data-beta-like="siena"][aria-pressed="false"]').count() == 1)
         page.evaluate('localStorage.removeItem("naihual.beta")')
 
-        # Vista interna
+        # Vista interna (antes, una pregunta para que haya registro de la última respuesta)
+        page.click('[data-tab="guia"]')
+        page.fill('#q', 'cultura maya')
+        page.press('#q', 'Enter')
         page.click('[data-tab="inicio"]')
         page.click('footer [data-go="taller"]')
         t = page.inner_text('main')
@@ -532,6 +566,7 @@ def main():
         code = open(os.path.join(APP, 'index.html'), encoding='utf-8').read()
         check(M + ' Sin llaves de API ni conexiones a servicios en el código', not any(x in code for x in ['AIza', 'generativelanguage.googleapis', 'apiKey', 'api_key=']))
         check(M + ' Sin datos de lugares escritos dentro del programa', 'Coffea Cafés Especiales' not in code.split('<script>')[1].split('// ===================== CLAUDE')[0] and "name: '12 Onzas'" not in code)
+        check(M + ' La reserva del directorio no se carga', page.evaluate('window.NAIHUAL_RESERVA === undefined'))
         check(M + ' Red: solo archivos propios y la letra de Google Fonts', {h.split(':')[0] for h in HOSTS[id(ctx)]} <= PERMITIDOS, sorted(HOSTS[id(ctx)]))
         check(M + ' Consola sin errores', not errors, errors)
         ctx.close()
@@ -540,6 +575,8 @@ def main():
         M = '[pública]'
         ctx, page, errors = new_page(browser, url, None, 'light', PUB, '', {'texto': 'hola', 'lugares': [], 'consejos': [], 'opciones': []})
         body = page.inner_text('main')
+        check(M + ' Idea del guía: lo maya sale con * y su aviso, también aquí', page.locator('[data-sugerencia] details.info').count() == 1 and '*' in page.inner_text('[data-sugerencia] .bubble'))
+        check(M + ' Sin «+ Publicar» para el visitante', page.locator('[data-publish]').count() == 0)
         check(M + ' Sin emergencias, sin vista interna y sin Claude', not page.locator('#sos').is_visible() and page.locator('[data-go="taller"]').count() == 0 and page.locator('[data-ai]').count() == 0)
         check(M + ' Inicio: ninguna ruta ni lugar por verificar; avisa que las rutas vienen en camino', page.locator('.route-card').count() == 0 and 'Las rutas vienen en camino' in body and not sin_nombres(body))
         page.click('#cta-cafe')
@@ -742,7 +779,7 @@ def main():
           const emit = () => setTimeout(() => subs.forEach(f => f(snap())), 30);
           const db = { collection: (path) => ({ path, onSnapshot: (f) => { subs.push(f); emit(); return () => {}; },
                          add: (d) => { const id = 'd' + Object.keys(store).length; store[id] = d; emit(); return Promise.resolve({ id }); } }),
-                       doc: (path) => { const id = path.split('/')[1]; return { id, path, set: (d) => { store[id] = d; emit(); return Promise.resolve(); }, delete: () => { delete store[id]; emit(); return Promise.resolve(); } }; } };
+                       doc: (path) => { const id = path.split('/')[1]; return { id, path, set: (d) => { store[id] = d; emit(); return Promise.resolve(); }, update: (d) => { store[id] = Object.assign({}, store[id], d); emit(); return Promise.resolve(); }, delete: () => { delete store[id]; emit(); return Promise.resolve(); } }; } };
           window.__store = store; window.__db = db; window.__assetsDeleted = [];
           const assets = { upload: () => Promise.reject(new Error('sin subir')), delete: (id) => { window.__assetsDeleted.push(id); return Promise.resolve(); } };
           window.claude = { use: (n) => Promise.resolve(n === 'db' ? Object.freeze(db) : n === 'assets' ? Object.freeze(assets) : null) }; })();''')
@@ -754,6 +791,15 @@ def main():
         page.click('[data-bform="nuevo"] button[type="submit"]')
         page.wait_for_selector('[data-beta-item="nuevo"]', timeout=5000)
         check('[beta · visor] El lugar nuevo llega a la base de datos y vuelve a la lista', page.evaluate('Object.values(window.__store).some(x => x.tipo === "nuevo" && x.nombre === "Lugar del visor")') and not page.evaluate('localStorage.getItem("naihual.beta")'))
+        page.click('#tabs [data-publish]')
+        page.fill('[data-bform="post"] textarea[name="texto"]', 'Publicado en el visor')
+        page.click('[data-bform="post"] button[type="submit"]')
+        page.wait_for_selector('[data-wall] [data-post-ok]', timeout=5000)
+        page.click('[data-wall] [data-post-ok]')
+        page.wait_for_selector('[data-wall] [data-post="confirmado"]', timeout=5000)
+        check('[beta · visor] «+ Publicar» llega a la base de datos y «Confirmar» la actualiza', page.evaluate('Object.values(window.__store).some(x => x.tipo === "post" && x.texto === "Publicado en el visor" && x.estado === "confirmado")'))
+        page.evaluate("Object.keys(window.__store).filter(k => window.__store[k].tipo === 'post').forEach(k => window.__db.doc('beta/' + k).delete())")
+        page.wait_for_function("document.querySelectorAll('[data-wall] .post').length === 0", timeout=5000)
         page.evaluate("window.__db.collection('beta').add({tipo: 'nota', lugar: 'siena', nombre: 'Siena Luz', texto: 'Con foto', foto: 'https://example.invalid/f.jpg', foto_id: 'foto123', fecha: '2026-10-28T10:00:00Z'})")
         page.wait_for_function("document.querySelectorAll('[data-beta-item]').length === 2", timeout=5000)
         page.locator('[data-beta-item="nota"] [data-del-ask]').click()
@@ -869,7 +915,7 @@ def main():
             h = unquote(page.locator('[data-route-detail] a.btn.anil').get_attribute('href'))
             if h.count('Antigua Guatemala') != n or h.split('waypoints=')[1].count('|') != n - 3:
                 bad.append(rid)
-        check('Enlaces · las 3 rutas llevan origen, destino y todas sus paradas', not bad, bad)
+        check('Enlaces · las %d playlists llevan origen, destino y todas sus paradas' % N_PLAYLISTS, not bad, bad)
         check('Recorridos · consola sin errores', not errors, errors)
         ctx.close()
 

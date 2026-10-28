@@ -148,15 +148,17 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 
 /* ---------- vida: los toques responden ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .btn, .chip, .tile, .route-card, .gbtn, .switch, .wtoggle, nav.tabs button { transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease); }
-  .btn:active, .chip:active, .tile:active, .route-card:active, .gbtn:active, .switch:active, nav.tabs button:active { transform: scale(.96); }
+  .btn, .chip, .tile, .route-card, .gbtn, .pswitch, .wtoggle, nav.tabs button { transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease); }
+  .btn:active, .chip:active, .tile:active, .route-card:active, .gbtn:active, .pswitch:active, nav.tabs button:active { transform: scale(.96); }
 }
 
 /* ---------- widgets del Inicio (se contraen como en el teléfono) ---------- */
 .widget { border-radius: var(--r-xl); background: var(--papel); border: 1px solid var(--line); overflow: hidden; }
 .whead { display: flex; align-items: center; gap: var(--s-2); padding: 4px 8px 4px 4px; }
 .wtoggle { all: unset; box-sizing: border-box; cursor: pointer; flex: 1; min-width: 0; min-height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: var(--r-lg); }
-.wtoggle h2 { font-size: var(--t-md); flex: 1; min-width: 0; }
+.whead .wh { flex: 1; min-width: 0; font-size: var(--t-md); }
+.wtoggle { width: 100%; }
+.wtoggle .wt { flex: 1; min-width: 0; }
 .wtoggle .ico { color: var(--wc, var(--anil)); }
 .wtoggle .chev { transition: transform var(--dur-2) var(--ease); color: var(--ink-3); }
 .widget.closed .wtoggle .chev { transform: rotate(-90deg); }
@@ -166,7 +168,6 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .winner > .wpad { padding: 0 var(--s-4) var(--s-4); display: flex; flex-direction: column; gap: var(--s-3); }
 .widget.closed .winner { visibility: hidden; transition: visibility 0s var(--dur-2); }
 .widget .rail { margin: 0 -16px; padding: 2px 16px 6px; }
-.widget .chips:not(.perfil-switches) { margin: 0; padding: 2px 0; }
 .hello { font-family: var(--f-data); font-size: var(--t-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.9); text-shadow: 0 1px 8px rgba(0,0,0,.35); }
 /* La idea del guía: su color, su voz, otra idea con un toque. */
 .idea { display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 12px; align-items: start; }
@@ -175,12 +176,12 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .idea .row { margin-top: 8px; }
 /* Interruptor de perfil (como el de silencio del teléfono): encendido = añil. */
 .switches { display: flex; flex-direction: column; gap: 6px; }
-.switch { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 6px 8px 6px 14px; border-radius: var(--r-md); background: var(--cal); border: 1px solid var(--line); font-weight: 600; }
-.switch i { flex: none; width: 50px; height: 30px; border-radius: 999px; background: var(--piedra-2); position: relative; transition: background-color var(--dur-2) var(--ease); }
-.switch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--papel); box-shadow: var(--shadow-1); transition: transform var(--dur-2) var(--ease); }
-.switch[aria-checked="true"] { background: var(--anil-soft); border-color: var(--anil); }
-.switch[aria-checked="true"] i { background: var(--anil); }
-.switch[aria-checked="true"] i::after { transform: translateX(20px); }
+.pswitch { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 6px 8px 6px 14px; border-radius: var(--r-md); background: var(--cal); border: 1px solid var(--line); font-weight: 600; }
+.pswitch i { flex: none; width: 50px; height: 30px; border-radius: 999px; background: var(--piedra-2); position: relative; transition: background-color var(--dur-2) var(--ease); }
+.pswitch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--papel); box-shadow: var(--shadow-1); transition: transform var(--dur-2) var(--ease); }
+.pswitch[aria-checked="true"] { background: var(--anil-soft); border-color: var(--anil); }
+.pswitch[aria-checked="true"] i { background: var(--anil); }
+.pswitch[aria-checked="true"] i::after { transform: translateX(20px); }
 /* Publicar y el muro */
 .temas { display: flex; flex-wrap: wrap; gap: 8px; }
 .bform .temas label.chip { position: relative; flex-direction: row; align-items: center; gap: 0; color: var(--basalto); font-size: 14px; }
@@ -234,7 +235,6 @@ details.info[open] { flex-basis: 100%; }
 .route-card .tags, .rcard .tags { margin-top: 2px; }
 .route-card .rc-title { font-family: var(--f-display); font-weight: 700; letter-spacing: -.02em; font-size: var(--t-md); line-height: 1.15; }
 .perfil { display: flex; flex-direction: column; gap: var(--s-2); }
-.perfil .chips { flex-wrap: wrap; margin: 0; padding: 0; overflow: visible; }
 .tiles { display: flex; flex-direction: column; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); overflow: hidden; }
 .tile { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 64px; padding: var(--s-3) var(--s-4); border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
 .tiles .tile { border: 0; border-radius: 0; }
@@ -249,9 +249,6 @@ details.info[open] { flex-basis: 100%; }
 .gbtn[aria-current="true"] { background: var(--papel); box-shadow: var(--shadow-1); }
 .tag.like { background: var(--g-noj-soft); color: var(--basalto); }
 .intro-in h3 { font-size: var(--t-lg); line-height: var(--lh-snug); }
-.intro-card { display: flex; flex-direction: column; gap: 6px; padding: var(--s-5); border-radius: var(--r-xl); background: var(--band); color: var(--band-ink); }
-.intro-card h2 { font-size: var(--t-lg); }
-.intro-card p { color: var(--band-muted); font-size: 14.5px; }
 .brujula { display: grid; gap: var(--s-3); }
 .brujula .art { background: var(--papel); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 8px; }
 .brujula .art > svg { display: block; width: 100%; height: auto; max-width: 420px; margin: 0 auto; }
@@ -518,13 +515,14 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <nav class="tabs" id="tabs" aria-label="Secciones"></nav>
 <dialog id="dlg"><div class="dlg" id="dlg-body"></div></dialog>
 
-<!-- Datos: se editan en data/, no aquí. config.js = modo · lugares.js = catálogo · fuentes.js = registro de fuentes · libretas.js = libretas de Diego · playlists.js = playlists a pie · referencias.js = referencias del mapa -->
+<!-- Datos: se editan en data/, no aquí. config.js = modo · lugares.js = catálogo · fuentes.js = registro de fuentes · libretas.js = libretas de Diego · playlists.js = playlists a pie · referencias.js = referencias del mapa · guias.js = ramas de los guardianes y perfiles -->
 <script src="data/config.js"></script>
 <script src="data/lugares.js"></script>
 <script src="data/fuentes.js"></script>
 <script src="data/libretas.js"></script>
 <script src="data/playlists.js"></script>
 <script src="data/referencias.js"></script>
+<script src="data/guias.js"></script>
 <script>
 (function () {
 'use strict';
@@ -539,6 +537,8 @@ var PREVIEW = MODE === 'vista_previa';
 // «beta» es el nombre nuevo; «beta_fundador» se sigue aceptando.
 var BETA_ON = PREVIEW && CFG.beta !== false && CFG.beta_fundador !== false;
 function w(es, en) { return { es: es, en: en }; }
+// Texto en dos idiomas que viene de los datos: si falta el inglés, va el español.
+function wl(o) { o = o || {}; return { es: String(o.es || ''), en: String(o.en || o.es || '') }; }
 
 // ===================== GUARDIANES (aprobados por Diego · no se cambian) =====================
 // Orden del turno: No'j → Iq' → Kej → E'. Rumbo, color y valor: pendientes de validación cultural (*).
@@ -559,13 +559,14 @@ var G = {
     pdf: w('Camino, destino, estructura corporal · Gato de monte, puma', 'Path, destiny, the body’s structure · Wildcat, puma') }
 };
 
-// Rama de cada guardián: de qué habla primero y en qué categorías busca primero (Diego, 28-oct).
-var RAMA = {
-  noj: { tema: w('historia, cultura y el porqué de las cosas', 'history, culture and the why of things'), cats: ['cultura'], voz: w('Para entender Antigua:', 'To understand Antigua:') },
-  iq: { tema: w('primeros pasos, pausas, cafés, eventos y fiestas', 'first steps, breaks, cafés, events and festivities'), cats: ['cafe', 'parque'], voz: w('Un primer paso:', 'A first step:') },
-  kej: { tema: w('rutas a pie, naturaleza, mercados y cuidarse', 'walking routes, nature, markets and staying safe'), cats: ['parque', 'cultura'], voz: w('Un camino en orden:', 'A path in order:') },
-  e: { tema: w('artesanos, comida con carácter, pan y noche, comunidades', 'artisans, food with character, bread and night, communities'), cats: ['comida', 'postres', 'noche'], voz: w('Directo a lo bueno:', 'Straight to the good stuff:') }
-};
+// Rama de cada guardián y perfiles del visitante: viven en data/guias.js (se leen aquí, con un respaldo mínimo).
+var GUIAS = window.NAIHUAL_GUIAS || {};
+var RAMA = {};
+['noj', 'iq', 'kej', 'e'].forEach(function (g) {
+  var r = (GUIAS.ramas || {})[g] || {};
+  RAMA[g] = { tema: { es: String((r.tema || {}).es || ''), en: String((r.tema || {}).en || (r.tema || {}).es || '') }, voz: { es: String((r.voz || {}).es || ''), en: String((r.voz || {}).en || (r.voz || {}).es || '') },
+    cats: Array.isArray(r.cats) ? r.cats : [], consejos: r.consejos || null, playlists: r.playlists === true };
+});
 
 // ===================== CATÁLOGO (vive en data/lugares.js) =====================
 // Publicado = estado «publicado» + nombre, dirección, enlace de Maps, fuente, fecha y quién verificó.
@@ -580,15 +581,8 @@ var CATEGORIAS = [
   ['parque', w('Parque', 'Park'), w('Parques', 'Parks')],
   ['cultura', w('Monumento', 'Monument'), w('Monumentos', 'Monuments')]
 ];
-// Perfiles del visitante (Diego, 28-oct). Cambian qué se muestra primero, nunca el trato (B3: nacional y extranjero, por igual).
-// ❓ La diferencia entre «visitante» y «turista» es una propuesta de Claude: falta que Diego la confirme.
-// «Agente» no está aquí: necesita permiso y cuenta propia (capa 3).
-var PERFILES = [
-  ['local', w('Vivo aquí', 'I live here'), w('vive en Antigua o cerca; ya conoce lo básico', 'lives in or near Antigua; already knows the basics')],
-  ['visitante', w('Vengo de Guatemala', 'I’m from Guatemala'), w('viene de otra parte de Guatemala', 'comes from elsewhere in Guatemala')],
-  ['turista', w('Vengo de otro país', 'I’m from abroad'), w('viene de otro país; puede no hablar español', 'comes from abroad; may not speak Spanish')],
-  ['mochilero', w('Viajo con poco', 'Travelling light'), w('viaja con poco presupuesto y más tiempo', 'travels on a small budget with more time')]
-];
+// Perfiles del visitante (data/guias.js): cambian qué se muestra primero, nunca el trato (B3).
+var PERFILES = (Array.isArray(GUIAS.perfiles) ? GUIAS.perfiles : []).filter(function (p) { return p && p.id && p.label; }).map(function (p) { return [String(p.id), wl(p.label), wl(p.que)]; });
 var PERFIL = {};
 PERFILES.forEach(function (p) { PERFIL[p[0]] = { label: p[1], que: p[2] }; });
 var CATS = {};
@@ -647,7 +641,6 @@ var SRC = {};
 
 // ===================== RUTAS (paradas del catálogo) =====================
 // Las playlists a pie viven en data/playlists.js. Aquí se leen; dentro del programa se llaman ROUTES (rutas).
-function wl(o) { o = o || {}; return { es: String(o.es || ''), en: String(o.en || o.es || '') }; }
 var ROUTES = {};
 (window.NAIHUAL_PLAYLISTS || []).forEach(function (pl) {
   if (!pl || !pl.id || ROUTES[pl.id] || !Array.isArray(pl.paradas)) return;
@@ -802,6 +795,7 @@ var X3 = {
     score: 'Del 0 al 10 · privado: no se muestra, solo le enseña a nAIhual tus gustos', scoreNone: 'Sin número', score0: 'Meh', score10: 'Lo mejor que he probado', score10Warn: 'Ojo: el 10 es lo mejor que has probado en tu vida.',
     comment: 'Tu comentario', photo: 'Foto (opcional)', photoNote: 'Si sale una persona, solo con su permiso.', saveVisit: 'Guardar mi visita', uploading: 'Subiendo la foto…',
     find: 'Buscá un lugar para anotar', findPh: 'Nombre o tipo: pizza, panadería, café…', quick: 'Anotar rápido', addNew: 'Agregar un lugar que no está', del: 'Borrar',
+    postEmpty: 'Escribí algo para publicar.', badMaps: 'El enlace tiene que ser de Google Maps (Compartir → Copiar enlace).', postRetry: 'Ordenar otra vez', postNoOrder: 'Sin ordenar todavía.',
     publish: 'Publicar', postTitle: '¿Qué querés contar?', postPh: 'Un lugar, una historia, un consejo, un evento…', postMaps: 'Enlace de Google Maps (opcional)',
     temas: [['lugar', 'Lugar'], ['historia', 'Historia'], ['consejo', 'Consejo'], ['evento', 'Evento']], postSaved: 'Publicado. Claude lo ordena.',
     wall: 'Tu muro', wallBody: 'Lo que publicás. Al confirmarlo, el chat ya lo usa.', wallNone: 'Todavía no publicaste nada. Tocá «+».', ordering: 'Claude lo está ordenando…', postOk: 'Confirmar', postOn: 'Confirmado · el chat ya lo usa', postToConfirm: 'Por confirmar', aboutHere: 'Lo que publicaste de aquí',
@@ -837,6 +831,7 @@ var X3 = {
     score: 'From 0 to 10 · private: never shown, it only teaches nAIhual your taste', scoreNone: 'No number', score0: 'Meh', score10: 'The best I have ever had', score10Warn: 'Careful: 10 means the best you have ever had.',
     comment: 'Your comment', photo: 'Photo (optional)', photoNote: 'If a person is in it, only with their permission.', saveVisit: 'Save my visit', uploading: 'Uploading the photo…',
     find: 'Find a place to note', findPh: 'Name or type: pizza, bakery, coffee…', quick: 'Quick note', addNew: 'Add a place that is not here', del: 'Delete',
+    postEmpty: 'Write something to post.', badMaps: 'The link must be from Google Maps (Share → Copy link).', postRetry: 'Sort again', postNoOrder: 'Not sorted yet.',
     publish: 'Post', postTitle: 'What do you want to share?', postPh: 'A place, a story, a tip, an event…', postMaps: 'Google Maps link (optional)',
     temas: [['lugar', 'Place'], ['historia', 'Story'], ['consejo', 'Tip'], ['evento', 'Event']], postSaved: 'Posted. Claude sorts it.',
     wall: 'Your wall', wallBody: 'What you post. Once you confirm it, the chat uses it.', wallNone: 'Nothing posted yet. Tap «+».', ordering: 'Claude is sorting it…', postOk: 'Confirm', postOn: 'Confirmed · the chat uses it', postToConfirm: 'To confirm', aboutHere: 'What you posted about here',
@@ -858,7 +853,9 @@ var STR = {
     chips: [['cafe', 'Quiero un café'], ['empezar', 'Recién llegué'], ['horas', 'Tengo 3 horas'], ['comida', 'Dónde comer'], ['dia', 'Un día completo'], ['cultura', 'Cultura maya'], ['costumbres', 'Costumbres de aquí']],
     placeholder: 'Preguntale lo que quieras…', send: 'Enviar', switchChip: 'Otro guía', talk: 'Hablar con',
     welcome: '¿Qué tenés ganas de hacer en Antigua?', takeover: 'Ahora te guío yo. ¿Qué buscás?',
+    aproxShort: 'ubicación aproximada',
     hiMorning: 'Buenos días', hiAfternoon: 'Buenas tardes', hiNight: 'Buenas noches',
+    perfilOff: function (n) { return 'Se apagó «' + n + '»: hasta 2 a la vez'; },
     ideaTitle: function (n) { return 'Hoy te sugiere ' + n; }, otherIdea: 'Otra idea', seeIt: 'Ver',
     by: 'De ', free: 'Gratis', spend: 'Con algo que comprar', forYou: 'Para vos',
     perfilQ: '¿Cómo venís a Antigua?', perfilBody: 'Encendé hasta 2. Cambian qué te mostramos primero y cómo te recomiendan; el trato es el mismo para todos.', perfilOn: 'Primero va lo pensado para vos. Podés tener 2 encendidos.',
@@ -905,7 +902,9 @@ var STR = {
     chips: [['cafe', 'I want a coffee'], ['empezar', 'Just arrived'], ['horas', 'I have 3 hours'], ['comida', 'Where to eat'], ['dia', 'A full day'], ['cultura', 'Maya culture'], ['costumbres', 'Local customs']],
     placeholder: 'Ask anything…', send: 'Send', switchChip: 'Another guide', talk: 'Talk to',
     welcome: 'What do you feel like doing in Antigua?', takeover: 'I’m your guide now. What are you after?',
+    aproxShort: 'approximate location',
     hiMorning: 'Good morning', hiAfternoon: 'Good afternoon', hiNight: 'Good evening',
+    perfilOff: function (n) { return '«' + n + '» switched off: up to 2 at once'; },
     ideaTitle: function (n) { return n + '’s idea for today'; }, otherIdea: 'Another idea', seeIt: 'See',
     by: 'By ', free: 'Free', spend: 'Something to buy', forYou: 'For you',
     perfilQ: 'How are you visiting Antigua?', perfilBody: 'Switch on up to 2. They change what comes first and how we recommend; everyone gets the same treatment.', perfilOn: 'What suits you comes first. You can have 2 on.',
@@ -1141,16 +1140,17 @@ function cholqijArt() {
 // Portada: el Volcán de Agua (silueta) sobre los techos. Es paisaje, no un símbolo cultural.
 // El cielo y el sol cambian con la hora del teléfono: amanecer, día, atardecer y noche.
 function momento() { var h = new Date().getHours(); return h >= 5 && h < 8 ? 'amanecer' : h >= 8 && h < 17 ? 'dia' : h >= 17 && h < 19 ? 'atardecer' : 'noche'; }
-var CIELO = { amanecer: ['#f6c9a4', '#9fb4d3', '#f7e0b5', 64, 150], dia: ['#f6dcba', '#a8c4e6', '#fff7e0', 318, 70], atardecer: ['#f2a87c', '#6f6f9f', '#ffd29a', 336, 150], noche: ['#3b4068', '#121a30', '#eceae4', 318, 66] };
+// cielo abajo y arriba, color del sol (o la luna) y dónde está. El saludo usa otros cortes: «Buenos días» hasta las 12.
+var CIELO = { amanecer: { c1: '#f6c9a4', c2: '#9fb4d3', sol: '#f7e0b5', x: 64, y: 150 }, dia: { c1: '#f6dcba', c2: '#a8c4e6', sol: '#fff7e0', x: 318, y: 70 }, atardecer: { c1: '#f2a87c', c2: '#6f6f9f', sol: '#ffd29a', x: 336, y: 150 }, noche: { c1: '#3b4068', c2: '#121a30', sol: '#eceae4', x: 318, y: 66 } };
 function heroArt() {
   var id = 'h' + (++uid), m = momento(), c = CIELO[m];
-  return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-momento="' + m + '" style="--cielo-1:' + c[0] + ';--cielo-2:' + c[1] + '">' +
+  return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-momento="' + m + '" style="--cielo-1:' + c.c1 + ';--cielo-2:' + c.c2 + '">' +
     '<defs><linearGradient id="' + id + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--cielo-2)"/><stop offset=".75" style="stop-color:var(--cielo-1)"/></linearGradient>' +
     '<linearGradient id="' + id + 'v" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--volcan-2)"/><stop offset=".55" style="stop-color:var(--volcan)"/></linearGradient>' +
     '<linearGradient id="' + id + 'f" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient></defs>' +
     '<rect width="400" height="300" fill="url(#' + id + 's)"/>' +
     (m === 'noche' ? '<g fill="#fff" opacity=".7"><circle cx="40" cy="40" r="1.4"/><circle cx="120" cy="24" r="1"/><circle cx="210" cy="46" r="1.2"/><circle cx="270" cy="20" r="1"/><circle cx="370" cy="110" r="1.2"/><circle cx="80" cy="96" r="1"/></g>' : '') +
-    '<circle cx="' + c[3] + '" cy="' + c[4] + '" r="' + (m === 'noche' ? 18 : 26) + '" fill="' + c[2] + '" opacity="' + (m === 'dia' ? '.75' : '.9') + '"/>' +
+    '<circle cx="' + c.x + '" cy="' + c.y + '" r="' + (m === 'noche' ? 18 : 26) + '" fill="' + c.sol + '" opacity="' + (m === 'dia' ? '.75' : '.9') + '"/>' +
     '<path d="M30 222 L188 70 Q200 60 212 70 L370 222 Z" fill="url(#' + id + 'v)"/>' +
     '<path d="M188 70 Q200 60 212 70 L226 84 L214 80 L206 88 L198 80 L188 88 L176 82 Z" style="fill:var(--cal)" opacity=".85"/>' +
     '<path d="M0 222 L80 196 L150 212 L230 190 L310 210 L400 196 L400 300 L0 300 Z" style="fill:var(--volcan-2)" opacity=".9"/>' +
@@ -1280,7 +1280,7 @@ function refsSVG() {
     var lx = e.x, ly = e.y + 19, anchor = onLeft ? 'start' : onRight ? 'end' : 'middle';
     if (Math.abs(e.y - y1) < 1) ly = e.y - 14;
     if (onLeft) lx = e.x - 8; if (onRight) lx = e.x + 8;
-    out += '<g class="ref' + (S.refOpen === r.id ? ' open' : '') + '" data-ref="' + esc(r.id) + '" data-afuera tabindex="0" role="button" aria-label="' + esc(label(e)) + '"><title>' + esc(r.nombre + (r.aprox ? ' (≈)' : '')) + '</title>' +
+    out += '<g class="ref' + (S.refOpen === r.id ? ' open' : '') + '" data-ref="' + esc(r.id) + '" data-afuera tabindex="0" role="button" aria-expanded="' + (S.refOpen === r.id) + '" aria-label="' + esc(r.nombre + (r.aprox ? ' (' + T().aproxShort + ')' : '')) + '"><title>' + esc(r.nombre + (r.aprox ? ' (≈)' : '')) + '</title>' +
       '<g transform="translate(' + e.x.toFixed(1) + ' ' + e.y.toFixed(1) + ')"><path class="arrow" transform="rotate(' + ang + ') translate(0 -14)" d="M0 -4 L4 2 H-4 Z"/><circle r="10"/>' + (REF_ICON[r.tipo] || '') + '</g>' +
       '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="' + anchor + '">' + esc(label(e)) + '</text></g>';
   });
@@ -1289,7 +1289,7 @@ function refsSVG() {
     if (isFinite(r.rumbo)) return;
     var q = refPoint(r); if (!q) return;
     var name = r.nombre || (r.lugar && P[r.lugar] ? P[r.lugar].name : '');
-    out += '<g class="ruin' + (S.refOpen === r.id ? ' open' : '') + '" data-ref="' + esc(r.id) + '" tabindex="0" role="button" aria-label="' + esc(name + (q.aprox ? ' ≈' : '')) + '"><title>' + esc(name + (q.aprox ? ' (≈)' : '')) + '</title><rect x="' + (q.x - 6).toFixed(1) + '" y="' + (q.y - 18).toFixed(1) + '" width="12" height="10" rx="2"/>' +
+    out += '<g class="ruin' + (S.refOpen === r.id ? ' open' : '') + '" data-ref="' + esc(r.id) + '" tabindex="0" role="button" aria-expanded="' + (S.refOpen === r.id) + '" aria-label="' + esc(name + (q.aprox ? ' (' + T().aproxShort + ')' : '')) + '"><title>' + esc(name + (q.aprox ? ' (≈)' : '')) + '</title><rect x="' + (q.x - 6).toFixed(1) + '" y="' + (q.y - 18).toFixed(1) + '" width="12" height="10" rx="2"/>' +
       '<path d="M' + (q.x - 3).toFixed(1) + ' ' + (q.y - 8).toFixed(1) + ' v-3 a3 3 0 0 1 6 0 v3"/><text x="' + q.x.toFixed(1) + '" y="' + (q.y - 21).toFixed(1) + '" text-anchor="middle">' + esc(name + (q.aprox ? ' ≈' : '')) + '</text></g>';
   });
   return out;
@@ -1305,12 +1305,12 @@ function cropFor(ids, pad) {
 }
 
 // ===================== ESTADO =====================
-// En este teléfono se guardan los ♥, el idioma y el perfil (naihual.app1). En vista previa, también el «¿Fuiste?» pendiente y,
+// En este teléfono se guardan los ♥, el idioma, los perfiles y los widgets cerrados (naihual.app1). En vista previa, también el «¿Fuiste?» pendiente y,
 // si no hay visor de Claude, la beta y lo aprendido. La conversación vive en memoria y se borra al recargar.
 var LS = 'naihual.app1';
-var S = { view: 'inicio', stack: [], lang: 'es', saved: [], perfiles: [], ideaN: Math.floor(Math.random() * 1000), refOpen: '', guide: ORDER[0], msgs: [], route: null, detail: null, nawal: null, filter: 'all', query: '', sec: 'revision', demoFb: '' };
-try { var st0 = JSON.parse(localStorage.getItem(LS) || 'null'); if (st0) { S.saved = (st0.saved || []).filter(function (k) { return typeof k === 'string'; }); S.lang = st0.lang === 'en' ? 'en' : 'es'; S.perfiles = (Array.isArray(st0.perfiles) ? st0.perfiles : st0.perfil ? [st0.perfil] : []).filter(function (p) { return !!PERFIL[p]; }).slice(0, 2); } } catch (e) {}
-function persist() { try { localStorage.setItem(LS, JSON.stringify({ saved: S.saved, lang: S.lang, perfiles: S.perfiles })); } catch (e) {} }
+var S = { view: 'inicio', stack: [], lang: 'es', saved: [], perfiles: [], closed: {}, ideaN: Math.floor(Math.random() * 1000), refOpen: '', guide: ORDER[0], msgs: [], route: null, detail: null, nawal: null, filter: 'all', query: '', sec: 'revision', demoFb: '' };
+try { var st0 = JSON.parse(localStorage.getItem(LS) || 'null'); if (st0) { S.saved = (st0.saved || []).filter(function (k) { return typeof k === 'string'; }); S.lang = st0.lang === 'en' ? 'en' : 'es'; S.perfiles = (Array.isArray(st0.perfiles) ? st0.perfiles : []).filter(function (p) { return !!PERFIL[p]; }).slice(0, 2); if (st0.closed && typeof st0.closed === 'object') S.closed = st0.closed; } } catch (e) {}
+function persist() { try { localStorage.setItem(LS, JSON.stringify({ saved: S.saved, lang: S.lang, perfiles: S.perfiles, closed: S.closed })); } catch (e) {} }
 function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 function T() { return STR[S.lang]; }
 function L() { return S.lang; }
@@ -1486,10 +1486,10 @@ function aiData(q, gid) {
         le_gusto_a_quien_pregunta: mine(id, 'gusta').length > 0, gusto_privado: gustoDe(puntajes(mine(id, 'visita').concat(mine(id, 'nota')))),
         notas_de_la_beta: textos(mine(id, 'nota').concat(mine(id, 'dato'), mine(id, 'visita')), 5), patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
     lugares_agregados_en_la_beta: BETA.items.filter(function (x) { return x.tipo === 'nuevo'; }).slice(-20).map(function (x) { return { nombre: x.nombre, momento: x.momento || null, le_gusto: !!x.gusta, nota: String(x.texto || '').slice(0, 300) || null }; }),
-    visitas_fuera_del_catalogo: BETA.items.filter(function (x) { return x.tipo === 'visita' && !x.lugar; }).slice(-10).map(function (x) { return { nombre: x.nombre, comentario: String(x.texto || '').slice(0, 300) || null, gusto_privado: gustoDe(puntajes([x])) }; }),
+    visitas_fuera_del_catalogo: BETA.items.filter(function (x) { return (x.tipo === 'visita' || x.tipo === 'nota' || x.tipo === 'dato') && (!x.lugar || !P[x.lugar]); }).slice(-10).map(function (x) { return { nombre: x.nombre, comentario: String(x.texto || '').slice(0, 300) || null, gusto_privado: gustoDe(puntajes([x])) }; }),
     libretas: LIBRETAS,
     aprendido_confirmado: learnedConfirmed(),
-    publicaciones_confirmadas: BETA.items.filter(function (x) { return x.tipo === 'post' && x.estado === 'confirmado'; }).slice(-30).map(function (x) { var o = x.orden || {}; return { tema: o.tema || x.tema, guardian: o.guardian || null, lugar: o.lugar && P[o.lugar] ? P[o.lugar].name : null, titulo: o.titulo || null, texto: String(x.texto || '').slice(0, 300) }; }),
+    publicaciones_confirmadas: BETA.items.filter(function (x) { return x.tipo === 'post' && x.estado === 'confirmado'; }).slice(-30).map(function (x) { var o = postClean(x.orden) || {}; return { fecha: String(x.fecha || '').slice(0, 10), tema: o.tema || x.tema, guardian: o.guardian || null, lugar: o.lugar ? P[o.lugar].name : null, titulo: o.titulo || null, texto: String(x.texto || '').slice(0, 300) }; }),
     ya_mostrados: shownBefore(),
     consejos: Object.keys(TIPS).map(function (id) { return { id: id, texto: TIPS[id].body.es, cultural_pendiente_de_validacion: !!TIPS[id].star }; }),
     playlists: routeIds().map(function (id) { var r = ROUTES[id]; return { id: id, titulo: r.title.es, de: r.autor, gasto: r.gasto || null, paradas: r.stops.map(function (x) { return P[x].name; }) }; }),
@@ -1514,7 +1514,7 @@ function aiRules(gid, q) {
     'Tu rama como ' + g.name + ': ' + RAMA[gid].tema.es + '. Buscá primero en tu rama y hablá desde ella.\n' +
     'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
     'Orden para buscar (obligatorio):\n' +
-    '1. Primero lo que nAIhual ya sabe: «catalogo», «publicaciones_confirmadas» (lo que Diego publicó y confirmó), «lugares_agregados_en_la_beta», «visitas_fuera_del_catalogo», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
+    '1. Primero lo que nAIhual ya sabe: «catalogo», «publicaciones_confirmadas» (lo que contó y confirmó quien usa la beta: contalo como dicho por esa persona, con su fecha; un evento con fecha pasada no se ofrece), «lugares_agregados_en_la_beta», «visitas_fuera_del_catalogo», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
     '2. Si ahí no está, respondé con lo que vos sabés de Antigua, como un agente de verdad: lugares reales que conocés, con su contexto. Ponelos en «otros» (nombre exacto del lugar y por qué). La app les pone la etiqueta «Según la IA · confirmá en Google». No inventes lugares: si no conocés uno que sirva, decilo.\n' +
     'Reglas:\n' +
     '- Sos guía, no juez. Resumí lo que dijeron las personas (la beta, agentes) y las fuentes públicas del catálogo y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
@@ -1727,30 +1727,38 @@ function betaDelete(key) {
   if (BETA.db) { BETA.db.doc('beta/' + id).delete().then(function () { dropPhoto(); toast(true, x.toastDeleted); }, function () { render({ keep: true }); toast(false); }); return; }
   BETA.items = BETA.items.filter(function (b) { return b._id !== id; }); betaSaveLocal(); dropPhoto(); render({ keep: true }); toast(true, x.toastDeleted);
 }
-// «+ Publicar»: lo más simple posible, como en una red social.
+// «+ Publicar»: lo más simple posible, como en una red social. Temas: los de X3.temas (uno solo para todo).
+var TEMAS = X3.es.temas.map(function (t) { return t[0]; });
 function postForm() {
   var x = X();
   return '<form class="bform" data-bform="post"><h2>' + esc(x.postTitle) + '</h2>' +
     '<div class="temas" role="radiogroup" aria-label="' + esc(x.kind) + '">' + x.temas.map(function (tm, i) { return '<label class="chip"><input type="radio" name="tema" value="' + tm[0] + '"' + (i ? '' : ' checked') + '>' + esc(tm[1]) + '</label>'; }).join('') + '</div>' +
-    '<label><span class="sr-label">' + esc(x.postTitle) + '</span><textarea name="texto" required maxlength="800" placeholder="' + esc(x.postPh) + '"></textarea></label>' + photoHTML() +
+    '<label><span class="sr-label">' + esc(x.postTitle) + '</span><textarea name="texto" maxlength="800" placeholder="' + esc(x.postPh) + '"></textarea></label>' + photoHTML() +
     '<label>' + esc(x.postMaps) + '<input type="url" name="maps" inputmode="url" autocomplete="off" placeholder="https://maps.app.goo.gl/…"></label><p class="note" role="status" data-post-msg></p>' +
     '<div class="row"><button type="submit" class="btn primary">' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-close>' + esc(T().close) + '</button></div></form>';
 }
 // Claude ordena la publicación: tema, guardián, de qué lugar del catálogo habla, un título y una frase. No inventa.
+// Claude ordena la publicación: tema, guardián, de qué lugar del catálogo habla, un título y una frase. No inventa.
+// ORDERING = las que se están ordenando ahora (en memoria). Si falla, queda «Sin ordenar» con «Ordenar otra vez».
+var ORDERING = {};
 function postClassify(id, post) {
   if (!id || !AI.fn || AI.state !== 'listo') return;
   var cat = PIDS.filter(function (pid) { return visible(P[pid]); }).map(function (pid) { return { id: pid, nombre: P[pid].name }; });
   var prompt = 'Ordená esta publicación para nAIhual (turismo consciente en Antigua Guatemala). No agregues nada que el texto no diga. Lo maya lleva *. Sin juzgar: si es una opinión, que se lea como opinión de quien la publicó.\n' +
     'Guardianes y su rama: ' + ORDER.map(function (g) { return G[g].name + ' (' + g + '): ' + RAMA[g].tema.es; }).join(' · ') + '.\n' +
-    'Respondé SOLO con JSON: {"tema": "lugar" | "historia" | "consejo" | "evento", "guardian": "noj" | "iq" | "kej" | "e", "lugar_id": id del catálogo si habla de uno, si no null, "titulo": hasta 8 palabras, "resumen": una frase corta}\n' +
+    'Respondé SOLO con JSON: {"tema": ' + TEMAS.map(function (t) { return '"' + t + '"'; }).join(' | ') + ', "guardian": "noj" | "iq" | "kej" | "e", "lugar_id": id del catálogo si habla de uno, si no null, "titulo": hasta 8 palabras, "resumen": una frase corta}\n' +
     'CATÁLOGO: ' + JSON.stringify(cat) + '\nPUBLICACIÓN: ' + JSON.stringify({ tema_elegido: post.tema, texto: post.texto, enlace: post.maps || null });
-  AI.fn.json([{ role: 'user', content: prompt }], { modelTier: 'quick', cache: false }).then(function (r) { var o = postClean(r); if (o) postUpdate(id, { orden: o }); }, function () {});
+  ORDERING[id] = true; betaRefresh();
+  AI.fn.json([{ role: 'user', content: prompt }], { modelTier: 'quick', cache: false }).then(function (r) {
+    delete ORDERING[id]; var o = postClean(r); if (o) postUpdate(id, { orden: o }); else betaRefresh();
+  }, function () { delete ORDERING[id]; betaRefresh(); });
 }
+// También revisa lo que vuelve de la base: un guía o un lugar que ya no existe no se pinta.
 function postClean(r) {
   if (!r || typeof r !== 'object') return null;
-  var str = function (v, n) { return typeof v === 'string' ? v.trim().slice(0, n) : ''; }, temas = ['lugar', 'historia', 'consejo', 'evento'];
+  var str = function (v, n) { return typeof v === 'string' ? v.trim().slice(0, n) : ''; }, temas = TEMAS;
   return { tema: temas.indexOf(r.tema) >= 0 ? r.tema : '', guardian: ORDER.indexOf(r.guardian) >= 0 ? r.guardian : '',
-    lugar: typeof r.lugar_id === 'string' && P[r.lugar_id] && visible(P[r.lugar_id]) ? r.lugar_id : '', titulo: str(r.titulo, 80), resumen: str(r.resumen, 200) };
+    lugar: (function (l) { return typeof l === 'string' && P[l] && visible(P[l]) ? l : ''; })(r.lugar_id !== undefined ? r.lugar_id : r.lugar), titulo: str(r.titulo, 80), resumen: str(r.resumen, 200) };
 }
 function postUpdate(id, data) {
   if (BETA.db) { BETA.db.doc('beta/' + id).update(data).catch(function () { toast(false); }); return; }
@@ -1758,12 +1766,12 @@ function postUpdate(id, data) {
 }
 function postsAbout(pid) { return BETA.items.filter(function (x) { return x.tipo === 'post' && ((x.orden && x.orden.lugar === pid) || x.lugar === pid); }); }
 function postHTML(it) {
-  var x = X(), o = it.orden || {}, foto = safeHttps(it.foto), maps = safeHttps(it.maps), ok = it.estado === 'confirmado', tm = x.temas.filter(function (z) { return z[0] === (o.tema || it.tema); })[0];
+  var x = X(), o = postClean(it.orden) || {}, foto = safeHttps(it.foto), maps = safeHttps(it.maps), ok = it.estado === 'confirmado', tm = x.temas.filter(function (z) { return z[0] === (o.tema || it.tema); })[0];
   return '<article class="post" data-post="' + esc(it.estado || '') + '"' + (o.guardian ? ' data-post-guia="' + o.guardian + '"' : '') + '>' +
     '<div class="who">' + (o.guardian ? portrait(o.guardian, 22) + '<span>' + esc(G[o.guardian].name) + '</span>' : '') + '<span class="tags">' + (tm ? '<span class="tag">' + esc(tm[1]) + '</span>' : '') + '<span class="tag' + (ok ? ' ok' : ' check') + '">' + esc(ok ? x.postOn : x.postToConfirm) + '</span>' + revTag(it) + '</span></div>' +
     (o.titulo ? '<b class="ttl">' + esc(o.titulo) + '</b>' : '') + (foto ? '<img class="bphoto" src="' + esc(foto) + '" alt="">' : '') + '<p>' + esc(it.texto || '') + '</p>' +
     (o.lugar ? '<button type="button" class="linkish" data-open="p:' + esc(o.lugar) + '">' + icon('pin', 'sm') + esc(P[o.lugar].name) + '</button>' : '') + (maps ? '<a class="linkish" href="' + esc(maps) + '" target="_blank" rel="noopener">' + esc(T().maps) + '</a>' : '') +
-    (!it.orden && AI.state === 'listo' ? '<p class="note">' + esc(x.ordering) + '</p>' : '') + revNote(it) +
+    (!it.orden && it._id ? (ORDERING[it._id] ? '<p class="note" data-ordering>' + esc(x.ordering) + '</p>' : '<p class="note" data-no-orden>' + esc(x.postNoOrder) + (AI.state === 'listo' ? ' <button type="button" class="linkish" data-post-retry="' + esc(it._id) + '">' + esc(x.postRetry) + '</button>' : '') + '</p>') : '') + revNote(it) +
     '<div class="row"><small>' + esc(String(it.fecha || '').slice(0, 10)) + '</small>' + (ok || !it._id ? '' : '<button type="button" class="btn primary sm" data-post-ok="' + esc(it._id) + '">' + esc(x.postOk) + '</button>') + (it._id ? delBtns('beta:' + it._id) : '') + '</div></article>';
 }
 function wallHTML() {
@@ -1864,12 +1872,13 @@ function betaSubmit(form) {
     return;
   }
   if (kind === 'post') {
-    var pt = String(f.texto.value || '').trim(), pm = String(f.maps.value || '').trim(); if (!pt) return;
-    if (pm && !/^https:\/\//.test(pm)) { var bm = form.querySelector('[data-post-msg]'); if (bm) bm.textContent = x.badLink; return; }
+    var pt = String(f.texto.value || '').trim(), pm = String(f.maps.value || '').trim(), bm = form.querySelector('[data-post-msg]');
+    if (!pt) { if (bm) bm.textContent = x.postEmpty; return; }
+    if (pm && !MAPS_RE.test(pm)) { if (bm) bm.textContent = x.badMaps; return; }
     var tema = (form.querySelector('input[name="tema"]:checked') || {}).value || 'lugar';
     var post = { tipo: 'post', tema: tema, texto: pt.slice(0, 800), maps: pm.slice(0, 500), estado: 'por_confirmar' };
-    withPhoto(form, post, function (id) { postClassify(id, post); });
-    var dp = document.getElementById('dlg'); if (dp.open) dp.close();
+    // La ventana se cierra solo cuando quedó guardado: si falla, lo escrito sigue ahí.
+    withPhoto(form, post, function (id) { var dp = document.getElementById('dlg'); if (dp.open) dp.close(); postClassify(id, post); });
     return;
   }
   if (kind === 'ficha') {
@@ -1920,20 +1929,20 @@ var LAYERS = [
 // ===================== CHAT =====================
 // El guardián activo (S.guide) sigue contestando hasta que la persona pide a otro.
 function switchTo(gid) { S.guide = gid; S.msgs.push({ from: gid, kind: 'takeover', intro: true }); }
-function ask(text, fixed) {
+function ask(text) {
   text = String(text || '').trim(); if (!text || AI.busy) return;
   S.msgs.push({ user: text });
   var m = PROVIDER.respond(text, S.guide);
   S.guide = m.from;
   // Las reglas deciden siempre el turno del guardián.
   // Con Claude disponible (vista previa), también los botones los contesta Claude, variando. Sin Claude, las reglas fijas.
-  var useAI = !fixed && AI.fn && AI.state === 'listo' && !(m.kind === 'takeover' && text.split(/\s+/).length <= 4);
+  var useAI = AI.fn && AI.state === 'listo' && !(m.kind === 'takeover' && text.split(/\s+/).length <= 4);
   if (!useAI) { S.msgs.push(m); render({ scroll: true }); return; }
   var pend = { from: m.from, intro: m.intro, kind: 'thinking' };
   S.msgs.push(pend); render({ scroll: true });
   askClaude(text, m, pend);
 }
-function askIntent(intent) { var c = T().chips.concat(T().clarifyOpts).filter(function (x) { return x[0] === intent; })[0]; if (S.view !== 'guia') nav('guia', { silent: true }); ask(c ? c[1] : intent, false); }
+function askIntent(intent) { var c = T().chips.concat(T().clarifyOpts).filter(function (x) { return x[0] === intent; })[0]; if (S.view !== 'guia') nav('guia', { silent: true }); ask(c ? c[1] : intent); }
 function cardsFor(list) { return list.map(function (c) { if (c.plan) return planRow(c.plan); var k = c.key.split(':')[0], id = c.key.split(':')[1]; return k === 'p' ? placeCard(P[id]) : k === 'r' ? routeRow(id) : tipCard(id); }).join(''); }
 function chipsHTML(opts, attr) { return '<div class="chips" role="group" aria-label="' + esc(T().clarifyLabel) + '">' + opts.map(function (o) { return '<button type="button" class="chip" ' + attr + '="' + esc(o[0]) + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>'; }
 function msgHTML(m, isNew) {
@@ -1966,6 +1975,7 @@ function msgHTML(m, isNew) {
     var before = S.msgs.slice(0, Math.max(0, S.msgs.indexOf(m))), seen = {};
     before.forEach(function (x) { if (x.kind === 'ai') x.ai.consejos.forEach(function (id) { seen[id] = 1; }); });
     var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.filter(function (id) { return !seen[id]; }).map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
+    if (m.ai.cultural) paras.push('<span class="note" data-cult>* ' + esc(t.infoCultBody) + '</span>');
     var otros = (m.ai.otros || []).map(iaPlaceCard).join('');
     if (list.length || otros) cards = '<div class="cards">' + cardsFor(list) + otros + '</div>';
     if (m.ai.opciones.length) after = '<div class="chips" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';
@@ -1997,42 +2007,42 @@ function guardStrip(current) {
     return '<button type="button" class="gbtn" data-guide="' + id + '" aria-current="' + (id === current) + '" aria-label="' + esc(t.talk + ' ' + G[id].name) + '">' + portrait(id, 52) + '<b>' + esc(G[id].name) + '</b><small>' + esc(G[id].tag[lang]) + '</small></button>';
   }).join('') + '</div>';
 }
-// Widgets del Inicio: cada uno se contrae y el teléfono lo recuerda (naihual.widgets).
-var WIDGETS_LS = 'naihual.widgets';
-var CLOSED = {};
-try { CLOSED = JSON.parse(localStorage.getItem(WIDGETS_LS) || '{}') || {}; } catch (e) { CLOSED = {}; }
-function saveClosed() { try { localStorage.setItem(WIDGETS_LS, JSON.stringify(CLOSED)); } catch (e) {} }
+// Widgets del Inicio: cada uno se contrae y el teléfono lo recuerda.
+// Los cerrados se guardan junto con lo demás del teléfono (S.closed en naihual.app1).
+var CLOSED = S.closed;
+function saveClosed() { persist(); }
 // Un toque corto en el teléfono (si lo permite) cuando algo cambia.
 function tick() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {} }
 function widget(id, title, ico, body, extra, color) {
   var closed = !!CLOSED[id];
-  return '<section class="widget' + (closed ? ' closed' : '') + '" data-widget="' + id + '"' + (color ? ' style="--wc:var(--g-' + color + ')"' : '') + '><div class="whead"><button type="button" class="wtoggle" data-wtoggle="' + id + '" aria-expanded="' + !closed + '">' +
-    (ico ? icon(ico) : '') + '<h2>' + esc(title) + '</h2>' + icon('chev', 'sm chev') + '</button>' + (extra || '') + '</div><div class="wbody"><div class="winner">' + body + '</div></div></section>';
+  return '<section class="widget' + (closed ? ' closed' : '') + '" data-widget="' + id + '"' + (color ? ' style="--wc:var(--g-' + color + ')"' : '') + '><div class="whead"><h2 class="wh"><button type="button" class="wtoggle" data-wtoggle="' + id + '" aria-expanded="' + !closed + '">' +
+    (ico ? icon(ico) : '') + '<span class="wt">' + esc(title) + '</span>' + icon('chev', 'sm chev') + '</button></h2>' + (extra || '') + '</div><div class="wbody"><div class="winner">' + body + '</div></div></section>';
 }
 // La idea del guía de turno: sale de su rama y cambia con «Otra idea». Solo lo que este modo deja ver.
 function ideas(gid) {
-  var out = [];
-  if (gid === 'noj') Object.keys(TIPS).forEach(function (id) { if (TIPS[id].cat === 'cultura') out.push('t:' + id); });
-  if (gid === 'iq') out.push('t:foto', 't:horario');
-  if (gid === 'kej') Object.keys(ROUTES).forEach(function (id) { out.push('r:' + id); });
-  RAMA[gid].cats.forEach(function (c) { PIDS.forEach(function (id) { if (P[id].cat === c && visible(P[id]) && !P[id].aviso) out.push('p:' + id); }); });
+  var r = RAMA[gid], out = [];
+  Object.keys(TIPS).forEach(function (id) { if (r.consejos === TIPS[id].cat || (Array.isArray(r.consejos) && r.consejos.indexOf(id) >= 0)) out.push('t:' + id); });
+  if (r.playlists) Object.keys(ROUTES).forEach(function (id) { out.push('r:' + id); });
+  r.cats.forEach(function (c) { PIDS.forEach(function (id) { if (P[id].cat === c && visible(P[id]) && !P[id].aviso) out.push('p:' + id); }); });
   out = out.filter(shown);
   return out.length ? out : Object.keys(TIPS).map(function (id) { return 't:' + id; });
 }
 function ideaHTML() {
-  var t = T(), lang = L(), g = S.guide, pool = ideas(g), key = pool[S.ideaN % pool.length], k = key.split(':')[0], id = key.split(':')[1], head = '', body = '', go = '';
+  var t = T(), lang = L(), g = S.guide, pool = ideas(g), key = pool[S.ideaN % pool.length], k = key.split(':')[0], id = key.split(':')[1], head = '', body = '', go = '', star = false;
   if (k === 'p') { var p = P[id]; head = p.name; body = p.why[lang] ? (p.fraseDe ? '«' + p.why[lang] + '» — ' + p.fraseDe : p.why[lang]) : (p.tipo || catName(p.cat)); go = '<button type="button" class="btn primary" data-open="p:' + esc(id) + '">' + esc(t.seeIt) + '</button>'; }
   else if (k === 'r') { var r = ROUTES[id]; head = r.title[lang]; body = r.intro[lang]; go = '<button type="button" class="btn primary" data-route="' + esc(id) + '">' + icon('map', 'sm') + esc(t.seeRoute) + '</button>'; }
-  else { body = TIPS[id].body[lang]; }
-  return '<div class="idea g-' + g + '" data-idea-key="' + esc(key) + '">' + portrait(g, 44) + '<div><div class="bubble"><p class="muted" style="font-size:13px">' + esc(RAMA[g].voz[lang]) + '</p>' + (head ? '<b>' + esc(head) + '</b>' : '') + '<p>' + esc(body) + '</p></div>' +
+  else { body = TIPS[id].body[lang]; star = !!TIPS[id].star; }
+  return '<div class="idea g-' + g + '" data-idea-key="' + esc(key) + '">' + portrait(g, 44) + '<div><div class="bubble"><p class="muted" style="font-size:13px">' + esc(RAMA[g].voz[lang]) + '</p>' + (head ? '<b>' + esc(head) + '</b>' : '') + '<p>' + esc(body) + (star ? ' *' : '') + '</p>' + (star ? infoHTML('cult') : '') + '</div>' +
     '<div class="row">' + go + '<button type="button" class="btn" data-idea>' + icon('shuffle', 'sm') + esc(t.otherIdea) + '</button><button type="button" class="btn ghost" data-guide="' + g + '">' + icon('chat', 'sm') + esc(t.talk + ' ' + G[g].name) + '</button></div></div></div>';
 }
 function perfilHTML() {
   var t = T(), lang = L();
   return '<div class="wpad perfil" data-perfil-pick><div class="switches" role="group" aria-label="' + esc(t.perfilQ) + '">' +
-    PERFILES.map(function (p) { var on = S.perfiles.indexOf(p[0]) >= 0; return '<button type="button" class="switch" role="switch" data-perfil="' + p[0] + '" aria-checked="' + on + '"><span>' + esc(p[1][lang]) + '</span><i aria-hidden="true"></i></button>'; }).join('') + '</div>' +
+    PERFILES.map(function (p) { var on = S.perfiles.indexOf(p[0]) >= 0; return '<button type="button" class="pswitch" role="switch" data-perfil="' + p[0] + '" aria-checked="' + on + '"><span>' + esc(p[1][lang]) + '</span><i aria-hidden="true"></i></button>'; }).join('') + '</div>' +
     '<p class="note">' + esc(S.perfiles.length ? t.perfilOn : t.perfilBody) + '</p></div>';
 }
+// La línea de arriba de una playlist (momento · paradas), igual en todas partes.
+function routeMeta(r) { return esc(r.kicker[L()]) + ' · ' + r.stops.length + ' ' + esc(T().stops); }
 // Etiquetas de una playlist: quién la armó y si hay algo que comprar.
 function routeTags(r) {
   var t = T();
@@ -2044,7 +2054,7 @@ function inicioHTML() {
   var routes = rids.length ? '<div class="rail">' + rids.map(function (rid) {
     var r = ROUTES[rid];
     return '<button type="button" class="route-card" data-route="' + rid + '"><span class="map">' + mapSVG({ routes: [{ ids: r.stops }], stops: r.stops, crop: cropFor(r.stops, 40), label: r.title[lang] }) + '</span>' +
-      '<span class="rc-body"><span class="eyebrow">' + esc(r.kicker[lang]) + ' · ' + r.stops.length + ' ' + esc(t.stops) + '</span><span class="rc-title">' + esc(r.title[lang]) + '</span>' + routeTags(r) + '</span></button>';
+      '<span class="rc-body"><span class="eyebrow">' + routeMeta(r) + '</span><span class="rc-title">' + esc(r.title[lang]) + '</span>' + routeTags(r) + '</span></button>';
   }).join('') + '</div>' : empty(t.routesSoon, t.routesSoonBody);
   var tiles = [['explorar', 'lugares'], ['cultura', 'cultura'], ['costumbres', 'costumbres'], ['guardianes', 'guardianes']];
   return '<section class="hero"><div class="hero-art">' + heroArt() + '<div class="hero-copy"><span class="hello" data-saludo>' + esc(saludo()) + '</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
@@ -2068,7 +2078,7 @@ function rutasHTML() {
     '<div class="chips" role="group" aria-label="' + esc(t.routes) + '">' + rids.map(function (rid) { return '<button type="button" class="chip" data-selroute="' + rid + '" aria-pressed="' + (rid === sel) + '">' + esc(ROUTES[rid].title[lang]) + '</button>'; }).join('') + '</div>' +
     '<div class="mapframe map" data-map="' + sel + '">' + mapSVG({ routes: rids.filter(function (x) { return x !== sel; }).map(function (x) { return { ids: ROUTES[x].stops, faint: true }; }).concat([{ ids: r.stops }]), stops: r.stops, labels: true, refs: true, lang: lang, label: r.title[lang] }) + '</div>' +
     '<p class="note" data-map-note>' + esc(t.mapNote + ' · ' + t.outside) + '</p>' +
-    '<section class="sec" data-route-detail="' + sel + '"><span class="eyebrow">' + esc(r.kicker[lang]) + ' · ' + r.stops.length + ' ' + esc(t.stops) + '</span><div class="sec-head"><h2>' + esc(r.title[lang]) + '</h2>' + infoHTML('hist') + '</div>' + routeTags(r) + '<p>' + esc(r.intro[lang]) + '</p>' +
+    '<section class="sec" data-route-detail="' + sel + '"><span class="eyebrow">' + routeMeta(r) + '</span><div class="sec-head"><h2>' + esc(r.title[lang]) + '</h2>' + infoHTML('hist') + '</div>' + routeTags(r) + '<p>' + esc(r.intro[lang]) + '</p>' +
       '<ol class="stops">' + r.stops.map(function (id, i) { var p = P[id]; return '<li><button type="button" data-open="p:' + id + '"><span class="n">' + (i + 1) + '</span><span><b>' + esc(p.name) + '</b>' + (r.hacer[id] && r.hacer[id][lang] ? '<small data-hacer>' + esc(r.hacer[id][lang]) + '</small><br>' : '') + '<small>' + esc(p.addr) + (p.pos && p.pos.aprox ? ' · ' + esc(t.aprox) : '') + '</small></span>' + icon('arrow', 'sm') + '</button></li>'; }).join('') + '</ol>' +
       '<div class="actions"><a class="btn anil" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(t.openRoute) + '</a>' +
       '<button type="button" class="btn" data-toggle="r:' + sel + '" aria-pressed="' + isSaved('r:' + sel) + '">' + icon('heart', 'sm fill') + esc(isSaved('r:' + sel) ? t.saved : t.save) + '</button></div></section>';
@@ -2345,7 +2355,16 @@ function openKey(key) {
   if (k === 'r' && ROUTES[id]) { S.route = id; nav('rutas'); }
 }
 
-document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); var i = document.getElementById('q'); ask(i.value); i.value = ''; });
+// Si Claude todavía está respondiendo, lo escrito no se borra.
+document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); if (AI.busy) return; var i = document.getElementById('q'); ask(i.value); i.value = ''; });
+// Perfiles: hasta 2 encendidos; el tercero apaga el más viejo y se avisa. El foco vuelve al interruptor.
+function togglePerfil(v) {
+  var i = S.perfiles.indexOf(v), off = '';
+  if (i >= 0) S.perfiles.splice(i, 1); else { S.perfiles.push(v); if (S.perfiles.length > 2) off = S.perfiles.shift(); }
+  tick(); persist(); render({ keep: true });
+  if (off && PERFIL[off]) toast(true, T().perfilOff(PERFIL[off].label[L()]));
+  var b = document.querySelector('[data-perfil="' + v + '"]'); if (b) b.focus();
+}
 // «Vamos»: en la beta queda pendiente la pregunta «¿Fuiste?».
 function goingTo(pid, nombre) { if (!BETA_ON) return; fuiSet({ lugar: pid || null, nombre: nombre }); setTimeout(fuiBar, 400); }
 // Cada atributo data-* que se puede tocar y lo que hace. Si un elemento tiene varios, gana el primero de la lista.
@@ -2385,12 +2404,13 @@ var ACTIONS = [
   ['data-nawal', function (v) { S.nawal = v; nav('nawal'); }],
   ['data-sec', function (v) { S.sec = v; render({ keep: true }); window.scrollTo(0, 0); }],
   ['data-demo-fb', function (v) { S.demoFb = v; render({ keep: true }); }],
-  ['data-perfil', function (v) { var i = S.perfiles.indexOf(v); if (i >= 0) S.perfiles.splice(i, 1); else { S.perfiles.push(v); if (S.perfiles.length > 2) S.perfiles.shift(); } tick(); persist(); render({ keep: true }); }],
+  ['data-perfil', function (v) { togglePerfil(v); }],
   ['data-wtoggle', function (v, e, el) { CLOSED[v] = !CLOSED[v]; saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
   ['data-idea', function () { S.ideaN++; tick(); var b = document.getElementById('idea-body'); if (b) b.innerHTML = ideaHTML(); }],
   ['data-publish', function () { tick(); openDialog(postForm()); }],
   ['data-post-ok', function (v) { postUpdate(v, { estado: 'confirmado' }); tick(); }],
-  ['data-ref', function (v) { S.refOpen = S.refOpen === v ? '' : v; [].forEach.call(document.querySelectorAll('.map [data-ref]'), function (g) { g.classList.toggle('open', g.getAttribute('data-ref') === S.refOpen); }); }],
+  ['data-post-retry', function (v) { var it = BETA.items.filter(function (x) { return x._id === v; })[0]; if (it) postClassify(v, it); }],
+  ['data-ref', function (v) { S.refOpen = S.refOpen === v ? '' : v; [].forEach.call(document.querySelectorAll('.map [data-ref]'), function (g) { g.classList.toggle('open', g.getAttribute('data-ref') === S.refOpen); g.setAttribute('aria-expanded', String(g.getAttribute('data-ref') === S.refOpen)); }); }],
   ['data-sos', function () { var t = T(); openDialog('<h2>' + esc(t.sosTitle) + '</h2><p>' + esc(t.sosBody) + '</p><button type="button" class="btn primary" data-close>' + esc(t.close) + '</button>'); }],
   ['data-close', function () { document.getElementById('dlg').close(); }]
 ];

@@ -312,7 +312,8 @@ Tata (cultura)                                accesibilidad            playlists
 | A30 | **Regla nueva (Diego, 28-oct):** cada versión trae un cambio visual que se note, para comprobar que se actualizó. | Anotada también en `CLAUDE.md`. |
 | A31 | 🟡 **Hecho en 3.7:** con Claude disponible (visor), también los botones los contesta Claude, desde la rama de su guardián (No'j historia y cultura · Iq' primeros pasos, cafés y eventos · Kej rutas, naturaleza y mercados · E' comida, pan, noche y comunidades), con una muestra al azar del catálogo y sin repetir lo ya mostrado. ⚠️ Adentro del visor sigue sin buscar en internet (paso 3 = A35). | |
 | A32 | 🟡 **Hecho en 3.7: «+ Publicar»** al centro de la barra (solo en la beta): tema con un toque, texto, foto y enlace opcional. Claude la ordena sola (tema, guía, lugar, título). En «Tu muro» la confirmás y el chat ya la usa. Sin Drive. ⚠️ Mientras la base sea compartida (A24), solo Diego publica. | |
-| A36 | 🟡 **Hecho en 3.7:** catálogo activo de 37 (frases de Diego, monumentos, parques, pan y noche con fuente, y del directorio Basilico, La Bruja y Sat Nam). Los otros 167 están en `app/data/reserva.js`: la app no los carga ni se los manda a Claude. | Si querés rescatar alguno, decime cuál. |
+| A36 | 🟡 **Hecho en 3.7:** catálogo activo de 36 (frases de Diego, monumentos, parques, pan y noche con fuente, y del directorio Basilico, La Bruja y Sat Nam). Los otros 167 están en `app/data/reserva.js`: la app no los carga ni se los manda a Claude. | Si querés rescatar alguno, decime cuál. |
+| A37 | ❓ **¿«Playlist» o «ruta»?** Hoy los datos y títulos dicen «playlist», pero la pestaña dice «Rutas» y el botón «Ver ruta». | Que Diego elija un nombre (FIJA) y se cambia en todos los textos. |
 | A33 | ✅ **3.7:** el cambio visual va en la primera pantalla (portada según la hora, saludo e idea del guía). | |
 | A34 | 🟡 **Hecho en 3.7:** Inicio en widgets que se contraen y el teléfono recuerda; perfiles como interruptores (hasta 2), encendido = añil. Mapa: el nombre aparece al tocar cada ícono. | |
 | A35 | ❓ **¿Página web propia o Wix?** Para tener más información de regreso (de visitantes y agentes) y buscar en vivo. | Sí sirve, pero es la capa 3: necesita un servidor que guarde la llave de la IA (nunca en el navegador) y pagar el uso de la IA. Wix: se puede meter la app como código incrustado y usar su parte de servidor (Velo) para la llave. ❓ Costos sin revisar. Mientras, la beta sigue en el visor de Claude, que es gratis. |
@@ -362,10 +363,10 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | 6 | Retorno | Entra dinero → el % va a las familias → el gasto se publica con su recibo | ⬜ |
 
 ## Catálogo
-- **Activos (3.7): 37 lugares**, todos en «borrador»: 9 de comida, 8 cafés, 5 de pan y postres, 4 de noche, 3 parques y 8 monumentos. 167 del directorio en reserva (`app/data/reserva.js`). 201 tienen referencia web (Komori y Nikolo todavía no). 13 de los primeros tomaron su enlace y su dirección del directorio de Google Maps.
+- **Activos (3.7): 36 lugares** (más Café No Sé repetido, «retirado»), todos en «borrador»: 9 de comida, 7 cafés, 5 de pan y postres, 4 de noche, 3 parques y 8 monumentos. 34 tienen referencia web (Komori y Nikolo no). 167 del directorio en reserva (`app/data/reserva.js`). 201 tienen referencia web (Komori y Nikolo todavía no). 13 de los primeros tomaron su enlace y su dirección del directorio de Google Maps.
 - Once Once sale «temporalmente cerrado» según Google Maps: se queda en el catálogo con su aviso, pero fuera de rutas y de las recomendaciones de comida (3.5).
 - 28-oct (3.5): se quitaron de las frases los resúmenes de reseñas y las notas internas; Café No Sé estaba dos veces y quedó una.
-- 8 monumentos †, 3 rutas a pie †, cultura \* (Cholq'ij, 20 nawales con aviso de que no describen personas).
+- 8 monumentos †, 4 playlists a pie †, cultura \* (Cholq'ij, 20 nawales con aviso de que no describen personas).
 - Sin datos todavía: naturaleza, talleres y artesanía, mercados, aventura, seguridad.
 
 ## Fuentes de verdad
@@ -451,6 +452,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 # PARTE 5 · HISTORIAL
 
 **nAIhual 3.7 — 28-oct-2026 (CONSTRUYE · thermos):** Inicio con vida: el cielo de la portada cambia con la hora (amanecer, día, atardecer, noche con estrellas y ventanas encendidas) y saluda; «Hoy te sugiere [guía]» con una idea de su rama y «Otra idea»; todo el Inicio en widgets que se contraen; perfiles como interruptores (hasta 2). «+ Publicar» como red social, ordenado por Claude y usado por el chat al confirmarlo. Los botones del chat los contesta Claude, variando. Mapa con nombres al tocar. Directorio curado (37 activos, 167 en reserva). Toques que responden (se achican al tocar y vibran si el teléfono deja). ✅ 243/243 pruebas.
+
+**Thermos sobre la 3.7 (28-oct):** arreglado: la idea de No'j mostraba consejos mayas sin \* (ahora lleva \* y su aviso); el muro se rompía con una publicación de un lugar que ya no está; «ordenando…» quedaba para siempre si Claude fallaba (ahora «Sin ordenar» y «Ordenar otra vez»); lo publicado llega al chat con fecha y como dicho por una persona; las respuestas culturales de Claude llevan su aviso; «Otro guía» había perdido su estilo; «Publicar» no cierra si no se guardó, avisa si falta texto y solo acepta enlaces de Google Maps; con Claude ocupado no se borra lo escrito; notas de lugares en reserva siguen llegando al chat; foco y lectura de pantalla en perfiles, widgets e íconos del mapa. Las ramas de los guardianes y los perfiles pasaron a `app/data/guias.js`. ✅ 252/252 pruebas.
 
 **nAIhual 3.6 — 28-oct-2026 (CONSTRUYE):** cambio visual: el mapa de «Rutas» con referencias del paisaje al borde y las ruinas marcadas; perfiles del visitante en Inicio; playlists en su propio archivo, con autor, gasto y qué hacer en cada parada, y una playlist nueva («Un café y el Tanque»). Arreglado: el botón «Norte arriba» decía «undefined» desde la 3.5. GitHub ordenado (skills en su carpeta, PDFs a `docs/fuentes/`, entregas viejas a `docs/historial/`). ✅ 233/233 pruebas.
 
