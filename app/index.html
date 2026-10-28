@@ -38,7 +38,7 @@
   --f-display: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
   --f-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --t-2xs: 11px; --t-xs: 12px; --t-sm: 13.5px; --t-base: 15.5px; --t-md: 17px; --t-lg: 21px; --t-xl: 28px; --t-2xl: 38px;
+  --t-2xs: 11px; --t-xs: 12px; --t-sm: 13.5px; --t-base: 16px; --t-md: 17px; --t-lg: 21px; --t-xl: 28px; --t-2xl: 38px;
   --lh-tight: 1.08; --lh-snug: 1.25; --lh-body: 1.5;
   /* espacio (múltiplos de 4) y forma */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-7: 32px; --s-8: 44px;
@@ -126,12 +126,13 @@ nav.tabs button[aria-current="page"] { background: var(--band-ink); color: var(-
 nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 
 /* ---------- botones y chips ---------- */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--tap); padding: 0 18px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--papel); color: var(--basalto); font-weight: 700; font-size: 14.5px; text-decoration: none; cursor: pointer; }
+/* Acciones: rectángulo redondeado. Filtros y opciones (chips, etiquetas): píldora. Así se distinguen a simple vista. */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--tap); padding: 0 18px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--papel); color: var(--basalto); font-weight: 700; font-size: 14.5px; text-decoration: none; cursor: pointer; }
 .btn.primary { background: var(--basalto); color: var(--cal); border-color: transparent; }
 .btn.anil { background: var(--anil); color: var(--on-anil); border-color: transparent; }
 .btn.ghost { background: transparent; }
 .btn.block { width: 100%; }
-.btn.big { min-height: 58px; font-size: 17px; border-radius: 20px; padding: 0 22px; }
+.btn.big { min-height: 58px; font-size: 17px; border-radius: var(--r-md); padding: 0 22px; }
 .btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
 .chip { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--papel); color: var(--basalto); font-size: 14px; font-weight: 600; cursor: pointer; }
 .chip[aria-pressed="true"] { background: var(--basalto); color: var(--cal); border-color: transparent; }
@@ -186,11 +187,13 @@ details.info[open] { flex-basis: 100%; }
 .route-card .map { aspect-ratio: 1 / .78; }
 .route-card .rc-body { padding: var(--s-3) var(--s-4) var(--s-4); display: flex; flex-direction: column; gap: 4px; }
 .route-card .rc-title { font-family: var(--f-display); font-weight: 700; letter-spacing: -.02em; font-size: var(--t-md); line-height: 1.15; }
-.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
-.tile { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); min-height: 128px; padding: var(--s-4); border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
-.tile .ico { width: 26px; height: 26px; color: var(--anil); }
+.tiles { display: flex; flex-direction: column; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); overflow: hidden; }
+.tile { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 64px; padding: var(--s-3) var(--s-4); border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
+.tiles .tile { border: 0; border-radius: 0; }
+.tiles .tile + .tile { border-top: 1px solid var(--line); }
+.tile > .ico { color: var(--ink-3); }
 .tile b { font-family: var(--f-display); font-size: var(--t-md); letter-spacing: -.01em; line-height: 1.15; }
-.tile small { display: block; color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
+.tile small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
 .guard-strip { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--s-2); }
 .gbtn { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: var(--s-3) 4px; border-radius: var(--r-md); text-align: center; }
 .gbtn b { font-family: var(--f-display); font-size: 15px; }
@@ -339,6 +342,7 @@ form.ask button { flex: none; width: 44px; height: 44px; border: 0; border-radiu
 .grid > * { break-inside: avoid; margin-bottom: var(--s-3); display: block; }
 .pin { all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; position: relative; }
 .pin .ph { border-radius: var(--r-md); }
+.pin .ph-note { display: none; }
 .pin .cap { padding: 8px 2px 0; display: flex; flex-direction: column; gap: 3px; }
 .pin .cap b { font-size: 14.5px; line-height: 1.25; }
 .pin .cap small { font-size: 12.5px; color: var(--ink-3); line-height: 1.35; }
@@ -754,7 +758,7 @@ var STR = {
     tabs: { inicio: 'Inicio', rutas: 'Rutas', guia: 'Guía', guardados: 'Guardados' },
     coffee: 'Quiero un café', arrived: 'Recién llegué',
     todayGuide: 'Elegí quién te guía', routes: 'Rutas a pie', seeAll: 'Ver todas', explore: 'Explorar Antigua',
-    tiles: { lugares: ['Explorar', 'Cafés, comida, monumentos y rutas'], cultura: ['Cultura maya', 'El tiempo maya y los 20 nawales'], costumbres: ['Costumbres de aquí', 'Lo práctico para moverte'], guardianes: ['Los guardianes', 'Quiénes son los cuatro'] },
+    tiles: { lugares: ['Lugares y rutas', 'Cafés, comida, pan, noche, parques y monumentos'], cultura: ['Cultura maya', 'El tiempo maya y los 20 nawales'], costumbres: ['Costumbres de aquí', 'Lo práctico para moverte'], guardianes: ['Los guardianes', 'Quiénes son los cuatro'] },
     routesSoon: 'Las rutas vienen en camino', routesSoonBody: 'Estoy terminando de probar cada parada.',
     stops: 'paradas', openRoute: 'Abrir ruta a pie en Google Maps', mapNote: 'Esquema · no a escala', aprox: 'posición aproximada',
     chips: [['cafe', 'Quiero un café'], ['empezar', 'Recién llegué'], ['horas', 'Tengo 3 horas'], ['comida', 'Dónde comer'], ['dia', 'Un día completo'], ['cultura', 'Cultura maya'], ['costumbres', 'Costumbres de aquí']],
@@ -795,7 +799,7 @@ var STR = {
     tabs: { inicio: 'Home', rutas: 'Routes', guia: 'Guide', guardados: 'Saved' },
     coffee: 'I want a coffee', arrived: 'Just arrived',
     todayGuide: 'Choose your guide', routes: 'Walking routes', seeAll: 'See all', explore: 'Explore Antigua',
-    tiles: { lugares: ['Explore', 'Cafés, food, monuments and routes'], cultura: ['Maya culture', 'Maya time and the 20 nawales'], costumbres: ['Local customs', 'Practical tips to get around'], guardianes: ['The guardians', 'Who the four are'] },
+    tiles: { lugares: ['Places and routes', 'Cafés, food, bread, night, parks and monuments'], cultura: ['Maya culture', 'Maya time and the 20 nawales'], costumbres: ['Local customs', 'Practical tips to get around'], guardianes: ['The guardians', 'Who the four are'] },
     routesSoon: 'Routes are on their way', routesSoonBody: 'I’m still testing every stop.',
     stops: 'stops', openRoute: 'Open walking route in Google Maps', mapNote: 'Schematic · not to scale', aprox: 'approximate position',
     chips: [['cafe', 'I want a coffee'], ['empezar', 'Just arrived'], ['horas', 'I have 3 hours'], ['comida', 'Where to eat'], ['dia', 'A full day'], ['cultura', 'Maya culture'], ['costumbres', 'Local customs']],
@@ -923,7 +927,7 @@ function paisajeArt() {
   var x = X(), h = BRU.heading, C = 180, CY = 192;
   var at = function (b, r) { var a = (b - h) * Math.PI / 180; return [C + r * Math.sin(a), CY - r * Math.cos(a)]; };
   var txt = function (q, str, size, weight, fill) { return '<text x="' + q[0].toFixed(1) + '" y="' + q[1].toFixed(1) + '" text-anchor="middle" style="font-family:var(--f-body);font-weight:' + (weight || 700) + ';font-size:' + (size || 12.5) + 'px;fill:' + (fill || 'var(--basalto)') + ';paint-order:stroke;stroke:var(--papel);stroke-width:3px;stroke-linejoin:round">' + esc(str) + '</text>'; };
-  var vol = function (q, w, hh) { var cx = q[0], by = q[1] + hh / 2; return '<path d="M' + (cx - w).toFixed(1) + ' ' + by.toFixed(1) + ' L' + (cx - 3).toFixed(1) + ' ' + (by - hh).toFixed(1) + ' Q' + cx.toFixed(1) + ' ' + (by - hh - 3).toFixed(1) + ' ' + (cx + 3).toFixed(1) + ' ' + (by - hh).toFixed(1) + ' L' + (cx + w).toFixed(1) + ' ' + by.toFixed(1) + ' Z" style="fill:var(--volcan)"/>'; };
+  var vol = function (q, w, hh) { var cx = q[0], by = q[1] + hh / 2; return '<path d="M' + (cx - w).toFixed(1) + ' ' + by.toFixed(1) + ' L' + (cx - 3).toFixed(1) + ' ' + (by - hh).toFixed(1) + ' Q' + cx.toFixed(1) + ' ' + (by - hh - 3).toFixed(1) + ' ' + (cx + 3).toFixed(1) + ' ' + (by - hh).toFixed(1) + ' L' + (cx + w).toFixed(1) + ' ' + by.toFixed(1) + ' Z" style="fill:var(--ink-3)"/>'; };
   var out = '<svg viewBox="0 0 360 384" role="img" data-heading="' + h.toFixed(1) + '" aria-label="' + esc(x.compass + ': ' + x.south + ' ' + Math.round(lmBearing('agua')) + '°, ' + x.fuego + ' ' + Math.round(lmBearing('fuego')) + '°, ' + x.acate + ' ' + Math.round(lmBearing('acate')) + '°, ' + x.north + ' ≈') + '">' +
     '<circle cx="180" cy="192" r="92" style="fill:none;stroke:var(--line-2)" stroke-width="1.5" stroke-dasharray="3 5"/>' +
     // Marca fija arriba: hacia donde apunta el teléfono.
@@ -965,7 +969,7 @@ function brujulaHTML() {
   return '<section class="sec brujula" data-brujula><div class="sec-head"><h2>' + esc(x.compass) + '</h2>' + infoHTML('guard') + '</div>' +
     '<div class="art" id="bru-art">' + paisajeArt() + '</div>' +
     '<p class="muted" id="bru-status" role="status">' + esc(bruStatus()) + '</p>' +
-    '<span class="eyebrow">' + esc(x.seeing) + '</span>' +
+    '<p><b>' + esc(x.seeing) + '</b></p>' +
     '<div class="row bru-row">' + ['agua', 'fuego', 'acate'].map(function (id) { return '<button type="button" class="btn" data-bru-land="' + id + '">' + esc(lmName(id)) + '</button>'; }).join('') + '<button type="button" class="btn ghost" data-bru-north>' + esc(x.northUp) + '</button></div>' +
     '<div class="row bru-row"><button type="button" class="btn ' + (on ? '' : 'primary') + '" data-bru-sensor aria-pressed="' + on + '">' + icon('compass', 'sm') + esc(on ? x.sensorOff : x.sensorOn) + '</button></div>' +
     (BETA_ON ? '<details class="beta-card" data-bru-test' + (BRU.testOpen ? ' open' : '') + '><summary><b>' + esc(x.testTitle) + '</b></summary><p>' + esc(x.testBody) + '</p>' +
@@ -1758,8 +1762,8 @@ function inicioHTML() {
     return '<button type="button" class="route-card" data-route="' + rid + '"><span class="map">' + mapSVG({ routes: [{ ids: r.stops }], stops: r.stops, crop: cropFor(r.stops, 40), label: r.title[lang] }) + '</span>' +
       '<span class="rc-body"><span class="eyebrow">' + esc(r.kicker[lang]) + ' · ' + r.stops.length + ' ' + esc(t.stops) + '</span><span class="rc-title">' + esc(r.title[lang]) + '</span>' + '</span></button>';
   }).join('') + '</div>' : empty(t.routesSoon, t.routesSoonBody);
-  var tiles = [['explorar', 'grid', 'lugares'], ['cultura', 'calendar', 'cultura'], ['costumbres', 'compass', 'costumbres'], ['guardianes', 'users', 'guardianes']];
-  return '<section class="hero"><div class="hero-art">' + heroArt() + '<div class="hero-copy"><span class="eyebrow" style="color:rgba(255,255,255,.85)">Antigua Guatemala</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
+  var tiles = [['explorar', 'lugares'], ['cultura', 'cultura'], ['costumbres', 'costumbres'], ['guardianes', 'guardianes']];
+  return '<section class="hero"><div class="hero-art">' + heroArt() + '<div class="hero-copy"><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
     '<div class="cta-row"><button type="button" class="btn anil big" data-ask="cafe" id="cta-cafe">' + icon('coffee') + esc(t.coffee) + '</button><button type="button" class="btn big" data-ask="empezar">' + esc(t.arrived) + '</button></div></section>' +
     '<section class="intro-card" data-intro><span class="eyebrow" style="color:inherit;opacity:.75">' + esc(X().introKicker) + '</span><h2>' + esc(X().introTitle) + '</h2><p>' + esc(X().introBody) + '</p></section>' +
     (BETA_ON ? betaCard() : '') +
@@ -1767,7 +1771,7 @@ function inicioHTML() {
     brujulaHTML() +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.routes) + '</h2>' + (rids.length ? '<button type="button" class="linkish" data-go="rutas">' + esc(t.seeAll) + '</button>' : '') + '</div>' + routes + '</section>' +
     '<section class="sec"><div class="sec-head"><h2>' + esc(t.explore) + '</h2></div><div class="tiles">' + tiles.map(function (x) {
-      return '<button type="button" class="tile" data-go="' + x[0] + '">' + icon(x[1]) + '<span><b>' + esc(t.tiles[x[2]][0]) + '</b><small>' + esc(t.tiles[x[2]][1]) + '</small></span></button>'; }).join('') + '</div></section>' +
+      return '<button type="button" class="tile" data-go="' + x[0] + '"><span><b>' + esc(t.tiles[x[1]][0]) + '</b><small>' + esc(t.tiles[x[1]][1]) + '</small></span>' + icon('arrow', 'sm') + '</button>'; }).join('') + '</div></section>' +
     footHTML();
 }
 function rutasHTML() {
@@ -1831,7 +1835,7 @@ function culturaHTML() {
   var t = T();
   return backBtn() + '<div class="pagehead"><span class="eyebrow">Cholq\'ij · Ab\' · Popol Wuj</span><h1>' + esc(t.cultureTitle) + '</h1><p>' + esc(t.cultureSub) + '</p></div>' +
     '<figure class="artbox" data-art="cholqij">' + cholqijArt() + '<figcaption><b>260</b> ' + esc(S.lang === 'en' ? 'days · 13 numbers × 20 nawales. In blue, four nawales 5 days apart: the Year Bearers take turns that way (Iq\' → Kej → E\' → No\'j).' : 'días · 13 números × 20 nawales. En añil, cuatro nawales separados por 5 días: así se turnan los cargadores del año (Iq\' → Kej → E\' → No\'j).') + infoHTML('cult') + '</figcaption></figure>' +
-    '<button type="button" class="tile" data-go="nawales" style="min-height:auto">' + icon('calendar') + '<span><b>' + esc(t.nawalsTitle) + '</b><small>' + esc(t.nawalsSub) + '</small></span></button>' +
+    '<button type="button" class="tile" data-go="nawales"><span><b>' + esc(t.nawalsTitle) + '</b><small>' + esc(t.nawalsSub) + '</small></span>' + icon('arrow', 'sm') + '</button>' +
     '<div class="cards">' + Object.keys(TIPS).filter(function (id) { return TIPS[id].cat === 'cultura'; }).map(tipCard).join('') + '</div>';
 }
 function costumbresHTML() {
