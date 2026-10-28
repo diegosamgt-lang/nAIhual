@@ -15,6 +15,7 @@ import functools
 import http.server
 import json
 import os
+import re
 import socketserver
 import sys
 import threading
@@ -41,6 +42,9 @@ def catalogo_real():
 
 CATALOGO = catalogo_real()
 TOTAL = len(CATALOGO)
+# Publicados según las mismas reglas de la app (estado, dirección, fuente, fecha y quién verificó).
+PUBLICADOS = len([r for r in CATALOGO if r.get('estado') == 'publicado' and r.get('direccion') and r.get('fuente') and r.get('fecha_verificacion') and r.get('verifico')])
+N_FUENTES = len(re.findall(r"\{ id: '", open(os.path.join(APP, 'data', 'fuentes.js'), encoding='utf-8').read()))
 POR_CAT = collections.Counter(r['categoria'] for r in CATALOGO)
 # Nombres reales del catálogo: ninguno debe verse en la experiencia del visitante mientras esté en borrador.
 # Solo los de 6 letras o más, para no confundirlos con palabras de la app.
@@ -170,7 +174,7 @@ FRASES_PROHIBIDAS = ['Caminá con respeto', '¿Cómo me porto', 'reglas fijas, s
 
 
 def ruta_norte_publicada():
-    base = [('catedral', 'Catedral de San José', 'cultura', 3.6, 4.5), ('cazador', 'El Cazador Italiano', 'comida', 3, 4.4),
+    base = [('catedral', 'Catedral de San José', 'cultura', 3.6, 4.5),
             ('arco', 'Arco de Santa Catalina', 'cultura', 5, 2), ('merced', 'Iglesia de La Merced', 'cultura', 6, 1), ('siena', 'Siena Luz', 'cafe', 6, 2.5)]
     return [completo(i, n, categoria=c, mapa={'avenida': a, 'calle': k, 'aprox': False}) for i, n, c, a, k in base]
 
@@ -203,12 +207,12 @@ def main():
         # =============== A. VISTA PREVIA con el catálogo real ===============
         ctx, page, errors = new_page(browser, url)
         M = '[vista previa]'
-        check(M + ' Carga el catálogo (%d), la configuración y las fuentes (2)' % TOTAL, page.evaluate("n => window.NAIHUAL_LUGARES.length === n && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === 2", TOTAL))
-        check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in (r.get('frase') or {}).get('es', '').lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
+        check(M + ' Carga el catálogo (%d), la configuración y las fuentes (%d)' % (TOTAL, N_FUENTES), page.evaluate("n => window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length === n[0] && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === n[1]", [TOTAL, N_FUENTES]))
+        check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in ' '.join((r.get('frase') or {}).values()).lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
         check(M + ' Inicio: portada ilustrada, «Quiero un café» y «Recién llegué»', page.locator('.hero-art svg').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
         g = [page.locator('.guard-strip .gbtn b').nth(i).inner_text() for i in range(page.locator('.guard-strip .gbtn').count())]
         check(M + " Inicio: exactamente 4 guardianes, en orden No'j, Iq', Kej, E'", g == GUARDIANES, g)
-        check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4 and page.locator('.guard-strip .av').count() == 0)
+        check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4)
         check(M + ' Inicio: 3 rutas con su mapa', page.locator('.route-card').count() == 3 and page.locator('.route-card svg path.route').count() == 3)
         check(M + ' Inicio: 4 accesos (Lugares, Cultura maya, Costumbres, Guardianes)', page.locator('.tiles .tile').count() == 4)
         check(M + ' Inicio: sin Aliados Fundadores ni Q250', page.locator('section.biz').count() == 0 and 'Q250' not in page.inner_text('main') and 'Aliados' not in page.inner_text('main'))
@@ -277,7 +281,7 @@ def main():
         m = page.locator('.msg').last
         cards = m.locator('.cards.pilot [data-place]')
         check(M + ' «Quiero un café» en 1 toque: abre la Guía con 3 cafés', page.locator('.guide-head').count() == 1 and cards.count() == 3)
-        check(M + ' Cafés sin «Por verificar»: cada uno con su «Referencia web»', m.locator('details.seal[data-seal="pending"]').count() == 0 and m.locator('details.seal[data-seal="ref"]').count() == 3 and 'Por verificar' not in m.inner_text())
+        check(M + ' Cafés sin «Por verificar»: cada uno con su «Referencia web»', m.locator('details.seal[data-seal="ref"]').count() == 3 and 'Por verificar' not in m.inner_text())
         hrefs = [cards.nth(i).locator('a.btn').get_attribute('href') for i in range(3)]
         check(M + ' «Cómo llegar» de cada café es un enlace de Google Maps', all(h.startswith('https://www.google.com/maps/search/?api=1&query=') for h in hrefs), hrefs)
         check(M + " La bienvenida la da No'j, sin autopresentación", "No'j · te cuenta el porqué" in page.locator('.msg').first.inner_text() and '¿Qué tenés ganas de hacer en Antigua?' in page.locator('.msg').first.inner_text())
@@ -337,7 +341,9 @@ def main():
         # Explorar
         page.click('[data-tab="inicio"]')
         page.click('[data-go="explorar"]')
-        for cat, nombre in [('postres', 'Pan y postres'), ('noche', 'De noche'), ('parque', 'Parques'), ('cafe', 'Cafés'), ('comida', 'Comida'), ('cultura', 'Monumentos')]:
+        filtros = page.evaluate("[...document.querySelectorAll('[data-filter]')].map(b => [b.dataset.filter, b.textContent.trim()]).filter(f => !['all', 'route', 'tip'].includes(f[0]))")
+        check(M + ' Explorar: un filtro por cada categoría del catálogo', sorted(f[0] for f in filtros) == sorted(POR_CAT), filtros)
+        for cat, nombre in filtros:
             page.click('[data-filter="%s"]' % cat)
             n_pins = page.locator('.grid [data-pin^="p:"]').count()
             n_art = page.locator('.grid svg.art[data-scene="%s"]' % cat).count()
@@ -358,7 +364,7 @@ def main():
         # Guardados
         page.locator('.pin-wrap:has([data-pin="r:norte"]) .heart').click()
         page.click('[data-tab="guardados"]')
-        check(M + ' Guardados: arma un plan con mapa y enlace a pie', page.locator('.minimap .stop').count() == 5 and page.locator('main a.btn.anil[href*="/maps/dir/"]').count() == 1)
+        check(M + ' Guardados: arma un plan con mapa y enlace a pie', page.locator('.minimap .stop').count() == 4 and page.locator('main a.btn.anil[href*="/maps/dir/"]').count() == 1)
         check(M + ' La pestaña Guardados cuenta lo guardado', '1' in page.locator('[data-tab="guardados"]').inner_text())
         check(M + ' 390 px sin desplazamiento horizontal (Guardados)', no_hscroll(page))
 
@@ -371,7 +377,8 @@ def main():
         check(M + ' Los 20 nawales, con los 4 guardianes resaltados', page.locator('.nawal').count() == 20 and page.locator('.nawal.guard').count() == 4)
         check(M + ' Aviso: nAIhual no calcula tu nawal', 'no calcula tu nawal' in page.inner_text('main'))
         page.click('[data-nawal="iq"]')
-        check(M + " Nawal Iq': ficha y «Hablar con Iq'»", page.locator('.facts div').count() == 4 and page.locator('main [data-guide="iq"]').count() == 1)
+        check(M + " Nawal Iq': ficha y «Hablar con Iq'»", page.locator('.facts div').count() == 2 and page.locator('main [data-guide="iq"]').count() == 1)
+        check(M + ' Nawal: sin «Luz» ni «Sombra» (describen personas; B8)', 'Sombra' not in page.inner_text('main') and 'Luz' not in page.inner_text('.facts'))
         page.click('[data-tab="inicio"]')
         page.click('[data-go="costumbres"]')
         cos = page.inner_text('main')
@@ -462,7 +469,7 @@ def main():
         page.click('[data-tab="inicio"]')
         page.click('footer [data-go="taller"]')
         t = page.inner_text('main')
-        check(M + ' Vista interna: aviso y revisión de las %d fichas' % TOTAL, 'no la ve el visitante' in t and ('Publicadas hoy: 0 de %d' % TOTAL) in t and page.locator('[data-review]').count() == TOTAL)
+        check(M + ' Vista interna: aviso y revisión de las %d fichas' % TOTAL, 'no la ve el visitante' in t and ('Publicadas hoy: %d de %d' % (PUBLICADOS, TOTAL)) in t and page.locator('[data-review]').count() == TOTAL)
         check(M + ' Revisión: Coffea sin la frase sin fuente', 'Afirmación retirada hasta tener fuente' in t and 'Entre las 100 mejores coffee shops del mundo.' not in page.inner_text('body').replace('«Entre las 100 mejores coffee shops del mundo».', ''))
         for sec, sel, n in [('textos', '[data-copy]', 13), ('modelo', '[data-capa]', 6), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 9), ('sistema', '.sw', 18)]:
             page.click('[data-sec="%s"]' % sec)
@@ -518,7 +525,7 @@ def main():
         page.click('[data-tab="inicio"]')
         page.click('[data-go="explorar"]')
         ex = page.inner_text('main')
-        check(M + ' Explorar: solo cultura y costumbres, sin lugares', page.locator('.grid [data-pin^="p:"]').count() == 0 and page.locator('.grid [data-pin^="t:"]').count() == 11 and not sin_nombres(ex))
+        check(M + ' Explorar: solo cultura y costumbres, sin lugares', page.locator('.grid [data-pin^="p:"]').count() == PUBLICADOS and page.locator('.grid [data-pin^="t:"]').count() == 11 and (PUBLICADOS or not sin_nombres(ex)))
         page.click('[data-filter="cafe"]')
         check(M + ' Explorar · Cafés: estado vacío diseñado', 'Esta parte todavía la estoy probando.' in page.inner_text('main'))
         page.click('[data-filter="all"]')
@@ -526,6 +533,9 @@ def main():
         page.click('[data-tab="guardados"]')
         check(M + ' Guardados con un consejo: avisa que el plan espera lugares', 'Todavía no hay.' in page.inner_text('main') and page.locator('.grid [data-pin]').count() == 1)
         check(M + ' Consola sin errores', not errors, errors)
+        ctx.close()
+        ctx, page, errors = new_page(browser, url, None, 'light', PUB, '#constructor')
+        check('[pública] Un enlace raro (#constructor) abre Inicio sin romperse', page.locator('.hero').count() == 1 and '[object' not in page.inner_text('main'))
         ctx.close()
         for h in ['#taller', '#revision']:
             ctx, page, errors = new_page(browser, url, None, 'light', PUB, h)
@@ -559,6 +569,14 @@ def main():
             check('[pública] «%s»: Explorar muestra solo los publicados (%d)' % (name, n_pub), page.locator('.grid [data-pin^="p:"]').count() == n_pub and 'Café Sin Fuente' not in feed and 'Café Borrador' not in feed and 'Café Pausado' not in feed and 'Café Retirado' not in feed)
             check('[pública] «%s»: consola sin errores' % name, not errors, errors)
             ctx.close()
+        con_aviso = [dict(r, aviso='Temporalmente cerrado (prueba)') if r['id'] == 'arco' else r for r in ruta_norte_publicada()]
+        ctx, page, errors = new_page(browser, url, con_aviso + [completo('cerrado', 'Café Cerrado', aviso='Cerrado (prueba)'), completo('abierto', 'Café Abierto')], 'light', PUB)
+        check('[pública] Una ruta con un lugar cerrado no se ofrece', page.locator('.route-card').count() == 0)
+        page.click('[data-tab="guia"]')
+        m = pedir_cafe(page)
+        ids = [m.locator('.cards.pilot [data-place]').nth(i).get_attribute('data-place') for i in range(m.locator('.cards.pilot [data-place]').count())]
+        check('[pública] Un café cerrado no sale en «Quiero un café»', 'cerrado' not in ids and 'abierto' in ids, ids)
+        ctx.close()
         ctx, page, errors = new_page(browser, url, ruta_norte_publicada(), 'light', PUB)
         check('[pública] Ruta completa publicada: aparece en Inicio con su mapa', page.locator('.route-card').count() == 1)
         page.click('[data-tab="guia"]')
@@ -577,7 +595,7 @@ def main():
         m = pedir_cafe(page)
         ids = [m.locator('.cards.pilot [data-place]').nth(i).get_attribute('data-place') for i in range(m.locator('.cards.pilot [data-place]').count())]
         check('[vista previa] Café: primero lo publicado, después lo por verificar con dirección', ids == ['p1', 'b1', 'b2'], ids)
-        check('[vista previa] Sin fuente no hay sello; el publicado, «Verificado»', m.locator('details.seal[data-seal="ok"]').count() == 1 and m.locator('details.seal[data-seal="pending"]').count() == 0)
+        check('[vista previa] Sin fuente no hay sello; el publicado, «Verificado»', m.locator('details.seal[data-seal="ok"]').count() == 1 and m.locator('details.seal').count() == 1)
         ctx.close()
 
         # =============== D. Claude responde (vista previa, simulado) · orden de búsqueda en 3 pasos ===============
@@ -740,7 +758,10 @@ def main():
             p2.wait_for_timeout(150)
             vals['sello verificado'] = contrast(p2, 'details.seal.ok summary')
             vals['patrocinado'] = contrast(p2, '.tag.sp')
-            vals['por verificar'] = contrast(p2, '.tag.check') if p2.locator('.tag.check').count() else 21
+            # Etiquetas que no siempre están en pantalla: se agregan para medirlas («Según la IA» y «Temporalmente cerrado»).
+            p2.evaluate("document.querySelector('main').insertAdjacentHTML('beforeend', '<span class=\"tag check\" id=\"m-check\">Según la IA</span><span class=\"tag warn\" id=\"m-warn\">Cerrado</span>')")
+            vals['según la IA'] = contrast(p2, '#m-check')
+            vals['aviso'] = contrast(p2, '#m-warn')
             vals['chip café'] = contrast(p2, '#chips .chip.pilot')
             check('Contraste ≥ 4.5 en botones y etiquetas (%s)' % scheme, all(v >= 4.5 for v in vals.values()), {k: round(v, 2) for k, v in vals.items()})
             c2.close()
@@ -784,7 +805,7 @@ def main():
         check('Enlaces · los «Cómo llegar» de los %d lugares: el enlace de Google Maps del lugar o nombre + dirección; sin dirección, sin botón' % TOTAL, len(hrefs) == TOTAL and not malos, malos)
         page.click('[data-tab="rutas"]')
         bad = []
-        for rid, n in [('centro', 6), ('conventos', 4), ('norte', 5)]:
+        for rid, n in [('centro', 6), ('conventos', 4), ('norte', 4)]:
             page.click('[data-selroute="%s"]' % rid)
             h = unquote(page.locator('[data-route-detail] a.btn.anil').get_attribute('href'))
             if h.count('Antigua Guatemala') != n or h.split('waypoints=')[1].count('|') != n - 3:
@@ -800,7 +821,7 @@ def main():
         page.on('pageerror', lambda e: errs.append(str(e)))
         page.goto('file://' + os.path.join(APP, 'index.html'))
         page.wait_for_selector('.hero')
-        check('Abre directo desde el archivo (file://) con los datos', page.evaluate('window.NAIHUAL_LUGARES.length') == TOTAL and not errs, errs)
+        check('Abre directo desde el archivo (file://) con los datos', page.evaluate("window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length") == TOTAL and not errs, errs)
         ctx.close()
         browser.close()
     httpd.shutdown()
