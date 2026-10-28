@@ -44,6 +44,9 @@ CATALOGO = catalogo_real()
 TOTAL = len(CATALOGO)
 # Publicados según las mismas reglas de la app (estado, dirección, fuente, fecha y quién verificó).
 PUBLICADOS = len([r for r in CATALOGO if r.get('estado') == 'publicado' and r.get('direccion') and r.get('fuente') and r.get('fecha_verificacion') and r.get('verifico')])
+N_PLAYLISTS = len(re.findall(r"\{ id: '", open(os.path.join(APP, 'data', 'playlists.js'), encoding='utf-8').read()))
+N_REFS = len(re.findall(r"\{ id: '", open(os.path.join(APP, 'data', 'referencias.js'), encoding='utf-8').read()))
+N_AFUERA = len(re.findall(r"rumbo: \d", open(os.path.join(APP, 'data', 'referencias.js'), encoding='utf-8').read()))
 N_FUENTES = len(re.findall(r"\{ id: '", open(os.path.join(APP, 'data', 'fuentes.js'), encoding='utf-8').read()))
 POR_CAT = collections.Counter(r['categoria'] for r in CATALOGO)
 # Nombres reales del catálogo: ninguno debe verse en la experiencia del visitante mientras esté en borrador.
@@ -213,7 +216,15 @@ def main():
         g = [page.locator('.guard-strip .gbtn b').nth(i).inner_text() for i in range(page.locator('.guard-strip .gbtn').count())]
         check(M + " Inicio: exactamente 4 guardianes, en orden No'j, Iq', Kej, E'", g == GUARDIANES, g)
         check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4)
-        check(M + ' Inicio: 3 rutas con su mapa', page.locator('.route-card').count() == 3 and page.locator('.route-card svg path.route').count() == 3)
+        check(M + ' Inicio: %d playlists con su mapa, autor y gasto' % N_PLAYLISTS, page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.route-card svg path.route').count() == N_PLAYLISTS and page.locator('.route-card [data-autor]').count() == N_PLAYLISTS)
+        check(M + ' Inicio: «¿Cómo venís a Antigua?» con 4 perfiles, sin agente', page.locator('[data-perfil]').count() == 4 and 'Agente' not in page.inner_text('[data-perfil-pick]'))
+        page.click('[data-perfil="mochilero"]')
+        check(M + ' Perfil «Viajo con poco»: primero su playlist, marcada «Para vos», sin esconder las otras', page.locator('.route-card').first.get_attribute('data-route') == 'tanque' and page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.route-card').first.locator('[data-para-vos]').count() == 1)
+        page.reload()
+        page.wait_for_selector('main > *')
+        check(M + ' El perfil se queda en el teléfono', page.locator('[data-perfil="mochilero"][aria-pressed="true"]').count() == 1)
+        page.click('[data-perfil="mochilero"]')
+        check(M + ' Tocar otra vez quita el perfil', page.locator('[data-perfil][aria-pressed="true"]').count() == 0 and page.locator('.route-card').first.get_attribute('data-route') == 'centro')
         check(M + ' Inicio: 4 accesos (Lugares, Cultura maya, Costumbres, Guardianes)', page.locator('.tiles .tile').count() == 4)
         check(M + ' Inicio: sin Aliados Fundadores ni Q250', page.locator('section.biz').count() == 0 and 'Q250' not in page.inner_text('main') and 'Aliados' not in page.inner_text('main'))
         intro = page.locator('[data-intro]')
@@ -228,7 +239,7 @@ def main():
         page.click('[data-bru-land="fuego"]')
         check(M + ' Brújula: «Fuego» enfrente gira a 240°', abs(heading() - 240.0) < 0.05, heading())
         page.click('[data-bru-north]')
-        check(M + ' Brújula: «Norte arriba» vuelve a 0°', heading() == 0)
+        check(M + ' Brújula: «Norte arriba» vuelve a 0° y su botón tiene nombre', heading() == 0 and page.inner_text('[data-bru-north]').strip() == 'Norte arriba')
         orient = lambda a: page.evaluate("a => { window.dispatchEvent(new DeviceOrientationEvent('deviceorientation', {alpha: a, beta: 80, gamma: 0, absolute: false})); }", a)
         page.click('[data-bru-sensor]')
         orient(100)
@@ -323,7 +334,10 @@ def main():
         # Rutas
         page.click('[data-tab="rutas"]')
         check(M + ' Rutas: mapa esquemático con la ruta dibujada y 6 paradas numeradas', page.locator('.mapframe svg path.route:not(.faint)').count() == 1 and page.locator('.mapframe .stop').count() == 6)
-        check(M + ' Rutas: nombres de calles y aviso «Esquema · no a escala»', page.locator('.mapframe text.lbl').count() >= 10 and 'ESQUEMA · NO A ESCALA' in page.inner_text('.mapframe').upper())
+        check(M + ' Rutas: referencias del paisaje (%d), las de afuera al borde (%d)' % (N_REFS, N_AFUERA), page.locator('.mapframe [data-ref]').count() == N_REFS and page.locator('.mapframe [data-afuera]').count() == N_AFUERA and all(x in page.inner_html('.mapframe') for x in ['Jocotenango', 'Volcán de Agua', 'Volcán de Fuego', 'Santa Ana', 'San Cristóbal El Bajo', 'Cerro de la Cruz', 'La Recolección']))
+        check(M + ' Rutas: los nombres del borde no se tapan entre sí', page.evaluate('''() => { const b = [...document.querySelectorAll('.mapframe [data-afuera] text')].map(t => t.getBoundingClientRect());
+            return b.every((r, i) => b.every((q, j) => i === j || r.right <= q.left || q.right <= r.left || r.bottom <= q.top || q.bottom <= r.top)); }'''))
+        check(M + ' Rutas: nombres de calles y aviso «Esquema · no a escala»', page.locator('.mapframe text.lbl').count() >= 10 and 'ESQUEMA · NO A ESCALA' in page.inner_text('[data-map-note]').upper())
         page.click('[data-selroute="conventos"]')
         check(M + ' Rutas: elegir otra ruta la dibuja (4 paradas)', page.locator('.mapframe .stop').count() == 4 and page.locator('.stops li').count() == 4)
         check(M + ' Rutas: un lugar temporalmente cerrado (Once Once) no entra a la ruta', 'Once Once' not in page.inner_text('main'))
@@ -349,7 +363,7 @@ def main():
             n_art = page.locator('.grid svg.art[data-scene="%s"]' % cat).count()
             check(M + ' Explorar: filtro «%s» con %d lugares, cada uno con su dibujo y su color' % (nombre, POR_CAT[cat]), n_pins == POR_CAT[cat] and n_art == POR_CAT[cat], (n_pins, n_art))
         page.click('[data-filter="all"]')
-        check(M + ' Explorar: muro visual con lugares, rutas y costumbres', page.locator('.grid [data-pin^="p:"]').count() == TOTAL and page.locator('.grid [data-pin^="r:"]').count() == 3)
+        check(M + ' Explorar: muro visual con lugares, rutas y costumbres', page.locator('.grid [data-pin^="p:"]').count() == TOTAL and page.locator('.grid [data-pin^="r:"]').count() == N_PLAYLISTS)
         page.click('[data-filter="all"]')
         page.fill('#fq', 'matcha')
         page.wait_for_timeout(80)
@@ -484,7 +498,7 @@ def main():
         check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta" || k === "naihual.aprendido" || k === "naihual.fuiste")'))
         page.click('[data-sec="arquitectura"]')
         r = page.inner_text('main')
-        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.5' in r and 'Beta' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
+        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.6' in r and 'Beta' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
         page.evaluate('localStorage.setItem("naihual.fuiste", JSON.stringify({lugar: "siena", nombre: "Siena Luz"}))')
         page.goto(url + '#guia')
         page.reload()
@@ -620,7 +634,7 @@ def main():
         check('[Claude] Ofrece sus opciones', last.locator('[data-say="Contame más"]').count() == 1)
         calls = page.evaluate('window.__calls')
         first = calls[0][0]['content'] if calls else ''
-        check('[Claude] Recibe el orden de búsqueda, «guía, no juez» y los datos', all(x in first for x in ['Orden para buscar', 'Sos guía, no juez', '"catalogo"', '"libretas"', '"aprendido_confirmado"', 'Nunca afirmes horarios, precios']) and 'en_revision_no_nombrar' not in first and calls[0][-1]['content'] == '¿Qué me recomendás hacer hoy?')
+        check('[Claude] Recibe el orden de búsqueda, «guía, no juez» y los datos', all(x in first for x in ['Orden para buscar', 'Sos guía, no juez', '"catalogo"', '"libretas"', '"playlists"', '"aprendido_confirmado"', 'Nunca afirmes horarios, precios']) and 'en_revision_no_nombrar' not in first and calls[0][-1]['content'] == '¿Qué me recomendás hacer hoy?')
         check('[Claude] Los datos llevan la fuente pública de cada lugar', 'Guatemala.com' in first and 'fundador' not in first)
         import re as _re
         cat_ids = _re.findall(r'"id":"([a-z0-9]+)","nombre"', first)
@@ -805,7 +819,7 @@ def main():
         check('Enlaces · los «Cómo llegar» de los %d lugares: el enlace de Google Maps del lugar o nombre + dirección; sin dirección, sin botón' % TOTAL, len(hrefs) == TOTAL and not malos, malos)
         page.click('[data-tab="rutas"]')
         bad = []
-        for rid, n in [('centro', 6), ('conventos', 4), ('norte', 4)]:
+        for rid, n in [('centro', 6), ('conventos', 4), ('norte', 4), ('tanque', 3)]:
             page.click('[data-selroute="%s"]' % rid)
             h = unquote(page.locator('[data-route-detail] a.btn.anil').get_attribute('href'))
             if h.count('Antigua Guatemala') != n or h.split('waypoints=')[1].count('|') != n - 3:
