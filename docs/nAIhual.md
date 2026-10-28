@@ -310,11 +310,11 @@ Tata (cultura)                                accesibilidad            playlists
 | A28 | ❓ **Accesibilidad en la calle**: banquetas con paso para sillas de ruedas, rampas, parqueo, cámaras. Diego no lo hace: solo se traza cómo hacerlo. ⚠️ Cámaras: marcar cada cámara puede servir para lo contrario (evitarlas). | La cuadrícula ya divide el centro en cuadras: cada cuadra es un tramo con sus datos (ancho, piso de piedra, rampa en cada esquina, se puede en silla, parqueo cerca), con fuente, fecha y quién lo midió. Lo miden los agentes con una encuesta corta en su beta (capa 3) y se muestra en la capa 4 (B12). Primero buscar si la Municipalidad o CONADI ya tienen datos. Cámaras: solo «zona con vigilancia municipal» si hay fuente oficial, nunca cámara por cámara. |
 | A29 | ❓ **Integrar un mapa propio de Diego.** | Diego lo hace en Google My Maps (gratis) → lo exporta (Exportar a KML) → «cargá el mapa» → Claude lo convierte en datos de nAIhual (puntos, rutas y notas) con su fuente. ❓ Meter el mapa de Google dentro del visor puede estar bloqueado, como pasó con Google Places: se prueba antes de prometerlo. |
 | A30 | **Regla nueva (Diego, 28-oct):** cada versión trae un cambio visual que se note, para comprobar que se actualizó. | Anotada también en `CLAUDE.md`. |
-| A31 | ❓ **El chat repite las mismas recomendaciones** (Diego, 28-oct). Causa: los botones («Quiero un café», etc.) los contestan las reglas fijas con los mismos lugares, y Claude se pega al catálogo. Diego quiere una inteligencia más independiente, con una rama por guardián. ⚠️ Dentro del visor Claude no puede buscar en internet: solo sabe lo que aprendió y lo que le damos. | 1) Que los botones también los conteste Claude, variando. 2) Una rama por guardián: cada uno busca en su tema (No'j historia y cultura · Iq' primeros pasos y eventos · Kej rutas, naturaleza, mercados · E' artesanos, comida, comunidades). 3) Más libretas (abajo). 4) Buscar en vivo = paso 3, necesita servidor propio (A35). |
-| A32 | ❓ **Subir información desde la app, como una red social** (Diego, 28-oct: nada de Drive). Reemplaza la propuesta de libretas en Drive. | Un botón «+ Publicar» siempre a mano: foto, texto, enlace de Maps (opcional) y un toque para el tema (lugar, historia, consejo, evento). Claude, dentro de la app, lo ordena solo: tema, guardián, lugar, y lo deja «por confirmar» en un muro. Diego toca «Confirmar» y desde ese momento el chat ya lo usa (paso 1), sin pasar por archivos. «Leé la beta» queda solo para verificar con fuente y pasar al catálogo fijo. ⚠️ Mientras la base sea compartida (A24), solo Diego publica. |
-| A36 | ❓ **Curar el directorio** (Diego, 28-oct: «es estorbo»). Lo que pesa: la app manda a Claude hasta 60 lugares en cada pregunta y la revisión interna muestra los 203. | Separar: el catálogo activo = tus 13, los monumentos, parques, pan y noche con fuente, y del directorio solo lo que vos marcás (me gustó, visita, nota). El resto pasa a un archivo de reserva que la app no carga ni le manda a Claude; se rescata cuando haga falta. Criterio final: Diego. |
-| A33 | ⚠️ **El cambio visual de la 3.6 no se notó** (estaba en «Rutas»). | Desde la 3.7, el cambio va en la primera pantalla. |
-| A34 | ❓ **Inicio como widgets** (como en el iPhone): cada bloque se contrae o se abre y se recuerda en el teléfono. **Perfil como interruptor** (tipo «silencio» del iPhone): se enciende y cambia de color; se pueden tener 2 a la vez; solo cambia la forma de recomendar y qué lugares, nunca el trato (B3). | Va en la 3.7 con CONSTRUYE. |
+| A31 | 🟡 **Hecho en 3.7:** con Claude disponible (visor), también los botones los contesta Claude, desde la rama de su guardián (No'j historia y cultura · Iq' primeros pasos, cafés y eventos · Kej rutas, naturaleza y mercados · E' comida, pan, noche y comunidades), con una muestra al azar del catálogo y sin repetir lo ya mostrado. ⚠️ Adentro del visor sigue sin buscar en internet (paso 3 = A35). | |
+| A32 | 🟡 **Hecho en 3.7: «+ Publicar»** al centro de la barra (solo en la beta): tema con un toque, texto, foto y enlace opcional. Claude la ordena sola (tema, guía, lugar, título). En «Tu muro» la confirmás y el chat ya la usa. Sin Drive. ⚠️ Mientras la base sea compartida (A24), solo Diego publica. | |
+| A36 | 🟡 **Hecho en 3.7:** catálogo activo de 37 (frases de Diego, monumentos, parques, pan y noche con fuente, y del directorio Basilico, La Bruja y Sat Nam). Los otros 167 están en `app/data/reserva.js`: la app no los carga ni se los manda a Claude. | Si querés rescatar alguno, decime cuál. |
+| A33 | ✅ **3.7:** el cambio visual va en la primera pantalla (portada según la hora, saludo e idea del guía). | |
+| A34 | 🟡 **Hecho en 3.7:** Inicio en widgets que se contraen y el teléfono recuerda; perfiles como interruptores (hasta 2), encendido = añil. Mapa: el nombre aparece al tocar cada ícono. | |
 | A35 | ❓ **¿Página web propia o Wix?** Para tener más información de regreso (de visitantes y agentes) y buscar en vivo. | Sí sirve, pero es la capa 3: necesita un servidor que guarde la llave de la IA (nunca en el navegador) y pagar el uso de la IA. Wix: se puede meter la app como código incrustado y usar su parte de servidor (Velo) para la llave. ❓ Costos sin revisar. Mientras, la beta sigue en el visor de Claude, que es gratis. |
 
 ---
@@ -322,7 +322,7 @@ Tata (cultura)                                accesibilidad            playlists
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
-**App vigente: nAIhual 3.6** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
+**App vigente: nAIhual 3.7** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
 - **Dos modos** (`modo` en `app/data/config.js`):
   - **Vista previa** (hoy): todo el catálogo con su «Referencia web», vista interna del equipo, beta de Diego y Claude respondiendo lo que se escribe libre.
   - **Pública**: solo lo verificado, sin vista interna, sin beta y sin Claude.
@@ -362,7 +362,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | 6 | Retorno | Entra dinero → el % va a las familias → el gasto se publica con su recibo | ⬜ |
 
 ## Catálogo
-- 203 lugares (más 1 repetido «retirado»), todos en «borrador»: 110 de comida, 46 cafés, 31 de pan y postres, 5 de noche, 3 parques y 8 monumentos. 201 tienen referencia web (Komori y Nikolo todavía no). 13 de los primeros tomaron su enlace y su dirección del directorio de Google Maps.
+- **Activos (3.7): 37 lugares**, todos en «borrador»: 9 de comida, 8 cafés, 5 de pan y postres, 4 de noche, 3 parques y 8 monumentos. 167 del directorio en reserva (`app/data/reserva.js`). 201 tienen referencia web (Komori y Nikolo todavía no). 13 de los primeros tomaron su enlace y su dirección del directorio de Google Maps.
 - Once Once sale «temporalmente cerrado» según Google Maps: se queda en el catálogo con su aviso, pero fuera de rutas y de las recomendaciones de comida (3.5).
 - 28-oct (3.5): se quitaron de las frases los resúmenes de reseñas y las notas internas; Café No Sé estaba dos veces y quedó una.
 - 8 monumentos †, 3 rutas a pie †, cultura \* (Cholq'ij, 20 nawales con aviso de que no describen personas).
@@ -449,6 +449,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 ---
 
 # PARTE 5 · HISTORIAL
+
+**nAIhual 3.7 — 28-oct-2026 (CONSTRUYE · thermos):** Inicio con vida: el cielo de la portada cambia con la hora (amanecer, día, atardecer, noche con estrellas y ventanas encendidas) y saluda; «Hoy te sugiere [guía]» con una idea de su rama y «Otra idea»; todo el Inicio en widgets que se contraen; perfiles como interruptores (hasta 2). «+ Publicar» como red social, ordenado por Claude y usado por el chat al confirmarlo. Los botones del chat los contesta Claude, variando. Mapa con nombres al tocar. Directorio curado (37 activos, 167 en reserva). Toques que responden (se achican al tocar y vibran si el teléfono deja). ✅ 243/243 pruebas.
 
 **nAIhual 3.6 — 28-oct-2026 (CONSTRUYE):** cambio visual: el mapa de «Rutas» con referencias del paisaje al borde y las ruinas marcadas; perfiles del visitante en Inicio; playlists en su propio archivo, con autor, gasto y qué hacer en cada parada, y una playlist nueva («Un café y el Tanque»). Arreglado: el botón «Norte arriba» decía «undefined» desde la 3.5. GitHub ordenado (skills en su carpeta, PDFs a `docs/fuentes/`, entregas viejas a `docs/historial/`). ✅ 233/233 pruebas.
 
