@@ -368,6 +368,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 
 ## Tecnología
 - App de archivos simples (sin instalación). Pruebas: `python3 pruebas/prueba_piloto.py`.
+- Revisión doble **thermos** (28-oct): `/thermos` lanza dos revisores en paralelo (fallas y seguridad; calidad del código) y junta lo que encuentran. Archivos: `.claude/skills/thermos/SKILL.md` y `.claude/agents/`. Solo revisa; no cambia nada sin CONSTRUYE.
 - ✅ Gemini: la llave nunca va en el navegador; va detrás de un servidor propio (ai.google.dev/gemini-api/docs/api-key).
 - ✅ NotebookLM: API oficial solo en la versión Enterprise. La versión normal no se conecta a apps.
 - ✅ Medido el 25-oct desde la app de Diego: el visor de Claude **bloquea** la conexión a Google (Places). Google en vivo (paso 3) necesita un servidor propio.
