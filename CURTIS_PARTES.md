@@ -270,3 +270,4 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
   - En el proyecto, a la vista: cliente, entrega, cobro final, estado, botones y tareas. Plegado: «Más detalles», Curtis del proyecto, Dinero, Notas y Archivos. Los colores del encabezado aparecen al pasar el mouse.
   - Tu sitio: leído desde tu Wix (solo lectura). Es «diegosamgt», publicado, con plan gratis, en español y con contacto hello@diegosam.com. El proyecto «Página web» tiene el link «🌐 Abrir el sitio» y su contexto con esos datos y «Lo que va a entrar: NAIHUAL».
   - Pruebas: 142/142 + 31/31.
+- 2026-10-29 · Zoho conectado a «CREATIF» `877643427` (Zoho Invoice). Verificado antes de cambiar: existe, sos admin, y lee tus clientes y facturas reales. Se dejó de usar `914134862` (Books, prueba vencida).

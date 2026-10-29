@@ -12,7 +12,7 @@
   - Google Calendar: `list_calendars` y `list_events` (por cada calendario activo), solo lectura. Las horas llegan en hora universal; el día se calcula en hora de Guatemala.
   - Zoho Books: `list_contacts`, `create_estimate` (borrador, con descuento), `create_invoice` (borrador), `list_invoices` (leer estado y saldo).
 - **Librería:** jsPDF 2.5.1 (cdnjs) para el PDF de links, la propuesta de licencia y la cotización.
-- **Zoho:** organización «Creatif» `914134862`, moneda GTQ. La prueba PREMIUM está vencida: crear cotizaciones puede fallar hasta activar un plan.
+- **Zoho:** organización «CREATIF» `877643427` (Zoho Invoice, admin, GTQ, hora de Guatemala). Verificada el 2026-10-29: lista clientes y facturas con datos reales. La anterior, «Creatif» `914134862` (Zoho Books), tenía la prueba PREMIUM vencida y ya no se usa.
 - **Carpetas que Curtis crea en Drive cuando hace falta:** «Curtis · Ilustraciones», «Curtis · Bandeja», «Curtis · Reuniones / AAAA-MM-DD — cita» y la de cada proyecto.
 
 ## Datos
