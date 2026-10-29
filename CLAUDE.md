@@ -28,6 +28,9 @@ Seguí el proceso de `docs/nAIhual.md` (Parte 4): leer → verificar con fuente 
 ## Cuando Diego dice «cargá el directorio»
 Leé el archivo (Excel o Google Sheets), quitá duplicados contra `app/data/lugares.js`, no copiés calificaciones ni reseñas, guardá fuente y enlace, cargalo al catálogo, anotá en el registro, probá, publicá y guardá.
 
+## Al empezar cada sesión
+Leé en la base del visor lo «por investigar» (colección «aprendido») y lo nuevo de «beta» y «curaduria». Investigalo y respondelo antes de construir otra cosa: si no, el chat «no mejora».
+
 ## Reglas que más se rompen
 - Nunca inventes lugares, horarios, precios ni significados culturales.
 - Lo maya pasa por un tata (Ajq'ij): lleva \* hasta que él lo valide. Historia lleva † hasta tener fuente oficial.
