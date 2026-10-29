@@ -314,21 +314,21 @@ Tata (cultura)                                accesibilidad            playlists
 | A32 | 🟡 **Hecho en 3.7: «+ Publicar»** al centro de la barra (solo en la beta): tema con un toque, texto, foto y enlace opcional. Claude la ordena sola (tema, guía, lugar, título). En «Tu muro» la confirmás y el chat ya la usa. Sin Drive. ⚠️ Mientras la base sea compartida (A24), solo Diego publica. | |
 | A36 | 🟡 **Hecho en 3.7:** catálogo activo de 36 (frases de Diego, monumentos, parques, pan y noche con fuente, y del directorio Basilico, La Bruja y Sat Nam). Los otros 167 están en `app/data/reserva.js`: la app no los carga ni se los manda a Claude. | Si querés rescatar alguno, decime cuál. |
 | A37 | ❓ **¿«Playlist» o «ruta»?** Hoy los datos y títulos dicen «playlist», pero la pestaña dice «Rutas» y el botón «Ver ruta». | Que Diego elija un nombre (FIJA) y se cambia en todos los textos. |
-| A38 | ❓ **Perfiles nuevos** (Diego, 29-oct): Local · Turismo nacional · Turismo internacional · Visita regular · Mochilero. Qué hace cada uno: **Local** = motivar a crear experiencias culturales para los visitantes y apoyar el desarrollo (tours, artesanía freelance). **Nacional e internacional** = conocer más del país y conciencia de lo local; evitar lo comercial y lo gentrificado. **Mochilero** = hostales, fiestas, actividades. **Visita regular** = quien vuelve seguido: lo nuevo y lo que cambió. Encaja con ONU Turismo: turista (duerme) vs. excursionista (va y vuelve el mismo día); interno vs. receptor. ⚠️ «Gentrificado» es un juicio (B7): se muestra con hechos (familiar, desde cuándo, cadena o no), no con etiquetas. Faltan datos: hostales (primera ola: Hotel) y fiestas (Iq', capa 4), con fuente y fecha. | Construible ya: los 5 perfiles con su forma de recomendar (capa 2). |
-| A39 | ❓ **Locales que ofrecen** (tours, artesanía freelance) recomendados al público adecuado. Es la capa 5 (Comunidad) y necesita su permiso (pilar 2), verificar que exista y sea seguro, y que el pago no cambie el orden (B14). | Ahora: tema «Ofrezco» en «+ Publicar» para probarlo con Diego. Después: ficha de la persona con su permiso. |
+| A38 | 🟡 **Hecho en 3.8:** 5 perfiles: Local · Turismo nacional · Turismo internacional · Visita regular · Mochilero, cada uno con su forma de recomendar (en `app/data/guias.js`, se le dice a Claude). Local: invita a ofrecer experiencias. Nacional e internacional: conocer el país y lo local, con hechos y sin juzgar. Regular: lo nuevo. Mochilero: hostales, fiestas, poco gasto. ⚠️ Faltan datos de hostales y fiestas con fuente. | |
+| A39 | 🟡 **Hecho en 3.8 (primer paso):** «Ofrezco una experiencia» en «+ Publicar», y con el perfil Local la idea del guía invita a ofrecerla. Mostrarla al público: capa 5, con permiso y verificación. | |
 | A40 | ❓ **Feed de agentes** con sus playlists. Capa 3. El visor sí lo permite: cada persona entra con su cuenta de Claude, la base guarda quién escribió y se puede hacer «todos leen, cada uno escribe lo suyo». Necesita: permiso de cada agente (A4), que Diego comparta el visor con cada uno y arreglar A24. ❓ Límites de tamaño de la base sin revisar. | Primero el feed con Diego como único autor; después se abre. |
-| A41 | ⚠️ **Semáforo** (Diego, 29-oct: verde recomiendo · amarillo · rojo no recomiendo, de Diego y de los agentes). Choca con B6/B7: sin estrellas, nadie queda de juez, no castigar a los lugares. Un rojo público perjudica al negocio (lo mismo que Diego dijo de «no verificado»). | Semáforo **privado**, como el número de 0 a 10: sirve para curar y para que nAIhual aprenda. De cara al público solo el verde, como «me gusta»: «A 3 agentes les gustó». Rojo y amarillo nunca se publican. |
-| A42 | ❓ **Centro de operaciones de datos** para curar sin archivos: un panel en la vista interna con todo (activos y reserva), donde Diego toca 🟢🟡🔴, «activo» o «reserva». Se guarda en la base del visor; Claude lo aplica al catálogo con «leé la beta», leyendo solo esa colección (barato, sin Excel). | Construible ya (capa 2). |
+| A41 | ✅ **Resuelto en 3.8 (Claude decidió, con permiso de Diego):** en lugar de semáforo, **«¿Para quién es?»**: en cada lugar se tocan los perfiles para los que se recomienda; sale firmado («Diego lo recomienda para: Mochilero»). «No lo recomendaría» es privado: saca el lugar de las recomendaciones y nadie lo ve. Nadie queda de juez (B7) y no castiga a ningún negocio. Con los agentes (capa 3), cada uno firma lo suyo. | |
+| A42 | 🟡 **Hecho en 3.8: «Curar lugares»** (desde el widget de la beta): los lugares de la app, la reserva y los «sin curar», con buscador. Cada toque se guarda en la base del visor (colección «curaduria»); «Traer a la app» y «Pasar a reserva» los aplica Claude con «leé la beta». | |
 | A33 | ✅ **3.7:** el cambio visual va en la primera pantalla (portada según la hora, saludo e idea del guía). | |
 | A34 | 🟡 **Hecho en 3.7:** Inicio en widgets que se contraen y el teléfono recuerda; perfiles como interruptores (hasta 2), encendido = añil. Mapa: el nombre aparece al tocar cada ícono. | |
-| A35 | ❓ **¿Página web propia o Wix?** Para tener más información de regreso (de visitantes y agentes) y buscar en vivo. | Sí sirve, pero es la capa 3: necesita un servidor que guarde la llave de la IA (nunca en el navegador) y pagar el uso de la IA. Wix: se puede meter la app como código incrustado y usar su parte de servidor (Velo) para la llave. ❓ Costos sin revisar. Mientras, la beta sigue en el visor de Claude, que es gratis. |
+| A35 | ❓ **¿Sitio web propio?** (Diego preguntó otra vez, 29-oct). Respuesta de Claude: **todavía no hace falta.** Para la beta y los primeros agentes el visor de Claude alcanza y es gratis (cada agente con su cuenta). Hace falta cuando: 1) la abran visitantes sin cuenta de Claude, 2) se busque en vivo en Google, 3) se junten datos de mucha gente. Ahí: un sitio con servidor que guarde la llave de la IA (Wix con su parte de servidor, u otro). ❓ Costos sin revisar. | Decidir al cerrar la capa 3. |
 
 ---
 
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
-**App vigente: nAIhual 3.7** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
+**App vigente: nAIhual 3.8** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
 - **Dos modos** (`modo` en `app/data/config.js`):
   - **Vista previa** (hoy): todo el catálogo con su «Referencia web», vista interna del equipo, beta de Diego y Claude respondiendo lo que se escribe libre.
   - **Pública**: solo lo verificado, sin vista interna, sin beta y sin Claude.
@@ -380,7 +380,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | Método | `0_…` a `4_….md` | Fundador · no se toca |
 | Bases, estado, decisiones | Este documento | Claude con Diego (cambios de bases solo con FIJA) |
 | Lugares y fuentes | `app/data/lugares.js`, `app/data/fuentes.js` | Claude, con lo que verifica Diego |
-| Notas de la beta y lo aprendido | Base de datos del visor privado («nAIhual»), colecciones «beta» y «aprendido» | Fundador; Claude las lee |
+| Notas de la beta, lo publicado, lo aprendido y la curaduría | Base de datos del visor privado («nAIhual»), colecciones «beta», «aprendido» y «curaduria» | Fundador; Claude las lee |
 | Guía de orientación por calles | `docs/fuentes/orientacion-calles-antigua-2026-10-25.md` (traída por Diego) | Fuente; se carga al paso 1 con CONSTRUYE |
 | Libretas de conocimiento | Google Docs de Diego (fuente) → copia en `app/data/libretas.js` | Fundador escribe; Claude copia |
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md` | Claude |
@@ -423,7 +423,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 **No me mandés:** significados mayas sin tata · números de emergencia sin fuente oficial · fotos de personas sin su permiso.
 
 ## Proceso «leé la beta» (cada vez que Diego lo pide)
-1. **Leer** las colecciones del visor privado: «beta» (me gustó, notas, datos mal, lugares nuevos, pruebas de la brújula), «aprendido» (por confirmar y por investigar) y «diagnostico».
+1. **Leer** las colecciones del visor privado: «beta» (me gustó, notas, datos mal, lugares nuevos, publicaciones, pruebas de la brújula), «curaduria» (para quién, no lo recomendaría, traer a la app o pasar a reserva), «aprendido» (por confirmar y por investigar) y «diagnostico».
 2. **Verificar** cada anotación con fuente pública (búsqueda web). Lo maya, nunca: espera al tata.
 3. **Cargar** lo que pasa al catálogo (`app/data/lugares.js`), con fuente, enlace y fecha de consulta.
 4. **Marcar** cada anotación en la base del visor con su revisión: «entró», «no entró» (y por qué) o «revisado». Diego lo ve en su beta.
@@ -457,6 +457,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 # PARTE 5 · HISTORIAL
 
 **nAIhual 3.7 — 28-oct-2026 (CONSTRUYE · thermos):** Inicio con vida: el cielo de la portada cambia con la hora (amanecer, día, atardecer, noche con estrellas y ventanas encendidas) y saluda; «Hoy te sugiere [guía]» con una idea de su rama y «Otra idea»; todo el Inicio en widgets que se contraen; perfiles como interruptores (hasta 2). «+ Publicar» como red social, ordenado por Claude y usado por el chat al confirmarlo. Los botones del chat los contesta Claude, variando. Mapa con nombres al tocar. Directorio curado (37 activos, 167 en reserva). Toques que responden (se achican al tocar y vibran si el teléfono deja). ✅ 243/243 pruebas.
+
+**nAIhual 3.8 — 29-oct-2026 (CONSTRUYE, con permiso de Diego para decidir):** 5 perfiles nuevos con su forma de recomendar; «¿Para quién es?» en lugar del semáforo, firmado y sin rojos públicos; pantalla «Curar lugares» con la reserva; «Ofrezco una experiencia» en Publicar y la invitación para locales. ✅ 259/259 pruebas.
 
 **Thermos sobre la 3.7 (28-oct):** arreglado: la idea de No'j mostraba consejos mayas sin \* (ahora lleva \* y su aviso); el muro se rompía con una publicación de un lugar que ya no está; «ordenando…» quedaba para siempre si Claude fallaba (ahora «Sin ordenar» y «Ordenar otra vez»); lo publicado llega al chat con fecha y como dicho por una persona; las respuestas culturales de Claude llevan su aviso; «Otro guía» había perdido su estilo; «Publicar» no cierra si no se guardó, avisa si falta texto y solo acepta enlaces de Google Maps; con Claude ocupado no se borra lo escrito; notas de lugares en reserva siguen llegando al chat; foco y lectura de pantalla en perfiles, widgets e íconos del mapa. Las ramas de los guardianes y los perfiles pasaron a `app/data/guias.js`. ✅ 252/252 pruebas.
 

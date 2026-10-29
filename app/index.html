@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* =====================================================================
-   nAIhual 3.7 · sistema visual (tokens). Cambiar un token cambia toda la app.
+   nAIhual 3.8 · sistema visual (tokens). Cambiar un token cambia toda la app.
    Concepto: Antigua en piedra, cal y basalto. Muros encalados (fondo), basalto volcánico (tinta),
    añil de fachada (acento de rutas y enlaces) y los cuatro colores de los guardianes por rumbo*.
    Layout: app de celular en una columna (máx. 560px). Cada pantalla abre con una imagen, un mapa o una ilustración.
@@ -188,6 +188,11 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .temas input { position: absolute; opacity: 0; pointer-events: none; }
 .bform .temas label.chip:has(input:checked) { background: var(--basalto); color: var(--cal); border-color: transparent; }
 .temas label.chip:has(input:focus-visible) { outline: 3px solid var(--anil); outline-offset: 2px; }
+.cur { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
+.cur-h b { display: block; font-family: var(--f-display); font-size: var(--t-md); }
+.cur-h small { color: var(--ink-3); font-size: 12.5px; }
+.cur-q { font-size: var(--t-sm); font-weight: 600; color: var(--ink-2); }
+.cur-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .post { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
 .post .who { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
 .post b.ttl { font-family: var(--f-display); font-size: var(--t-md); }
@@ -526,8 +531,8 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.7 · 28-oct-2026';
-var INSTR_VERSION = 'reglas-fijas 3.7';
+var VERSION = 'nAIhual 3.8 · 29-oct-2026';
+var INSTR_VERSION = 'reglas-fijas 3.8';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
 // Dos modos. Sin configuración = pública (lo más seguro).
@@ -582,9 +587,9 @@ var CATEGORIAS = [
   ['cultura', w('Monumento', 'Monument'), w('Monumentos', 'Monuments')]
 ];
 // Perfiles del visitante (data/guias.js): cambian qué se muestra primero, nunca el trato (B3).
-var PERFILES = (Array.isArray(GUIAS.perfiles) ? GUIAS.perfiles : []).filter(function (p) { return p && p.id && p.label; }).map(function (p) { return [String(p.id), wl(p.label), wl(p.que)]; });
+var PERFILES = (Array.isArray(GUIAS.perfiles) ? GUIAS.perfiles : []).filter(function (p) { return p && p.id && p.label; }).map(function (p) { return [String(p.id), wl(p.label), wl(p.que), wl(p.enfoque)]; });
 var PERFIL = {};
-PERFILES.forEach(function (p) { PERFIL[p[0]] = { label: p[1], que: p[2] }; });
+PERFILES.forEach(function (p) { PERFIL[p[0]] = { label: p[1], que: p[2], enfoque: p[3] }; });
 var CATS = {};
 CATEGORIAS.forEach(function (c) { CATS[c[0]] = { one: c[1], many: c[2] }; });
 function catName(cat, lang) { return CATS[cat] ? CATS[cat].one[lang || S.lang] : ''; }
@@ -630,8 +635,8 @@ function isPub(p) { return !!p && !missing(p).length; }
 function visible(p) { return !!p && (PREVIEW || isPub(p)); }
 // Recorrido «Quiero un café»: pública = hasta 3 publicados. Vista previa = publicados primero y después los que tienen dirección, marcados «por verificar».
 function pilotCafes() {
-  var pub = PIDS.filter(function (id) { return P[id].cat === 'cafe' && isPub(P[id]) && !P[id].aviso; });
-  if (PREVIEW) pub = pub.concat(PIDS.filter(function (id) { return P[id].cat === 'cafe' && !isPub(P[id]) && P[id].addr && !P[id].aviso; }));
+  var pub = PIDS.filter(function (id) { return P[id].cat === 'cafe' && isPub(P[id]) && !P[id].aviso && !curNo(id); });
+  if (PREVIEW) pub = pub.concat(PIDS.filter(function (id) { return P[id].cat === 'cafe' && !isPub(P[id]) && P[id].addr && !P[id].aviso && !curNo(id); }));
   return pub.slice(0, PILOT_MAX);
 }
 
@@ -795,9 +800,12 @@ var X3 = {
     score: 'Del 0 al 10 · privado: no se muestra, solo le enseña a nAIhual tus gustos', scoreNone: 'Sin número', score0: 'Meh', score10: 'Lo mejor que he probado', score10Warn: 'Ojo: el 10 es lo mejor que has probado en tu vida.',
     comment: 'Tu comentario', photo: 'Foto (opcional)', photoNote: 'Si sale una persona, solo con su permiso.', saveVisit: 'Guardar mi visita', uploading: 'Subiendo la foto…',
     find: 'Buscá un lugar para anotar', findPh: 'Nombre o tipo: pizza, panadería, café…', quick: 'Anotar rápido', addNew: 'Agregar un lugar que no está', del: 'Borrar',
+    curTitle: 'Curar lugares', curBody: 'Tocá para quién lo recomendarías. Lo que marcás sale firmado («Diego lo recomienda para…»). «No lo recomendaría» es privado: el lugar sale de las recomendaciones y nadie lo ve.',
+    curActive: 'En la app', curReserve: 'Reserva', curNone: 'Sin curar', inReserve: 'en reserva', forWho: '¿Para quién es?', notRec: 'No lo recomendaría', toReserve: 'Pasar a reserva', toActive: 'Traer a la app',
+    curCount: function (n) { return n === 1 ? '1 lugar' : n + ' lugares'; }, more: 'Ver más', curHow: 'Mover entre la app y la reserva lo hace Claude cuando le decís «leé la beta».', paraTag: function (p) { return 'Diego lo recomienda para: ' + p; },
     postEmpty: 'Escribí algo para publicar.', badMaps: 'El enlace tiene que ser de Google Maps (Compartir → Copiar enlace).', postRetry: 'Ordenar otra vez', postNoOrder: 'Sin ordenar todavía.',
     publish: 'Publicar', postTitle: '¿Qué querés contar?', postPh: 'Un lugar, una historia, un consejo, un evento…', postMaps: 'Enlace de Google Maps (opcional)',
-    temas: [['lugar', 'Lugar'], ['historia', 'Historia'], ['consejo', 'Consejo'], ['evento', 'Evento']], postSaved: 'Publicado. Claude lo ordena.',
+    temas: [['lugar', 'Lugar'], ['historia', 'Historia'], ['consejo', 'Consejo'], ['evento', 'Evento'], ['ofrezco', 'Ofrezco una experiencia']], postSaved: 'Publicado. Claude lo ordena.',
     wall: 'Tu muro', wallBody: 'Lo que publicás. Al confirmarlo, el chat ya lo usa.', wallNone: 'Todavía no publicaste nada. Tocá «+».', ordering: 'Claude lo está ordenando…', postOk: 'Confirmar', postOn: 'Confirmado · el chat ya lo usa', postToConfirm: 'Por confirmar', aboutHere: 'Lo que publicaste de aquí',
     withScore: 'Con número privado', photoFail: 'Se guardó sin la foto: no se pudo preparar o subir.', delAsk: '¿Borrar?', delYes: 'Sí, borrar', delNo: 'No',
     howTitle: 'Qué pasa con lo que anotás', how: ['Se guarda aquí, en la base de datos de tu visor privado.', 'Decile a Claude «leé la beta».', 'Claude lo verifica con fuente y lo pasa al catálogo.', 'Cada anotación queda marcada: entró, no entró (y por qué) o sin revisar.'], noLearned: 'Todavía no aprendió nada. Platicá con un guía.',
@@ -831,9 +839,12 @@ var X3 = {
     score: 'From 0 to 10 · private: never shown, it only teaches nAIhual your taste', scoreNone: 'No number', score0: 'Meh', score10: 'The best I have ever had', score10Warn: 'Careful: 10 means the best you have ever had.',
     comment: 'Your comment', photo: 'Photo (optional)', photoNote: 'If a person is in it, only with their permission.', saveVisit: 'Save my visit', uploading: 'Uploading the photo…',
     find: 'Find a place to note', findPh: 'Name or type: pizza, bakery, coffee…', quick: 'Quick note', addNew: 'Add a place that is not here', del: 'Delete',
+    curTitle: 'Curate places', curBody: 'Tap who you would recommend it to. What you mark shows signed («Diego recommends it for…»). «Would not recommend» is private: the place leaves the recommendations and nobody sees it.',
+    curActive: 'In the app', curReserve: 'Reserve', curNone: 'Not curated', inReserve: 'in reserve', forWho: 'Who is it for?', notRec: 'Would not recommend', toReserve: 'Move to reserve', toActive: 'Bring to the app',
+    curCount: function (n) { return n === 1 ? '1 place' : n + ' places'; }, more: 'See more', curHow: 'Claude moves places between the app and the reserve when you say «read the beta».', paraTag: function (p) { return 'Diego recommends it for: ' + p; },
     postEmpty: 'Write something to post.', badMaps: 'The link must be from Google Maps (Share → Copy link).', postRetry: 'Sort again', postNoOrder: 'Not sorted yet.',
     publish: 'Post', postTitle: 'What do you want to share?', postPh: 'A place, a story, a tip, an event…', postMaps: 'Google Maps link (optional)',
-    temas: [['lugar', 'Place'], ['historia', 'Story'], ['consejo', 'Tip'], ['evento', 'Event']], postSaved: 'Posted. Claude sorts it.',
+    temas: [['lugar', 'Place'], ['historia', 'Story'], ['consejo', 'Tip'], ['evento', 'Event'], ['ofrezco', 'I offer an experience']], postSaved: 'Posted. Claude sorts it.',
     wall: 'Your wall', wallBody: 'What you post. Once you confirm it, the chat uses it.', wallNone: 'Nothing posted yet. Tap «+».', ordering: 'Claude is sorting it…', postOk: 'Confirm', postOn: 'Confirmed · the chat uses it', postToConfirm: 'To confirm', aboutHere: 'What you posted about here',
     withScore: 'With private number', photoFail: 'Saved without the photo: it could not be prepared or uploaded.', delAsk: 'Delete?', delYes: 'Yes, delete', delNo: 'No',
     howTitle: 'What happens with your notes', how: ['They are saved here, in your private viewer’s database.', 'Tell Claude «read the beta».', 'Claude checks them with a source and adds them to the catalog.', 'Each note is marked: added, not added (and why) or not reviewed.'], noLearned: 'Nothing learned yet. Chat with a guide.',
@@ -855,6 +866,7 @@ var STR = {
     welcome: '¿Qué tenés ganas de hacer en Antigua?', takeover: 'Ahora te guío yo. ¿Qué buscás?',
     aproxShort: 'ubicación aproximada',
     hiMorning: 'Buenos días', hiAfternoon: 'Buenas tardes', hiNight: 'Buenas noches',
+    localCta: '¿Das un tour, un taller o hacés artesanía? Contalo y nAIhual se lo recomienda a quien le sirva.', offerIt: 'Ofrecé una experiencia',
     perfilOff: function (n) { return 'Se apagó «' + n + '»: hasta 2 a la vez'; },
     ideaTitle: function (n) { return 'Hoy te sugiere ' + n; }, otherIdea: 'Otra idea', seeIt: 'Ver',
     by: 'De ', free: 'Gratis', spend: 'Con algo que comprar', forYou: 'Para vos',
@@ -904,6 +916,7 @@ var STR = {
     welcome: 'What do you feel like doing in Antigua?', takeover: 'I’m your guide now. What are you after?',
     aproxShort: 'approximate location',
     hiMorning: 'Good morning', hiAfternoon: 'Good afternoon', hiNight: 'Good evening',
+    localCta: 'Do you give tours, workshops or make crafts? Share it and nAIhual recommends it to whoever it suits.', offerIt: 'Offer an experience',
     perfilOff: function (n) { return '«' + n + '» switched off: up to 2 at once'; },
     ideaTitle: function (n) { return n + '’s idea for today'; }, otherIdea: 'Another idea', seeIt: 'See',
     by: 'By ', free: 'Free', spend: 'Something to buy', forYou: 'For you',
@@ -1359,7 +1372,7 @@ function mapsBtn(p, cls, label) {
 }
 function catTags(p) {
   var t = T();
-  return '<div class="tags"><span class="tag">' + esc(p.tipo || catName(p.cat)) + '</span>' + (p.aviso ? '<span class="tag warn" data-aviso>' + esc(X().closedTag) + '</span>' : '') + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + (betaLiked(p.id) ? '<span class="tag like" data-liked>' + esc(X().liked) + '</span>' : '') + '</div>';
+  return '<div class="tags"><span class="tag">' + esc(p.tipo || catName(p.cat)) + '</span>' + (p.aviso ? '<span class="tag warn" data-aviso>' + esc(X().closedTag) + '</span>' : '') + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + (betaLiked(p.id) ? '<span class="tag like" data-liked>' + esc(X().liked) + '</span>' : '') + (BETA_ON && curFor(p.id).para.length ? '<span class="tag ok" data-para>' + esc(X().paraTag(curFor(p.id).para.map(function (q) { return PERFIL[q].label[L()]; }).join(', '))) + '</span>' : '') + '</div>';
 }
 // Frase del lugar. Si tiene autor, va entre comillas y firmada: es su opinión, no la verdad (B7).
 function fraseHTML(p, cls) {
@@ -1461,7 +1474,7 @@ var AI_STOP = {};
 function aiPick(q, gid) {
   var t = norm(String(q || '')), words = t.split(/[^a-z0-9ñ]+/).filter(function (w) { return w.length >= 3 && !AI_STOP[w]; }), keys = [];
   words.forEach(function (w) { keys.push(w.slice(0, 6)); Object.keys(AI_SYN).forEach(function (k) { if (w.indexOf(k.slice(0, 5)) === 0) keys = keys.concat(AI_SYN[k]); }); });
-  var vis = PIDS.filter(function (id) { return visible(P[id]); }), out = [];
+  var vis = PIDS.filter(function (id) { return visible(P[id]) && !curNo(id); }), out = [];
   // Se busca en el nombre, el tipo y la categoría (no en la frase ni en la dirección).
   var hay = function (id) { var p = P[id]; return norm(p.name + ' ' + (p.tipo || '') + ' ' + p.cat + ' ' + catName(p.cat, 'es') + ' ' + catName(p.cat, 'en')); };
   vis.forEach(function (id) { var h = hay(id); if (keys.some(function (k) { return k.length >= 3 && h.indexOf(k) >= 0; })) out.push(id); });
@@ -1481,7 +1494,7 @@ function aiData(q, gid) {
     guardianes: ORDER.map(function (id) { var g = G[id]; return { id: id, nombre: g.name, es: g.value.es + ' *', hace: g.role.es, habla: g.speaks.es, recomienda: g.recs.es, rumbo_y_color: g.dir.es + ' *' }; }),
     // Paso 1: lo que nAIhual ya sabe.
     catalogo: aiPick(q, gid).map(function (id) { var p = P[id];
-      return { id: id, nombre: p.name, tipo: p.tipo || catName(p.cat, 'es'), direccion: p.addr || null, aviso: p.aviso || null, estado: isPub(p) ? 'verificado (' + p.fuente + ', ' + p.fecha + ')' : 'por verificar',
+      return { id: id, nombre: p.name, recomendado_para: curFor(id).para.map(function (q) { return PERFIL[q].label.es; }), tipo: p.tipo || catName(p.cat, 'es'), direccion: p.addr || null, aviso: p.aviso || null, estado: isPub(p) ? 'verificado (' + p.fuente + ', ' + p.fecha + ')' : 'por verificar',
         frase: p.why.es || null, frase_de: p.fraseDe || null, fuente: p.fuente ? p.fuente + (p.fuenteUrl ? ' (' + p.fuenteUrl + ')' : '') : null,
         le_gusto_a_quien_pregunta: mine(id, 'gusta').length > 0, gusto_privado: gustoDe(puntajes(mine(id, 'visita').concat(mine(id, 'nota')))),
         notas_de_la_beta: textos(mine(id, 'nota').concat(mine(id, 'dato'), mine(id, 'visita')), 5), patrocinado: p.patro, horario: p.horario || null, precio: p.precio || null }; }),
@@ -1510,7 +1523,7 @@ function aiRules(gid, q) {
   var g = G[gid];
   return 'Sos nAIhual, un agente turístico-cultural de Antigua Guatemala, en una prueba privada. ' +
     'Respondés como el guía de turno, ' + g.name + ' (' + g.role.es + '; habla ' + g.speaks.es.toLowerCase() + '; recomienda: ' + g.recs.es + ').\n' +
-    (S.perfiles.length ? 'Quien pregunta encendió: ' + S.perfiles.map(function (p) { return '«' + PERFIL[p].label.es + '» (' + PERFIL[p].que.es + ')'; }).join(' y ') + '. Cambia qué le sirve primero y la forma de recomendar; el trato es el mismo para todos.\n' : '') +
+    (S.perfiles.length ? 'Quien pregunta encendió: ' + S.perfiles.map(function (p) { return '«' + PERFIL[p].label.es + '» (' + PERFIL[p].que.es + '). Cómo recomendarle: ' + PERFIL[p].enfoque.es; }).join(' · ') + '. El trato es el mismo para todos.\n' : '') +
     'Tu rama como ' + g.name + ': ' + RAMA[gid].tema.es + '. Buscá primero en tu rama y hablá desde ella.\n' +
     'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
     'Orden para buscar (obligatorio):\n' +
@@ -1522,6 +1535,7 @@ function aiRules(gid, q) {
     '- Lo cultural maya lleva * porque falta que lo valide un tata (Ajq\'ij). Nunca le digas a nadie «cuál es su nawal».\n' +
     '- Emergencias o salud: sugerí preguntar en el hospedaje; no des números de teléfono.\n' +
     '- Lo patrocinado se dice. Un pago nunca cambia lo que recomendás.\n' +
+    '- «recomendado_para»: perfiles para los que Diego lo recomienda; si quien pregunta tiene ese perfil, va primero y decí «Diego lo recomienda para …».\n' +
     '- «gusto_privado» (alto, medio o bajo) sale del número privado de quien pregunta: sirve para entender sus gustos. Nunca lo digas ni lo uses para poner un lugar por encima de otro.\n' +
     '- Una «frase» con «frase_de» es la opinión de esa persona: contala como suya («A Diego le encantó…»), nunca como verdad ni como «el mejor».\n' +
     '- Las «notas_de_la_beta» son lo que escribió quien prueba la app: resumilas como lo que dijo una persona, no como un hecho.\n' +
@@ -1595,6 +1609,21 @@ var BETA = { items: [], db: null, where: 'local', msg: '', q: '', newOpen: false
 var LIBRETAS = (Array.isArray(window.NAIHUAL_LIBRETAS) ? window.NAIHUAL_LIBRETAS : []).filter(function (l) { return l && typeof l.titulo === 'string'; });
 // Lo que nAIhual aprende de las pláticas: entra «por confirmar»; solo lo confirmado se usa para responder (bases B10).
 var LEARN = { items: [] };
+// Curaduría (colección «curaduria» del visor; sin visor, en este teléfono). Un documento por lugar:
+// { para: [perfiles], no: true|false (privado), mover: '' | 'activar' | 'reserva', fecha }.
+var CUR = { items: {} };
+var CUR_LS = 'naihual.curaduria';
+try { CUR.items = JSON.parse(localStorage.getItem(CUR_LS) || '{}') || {}; } catch (e) { CUR.items = {}; }
+function curFor(pid) { var c = CUR.items[pid] || {}; return { para: Array.isArray(c.para) ? c.para.filter(function (p) { return !!PERFIL[p]; }) : [], no: c.no === true, mover: c.mover === 'activar' || c.mover === 'reserva' ? c.mover : '' }; }
+// «No lo recomendaría» saca al lugar de las recomendaciones (solo en la beta; nunca se muestra).
+function curNo(pid) { return BETA_ON && curFor(pid).no; }
+function curSet(pid, patch) {
+  var c = Object.assign(curFor(pid), patch, { fecha: new Date().toISOString() });
+  CUR.items[pid] = c; tick();
+  if (BETA.db) BETA.db.doc('curaduria/' + pid).set(c).catch(function () { toast(false); });
+  else { try { localStorage.setItem(CUR_LS, JSON.stringify(CUR.items)); } catch (e) {} }
+  render({ keep: true });
+}
 var LEARN_LS = 'naihual.aprendido';
 var BETA_LS = 'naihual.beta';
 function betaLoadLocal() { try { var a = JSON.parse(localStorage.getItem(BETA_LS) || '[]'); BETA.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.tipo === 'string'; }) : []; } catch (e) { BETA.items = []; } }
@@ -1614,6 +1643,9 @@ if (BETA_ON) {
         betaRefresh();
       }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
       googleProbe();
+      db.collection('curaduria').onSnapshot(function (snap) {
+        var it = {}; snap.docs.forEach(function (d) { it[d.id] = d.data() || {}; }); CUR.items = it; betaRefresh();
+      }, function () {});
       db.collection('aprendido').onSnapshot(function (snap) {
         LEARN.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; });
         betaRefresh();
@@ -1727,12 +1759,43 @@ function betaDelete(key) {
   if (BETA.db) { BETA.db.doc('beta/' + id).delete().then(function () { dropPhoto(); toast(true, x.toastDeleted); }, function () { render({ keep: true }); toast(false); }); return; }
   BETA.items = BETA.items.filter(function (b) { return b._id !== id; }); betaSaveLocal(); dropPhoto(); render({ keep: true }); toast(true, x.toastDeleted);
 }
+// ===================== CURAR (beta): todo el catálogo y la reserva, un toque por decisión =====================
+var CQ = { q: '', f: 'activos', n: 30 };
+function reservaLoad() {
+  if (window.NAIHUAL_RESERVA || reservaLoad.busy) return; reservaLoad.busy = true;
+  var sc = document.createElement('script'); sc.src = 'data/reserva.js'; sc.onload = function () { render({ keep: true }); }; sc.onerror = function () { reservaLoad.busy = false; }; document.head.appendChild(sc);
+}
+reservaLoad.busy = false;
+function curList() {
+  var act = PIDS.map(function (id) { var p = P[id]; return { id: id, name: p.name, tipo: p.tipo || catName(p.cat), activo: true }; });
+  var res = (window.NAIHUAL_RESERVA || []).filter(function (r) { return r && r.id && !P[r.id]; }).map(function (r) { return { id: r.id, name: String(r.nombre || ''), tipo: String(r.tipo || catName(r.categoria) || ''), activo: false }; });
+  var all = CQ.f === 'activos' ? act : CQ.f === 'reserva' ? res : act.concat(res).filter(function (r) { var c = curFor(r.id); return !c.para.length && !c.no; });
+  var q = norm(CQ.q.trim());
+  return q ? all.filter(function (r) { return norm(r.name + ' ' + r.tipo).indexOf(q) >= 0; }) : all;
+}
+function curRow(r) {
+  var x = X(), lang = L(), c = curFor(r.id);
+  return '<div class="cur" data-cur-row="' + esc(r.id) + '"><div class="cur-h"><b>' + esc(r.name) + '</b><small>' + esc(r.tipo) + (r.activo ? '' : ' · ' + esc(x.inReserve)) + '</small></div>' +
+    '<div class="cur-q">' + esc(x.forWho) + '</div><div class="cur-chips">' + PERFILES.map(function (p) { var on = c.para.indexOf(p[0]) >= 0; return '<button type="button" class="chip" data-cur="' + esc(r.id) + '|para|' + p[0] + '" aria-pressed="' + on + '">' + esc(p[1][lang]) + '</button>'; }).join('') + '</div>' +
+    '<div class="cur-chips"><button type="button" class="chip" data-cur="' + esc(r.id) + '|no|1" aria-pressed="' + c.no + '">' + esc(x.notRec) + '</button>' +
+    '<button type="button" class="chip" data-cur="' + esc(r.id) + '|mover|' + (r.activo ? 'reserva' : 'activar') + '" aria-pressed="' + !!c.mover + '">' + esc(r.activo ? x.toReserve : x.toActive) + '</button></div></div>';
+}
+function curarHTML() {
+  var x = X(), list = curList(), n = Math.min(list.length, CQ.n);
+  if (CQ.f !== 'activos') reservaLoad();
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.curTitle) + '</h1><p>' + esc(x.curBody) + '</p></div>' +
+    '<div class="chips" role="group" aria-label="' + esc(x.curTitle) + '">' + [['activos', x.curActive], ['reserva', x.curReserve], ['sin', x.curNone]].map(function (f) { return '<button type="button" class="chip" data-curf="' + f[0] + '" aria-pressed="' + (CQ.f === f[0]) + '">' + esc(f[1]) + '</button>'; }).join('') + '</div>' +
+    '<label class="search">' + icon('search') + '<input id="cq" type="search" autocomplete="off" value="' + esc(CQ.q) + '" placeholder="' + esc(x.findPh) + '" aria-label="' + esc(x.find) + '"></label>' +
+    '<p class="note" data-cur-count>' + esc(x.curCount(list.length)) + '</p><div class="list" id="cur-out">' + list.slice(0, n).map(curRow).join('') + '</div>' +
+    (list.length > n ? '<button type="button" class="btn block" data-cur-more>' + esc(x.more) + '</button>' : '') +
+    '<p class="note">' + esc(x.curHow) + '</p>';
+}
 // «+ Publicar»: lo más simple posible, como en una red social. Temas: los de X3.temas (uno solo para todo).
 var TEMAS = X3.es.temas.map(function (t) { return t[0]; });
-function postForm() {
-  var x = X();
+function postForm(tema) {
+  var x = X(); tema = tema || 'lugar';
   return '<form class="bform" data-bform="post"><h2>' + esc(x.postTitle) + '</h2>' +
-    '<div class="temas" role="radiogroup" aria-label="' + esc(x.kind) + '">' + x.temas.map(function (tm, i) { return '<label class="chip"><input type="radio" name="tema" value="' + tm[0] + '"' + (i ? '' : ' checked') + '>' + esc(tm[1]) + '</label>'; }).join('') + '</div>' +
+    '<div class="temas" role="radiogroup" aria-label="' + esc(x.kind) + '">' + x.temas.map(function (tm, i) { return '<label class="chip"><input type="radio" name="tema" value="' + tm[0] + '"' + (tm[0] === tema ? ' checked' : '') + '>' + esc(tm[1]) + '</label>'; }).join('') + '</div>' +
     '<label><span class="sr-label">' + esc(x.postTitle) + '</span><textarea name="texto" maxlength="800" placeholder="' + esc(x.postPh) + '"></textarea></label>' + photoHTML() +
     '<label>' + esc(x.postMaps) + '<input type="url" name="maps" inputmode="url" autocomplete="off" placeholder="https://maps.app.goo.gl/…"></label><p class="note" role="status" data-post-msg></p>' +
     '<div class="row"><button type="submit" class="btn primary">' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-close>' + esc(T().close) + '</button></div></form>';
@@ -1795,7 +1858,7 @@ function betaFichaHTML(p) {
 function betaCard() {
   var x = X(), n = BETA.items.length;
   return '<div class="wpad" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><p>' + esc(x.betaBody) + '</p>' +
-    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button></div></div>';
+    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="curar">' + icon('check', 'sm') + esc(x.curTitle) + '</button></div></div>';
 }
 function byDate(a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }
 function bqRows(q) {
@@ -2023,7 +2086,7 @@ function ideas(gid) {
   var r = RAMA[gid], out = [];
   Object.keys(TIPS).forEach(function (id) { if (r.consejos === TIPS[id].cat || (Array.isArray(r.consejos) && r.consejos.indexOf(id) >= 0)) out.push('t:' + id); });
   if (r.playlists) Object.keys(ROUTES).forEach(function (id) { out.push('r:' + id); });
-  r.cats.forEach(function (c) { PIDS.forEach(function (id) { if (P[id].cat === c && visible(P[id]) && !P[id].aviso) out.push('p:' + id); }); });
+  r.cats.forEach(function (c) { PIDS.forEach(function (id) { if (P[id].cat === c && visible(P[id]) && !P[id].aviso && !curNo(id)) out.push('p:' + id); }); });
   out = out.filter(shown);
   return out.length ? out : Object.keys(TIPS).map(function (id) { return 't:' + id; });
 }
@@ -2033,6 +2096,7 @@ function ideaHTML() {
   else if (k === 'r') { var r = ROUTES[id]; head = r.title[lang]; body = r.intro[lang]; go = '<button type="button" class="btn primary" data-route="' + esc(id) + '">' + icon('map', 'sm') + esc(t.seeRoute) + '</button>'; }
   else { body = TIPS[id].body[lang]; star = !!TIPS[id].star; }
   return '<div class="idea g-' + g + '" data-idea-key="' + esc(key) + '">' + portrait(g, 44) + '<div><div class="bubble"><p class="muted" style="font-size:13px">' + esc(RAMA[g].voz[lang]) + '</p>' + (head ? '<b>' + esc(head) + '</b>' : '') + '<p>' + esc(body) + (star ? ' *' : '') + '</p>' + (star ? infoHTML('cult') : '') + '</div>' +
+    (S.perfiles.indexOf('local') >= 0 && BETA_ON ? '<p class="note" data-local-cta>' + esc(t.localCta) + ' <button type="button" class="linkish" data-publish="ofrezco">' + esc(t.offerIt) + '</button></p>' : '') +
     '<div class="row">' + go + '<button type="button" class="btn" data-idea>' + icon('shuffle', 'sm') + esc(t.otherIdea) + '</button><button type="button" class="btn ghost" data-guide="' + g + '">' + icon('chat', 'sm') + esc(t.talk + ' ' + G[g].name) + '</button></div></div></div>';
 }
 function perfilHTML() {
@@ -2301,8 +2365,8 @@ function tallerHTML() {
 // ===================== DIBUJAR Y NAVEGAR =====================
 // En la beta, «+ Publicar» va al centro de la barra, como en una red social.
 var TABS = [['inicio', 'home'], ['rutas', 'map']].concat(BETA_ON ? [['publicar', 'plus']] : [], [['guia', 'chat'], ['guardados', 'heart']]);
-var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, taller: tallerHTML };
-var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
+var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, curar: curarHTML, taller: tallerHTML };
+var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', curar: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
 var main = document.getElementById('main');
 document.addEventListener('visibilitychange', function () { if (!document.hidden) fuiBar(); });
 function render(opts) {
@@ -2337,7 +2401,7 @@ function render(opts) {
 function nav(view, o) {
   o = o || {};
   if (view === 'taller' && !PREVIEW) view = 'inicio';
-  if (view === 'beta' && !BETA_ON) view = 'inicio';
+  if ((view === 'beta' || view === 'curar') && !BETA_ON) view = 'inicio';
   if (!o.tab && view !== S.view) S.stack.push({ view: S.view, detail: S.detail, nawal: S.nawal, route: S.route });
   if (o.tab) S.stack = [];
   S.view = view;
@@ -2407,7 +2471,13 @@ var ACTIONS = [
   ['data-perfil', function (v) { togglePerfil(v); }],
   ['data-wtoggle', function (v, e, el) { CLOSED[v] = !CLOSED[v]; saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
   ['data-idea', function () { S.ideaN++; tick(); var b = document.getElementById('idea-body'); if (b) b.innerHTML = ideaHTML(); }],
-  ['data-publish', function () { tick(); openDialog(postForm()); }],
+  ['data-publish', function (v) { tick(); openDialog(postForm(v)); }],
+  ['data-cur', function (v) { var a = v.split('|'), pid = a[0], k = a[1], val = a[2], c = curFor(pid);
+    if (k === 'para') { var i = c.para.indexOf(val); if (i >= 0) c.para.splice(i, 1); else c.para.push(val); curSet(pid, { para: c.para, no: c.para.length ? false : c.no }); }
+    else if (k === 'no') curSet(pid, { no: !c.no, para: !c.no ? [] : c.para });
+    else curSet(pid, { mover: c.mover ? '' : val }); }],
+  ['data-curf', function (v) { CQ.f = v; CQ.n = 30; render({ keep: true }); }],
+  ['data-cur-more', function () { CQ.n += 30; render({ keep: true }); }],
   ['data-post-ok', function (v) { postUpdate(v, { estado: 'confirmado' }); tick(); }],
   ['data-post-retry', function (v) { var it = BETA.items.filter(function (x) { return x._id === v; })[0]; if (it) postClassify(v, it); }],
   ['data-ref', function (v) { S.refOpen = S.refOpen === v ? '' : v; [].forEach.call(document.querySelectorAll('.map [data-ref]'), function (g) { g.classList.toggle('open', g.getAttribute('data-ref') === S.refOpen); g.setAttribute('aria-expanded', String(g.getAttribute('data-ref') === S.refOpen)); }); }],
@@ -2432,13 +2502,14 @@ document.addEventListener('input', function (e) {
   if (e.target.name === 'puntaje') { var sc = e.target, w = sc.closest('[data-score]'); sc.setAttribute('data-touched', '1'); w.querySelector('[data-score-out]').textContent = sc.value; w.querySelector('[data-score-warn]').hidden = sc.value !== '10'; return; }
   if (e.target.id === 'bq') { BETA.q = e.target.value; var out = document.getElementById('bq-out'); if (out) out.innerHTML = bqRows(BETA.q); return; }
   if (e.target.id === 'fq') { S.query = e.target.value; render({ keep: true }); }
+  if (e.target.id === 'cq') { CQ.q = e.target.value; CQ.n = 30; var o = document.getElementById('cur-out'), list = curList(); if (o) o.innerHTML = list.slice(0, CQ.n).map(curRow).join(''); var cc = document.querySelector('[data-cur-count]'); if (cc) cc.textContent = X().curCount(list.length); }
 });
 
 // Abrir una pantalla directa con un enlace: #rutas, #guia, #guardados, #explorar, #cultura, #costumbres, #nawales, #guardianes
 // y, en vista previa, #beta, #taller o una sección interna (#revision, #textos, #modelo, #aprendizaje, #arquitectura, #sistema).
 (function () {
   var h = String(location.hash || '').slice(1);
-  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !(h === 'beta' && !BETA_ON)) S.view = h;
+  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'curar') && !BETA_ON)) S.view = h;
   else if (PREVIEW && SECS.some(function (s) { return s[0] === h; })) { S.view = 'taller'; S.sec = h; }
   if (S.view !== 'inicio') S.stack = [{ view: 'inicio' }];
 })();
