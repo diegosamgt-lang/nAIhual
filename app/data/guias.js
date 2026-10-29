@@ -14,7 +14,7 @@
 window.NAIHUAL_GUIAS = {
   ramas: {
     noj: { tema: { es: 'historia, cultura y el porqué de las cosas', en: 'history, culture and the why of things' }, voz: { es: 'Para entender Antigua:', en: 'To understand Antigua:' }, cats: ['cultura'], consejos: 'cultura' },
-    iq: { tema: { es: 'primeros pasos, pausas, cafés, eventos y fiestas', en: 'first steps, breaks, cafés, events and festivities' }, voz: { es: 'Un primer paso:', en: 'A first step:' }, cats: ['cafe', 'parque'], consejos: 'costumbre' },
+    iq: { tema: { es: 'primeros pasos, pausas, cafés, eventos y fiestas', en: 'first steps, breaks, cafés, events and festivities' }, voz: { es: 'Un primer paso:', en: 'A first step:' }, cats: ['cafe', 'parque', 'hospedaje'], consejos: 'costumbre' },
     kej: { tema: { es: 'rutas a pie, naturaleza, mercados y cuidarse', en: 'walking routes, nature, markets and staying safe' }, voz: { es: 'Un camino en orden:', en: 'A path in order:' }, cats: ['parque', 'cultura'], playlists: true },
     e: { tema: { es: 'artesanos, comida con carácter, pan y noche, comunidades', en: 'artisans, food with character, bread and night, communities' }, voz: { es: 'Directo a lo bueno:', en: 'Straight to the good stuff:' }, cats: ['comida', 'postres', 'noche'] }
   },

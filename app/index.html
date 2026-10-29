@@ -23,7 +23,7 @@
   --line: rgba(29,33,37,.12); --line-2: rgba(29,33,37,.22);
   --anil: #2f4b7c; --anil-soft: #dfe5f0; --on-anil: #ffffff;
   --band: #1d2125; --band-ink: #f3f1ec; --band-muted: rgba(243,241,236,.66);
-  --tint-cafe: #f1dfbd; --tint-comida: #efd3c6; --tint-cultura: #d9e1ee; --tint-noche: #dcd6ea; --tint-postres: #f3dde3; --tint-parque: #d7e6d3;
+  --tint-cafe: #f1dfbd; --tint-comida: #efd3c6; --tint-cultura: #d9e1ee; --tint-noche: #dcd6ea; --tint-postres: #f3dde3; --tint-parque: #d7e6d3; --tint-hospedaje: #e3dccf;
   --cielo-1: #f6d9b8; --cielo-2: #c9d4e3; --volcan: #6f7d8f; --volcan-2: #4f5b6b; --techo: #b4664b;
   /* color · estados */
   --heart: #b4462f; --ok: #2f6b4f; --ok-soft: #dcebe2;
@@ -55,7 +55,7 @@
   --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
   --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
   --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
-  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b; --tint-noche: #2a2538; --tint-postres: #3a2229; --tint-parque: #1f3121;
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b; --tint-noche: #2a2538; --tint-postres: #3a2229; --tint-parque: #1f3121; --tint-hospedaje: #2f2a22;
   --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
   --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
   --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
@@ -72,7 +72,7 @@
   --line: rgba(236,234,228,.13); --line-2: rgba(236,234,228,.24);
   --anil: #93acdb; --anil-soft: #222c3d; --on-anil: #121518;
   --band: #07090a; --band-ink: #eceae4; --band-muted: rgba(236,234,228,.6);
-  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b; --tint-noche: #2a2538; --tint-postres: #3a2229; --tint-parque: #1f3121;
+  --tint-cafe: #3a2f1c; --tint-comida: #3a2620; --tint-cultura: #1f2a3b; --tint-noche: #2a2538; --tint-postres: #3a2229; --tint-parque: #1f3121; --tint-hospedaje: #2f2a22;
   --cielo-1: #2a2d3f; --cielo-2: #141a26; --volcan: #3a4352; --volcan-2: #2a313c; --techo: #6b3d2f;
   --heart: #ef8a70; --ok: #8fcaa9; --ok-soft: #1d2e26; --check: #e7bd6a; --check-soft: #33291a;
   --sponsor-bg: #3a2f17; --sponsor-ink: #f0d79c; --future-bg: #2a2740; --future-ink: #cfc8f3;
@@ -531,7 +531,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.8 · 29-oct-2026';
+var VERSION = 'nAIhual 3.8.1 · 29-oct-2026';
 var INSTR_VERSION = 'reglas-fijas 3.8';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -584,6 +584,7 @@ var CATEGORIAS = [
   ['postres', w('Pan y postres', 'Bread and sweets'), w('Pan y postres', 'Bread and sweets')],
   ['noche', w('De noche', 'Night'), w('De noche', 'Night')],
   ['parque', w('Parque', 'Park'), w('Parques', 'Parks')],
+  ['hospedaje', w('Hospedaje', 'Lodging'), w('Hospedaje', 'Lodging')],
   ['cultura', w('Monumento', 'Monument'), w('Monumentos', 'Monuments')]
 ];
 // Perfiles del visitante (data/guias.js): cambian qué se muestra primero, nunca el trato (B3).
@@ -1191,6 +1192,8 @@ var SCENES = {
   // Árbol y banca.
   parque: '<circle cx="164" cy="108" r="52" style="fill:var(--ok)" opacity=".26"/><circle cx="132" cy="128" r="32" style="fill:var(--ok)" opacity=".2"/><path d="M164 150 v56" style="stroke:var(--basalto)" stroke-opacity=".35" stroke-width="8" stroke-linecap="round"/>' +
     '<path d="M196 182 h64 M196 194 h64 M204 194 v16 M252 194 v16" style="fill:none;stroke:var(--basalto)" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>',
+  // Cama (hospedaje).
+  hospedaje: '<rect x="86" y="150" width="148" height="34" rx="6" style="fill:var(--cal)" opacity=".7"/><rect x="92" y="132" width="44" height="22" rx="8" style="fill:var(--cal)"/><path d="M80 120 V200 M240 160 V200" style="stroke:var(--basalto)" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/>',
   cultura: '<path d="M70 240 V120 H250 V240 H190 V176 a30 30 0 0 0 -60 0 V240 Z" style="fill:var(--cal)" opacity=".6"/><path d="M140 120 V92 a20 20 0 0 1 40 0 V120 Z" style="fill:var(--cal)" opacity=".6"/>' +
     '<path d="M70 120 H250" style="stroke:var(--basalto)" stroke-opacity=".25" stroke-width="5"/><circle cx="160" cy="98" r="7" style="fill:var(--basalto)" opacity=".2"/>'
 };
@@ -1528,7 +1531,8 @@ function aiRules(gid, q) {
     'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
     'Orden para buscar (obligatorio):\n' +
     '1. Primero lo que nAIhual ya sabe: «catalogo», «publicaciones_confirmadas» (lo que contó y confirmó quien usa la beta: contalo como dicho por esa persona, con su fecha; un evento con fecha pasada no se ofrece), «lugares_agregados_en_la_beta», «visitas_fuera_del_catalogo», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
-    '2. Si ahí no está, respondé con lo que vos sabés de Antigua, como un agente de verdad: lugares reales que conocés, con su contexto. Ponelos en «otros» (nombre exacto del lugar y por qué). La app les pone la etiqueta «Según la IA · confirmá en Google». No inventes lugares: si no conocés uno que sirva, decilo.\n' +
+    '2. Si ahí no está o no alcanza, SIEMPRE proponé 2 o 3 lugares reales que conozcás de Antigua, como un agente de verdad, en «otros» (nombre exacto y por qué). La app les pone «Según la IA · confirmá en Google». Decir «no tengo información» sin proponer nada es el último recurso: solo si de verdad no conocés ningún lugar real. No inventes.\n' +
+    '- Si la persona repite o insiste en una pregunta, no repitas tu respuesta: proponé otros lugares, cambiá de enfoque o preguntá algo concreto.\n' +
     'Reglas:\n' +
     '- Sos guía, no juez. Resumí lo que dijeron las personas (la beta, agentes) y las fuentes públicas del catálogo y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
     '- Nunca afirmes horarios, precios, si abre hoy ni qué platos tiene el menú: decí «confirmalo en Google Maps» o «en su menú», una sola vez.\n' +
