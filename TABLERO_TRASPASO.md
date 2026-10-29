@@ -1,6 +1,6 @@
 # Curtis — traspaso
 
-> Actualizado: 2026-10-27 · versión 9. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
+> Actualizado: 2026-10-29 · versión 10. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
 
 ## Qué existe
 - **Panel:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
@@ -17,7 +17,7 @@
 
 ## Datos
 - `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · etiquetas · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · gcalId (cita de Google Calendar) · padre (tarea dentro de otra) · reunionId (tarea → su reunión) · origen ('curtis' si la creó Curtis, v9) · reunión: tareaId · notasHtml · carpetaId · carpetaUrl · carpetaNombre · adjuntos[{nombre,driveUrl,asset,thumb}] · enviados[pendientes ya pasados a tareas] · creado · actualizado · terminado
-- `proyectos/*`: contextoMd · contextoAnterior · contextoFecha · contextoUrl · consultas[{fecha,duda,qa[{q,a}],sugerencia}] (máx 10) · area · clienteId · nombre · icono · color · cliente · categoria · precio (cobro final) · entrega · estado (activo|pausa|terminado) · etiquetas · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] (las de Zoho) · chat · ilustraciones[ids] · licencia{producto,n,exclusividad,duracion,territorio,tiraje,modelo,base,diseno,disenoMonto,mayorista,regaliaPct,fx,total,unico,fecha} · entregado · entregaUrl · entregaFolderId
+- `proyectos/*`: sitioUrl (v10) · contextoMd · contextoAnterior · contextoFecha · contextoUrl · consultas[{fecha,duda,qa[{q,a}],sugerencia}] (máx 10) · area · clienteId · nombre · icono · color · cliente · categoria · precio (cobro final) · entrega · estado (activo|pausa|terminado) · etiquetas · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] (las de Zoho) · chat · ilustraciones[ids] · licencia{producto,n,exclusividad,duracion,territorio,tiraje,modelo,base,diseno,disenoMonto,mayorista,regaliaPct,fx,total,unico,fecha} · entregado · entregaUrl · entregaFolderId
 - `servicios/*` (v6): titulo · subtitulo · grupo · precio · unidad · formato · tiempo · descripcion · creado · actualizado
 - `cotizaciones/*` (v6): titulo · cliente · proyecto · fecha · validez (días) · contexto (de qué se trata) · lineas[{id, tipo: titulo|subtitulo|servicio|nota|descuento, texto, servicioId, nombre, cantidad, precio, unidad, formato, descripcion, modo: monto|pct, valor}] · notas · estado (borrador|enviada|aceptada|rechazada) · total · pdfUrl · creado · actualizado
 - `areas/*` (v7): fijada (v9, área principal) · nombre · icono · color · descripcion · cliente · creado · actualizado
@@ -62,3 +62,4 @@
 - v7: Áreas, tareas dentro de tareas, reuniones conectadas con notas grandes, clientes, Dinero (facturas, cobros, suscripciones, gastos), jerarquía visual editorial.
 - v8: simplificación (Inicio de 4 bloques, 5 pestañas en el celular, una sola forma de pasos y de cotizar), todos los calendarios de Google incluido iCloud, copia de seguridad en Drive, número FEL en facturas.
 - v9: Curtis del proyecto (cuestionario y contexto .md), Curtis en Inicio, límites de autoría, área «Mi estudio», más colores y emojis, botón Actualizar.
+- v10: diseño calmado (más aire, menos texto, secciones plegadas en el proyecto) y sitio web conectado al proyecto «Página web» (Wix «diegosamgt», id 8f33cf41-5d4e-4aa2-935b-9e8314b0b422).

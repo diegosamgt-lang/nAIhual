@@ -1,6 +1,6 @@
 # CURTIS — resumen del proyecto
 
-> Actualizado: 2026-10-27 · versión 9
+> Actualizado: 2026-10-29 · versión 10
 > Panel: https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW (privado, solo vos lo abrís y lo editás)
 > Archivo: `tablero/curtis.html` · Datos y conexiones: `TABLERO_TRASPASO.md` · Personalidad: `CURTIS_PERSONALIDAD.md`
 >
@@ -263,3 +263,10 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
   - Área principal «Mi estudio» con Página web, Portafolio y Curaduría.
   - 12 colores y 60 emojis. La barrita de color de cada proyecto (en el menú y en las tarjetas) usa el color de su primera etiqueta.
   - Pruebas: 142/142 nuevas + 31/31 de v4.
+- 2026-10-29 · Pedido: «está muy saturado; menos texto junto, más tranquilidad, espacio y menos gritado». Además: incorporar tu página web (https://diegosam.wixsite.com/diegosamgt), donde va a entrar NAIHUAL y todo tu trabajo.
+- 2026-10-29 · **v10 (calma)**:
+  - Más espacio entre bloques y dentro de las tarjetas. Títulos más chicos y suaves. Sin reglas negras ni etiquetas en mayúsculas. Bordes y sombras más suaves. Marco amarillo más delgado.
+  - 18 explicaciones largas acortadas o quitadas. La caja de Curtis en Inicio quedó sin atajos.
+  - En el proyecto, a la vista: cliente, entrega, cobro final, estado, botones y tareas. Plegado: «Más detalles», Curtis del proyecto, Dinero, Notas y Archivos. Los colores del encabezado aparecen al pasar el mouse.
+  - Tu sitio: leído desde tu Wix (solo lectura). Es «diegosamgt», publicado, con plan gratis, en español y con contacto hello@diegosam.com. El proyecto «Página web» tiene el link «🌐 Abrir el sitio» y su contexto con esos datos y «Lo que va a entrar: NAIHUAL».
+  - Pruebas: 142/142 + 31/31.

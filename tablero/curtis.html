@@ -683,6 +683,73 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
 .review { display: grid; gap: 6px; background: var(--bg); border-radius: 12px; padding: 12px; font-size: .88rem; }
 .review p { margin: 0; white-space: pre-wrap; }
 .review .ok { color: var(--forest-t); } .review .bad { color: var(--clay-t); }
+/* ===== v10: calma. Menos gritos, más aire ===== */
+body { line-height: 1.55; }
+.main-in { gap: 44px; max-width: 58rem; }
+@media (min-width: 920px) { .main { padding: 40px 48px 64px; } }
+.card, .rows, .pcard, .entry, .kcard, .ccard, .kpi { border: 0; }
+:root { --shadow: 0 1px 2px rgba(26,31,27,.04), 0 6px 20px rgba(26,31,27,.04); }
+.pad { padding: 20px 22px; }
+.page-h h1 { font-size: clamp(1.9rem, 4.4vw, 2.4rem); font-weight: 600; letter-spacing: -.015em; }
+.kicker { font-size: .78rem; font-weight: 550; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.kicker::before { width: 8px; height: 8px; border-width: 2px; }
+.sec-h { border-top: 0; padding-top: 0; margin: 0 2px 12px; }
+.sec-h h2, .card .sec-h h2 { font-size: 1.22rem; font-weight: 600; letter-spacing: -.005em; }
+.sec-group-h { border-top: 0; padding-top: 6px !important; }
+.group-h { font-size: 1.15rem; font-weight: 600; }
+.sec-title { font-size: 1.15rem; font-weight: 600; }
+.trow { padding: 13px 0; }
+.trow-t { font-weight: 500; }
+.trow.parent .trow-t { font-weight: 600; font-size: 1rem; }
+.hint { font-size: .82rem; }
+.btn { font-weight: 600; }
+.block-h, .kpi-k, .mstep-k, .acard-k, .tbl th, .chart-table th, .entry-k, .now-label, .cot-type { text-transform: none; letter-spacing: 0; font-weight: 600; }
+.kpi { border-top: 3px solid var(--line); box-shadow: var(--shadow); }
+.kpi.hero-kpi { border-top-color: var(--yellow); }
+.kpi-v { font-size: clamp(1.3rem, 3vw, 1.6rem); font-weight: 600; }
+.stat { border-top: 0; border-radius: 14px; }
+.hero { padding: 26px; gap: 20px; }
+.topo { opacity: .22; }
+.frame { border-width: 4px; padding: 16px 20px 18px; }
+.hero-greet { font-size: clamp(1.9rem, 5vw, 2.5rem); }
+.quote { font-size: 1.02rem; color: var(--muted); }
+.nudge { background: color-mix(in srgb, var(--yellow) 10%, var(--surface)); font-weight: 500; }
+.now-strip { box-shadow: inset 0 0 0 1px var(--line); padding: 16px 18px; }
+.now-title { font-size: clamp(1.15rem, 3vw, 1.35rem); }
+.ask-bar { box-shadow: none; background: transparent; padding: 0; }
+.ask-bar input { background: var(--surface); box-shadow: var(--shadow); padding: 12px 16px; }
+.nav-area { font-weight: 600; }
+.nav-btn { padding: 9px 10px; }
+.acard { padding: 18px 20px; box-shadow: var(--shadow), inset 4px 0 0 var(--ac, var(--yellow)); border-top: 0; }
+.acard-t { font-size: 1.25rem; font-weight: 600; }
+.pcard-t { font-size: 1.12rem; font-weight: 600; }
+.entry-t { font-size: 1.08rem; font-weight: 600; }
+.d-title { font-size: 1.6rem; font-weight: 600; }
+.p-cover { height: 84px; }
+.p-title { font-size: clamp(1.6rem, 4vw, 2.1rem); font-weight: 600; }
+.notas { border-top-width: 4px; }
+.nt-title { font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 600; }
+.u { font-weight: 600; }
+.trow-m { gap: 4px 10px; }
+.tools-row .btn.soft { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.more-props summary, .plegado > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; }
+.more-props summary::-webkit-details-marker, .plegado > summary::-webkit-details-marker { display: none; }
+.more-props { margin-top: 6px; }
+.more-props > summary { color: var(--muted); font-size: .86rem; font-weight: 600; padding: 8px 0 2px; }
+.more-props[open] > summary { margin-bottom: 4px; }
+.extras { display: grid; gap: 10px; }
+.plegado { padding: 14px 20px; }
+.plegado > summary b { font-weight: 600; font-family: var(--f-ui); font-size: 1rem; }
+.plegado > summary .hint { margin-left: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 50%; }
+.plegado[open] { display: grid; gap: 14px; padding-bottom: 20px; }
+.plegado .money-strip { box-shadow: none; padding: 0; background: none; }
+.plegado .money-strip > .sec-h { display: none; }
+.aviso-autoria { font-size: .84rem; }
+.web-link { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; color: var(--ink); text-decoration: none; border-radius: 999px; padding: 8px 14px; box-shadow: inset 0 0 0 1px var(--line); }
+.web-link:hover { background: var(--surface-2); }
+@media (max-width: 560px) { .main-in { gap: 32px; } .pad { padding: 16px; } .hero { padding: 18px; } }
+@media (hover: hover) { .p-cover-tools { opacity: 0; transition: opacity .2s ease; } .p-cover:hover .p-cover-tools, .p-cover:focus-within .p-cover-tools { opacity: 1; } }
+@media (hover: none) { .p-cover-tools .swatch { width: 18px; height: 18px; } }
 </style>
 
 <div class="app">
@@ -787,6 +854,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   // ================= utilidades =================
   const $ = (s) => document.querySelector(s);
   function h(tag, props, ...kids) {
+    if (props && props.class === 'hint' && props.text === '') return null;
     const el = document.createElement(tag);
     for (const [k, v] of Object.entries(props || {})) {
       if (v == null || v === false) continue;
@@ -1069,7 +1137,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     if (!S.mcp) return h('p', { class: 'hint', text: 'Google Calendar no está disponible en esta vista.' });
     if (!S.gcal.cals) return h('button', { type: 'button', class: 'btn soft small', onclick: async () => { await cargarGcal(true); renderDrawer(true); } }, icon('calendar', 'sm'), 'Buscar mis calendarios');
     return h('div', { class: 'subs' }, S.gcal.cals.map((c) => h('label', { class: 'qa' }, h('button', { type: 'button', class: 'switch', role: 'switch', 'aria-checked': String(calActivo(c)), 'aria-label': (calActivo(c) ? 'Dejar de leer ' : 'Leer ') + c.nombre, onclick: async () => { const m = Object.assign({}, ajuste('calendarios', {}) || {}); m[c.id] = !calActivo(c); S.ajustes = Object.assign({}, S.ajustes, { calendarios: m }); await saveAjustes({ calendarios: m }); renderDrawer(true); cargarGcal(true); } }), h('span', { text: c.nombre + (/import\.calendar/.test(c.id) ? ' (importado, ej. iCloud)' : '') }))),
-      h('p', { class: 'hint', text: 'Los calendarios importados (como iCloud) los actualiza Google cada cierto tiempo, no al instante.' }));
+      h('p', { class: 'hint', text: 'Los importados (iCloud) tardan un rato en actualizarse.' }));
   }
   const evHora = (e) => (e.todoDia ? 'Todo el día' : new Date(e.inicio).toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }));
   const gcalDel = (iso) => S.gcal.events.filter((e) => evDia(e) === iso);
@@ -1402,11 +1470,10 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     );
     const hoyList = [...antes, ...pend.filter((x) => x.fecha === hoy())];
     const askBar = S.sample && !S.sampleOff ? (() => {
-      const inp = h('input', { type: 'text', placeholder: 'Preguntale a Curtis… (sabe de tus proyectos, citas y dinero)', 'aria-label': 'Preguntale a Curtis' });
+      const inp = h('input', { type: 'text', placeholder: 'Preguntale a Curtis…', 'aria-label': 'Preguntale a Curtis' });
       const enviar = (q) => { const t = String(q || inp.value).trim(); if (!t) return; go('curtis'); setTimeout(() => ask('c:general', t), 60); };
       inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); enviar(); } });
-      return h('div', { class: 'ask-bar' }, h('span', { class: 'ask-bar-ico' }, logo(26)), inp, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Preguntar', onclick: () => enviar() }, icon('send')),
-        h('div', { class: 'chips' }, ['¿Qué hago ahora?', '¿Qué se me está olvidando?', 'Ordená mi semana'].map((q) => h('button', { type: 'button', class: 'chip', onclick: () => enviar(q) }, q))));
+      return h('div', { class: 'ask-bar' }, h('span', { class: 'ask-bar-ico' }, logo(24)), inp, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Preguntar', onclick: () => enviar() }, icon('send')));
     })() : null;
     const citas = gcalDel(hoy());
     const manana = gcalDel(addDays(hoy(), 1));
@@ -1545,7 +1612,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const sueltos = act.filter((p) => !p.area || !area(p.area));
     return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Áreas y proyectos, por entrega' }), h('h1', { text: 'Proyectos' })), h('div', { class: 'row-actions' }, btnActualizar(), h('button', { type: 'button', class: 'btn soft', onclick: () => nuevaArea() }, icon('grid', 'sm'), 'Área'), h('button', { type: 'button', class: 'btn forest', onclick: nuevoProyecto }, icon('plus', 'sm'), 'Nuevo proyecto'))),
       tabs, filtroBar(),
-      S.areas.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Áreas' }), h('span', { class: 'hint', text: 'La sombrilla de tus proyectos grandes' })), h('div', { class: 'gallery areas' }, S.areas.map(acard))) : h('p', { class: 'hint area-tip', text: '¿Un cliente o trabajo con varios proyectos adentro, como la NIHR? Creá un «Área»: es la sombrilla que los agrupa. Los proyectos terminan; el área sigue.' }),
+      S.areas.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Áreas' }), h('span', { class: 'hint', text: 'La sombrilla de tus proyectos grandes' })), h('div', { class: 'gallery areas' }, S.areas.map(acard))) : h('p', { class: 'hint area-tip', text: '' }),
       conArea.filter((x) => x.ps.length).map((x) => h('section', {}, h('div', { class: 'sec-h' }, h('h2', {}, h('button', { type: 'button', class: 'link-h', onclick: () => go('area', x.a.id) }, (x.a.icono || '🗂️') + ' ' + (x.a.nombre || ''))), h('span', { class: 'hint', text: x.ps.length + (x.ps.length === 1 ? ' proyecto' : ' proyectos') })), h('div', { class: 'gallery' }, x.ps.map(pcard)))),
       h('section', {}, S.areas.length ? h('div', { class: 'sec-h' }, h('h2', { text: 'Sin área' })) : null, h('div', { class: 'gallery' }, sueltos.map(pcard), h('button', { type: 'button', class: 'pcard pcard-new', onclick: nuevoProyecto }, icon('plus', 'lg'), 'Nuevo proyecto'))),
       fin.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Entregados' })), h('div', { class: 'gallery' }, fin.map(pcard))) : null];
@@ -1593,13 +1660,19 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       ilusIds.length ? h('div', { class: 'ilus-grid' }, ilusIds.map(ilus).filter(Boolean).map((x) => ilusCard(x))) : h('p', { class: 'hint', text: 'Elegí del catálogo las ilustraciones que vas a licenciar (o subilas desde aquí).' }),
       h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => elegirIlus(p.id) }, icon('image', 'sm'), 'Elegir o subir ilustraciones'), h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirLicencia(p.id) }, icon('receipt', 'sm'), 'Armar paquete y precio')),
       p.licencia && p.licencia.total ? h('p', { class: 'hint', text: 'Última propuesta guardada: ' + money(p.licencia.total) + ' · ' + fmtDate(p.licencia.fecha) }) : null) : null;
+    // solo lo esencial a la vista; el resto en «Más detalles»
+    const mas = h('details', { class: 'more-props', open: S.masProps ? true : null }, h('summary', { text: 'Más detalles' }));
+    mas.addEventListener('toggle', () => { S.masProps = mas.open; });
+    [...props.children].forEach((row) => { const sp = row.querySelector(':scope > span'); const k = sp ? sp.textContent.trim() : ''; const esencial = (k === 'Cliente') || (k === 'Cobro final (Q)') || (k === 'Estado') || (k === 'Entrega' && row.tagName === 'LABEL'); if (!esencial) mas.append(row); });
+    if (mas.children.length > 1) props.append(mas);
     const archs = S.archivos.filter((a) => a.proyecto === p.id).sort((a, b) => (b.creado || 0) - (a.creado || 0));
-    const archSec = h('details', { class: 'card pad arch-sec', open: archs.length ? true : null },
-      h('summary', {}, icon('upload', 'sm'), 'Archivos del proyecto', h('span', { class: 'hint', text: archs.length ? String(archs.length) : 'subí aquí' })),
+    const archSec = h('details', { class: 'card pad arch-sec plegado' },
+      h('summary', {}, h('span', { text: '📎' }), h('b', { text: 'Archivos' }), h('span', { class: 'hint', text: archs.length ? String(archs.length) : 'subí aquí' })),
       zonaSubir(() => p.id, folderIdFrom(p) ? 'Arrastrá aquí: van a la carpeta del proyecto en Drive' : 'Arrastrá aquí tus archivos'),
       archs.length ? h('div', { class: 'arch-list' }, archs.map((a) => archivoRow(a, false))) : null);
     const emojiBtn = h('button', { type: 'button', class: 'p-emoji', 'aria-label': 'Cambiar ícono', onclick: () => { S.emojiOpen = !S.emojiOpen; renderMain(true); } }, p.icono || '📁');
     const tools = h('div', { class: 'tools-row' },
+      /^https:\/\//.test(p.sitioUrl || '') ? h('a', { class: 'web-link', href: p.sitioUrl, target: '_blank', rel: 'noopener' }, '🌐 Abrir el sitio') : null,
       p.estado !== 'terminado' ? h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Entregar proyecto') : h('button', { type: 'button', class: 'btn soft', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Volver a entregar'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => crearCarpetasBoton(p.id) }, icon('folder', 'sm'), p.driveFolderId ? 'Agregar carpetas de trabajo' : 'Carpetas de trabajo en Drive'),
       h('button', { type: 'button', class: 'btn soft', onclick: () => { const ya = S.cotizaciones.filter((c) => c.proyecto === p.id).sort((a, b) => (b.actualizado || 0) - (a.actualizado || 0))[0]; if (ya) abrirCot(ya); else nuevaCotizacion({ titulo: 'Cotización — ' + (p.nombre || 'proyecto'), cliente: p.cliente || '', proyecto: p.id, contexto: p.descripcion || '', lineas: [{ id: uid(), tipo: 'titulo', texto: p.nombre || 'Propuesta' }] }); } }, icon('receipt', 'sm'), S.cotizaciones.some((c) => c.proyecto === p.id) ? 'Ver cotización' : 'Cotizar'),
@@ -1641,7 +1714,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     return [
       h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft small', onclick: () => go('proyectos') }, icon('back', 'sm'), 'Proyectos'), h('button', { type: 'button', class: 'btn soft small', onclick: (ev) => actualizarTodo(ev.currentTarget) }, icon('refresh', 'sm'), 'Actualizar'), p.area && area(p.area) ? h('button', { type: 'button', class: 'btn soft small', onclick: () => go('area', p.area) }, h('span', { text: area(p.area).icono || '🗂️' }), 'Área ' + area(p.area).nombre) : null),
       h('div', {}, cover, h('div', { class: 'p-head' }, emojiBtn, S.emojiOpen ? h('div', { class: 'emoji-grid' }, EMOJIS.map((e) => h('button', { type: 'button', 'aria-label': 'Ícono ' + e, onclick: () => { S.emojiOpen = false; patchProyecto(p.id, { icono: e }); } }, e))) : null, title)),
-      props, curtisProyecto(p), franjaDinero(p), ilusSec, desc, tools, archSec, head, body,
+      props, tools, head, body,
+      h('div', { class: 'extras' }, curtisProyecto(p), dineroPlegado(p), ilusSec, notasPlegadas(p, desc), archSec),
       h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn ghost small', onclick: () => borrarProyecto(p.id) }, icon('trash', 'sm'), 'Borrar proyecto')),
     ];
   }
@@ -1673,7 +1747,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     if (tab === 'reuniones') {
       const arr = S.items.filter((it) => it.tipo === 'reunion').sort(byDate);
       body = [h('div', { class: 'page-h' }, h('h2', { style: 'margin:0', text: 'Reuniones' }), h('button', { type: 'button', class: 'btn forest', onclick: () => nuevoRegistro('reunion') }, icon('plus', 'sm'), 'Reunión')),
-        h('p', { class: 'hint', text: 'Cada reunión es una sola: se conecta a su cita de Google Calendar o a su tarea. Las notas tienen títulos, checklist y fotos.' }),
+        h('p', { class: 'hint', text: '' }),
         arr.length ? h('div', { class: 'entries' }, arr.map(entradaReunion)) : h('p', { class: 'empty card', text: 'Sin reuniones. Tocá «Reunión», o en una cita de Inicio tocá «Activar notas de reunión».' })];
     } else if (tab === 'bitacoras') {
       const arr = S.items.filter((it) => it.tipo === 'bitacora').sort(byDate);
@@ -1869,7 +1943,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     if (tipo === 'reunion') extra.push(h('button', { type: 'button', class: 'btn soft', style: 'justify-self:start', onclick: () => (it.notasHtml ? pendientesATareas(id, it.notasHtml) : acuerdosATareas(id)) }, icon('check', 'sm'), 'Pasar pendientes a tareas'));
     if (task && !it.padre) extra.push(tareasDentro(it));
     if (task && (it.subtareas || []).length) extra.push(subtareas(it));
-    if (task) { const r = reunionDeTarea(it); extra.push(h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => { const ta = document.querySelector('.drawer textarea[data-f="notas"]'); const cur = Object.assign({}, item(it.id) || it); if (ta) cur.notas = ta.value; closeDrawer(); notasDeTarea(cur); } }, icon('users', 'sm'), r ? 'Abrir notas de la reunión' : 'Activar notas de reunión'), !r ? h('span', { class: 'hint', text: 'Si esta tarea es una reunión: abrí notas grandes y queda en Registro, conectada.' }) : null)); }
+    if (task) { const r = reunionDeTarea(it); extra.push(h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => { const ta = document.querySelector('.drawer textarea[data-f="notas"]'); const cur = Object.assign({}, item(it.id) || it); if (ta) cur.notas = ta.value; closeDrawer(); notasDeTarea(cur); } }, icon('users', 'sm'), r ? 'Abrir notas de la reunión' : 'Activar notas de reunión'), !r ? h('span', { class: 'hint', text: '' }) : null)); }
     if (task && it.minutosFoco) extra.push(h('p', { class: 'hint', text: 'Tiempo de foco: ' + it.minutosFoco + ' min' }));
     return h('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Detalle' }, top, confirmDel, titleEl, h('div', { class: 'props' }, props), notes, extra, chatBox('i:' + id));
   }
@@ -1882,7 +1956,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       setTimeout(() => { renderDrawer(true); const n = document.querySelector('input[aria-label="Agregar tarea dentro"]'); if (n) n.focus(); }, 60);
     });
     return h('div', {}, h('p', { class: 'block-h' }, icon('list', 'sm'), 'Pasos (tareas dentro)', hs.length ? h('span', { text: '· ' + hs.filter((x) => x.estado === 'listo').length + '/' + hs.length }) : null),
-      h('p', { class: 'hint', style: 'margin:-2px 0 6px', text: 'Partí esta tarea en pasos chicos. Cada paso es una tarea con su fecha y estado.' }),
+      h('p', { class: 'hint', style: 'margin:-2px 0 6px', text: '' }),
       h('div', { class: 'subs' }, hs.map((c) => h('div', { class: 'sub' + (c.estado === 'listo' ? ' done' : '') },
         h('button', { type: 'button', class: 'check', role: 'checkbox', 'aria-checked': String(c.estado === 'listo'), 'aria-label': 'Lista', onclick: (ev) => setEstado(c.id, c.estado === 'listo' ? 'por hacer' : 'listo', ev) }, c.estado === 'listo' ? icon('check', 'sm') : null),
         h('button', { type: 'button', class: 'sub-link', onclick: () => openItem(c.id) }, h('span', { text: c.titulo || 'Sin título' }), isDay(c.fecha) ? urgPill(c.fecha, c.estado) : null))),
@@ -1921,7 +1995,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const p = proyecto(d.id); if (!p) return null;
     return h('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Curtis del proyecto' },
       h('div', { class: 'drawer-top' }, h('span', { class: 'u none' }, (p.icono || '') + ' ' + (p.nombre || '')), h('span', { class: 'spacer' }), h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Cerrar', onclick: closeDrawer }, icon('x'))),
-      h('p', { class: 'hint', text: 'Curtis ve este proyecto, sus tareas y lo que aprendió de vos. Puede agregar tareas, ordenar y crear carpetas en tu Drive, buscar clientes y preparar cotizaciones en Zoho. Antes de tocar Drive o Zoho te pide permiso.' }),
+      h('p', { class: 'hint', text: 'Curtis conoce este proyecto. Antes de tocar Drive o Zoho te pide permiso.' }),
       chatBox('p:' + p.id));
   }
   function abrirAjustes() { S.drawer = { kind: 'ajustes' }; renderDrawer(true); }
@@ -1949,7 +2023,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const cats = Object.entries(ajuste('plantillasCat', {}));
     return h('aside', { class: 'drawer', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Ajustes' },
       h('div', { class: 'drawer-top' }, h('b', { style: 'font-family:var(--f-head);font-size:1.4rem', text: 'Ajustes' }), h('span', { class: 'saved', id: 'saved' }), h('span', { class: 'spacer' }), h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Cerrar', onclick: closeDrawer }, icon('x'))),
-      h('p', { class: 'hint', text: 'Aquí le enseñás a Curtis cómo te gusta trabajar. Lo cambiás una vez y se usa siempre. Todo se guarda solo cuando salís de cada campo.' }),
+      h('p', { class: 'hint', text: 'Todo se guarda solo.' }),
       sec('tag', 'Etiquetas', 'Sirven para agrupar cosas que no son del mismo proyecto. Ejemplo: «Freelance», «Ilustración», «Cliente difícil». Después filtrás Mis tareas y Proyectos por etiqueta. También las creás desde cualquier tarea.', tagRows, newTag),
       sec('calendar', 'Calendarios que leo', 'Curtis lee (nunca cambia) los calendarios de tu Google. Si agregaste iCloud a Google, aparece aquí. Apagá los que no querés ver.', calendariosAjuste()),
       sec('package', 'Copia de seguridad', 'Guarda todo lo de Curtis (tareas, proyectos, reuniones, dinero, clientes) en un archivo en tu Drive, en «' + COPIAS_FOLDER + '». Si algo se pierde, con esa copia se recupera.', copiaAjuste()),
@@ -2920,7 +2994,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   }
   function catalogo() {
     const list = [...S.servicios].sort((a, b) => grupoDe(a).localeCompare(grupoDe(b)) || (a.creado || 0) - (b.creado || 0));
-    if (!list.length) return h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Tu catálogo está vacío' }), h('p', { class: 'hint', text: 'Agregá cada cosa que vendés una sola vez: nombre, precio, formato de entrega y descripción. Después armás cotizaciones en segundos, sumando servicios.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Agregar el primer servicio'));
+    if (!list.length) return h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Tu catálogo está vacío' }), h('p', { class: 'hint', text: 'Guardá cada servicio una vez y cotizá en segundos.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Agregar el primer servicio'));
     const grupos = [...new Set(list.map(grupoDe))];
     const sel = list.filter((x) => S.catSel.has(x.id));
     const selTotal = sel.reduce((s, x) => s + (Number(x.precio) || 0), 0);
@@ -2987,7 +3061,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
   }
   function listaCots() {
     const list = [...S.cotizaciones].sort((a, b) => (b.actualizado || 0) - (a.actualizado || 0));
-    if (!list.length) return h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Todavía no hay cotizaciones' }), h('p', { class: 'hint', text: 'Una cotización rápida es una suma: títulos, servicios del catálogo o libres, notas y descuentos. Curtis escribe las descripciones con el texto del proyecto.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }] }) }, icon('plus', 'sm'), 'Primera cotización'));
+    if (!list.length) return h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Todavía no hay cotizaciones' }), h('p', { class: 'hint', text: 'Una cotización es una suma de servicios.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }] }) }, icon('plus', 'sm'), 'Primera cotización'));
     return h('div', { class: 'card cot-list' }, list.map((c) => {
       const p = proyecto(c.proyecto); const est = COT_ESTADOS.find(([k]) => k === c.estado) || COT_ESTADOS[0];
       return h('button', { type: 'button', class: 'cot-row', onclick: () => abrirCot(c) },
@@ -3436,7 +3510,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
           toolbar, ed,
           h('div', { class: 'nt-foot' },
             h('button', { type: 'button', class: 'btn forest', onclick: async () => { await guardar(); await pendientesATareas(rid, limpiarHtml(ed.innerHTML)); if (!cerrado) showModal(draw(), cerrar); } }, icon('check', 'sm'), pend ? 'Pasar ' + pend + (pend === 1 ? ' pendiente' : ' pendientes') + ' a tareas' : 'Pasar pendientes a tareas'),
-            (r.adjuntos || []).length ? h('span', { class: 'hint', text: (r.adjuntos || []).length + ((r.adjuntos || []).length === 1 ? ' archivo guardado' : ' archivos guardados') + (r.carpetaNombre ? ' en «' + r.carpetaNombre + '»' : '') }) : h('span', { class: 'hint', text: 'Las imágenes y archivos se guardan en Drive, en una carpeta con el nombre y la fecha de la cita.' }),
+            (r.adjuntos || []).length ? h('span', { class: 'hint', text: (r.adjuntos || []).length + ((r.adjuntos || []).length === 1 ? ' archivo guardado' : ' archivos guardados') + (r.carpetaNombre ? ' en «' + r.carpetaNombre + '»' : '') }) : h('span', { class: 'hint', text: 'Las imágenes se guardan en Drive.' }),
             h('button', { type: 'button', class: 'btn', onclick: cerrar }, 'Listo'))));
     };
     showModal(draw(), cerrar);
@@ -3601,6 +3675,15 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         h('button', { type: 'button', class: 'btn yellow', onclick: () => facturarCot(d, 'total') }, icon('book', 'sm'), ya ? 'Facturar el saldo (' + money(t.total - ya) + ')' : 'Crear factura (' + money(t.total) + ')'),
         !ya ? h('button', { type: 'button', class: 'btn soft', onclick: () => facturarCot(d, 'anticipo') }, 'Anticipo 50% (' + money(Math.round(t.total * 50) / 100) + ')') : null) : h('p', { class: 'hint', text: '✓ Facturada completa.' }));
   }
+  function dineroPlegado(p) {
+    const m = dineroProyecto(p);
+    const d = h('details', { class: 'card pad plegado' }, h('summary', {}, h('span', { text: '💰' }), h('b', { text: 'Dinero' }), h('span', { class: 'hint', text: m.final ? money(m.cobrado) + ' de ' + money(m.final) : 'sin cobro final' })), franjaDinero(p));
+    return d;
+  }
+  function notasPlegadas(p, desc) {
+    const prim = String(p.descripcion || '').split('\n').find((l) => l.trim()) || '';
+    return h('details', { class: 'card pad plegado', open: S.notasAbiertas ? true : null, ontoggle: (ev) => { S.notasAbiertas = ev.currentTarget.open; } }, h('summary', {}, h('span', { text: '📝' }), h('b', { text: 'Notas' }), h('span', { class: 'hint', text: prim ? prim.slice(0, 60) : 'vacías' })), desc);
+  }
   function franjaDinero(p) {
     const m = dineroProyecto(p);
     const pct = m.final ? Math.min(1, m.cobrado / m.final) : 0;
@@ -3628,7 +3711,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
       h('details', { class: 'chart-table' }, h('summary', { text: 'Ver como tabla' }),
         h('table', {}, h('thead', {}, h('tr', {}, h('th', { text: 'Mes' }), h('th', { text: 'Cobrado' }), h('th', { text: 'Gastos' }), h('th', { text: 'Queda' }))),
           h('tbody', {}, meses.map((x) => h('tr', {}, h('td', { text: cap(fmtDate(x.m)) }), h('td', { text: fmtBolsa(x.i) }), h('td', { text: fmtBolsa(x.g) }), h('td', { text: money(x.i.q - x.g.q) })))))),
-      !tc() && (S.suscripciones.some((s) => s.moneda === 'US$') || S.movimientos.some((m) => m.moneda === 'US$')) ? h('p', { class: 'hint', text: 'Lo que está en dólares no entra en las barras hasta que pongás el tipo de cambio (abajo).' }) : null);
+      !tc() && (S.suscripciones.some((s) => s.moneda === 'US$') || S.movimientos.some((m) => m.moneda === 'US$')) ? h('p', { class: 'hint', text: 'Los dólares entran cuando pongás el tipo de cambio.' }) : null);
   }
   function viewResumenDinero() {
     const mes = mesActual(); const ing = ingresosDelMes(mes); const gas = gastosDelMes(mes); const pc = porCobrar();
@@ -3661,8 +3744,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         S.mcp ? h('button', { type: 'button', class: 'btn soft', disabled: S.zohoLeyendo ? true : null, onclick: leerFacturasZoho }, icon('receipt', 'sm'), S.zohoLeyendo ? 'Leyendo Zoho…' : 'Leer facturas de Zoho') : null,
         h('button', { type: 'button', class: 'btn soft', onclick: async () => { const id = await crearFactura({ concepto: 'Factura' }); if (id) setTimeout(() => abrirFactura(id), 300); } }, icon('plus', 'sm'), 'Factura sin cotización'),
         S.zohoLeido ? h('span', { class: 'hint', text: 'Leído de Zoho a las ' + new Date(S.zohoLeido).toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }) }) : null),
-      h('p', { class: 'hint', text: 'Curtis lleva el control de lo que facturás y cobrás. La factura legal (FEL de la SAT) la emitís con tu certificador; abrí cada factura y anotá su número FEL.' }),
-      list.length ? h('div', { class: 'card pad fac-list' }, list.map((f) => facRow(f, true))) : h('div', { class: 'card pad empty-state' }, icon('book', 'lg'), h('h3', { text: 'Todavía no hay facturas' }), h('p', { class: 'hint', text: 'Abrí una cotización y tocá «Crear factura». Cuando te paguen, la marcás como pagada y entra a tus números.' })),
+      h('p', { class: 'hint', text: 'La factura legal (FEL) sale de tu certificador; aquí anotás su número.' }),
+      list.length ? h('div', { class: 'card pad fac-list' }, list.map((f) => facRow(f, true))) : h('div', { class: 'card pad empty-state' }, icon('book', 'lg'), h('h3', { text: 'Todavía no hay facturas' }), h('p', { class: 'hint', text: 'Se crean desde una cotización.' })),
       sueltas.length ? h('section', { class: 'card pad' }, h('div', { class: 'sec-h', style: 'margin:0' }, h('h2', { text: 'En Zoho y no en Curtis' }), h('span', { class: 'hint', text: sueltas.length + ' facturas' })),
         h('div', { class: 'fac-list' }, sueltas.map((z) => h('div', { class: 'fac-row' }, h('span', { class: 'fac-main' }, h('b', { text: z.numero + ' · ' + z.cliente }), h('small', { text: [z.fecha ? fmtDate(z.fecha, { day: 'numeric', month: 'short' }) : '', z.estado].filter(Boolean).join(' · ') })), h('span', { class: 'pill', text: z.estado }), h('span', { class: 'cot-total', text: money(z.total) }), h('button', { type: 'button', class: 'btn soft small', onclick: () => traerFacturaZoho(z) }, 'Traer'))))) : null,
     ];
@@ -3710,12 +3793,12 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
           h('div', { class: 'fac-list' }, subs.map((s) => h('button', { type: 'button', class: 'fac-row as-btn' + (s.activa === false ? ' off' : ''), onclick: () => abrirMovimiento('sus', s.id) },
             h('span', { class: 'fac-main' }, h('b', { text: s.nombre }), h('small', { text: [s.categoria, s.frecuencia === 'anual' ? 'cada año' : 'cada mes', s.activa === false ? 'cancelada' : ''].filter(Boolean).join(' · ') })),
             h('span', { class: 'cot-total', text: fmtM(s.monto, s.moneda) }), h('span', { class: 'hint', text: s.frecuencia === 'anual' ? '≈ ' + fmtM(mensual(s), s.moneda) + '/mes' : '/mes' }))))]
-          : h('p', { class: 'hint', text: 'Anotá lo que pagás cada mes o cada año: Claude, Adobe, Canva, dominio, nube… Así sabés cuánto te cuesta trabajar.' })),
+          : h('p', { class: 'hint', text: 'Claude, Adobe, Canva, dominio…' })),
       h('section', { class: 'card pad' },
         h('div', { class: 'sec-h', style: 'margin:0' }, h('h2', {}, icon('receipt'), 'Gastos, inversiones e ingresos sueltos'), h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft small', onclick: () => abrirMovimiento('mov') }, icon('plus', 'sm'), 'Gasto'), h('button', { type: 'button', class: 'btn soft small', onclick: () => { abrirMovimiento('mov'); setTimeout(() => { const s = document.querySelector('.modal select'); if (s) { s.value = 'ingreso'; s.dispatchEvent(new Event('change')); } }, 30); } }, icon('plus', 'sm'), 'Ingreso'))),
         movs.length ? h('div', { class: 'fac-list' }, movs.map((m) => h('button', { type: 'button', class: 'fac-row as-btn', onclick: () => abrirMovimiento('mov', m.id) },
           h('span', { class: 'fac-main' }, h('b', { text: m.concepto }), h('small', { text: [fmtDate(m.fecha, { day: 'numeric', month: 'short', year: 'numeric' }), m.categoria, m.proyecto && proyecto(m.proyecto) ? proyecto(m.proyecto).nombre : ''].filter(Boolean).join(' · ') })),
-          h('span', { class: 'pill ' + (m.tipo === 'ingreso' ? 'fac-pagada' : ''), text: m.tipo === 'ingreso' ? 'Ingreso' : 'Gasto' }), h('span', { class: 'cot-total', text: (m.tipo === 'ingreso' ? '+' : '−') + fmtM(m.monto, m.moneda) })))) : h('p', { class: 'hint', text: 'Equipo, cursos, materiales, publicidad. Y si te pagan algo sin factura, anotalo como ingreso.' })),
+          h('span', { class: 'pill ' + (m.tipo === 'ingreso' ? 'fac-pagada' : ''), text: m.tipo === 'ingreso' ? 'Ingreso' : 'Gasto' }), h('span', { class: 'cot-total', text: (m.tipo === 'ingreso' ? '+' : '−') + fmtM(m.monto, m.moneda) })))) : h('p', { class: 'hint', text: 'Equipo, cursos, materiales.' })),
     ];
   }
 
@@ -3841,7 +3924,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         h('span', { class: 'ccard-ini', text: (c.nombre || '?').trim().slice(0, 1).toUpperCase() }),
         h('span', { class: 'ccard-t', text: c.nombre || 'Sin nombre' }), c.empresa || c.contacto ? h('span', { class: 'hint', text: [c.empresa, c.contacto].filter(Boolean).join(' · ') }) : null,
         h('span', { class: 'trow-m' }, h('span', { text: st.ps.length + (st.ps.length === 1 ? ' proyecto' : ' proyectos') }), st.cobrado ? h('span', { text: 'cobrado ' + money(st.cobrado) }) : null, st.pendiente ? h('span', { class: 'u soon', text: 'por cobrar ' + money(st.pendiente) }) : null, c.zohoId ? h('span', { text: '✓ Zoho' }) : null)); }))
-        : h('div', { class: 'card pad empty-state' }, icon('users', 'lg'), h('h3', { text: 'Tus clientes, en un solo lugar' }), h('p', { class: 'hint', text: 'Guardá cada cliente una vez y conectalo a sus proyectos. Así ves cuánto te ha pagado y cuánto te debe.' })),
+        : h('div', { class: 'card pad empty-state' }, icon('users', 'lg'), h('h3', { text: 'Tus clientes, en un solo lugar' }), h('p', { class: 'hint', text: 'Guardá cada cliente una vez.' })),
     ];
   }
 
@@ -3877,7 +3960,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     const lista = (key, titulo, ic) => { const t = h('textarea', { rows: '6', 'aria-label': titulo }, l[key].join('\n')); t.addEventListener('change', () => { const nl = Object.assign({}, limites(), { [key]: lines(t.value).slice(0, 20) }); S.ajustes = Object.assign({}, S.ajustes, { limites: nl }); saveAjustes({ limites: nl }); toast('Límites guardados'); }); return h('label', { class: 'field lim-col' }, h('span', {}, icon(ic, 'sm'), ' ' + titulo), t); };
     return h('section', { class: 'card pad' }, h('div', { class: 'sec-h' }, h('h2', {}, '🤝 Hasta dónde llega Curtis'), h('span', { class: 'hint', text: av ? av + (av === 1 ? ' aviso de autoría' : ' avisos de autoría') : 'Sin avisos todavía' })),
       dl.alto ? h('div', { class: 'aviso-autoria' }, h('b', { text: '⚠️ Ojo' }), h('span', { text: 'En 14 días Curtis creó ' + dl.deCurtis + ' de tus ' + dl.total + ' tareas. ¿Seguís decidiendo vos qué se hace? Revisalas y quedate con las tuyas.' })) : null,
-      h('p', { class: 'hint', text: 'Curtis es tu asistente, no el autor. Una línea por cosa; Curtis lo respeta en todos los chats y te avisa si le pedís tu parte creativa.' }),
+      h('p', { class: 'hint', text: 'Una línea por cosa. Curtis lo respeta siempre.' }),
       h('div', { class: 'two' }, lista('yo', 'Esto lo hago yo', 'edit'), lista('curtis', 'Esto me ayuda Curtis', 'sparkle')));
   }
 
@@ -3904,7 +3987,7 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
     showModal(h('div', { class: 'modal-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
       h('div', { class: 'modal wide', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Contexto del proyecto' },
         h('h3', {}, icon('book'), 'Contexto de ' + (p.nombre || 'el proyecto')),
-        h('p', { class: 'hint', text: 'Un .md corto: qué es, para quién, objetivo, decisiones y dudas. Curtis lo lee siempre y lo actualiza cuando aprende algo nuevo. «Así va» se agrega solo.' }), ta,
+        h('p', { class: 'hint', text: 'Qué es, para quién, objetivo, decisiones y dudas.' }), ta,
         h('div', { class: 'row-actions', style: 'justify-content:flex-end' }, h('button', { type: 'button', class: 'btn soft', onclick: hideModal }, 'Cancelar'),
           h('button', { type: 'button', class: 'btn forest', onclick: () => { patchProyecto(pid, { contextoMd: ta.value.trim().slice(0, 20000), contextoAnterior: p.contextoMd || '', contextoFecha: hoy() }); hideModal(); toast('Contexto guardado'); } }, 'Guardar')))), hideModal);
     ta.focus();
@@ -3981,8 +4064,8 @@ ul.checklist > li[data-done]::after { content: ""; position: absolute; left: 6px
         h('button', { type: 'button', class: 'btn soft', style: 'justify-self:start', onclick: () => { consultas.delete(p.id); redraw(); } }, 'Nueva consulta')];
     }
     const hist = (p.consultas || []).slice(-3).reverse();
-    const det = h('details', { class: 'card pad curtis-proj', id: 'curtis-proj', open: st.open || st.paso !== 'duda' ? true : null },
-      h('summary', {}, h('span', { class: 'cp-ico', text: '🧠' }), h('b', { text: 'Curtis del proyecto' }), h('span', { class: 'hint', text: p.contextoFecha ? 'contexto al ' + fmtDate(p.contextoFecha, { day: 'numeric', month: 'short' }) : 'sin contexto todavía' })),
+    const det = h('details', { class: 'card pad curtis-proj plegado', id: 'curtis-proj', open: st.open || st.paso !== 'duda' ? true : null },
+      h('summary', {}, h('span', { text: '🧠' }), h('b', { text: 'Curtis del proyecto' }), h('span', { class: 'hint', text: p.contextoFecha ? 'contexto al ' + fmtDate(p.contextoFecha, { day: 'numeric', month: 'short' }) : 'sin contexto todavía' })),
       h('div', { class: 'cp-grid' },
         h('div', { class: 'cp-col' }, h('p', { class: 'block-h' }, icon('help', 'sm'), 'Una duda, una idea o un problema'), cuerpo,
           hist.length ? h('details', { class: 'cp-hist' }, h('summary', { text: 'Consultas anteriores (' + (p.consultas || []).length + ')' }), hist.map((c) => h('div', { class: 'cp-h' }, h('small', { text: fmtDate(c.fecha, { day: 'numeric', month: 'short' }) }), h('b', { text: c.duda }), h('p', { text: c.sugerencia })))) : null),
