@@ -388,6 +388,7 @@ Un circuito = algo pasa → resultado verificable. **Antes de construir: «¿qu�
 | Contexto para NotebookLM | `docs/contexto-notebooklm.md` | Claude |
 | Prompts | `docs/prompts/` | Claude |
 | PDF final 3.0 (bases, abierto, cómo alimentar, prompts) | `docs/nAIhual-3.0-bases-finales.pdf` | Claude · se rehace con cada FIJA grande |
+| Resumen auditado 3.8 | `docs/nAIhual-3.8-resumen.pdf` | Claude |
 | Respuesta vieja de NotebookLM | `docs/fuentes/notebooklm-contexto-completo-2026-10.md` | Fuente; tiene errores (A11) |
 | Documento rector v1.1, guía v2, entrega vNext | `docs/historial/entregas-viejas/` | ❌ Reemplazados por la 3.0; solo historial |
 | Diseño | Figma: https://www.figma.com/design/K67raFNTRvhkSOAEpWtByE · https://www.figma.com/design/tw3f3T31gReovmpb5bGcxi | Fundador |
@@ -459,6 +460,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 # PARTE 5 · HISTORIAL
 
 **nAIhual 3.7 — 28-oct-2026 (CONSTRUYE · thermos):** Inicio con vida: el cielo de la portada cambia con la hora (amanecer, día, atardecer, noche con estrellas y ventanas encendidas) y saluda; «Hoy te sugiere [guía]» con una idea de su rama y «Otra idea»; todo el Inicio en widgets que se contraen; perfiles como interruptores (hasta 2). «+ Publicar» como red social, ordenado por Claude y usado por el chat al confirmarlo. Los botones del chat los contesta Claude, variando. Mapa con nombres al tocar. Directorio curado (37 activos, 167 en reserva). Toques que responden (se achican al tocar y vibran si el teléfono deja). ✅ 243/243 pruebas.
+
+**Resumen auditado 3.8 — 29-oct-2026:** `docs/nAIhual-3.8-resumen.pdf` (3 páginas: qué es, reglas, app, dónde vive cada cosa, monetización, arquitectura, decisiones pendientes y orden). Revisado contra este documento; se corrigieron 7 detalles.
 
 **nAIhual 3.8 — 29-oct-2026 (CONSTRUYE, con permiso de Diego para decidir):** 5 perfiles nuevos con su forma de recomendar; «¿Para quién es?» en lugar del semáforo, firmado y sin rojos públicos; pantalla «Curar lugares» con la reserva; «Ofrezco una experiencia» en Publicar y la invitación para locales. ✅ 259/259 pruebas.
 
