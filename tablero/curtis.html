@@ -786,6 +786,26 @@ body { line-height: 1.55; }
 .sec-h:has(.plg-btn) { justify-content: flex-start; }
 .sec-h:has(.plg-btn) > :first-child { margin-right: auto; }
 .dash .hero-greet { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+/* ===== v12: menú abajo o a la izquierda; inicio en una o dos columnas ===== */
+.vista-tg { display: flex; justify-content: flex-end; margin-bottom: -28px; }
+.vista-tg .seg button { padding: 5px 9px; }
+.dash.una { display: flex; flex-direction: column; gap: 44px; }
+.dash.una > .dash-main, .dash.una > .dash-side { display: contents; }
+.dash.una .hero { order: 1; } .dash.una .b-curtis { order: 2; } .dash.una .b-citas { order: 3; } .dash.una .b-hoy { order: 4; } .dash.una .b-ent { order: 5; }
+.dash.una .dash-side .sec-h h2 { font-size: 1.22rem; }
+.sec-h { flex-wrap: wrap; row-gap: 6px; }
+.group-h { box-sizing: border-box; min-width: 0; }
+.group { min-width: 0; }
+.sec-group-h .sec-title { width: 0; }
+.focus .quote, .focus p { max-width: 100%; overflow-wrap: anywhere; }
+.mas-pref { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px; border-top: 1px solid var(--line); margin-top: 6px; font-weight: 600; }
+@media (max-width: 919px) {
+  body.menu-izq .tabbar { top: 0; bottom: 0; right: auto; width: 68px; flex-direction: column; justify-content: flex-start; gap: 4px; padding: calc(14px + env(safe-area-inset-top, 0px)) 4px 14px max(4px, env(safe-area-inset-left, 0px)); border-top: 0; border-right: 1px solid var(--line); }
+  body.menu-izq .tab-btn { flex: 0 0 auto; min-width: 0; width: 100%; padding: 9px 2px; }
+  body.menu-izq .main { padding-left: calc(68px + 14px + env(safe-area-inset-left, 0px)); padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+  body.menu-izq .fab { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+  body.menu-izq .sel-bar, body.menu-izq .cot-sum { bottom: 16px; }
+}
 </style>
 
 <div class="app">
@@ -1291,11 +1311,16 @@ body { line-height: 1.55; }
     toast('Todo al día · ' + new Date().toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }));
   }
   const btnActualizar = () => h('button', { type: 'button', class: 'btn soft', title: 'Volver a leer proyectos, tareas y calendario', onclick: (ev) => actualizarTodo(ev.currentTarget) }, icon('refresh', 'sm'), 'Actualizar');
+  const pref = (k, d) => { try { return localStorage.getItem(k) || d; } catch (e) { return d; } };
+  const setPref = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* sin memoria */ } };
+  const aplicarMenu = () => document.body.classList.toggle('menu-izq', pref('menuPos', 'abajo') === 'izq');
+  aplicarMenu();
   function abrirMas() {
     const it = (k, l, ic, sub, fn) => h('button', { type: 'button', class: 'mas-row', onclick: () => { hideModal(); fn ? fn() : go(k); } }, icon(ic, 'lg'), h('span', {}, h('b', { text: l }), h('small', { text: sub })));
     showModal(h('div', { class: 'modal-bg mas-bg', onclick: (ev) => { if (ev.target === ev.currentTarget) hideModal(); } },
       h('div', { class: 'modal mas', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Más' },
-        it('registro', 'Registro', 'book', 'Reuniones, metas y bitácoras'), it('foco', 'Foco', 'timer', 'Reloj para una sola tarea'), it('curtis', 'Curtis', 'brain', 'Chat, lo que sabe de vos y la guía'), it('', 'Ajustes', 'sliders', 'Calendarios, copia de seguridad, plantillas', abrirAjustes))), hideModal);
+        it('registro', 'Registro', 'book', 'Reuniones, metas y bitácoras'), it('foco', 'Foco', 'timer', 'Reloj para una sola tarea'), it('curtis', 'Curtis', 'brain', 'Chat, lo que sabe de vos y la guía'), it('', 'Ajustes', 'sliders', 'Calendarios, copia de seguridad, plantillas', abrirAjustes),
+        h('div', { class: 'mas-pref' }, h('span', { text: 'Menú' }), h('div', { class: 'seg', role: 'group', 'aria-label': 'Dónde va el menú' }, [['abajo', 'Abajo'], ['izq', 'A la izquierda']].map(([k, l]) => h('button', { type: 'button', 'aria-pressed': String(pref('menuPos', 'abajo') === k), onclick: () => { setPref('menuPos', k); aplicarMenu(); hideModal(); abrirMas(); } }, l)))))), hideModal);
   }
   function typingIn(rootSel) { const a = document.activeElement; return a && a.closest && a.closest(rootSel) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName); }
   function renderMain(force) {
@@ -1311,7 +1336,7 @@ body { line-height: 1.55; }
     else if (v === 'foco') content = viewFoco();
     else if (v === 'curtis') content = viewCurtis();
     else content = viewInicio();
-    $('#main').classList.toggle('ancho', v === 'inicio');
+    $('#main').classList.toggle('ancho', v === 'inicio' && pref('inicioCols', '1') === '2');
     put($('#main'), content);
     hacerPlegables();
   }
@@ -1532,17 +1557,19 @@ body { line-height: 1.55; }
     const citas = gcalDel(hoy());
     const manana = gcalDel(addDays(hoy(), 1));
     const entregas = proyActivos().filter((x) => isDay(x.entrega)).sort((x, y) => x.entrega.localeCompare(y.entrega)).slice(0, 4);
-    return [h('div', { class: 'dash' },
+    const dosCols = pref('inicioCols', '1') === '2';
+    const vistaTg = h('div', { class: 'vista-tg' }, h('div', { class: 'seg small', role: 'group', 'aria-label': 'Diagramación del inicio' }, [['1', 'list', 'Una columna'], ['2', 'board', 'Dos columnas']].map(([k, ic, l]) => h('button', { type: 'button', title: l, 'aria-label': l, 'aria-pressed': String((dosCols ? '2' : '1') === k), onclick: () => { setPref('inicioCols', k); renderMain(true); } }, icon(ic, 'sm')))));
+    return [vistaTg, h('div', { class: 'dash' + (dosCols ? '' : ' una') },
       h('div', { class: 'dash-main' },
         hero,
-        h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Hoy' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('tareas') }, 'Ver todas')),
+        h('section', { class: 'b-hoy' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Hoy' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('tareas') }, 'Ver todas')),
           h('ul', { class: 'rows' }, filasAnidadas(hoyList.slice(0, 9), { showProj: true }), addRow('Agregar tarea para hoy', { fecha: hoy() })))),
       h('div', { class: 'dash-side' },
-        askBar ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Curtis' })), askBar) : null,
-        h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Citas de hoy' }), gcalEstado()),
+        askBar ? h('section', { class: 'b-curtis' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Curtis' })), askBar) : null,
+        h('section', { class: 'b-citas' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Citas de hoy' }), gcalEstado()),
           citas.length ? h('div', { class: 'card pad', style: 'padding-block:6px' }, citas.map(meetRow))
             : h('p', { class: 'empty card', text: S.gcal.ok ? 'Hoy no tenés citas.' + (manana.length ? ' Mañana: ' + manana.map((e) => evHora(e) + ' ' + e.titulo).join(' · ') + '.' : '') : S.gcal.err || 'Conectá Google Calendar para ver tus citas aquí.' })),
-        entregas.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Próximas entregas' })),
+        entregas.length ? h('section', { class: 'b-ent' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Próximas entregas' })),
           h('div', { class: 'card ent-list' }, entregas.map((x) => h('button', { type: 'button', class: 'ent-row', style: '--pc:' + colorDe(x), onclick: () => go('proyecto', x.id) }, h('span', { class: 'mono-e', text: x.icono || '📁' }), h('span', { class: 'ent-t', text: x.nombre || 'Sin nombre' }), urgPill(x.entrega, ''))))) : null))];
   }
   function aiSummary() {

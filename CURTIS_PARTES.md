@@ -1,6 +1,6 @@
 # CURTIS — resumen del proyecto
 
-> Actualizado: 2026-10-30 · versión 11
+> Actualizado: 2026-10-30 · versión 12
 > Panel: https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW (privado, solo vos lo abrís y lo editás)
 > Archivo: `tablero/curtis.html` · Datos y conexiones: `TABLERO_TRASPASO.md` · Personalidad: `CURTIS_PERSONALIDAD.md`
 >
@@ -284,3 +284,10 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
     - Proyectos nuevos: «CV y LinkedIn» (en Mi estudio) y «NAIHUAL» (fuera del área, en pausa).
     - «Orden del disco duro» no se creó como proyecto: ya es una tarea de Curaduría.
   - Pruebas: 146/146 + 31/31.
+- 2026-10-30 · Pedido: poder elegir si el menú va abajo o a la izquierda (abajo no te gusta, pero a veces sirve); la diagramación en dos columnas no te gustó.
+- 2026-10-30 · **v12**:
+  - Menú abajo o a la izquierda: se elige en «Más» → «Menú» y aplica en celular y pantallas medianas. En la compu el menú ya está a la izquierda.
+  - El Inicio vuelve a una columna por defecto, en este orden: Resumen, Curtis, Citas de hoy, Hoy y Próximas entregas. Arriba a la derecha hay un selector para cambiar a dos columnas.
+  - Las dos preferencias se recuerdan en cada equipo.
+  - Arreglado: los títulos de las secciones de un proyecto se salían de la pantalla en pantallas angostas.
+  - Pruebas: 149/149 + 31/31.
