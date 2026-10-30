@@ -1,6 +1,6 @@
 # Curtis — traspaso
 
-> Actualizado: 2026-10-29 · versión 10. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
+> Actualizado: 2026-10-30 · versión 11. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
 
 ## Qué existe
 - **Panel:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
@@ -63,3 +63,4 @@
 - v8: simplificación (Inicio de 4 bloques, 5 pestañas en el celular, una sola forma de pasos y de cotizar), todos los calendarios de Google incluido iCloud, copia de seguridad en Drive, número FEL en facturas.
 - v9: Curtis del proyecto (cuestionario y contexto .md), Curtis en Inicio, límites de autoría, área «Mi estudio», más colores y emojis, botón Actualizar.
 - v10: diseño calmado (más aire, menos texto, secciones plegadas en el proyecto) y sitio web conectado al proyecto «Página web» (Wix «diegosamgt», id 8f33cf41-5d4e-4aa2-935b-9e8314b0b422).
+- v11: Inicio en dos columnas, secciones plegables (se guardan en localStorage «plegados»), íconos de un color, contenido de «Mi estudio» cargado en el panel.

@@ -750,6 +750,42 @@ body { line-height: 1.55; }
 @media (max-width: 560px) { .main-in { gap: 32px; } .pad { padding: 16px; } .hero { padding: 18px; } }
 @media (hover: hover) { .p-cover-tools { opacity: 0; transition: opacity .2s ease; } .p-cover:hover .p-cover-tools, .p-cover:focus-within .p-cover-tools { opacity: 1; } }
 @media (hover: none) { .p-cover-tools .swatch { width: 18px; height: 18px; } }
+/* ===== v11: dos columnas, todo plegable, íconos de un color ===== */
+.main-in.ancho { max-width: 76rem; }
+.dash { display: grid; gap: 32px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+.dash-main, .dash-side { display: grid; gap: 32px; min-width: 0; align-content: start; }
+@media (min-width: 1100px) { .dash { grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 1fr); gap: 36px; } .dash-side { position: sticky; top: 24px; } }
+.dash-side .sec-h h2 { font-size: 1.08rem; }
+.dash-side .ask-bar input { box-shadow: var(--shadow); }
+.ent-list { display: grid; padding: 4px 10px; }
+.ent-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; border: 0; background: none; text-align: left; padding: 11px 6px; border-bottom: 1px solid var(--line); color: var(--ink); cursor: pointer; border-radius: 10px; }
+.ent-row:last-child { border-bottom: 0; }
+.ent-row:hover { background: var(--surface-2); }
+.ent-t { font-weight: 550; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sec-h, .sec-group-h { position: relative; }
+.plg-btn { width: 28px; height: 28px; margin-left: 4px; flex: none; opacity: .55; }
+.plg-btn:hover { opacity: 1; }
+.plg-btn .ic { transition: transform .2s ease; }
+.plegada > .sec-h .plg-btn .ic, .plegada > .sec-group-h .plg-btn .ic { transform: rotate(-90deg); }
+.plegada > :not(.sec-h):not(.sec-group-h) { display: none !important; }
+.plegada { opacity: .85; }
+.card.plegada { padding-bottom: 14px; padding-top: 14px; }
+.sec-h > .plg-btn:first-child { margin-left: auto; }
+.pcard-emoji, .p-emoji, .nav-emoji, .acard-e, .mono-e { color: transparent !important; text-shadow: 0 0 0 var(--pc, var(--ink)); }
+.acard-e { text-shadow: 0 0 0 var(--ac, var(--ink)); }
+.mono-e { font-size: 1.15rem; text-align: center; }
+.pcard-emoji { font-size: 1.9rem; }
+.pcard-t { font-size: 1.36rem; font-weight: 600; letter-spacing: -.01em; }
+.p-title { font-size: clamp(2.1rem, 5vw, 2.8rem); }
+.acard-t { font-size: 1.45rem; }
+.dash-side .meet { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "h b" "t b"; row-gap: 2px; }
+.dash-side .meet-h { grid-area: h; }
+.dash-side .meet-t { grid-area: t; overflow-wrap: normal; }
+.dash-side .meet > :last-child { grid-area: b; }
+.dash-side .meet .icon-btn[aria-label="Abrir en Google Calendar"] { display: none; }
+.sec-h:has(.plg-btn) { justify-content: flex-start; }
+.sec-h:has(.plg-btn) > :first-child { margin-right: auto; }
+.dash .hero-greet { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
 </style>
 
 <div class="app">
@@ -1275,7 +1311,25 @@ body { line-height: 1.55; }
     else if (v === 'foco') content = viewFoco();
     else if (v === 'curtis') content = viewCurtis();
     else content = viewInicio();
+    $('#main').classList.toggle('ancho', v === 'inicio');
     put($('#main'), content);
+    hacerPlegables();
+  }
+  // cualquier sección con título se puede plegar (se recuerda en este equipo)
+  let plegados = new Set();
+  try { plegados = new Set(JSON.parse(localStorage.getItem('plegados') || '[]')); } catch (e) { /* sin memoria */ }
+  function hacerPlegables() {
+    const root = $('#main');
+    root.querySelectorAll('section > .sec-h:first-child, .card > .sec-h:first-child, .group > .sec-group-h:first-child').forEach((hd) => {
+      const box = hd.parentElement;
+      if (box.closest('.plegado, .money-strip, details, .modal') || hd.querySelector('.plg-btn')) return;
+      const t = hd.querySelector('h2, .sec-title'); const nombre = t ? (t.value || t.textContent || '').trim() : '';
+      if (!nombre) return;
+      const key = (S.view === 'proyecto' ? 'p:' + S.proyectoId : S.view === 'area' ? 'a:' + S.areaId : S.view) + ':' + nombre.slice(0, 40);
+      const aplicar = () => { const pl = plegados.has(key); box.classList.toggle('plegada', pl); btn.setAttribute('aria-expanded', String(!pl)); btn.setAttribute('aria-label', (pl ? 'Mostrar ' : 'Plegar ') + nombre); };
+      const btn = h('button', { type: 'button', class: 'icon-btn plg-btn', title: 'Plegar o mostrar', onclick: (ev) => { ev.stopPropagation(); if (plegados.has(key)) plegados.delete(key); else plegados.add(key); try { localStorage.setItem('plegados', JSON.stringify([...plegados].slice(-300))); } catch (e) { /* sin memoria */ } aplicar(); } }, icon('chev', 'sm'));
+      hd.append(btn); aplicar();
+    });
   }
   document.addEventListener('focusout', () => setTimeout(() => {
     if (S.pendingMain && !typingIn('#main')) renderMain();
@@ -1477,15 +1531,19 @@ body { line-height: 1.55; }
     })() : null;
     const citas = gcalDel(hoy());
     const manana = gcalDel(addDays(hoy(), 1));
-    return [
-      hero,
-      askBar,
-      h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Citas de hoy' }), gcalEstado()),
-        citas.length ? h('div', { class: 'card pad', style: 'padding-block:6px' }, citas.map(meetRow))
-          : h('p', { class: 'empty card', text: S.gcal.ok ? 'Hoy no tenés citas.' + (manana.length ? ' Mañana: ' + manana.map((e) => evHora(e) + ' ' + e.titulo).join(' · ') + '.' : '') : S.gcal.err || 'Conectá Google Calendar para ver tus citas aquí.' })),
-      h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Hoy' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('tareas') }, 'Ver todas')),
-        h('ul', { class: 'rows' }, filasAnidadas(hoyList.slice(0, 9), { showProj: true }), addRow('Agregar tarea para hoy', { fecha: hoy() }))),
-    ];
+    const entregas = proyActivos().filter((x) => isDay(x.entrega)).sort((x, y) => x.entrega.localeCompare(y.entrega)).slice(0, 4);
+    return [h('div', { class: 'dash' },
+      h('div', { class: 'dash-main' },
+        hero,
+        h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Hoy' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('tareas') }, 'Ver todas')),
+          h('ul', { class: 'rows' }, filasAnidadas(hoyList.slice(0, 9), { showProj: true }), addRow('Agregar tarea para hoy', { fecha: hoy() })))),
+      h('div', { class: 'dash-side' },
+        askBar ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Curtis' })), askBar) : null,
+        h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Citas de hoy' }), gcalEstado()),
+          citas.length ? h('div', { class: 'card pad', style: 'padding-block:6px' }, citas.map(meetRow))
+            : h('p', { class: 'empty card', text: S.gcal.ok ? 'Hoy no tenés citas.' + (manana.length ? ' Mañana: ' + manana.map((e) => evHora(e) + ' ' + e.titulo).join(' · ') + '.' : '') : S.gcal.err || 'Conectá Google Calendar para ver tus citas aquí.' })),
+        entregas.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Próximas entregas' })),
+          h('div', { class: 'card ent-list' }, entregas.map((x) => h('button', { type: 'button', class: 'ent-row', style: '--pc:' + colorDe(x), onclick: () => go('proyecto', x.id) }, h('span', { class: 'mono-e', text: x.icono || '📁' }), h('span', { class: 'ent-t', text: x.nombre || 'Sin nombre' }), urgPill(x.entrega, ''))))) : null))];
   }
   function aiSummary() {
     if (!S.sample || S.sampleOff) return null;
@@ -1670,7 +1728,7 @@ body { line-height: 1.55; }
       h('summary', {}, h('span', { text: '📎' }), h('b', { text: 'Archivos' }), h('span', { class: 'hint', text: archs.length ? String(archs.length) : 'subí aquí' })),
       zonaSubir(() => p.id, folderIdFrom(p) ? 'Arrastrá aquí: van a la carpeta del proyecto en Drive' : 'Arrastrá aquí tus archivos'),
       archs.length ? h('div', { class: 'arch-list' }, archs.map((a) => archivoRow(a, false))) : null);
-    const emojiBtn = h('button', { type: 'button', class: 'p-emoji', 'aria-label': 'Cambiar ícono', onclick: () => { S.emojiOpen = !S.emojiOpen; renderMain(true); } }, p.icono || '📁');
+    const emojiBtn = h('button', { type: 'button', class: 'p-emoji', style: '--pc:' + colorDe(p), 'aria-label': 'Cambiar ícono', onclick: () => { S.emojiOpen = !S.emojiOpen; renderMain(true); } }, p.icono || '📁');
     const tools = h('div', { class: 'tools-row' },
       /^https:\/\//.test(p.sitioUrl || '') ? h('a', { class: 'web-link', href: p.sitioUrl, target: '_blank', rel: 'noopener' }, '🌐 Abrir el sitio') : null,
       p.estado !== 'terminado' ? h('button', { type: 'button', class: 'btn yellow', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Entregar proyecto') : h('button', { type: 'button', class: 'btn soft', onclick: () => abrirEntrega(p.id) }, icon('package', 'sm'), 'Volver a entregar'),
@@ -3852,7 +3910,7 @@ body { line-height: 1.55; }
       h('div', {}, h('div', { class: 'p-cover area-cover', style: 'background:linear-gradient(120deg,' + colorVar(a.color) + ', color-mix(in srgb,' + colorVar(a.color) + ' 30%, var(--surface)))' },
         h('span', { class: 'area-tag', text: 'Área' }),
         h('div', { class: 'p-cover-tools' }, COLORES.map((c) => h('button', { type: 'button', class: 'swatch', style: 'background:' + colorVar(c), 'aria-label': 'Color ' + c, 'aria-pressed': String(a.color === c), onclick: () => patchArea(a.id, { color: c }) })))),
-        h('div', { class: 'p-head' }, h('button', { type: 'button', class: 'p-emoji', 'aria-label': 'Cambiar ícono', onclick: () => { S.emojiOpen = !S.emojiOpen; renderMain(true); } }, a.icono || '🗂️'),
+        h('div', { class: 'p-head' }, h('button', { type: 'button', class: 'p-emoji', style: '--pc:' + colorVar(a.color), 'aria-label': 'Cambiar ícono', onclick: () => { S.emojiOpen = !S.emojiOpen; renderMain(true); } }, a.icono || '🗂️'),
           S.emojiOpen ? h('div', { class: 'emoji-grid' }, EMOJIS.map((e) => h('button', { type: 'button', 'aria-label': 'Ícono ' + e, onclick: () => { S.emojiOpen = false; patchArea(a.id, { icono: e }); } }, e))) : null, title)),
       h('div', { class: 'kpis' }, kpi('Proyectos activos', String(act.length), fin.length ? fin.length + ' entregados' : ''), kpi('Pendientes', String(pendientesOrden().filter((t) => ps.some((p) => p.id === t.proyecto)).length), 'en todos sus proyectos'), kpi('Cobro total', money(dinero.final), 'cobrado ' + money(dinero.cobrado)), kpi('Falta cobrar', money(dinero.falta), '')),
       h('div', { class: 'props card pad' }, h('label', { class: 'prop' }, h('span', {}, icon('users', 'sm'), 'Cliente'), cliIn), h('datalist', { id: 'cli-list-a' }, S.clientes.map((c) => h('option', { value: c.nombre })))),

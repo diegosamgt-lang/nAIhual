@@ -1,6 +1,6 @@
 # CURTIS — resumen del proyecto
 
-> Actualizado: 2026-10-29 · versión 10
+> Actualizado: 2026-10-30 · versión 11
 > Panel: https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW (privado, solo vos lo abrís y lo editás)
 > Archivo: `tablero/curtis.html` · Datos y conexiones: `TABLERO_TRASPASO.md` · Personalidad: `CURTIS_PERSONALIDAD.md`
 >
@@ -271,3 +271,16 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
   - Tu sitio: leído desde tu Wix (solo lectura). Es «diegosamgt», publicado, con plan gratis, en español y con contacto hello@diegosam.com. El proyecto «Página web» tiene el link «🌐 Abrir el sitio» y su contexto con esos datos y «Lo que va a entrar: NAIHUAL».
   - Pruebas: 142/142 + 31/31.
 - 2026-10-29 · Zoho conectado a «CREATIF» `877643427` (Zoho Invoice). Verificado antes de cambiar: existe, sos admin, y lee tus clientes y facturas reales. Se dejó de usar `914134862` (Books, prueba vencida).
+- 2026-10-30 · Pedido: cargar el paquete de «Mi estudio» que armaste en otro chat; que todas las ventanas se puedan plegar; ordenar mejor el Inicio jugando con tamaños; títulos de proyectos más grandes e íconos de un solo color.
+- 2026-10-30 · **v11**:
+  - Inicio en dos columnas en pantallas grandes: a la izquierda Resumen y Hoy; a la derecha Curtis, Citas de hoy y Próximas entregas (nuevo).
+  - Toda sección con título se pliega con su flechita y se recuerda en ese equipo.
+  - Íconos de proyectos y áreas en un solo color: el de su etiqueta o el del proyecto.
+  - Títulos de proyectos más grandes.
+  - Datos cargados:
+    - «Mi estudio» con su descripción nueva.
+    - Página web (sitio www.disartstudio.com), Portafolio y Curaduría, cada uno con su contexto .md y la etiqueta «Disart».
+    - 21 tareas sin fecha en su sección. Las 7 creativas llevan la etiqueta «Es mío».
+    - Proyectos nuevos: «CV y LinkedIn» (en Mi estudio) y «NAIHUAL» (fuera del área, en pausa).
+    - «Orden del disco duro» no se creó como proyecto: ya es una tarea de Curaduría.
+  - Pruebas: 146/146 + 31/31.
