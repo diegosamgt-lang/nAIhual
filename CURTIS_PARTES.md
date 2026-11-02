@@ -1,6 +1,6 @@
 # CURTIS — resumen del proyecto
 
-> Actualizado: 2026-10-30 · versión 12
+> Actualizado: 2026-11-02 · versión 13
 > Panel: https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW (privado, solo vos lo abrís y lo editás)
 > Archivo: `tablero/curtis.html` · Datos y conexiones: `TABLERO_TRASPASO.md` · Personalidad: `CURTIS_PERSONALIDAD.md`
 >
@@ -291,3 +291,23 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
   - Las dos preferencias se recuerdan en cada equipo.
   - Arreglado: los títulos de las secciones de un proyecto se salían de la pantalla en pantallas angostas.
   - Pruebas: 149/149 + 31/31.
+- 2026-11-02 · Tu evaluación del chat de Curtis (cotización de Nico/INVESA):
+  - Poca comprensión lectora y poca memoria.
+  - Redacción poco confiable.
+  - Decía que no podía hacer cotizaciones cuando sí puede.
+  - Le daba vueltas y repetía.
+  - Humor soso y raro.
+  - El cuadro de texto quedaba abajo y no se podía agrandar.
+  - Inicio desordenado: querías widgets estilo Apple (chico, mediano, grande) que se puedan mover.
+- 2026-11-02 · **v13**:
+  - Personalidad de Curtis en el chat: clara, directa y profesional, sin chistes, metáforas, frases célebres ni emojis.
+  - Curtis lee toda la conversación antes de responder y no repite preguntas ya contestadas. Si lo corregís, lo acepta en una línea. Separa quién hace y quién cobra qué cuando hay terceros. Pregunta solo lo imprescindible. Cierra con «siguiente paso» solo si aporta.
+  - Memoria del chat: 60 mensajes (antes 30). Lo que recuerda de vos: 40 notas (antes 20).
+  - El chat y el cuestionario usan un modelo de Claude más capaz.
+  - Herramientas nuevas en todos los chats: crear_cotizacion (crea la cotización en Curtis) y crear_cotizacion_zoho (borrador en Zoho; busca al cliente por nombre). Las herramientas van ordenadas por importancia para que no se corten las de cotizar.
+  - El chat general quedó arriba en la página Curtis. El cuadro de texto es más grande y se estira hasta 60% de la pantalla.
+  - Inicio con widgets:
+    - Tres tamaños: chico (S), mediano (M) y grande (L).
+    - 9 disponibles: Resumen, Ahora, Hoy, Citas, Curtis, Entregas, Dinero, Aviso y Frase.
+    - «Editar inicio»: arrastrar para mover (o flechas), cambiar tamaño, quitar, agregar y «Volver al original». Se recuerda en cada equipo.
+  - Pruebas: 157/157 + 31/31.

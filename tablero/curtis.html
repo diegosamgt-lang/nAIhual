@@ -806,6 +806,68 @@ body { line-height: 1.55; }
   body.menu-izq .fab { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
   body.menu-izq .sel-bar, body.menu-izq .cot-sum { bottom: 16px; }
 }
+.ask-row textarea { min-height: 4.6rem; max-height: 60vh; resize: vertical; line-height: 1.5; font-size: .95rem; }
+.msgs { max-height: 55vh; }
+.msg { line-height: 1.5; }
+/* ===== v13: inicio con widgets ===== */
+.ini-bar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: -26px; }
+.ini-bar .hint { margin-right: auto; }
+.wgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-flow: dense; gap: 18px; }
+@media (max-width: 760px) { .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+.wg { background: var(--surface); border-radius: 22px; box-shadow: var(--shadow); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; overflow: hidden; position: relative; }
+.wg-s { grid-column: span 1; height: 190px; }
+.wg-m { grid-column: span 2; height: 190px; }
+.wg-l { grid-column: 1 / -1; }
+@media (max-width: 760px) { .wg-s { height: 165px; padding: 14px; } .wg-m { height: auto; min-height: 165px; } }
+.wg-h { display: flex; align-items: center; gap: 7px; font-size: .8rem; font-weight: 600; color: var(--muted); min-width: 0; }
+.wg-t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wg-h .gcal-chip { margin-left: auto; }
+.wg-go { margin-left: auto; width: 26px; height: 26px; }
+.wg-h .gcal-chip + .wg-go { margin-left: 4px; }
+.wg-b { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+.wg-l .wg-b { overflow: visible; }
+.w-center { display: grid; place-items: center; gap: 6px; height: 100%; text-align: center; }
+.w-btn { border: 0; background: none; cursor: pointer; color: var(--ink); font-weight: 600; }
+.w-sub { margin: 0; font-size: .8rem; color: var(--muted); }
+.w-resumen { display: flex; justify-content: space-between; gap: 16px; align-items: center; height: 100%; }
+.w-res-txt { display: grid; gap: 4px; min-width: 0; }
+.wg .hero-greet { font-size: clamp(1.35rem, 2.4vw, 1.8rem); }
+.wg-l .hero-greet { font-size: clamp(1.8rem, 3.4vw, 2.4rem); }
+.wg .hero-date { margin: 0; font-size: .86rem; color: var(--muted); font-weight: 600; }
+.wg .hero-line { margin: 6px 0 0; }
+.wg .quote { font-size: .9rem; margin: 6px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.wg .ring-box { width: 92px; height: 92px; flex: none; }
+.wg .ring-txt b { font-size: 1.4rem; }
+.w-ahora { display: flex; flex-direction: column; gap: 10px; height: 100%; justify-content: space-between; }
+.w-titulo { border: 0; background: none; padding: 0; text-align: left; font-family: var(--f-head); font-weight: 600; font-size: 1.2rem; line-height: 1.2; color: var(--ink); cursor: pointer; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.wg-l .w-titulo { font-size: 1.45rem; }
+.w-num { display: grid; gap: 4px; align-content: center; height: 100%; }
+.w-num b { font-family: var(--f-head); font-size: 2.3rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.wg-dinero .w-num b { font-size: 1.6rem; }
+.w-num span { color: var(--muted); font-size: .84rem; }
+.w-num .u { justify-self: start; }
+.w-mini { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.w-mini li { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 4px 0; }
+.w-link { border: 0; background: none; padding: 0; text-align: left; color: var(--ink); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; min-width: 0; }
+.w-cita { display: grid; gap: 4px; align-content: center; justify-items: start; height: 100%; text-align: left; }
+.w-cita b { font-size: 1.05rem; } .w-cita small { color: var(--muted); }
+.w-empty { color: var(--muted); font-size: .9rem; margin: 0; }
+.w-curtis { display: grid; gap: 10px; }
+.w-curtis .ask-bar { grid-template-columns: minmax(0, 1fr) auto; }
+.w-ult { margin: 0; font-size: .9rem; color: var(--muted); white-space: pre-wrap; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+.w-ks { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 12px; align-content: center; height: 100%; }
+.w-k { display: grid; gap: 2px; } .w-k span { font-size: .78rem; color: var(--muted); } .w-k b { font-family: var(--f-head); font-size: 1.35rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.wg .nudge { font-size: .86rem; }
+.wg-s .nudge { padding: 10px; font-size: .82rem; }
+.w-frase { font-size: 1.05rem !important; -webkit-line-clamp: 5 !important; }
+.wg .ent-list { padding: 0; } .wg .rows { box-shadow: none; padding: 0; border: 0; }
+.wgrid.editando .wg { outline: 2px dashed color-mix(in srgb, var(--ink) 25%, transparent); cursor: grab; }
+@keyframes tiembla { from { transform: rotate(-.3deg); } to { transform: rotate(.3deg); } }
+@media (prefers-reduced-motion: reduce) { .wgrid.editando .wg { animation: none; } }
+.wg.arrastrando { opacity: .4; } .wg.sobre { outline-color: var(--forest); }
+.wg-ctl { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; gap: 4px; align-items: center; justify-content: flex-end; flex-wrap: wrap; background: color-mix(in srgb, var(--surface) 94%, transparent); border-radius: 12px; padding: 4px; box-shadow: var(--shadow); }
+.w-add { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.w-cal { margin-left: auto; color: var(--muted); font-size: .74rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40%; }
 </style>
 
 <div class="app">
@@ -838,7 +900,7 @@ body { line-height: 1.55; }
   const ZOHO_ORG = '877643427'; // «CREATIF» (Zoho Invoice). La de Books (914134862) tenía la prueba vencida.
   const FOLDER = 'application/vnd.google-apps.folder';
   const MAX_FILE = 16 * 1024 * 1024;
-  const MAX_CHAT = 30;
+  const MAX_CHAT = 60;
   const SUG_T = ['¿Por dónde empiezo?', 'Partila en pasos chicos', 'Dame feedback de cómo voy'];
   const SUG_P = ['Ordená este proyecto en tareas', '¿Cuánto debería cobrar por esto?', 'Armá las carpetas de trabajo en Drive'];
   const SUG_C = ['¿Cómo voy esta semana?', 'Revisemos mi LinkedIn', 'Ayudame a ordenar mi Drive de la NIHR', '¿Qué errores repito?'];
@@ -1336,7 +1398,7 @@ body { line-height: 1.55; }
     else if (v === 'foco') content = viewFoco();
     else if (v === 'curtis') content = viewCurtis();
     else content = viewInicio();
-    $('#main').classList.toggle('ancho', v === 'inicio' && pref('inicioCols', '1') === '2');
+    $('#main').classList.toggle('ancho', v === 'inicio');
     put($('#main'), content);
     hacerPlegables();
   }
@@ -1520,57 +1582,115 @@ body { line-height: 1.55; }
     return svg;
   }
   function fraseHoy() { return S.frase && S.frase.fecha === hoy() ? S.frase.texto : FRASES[dayOfYear() % FRASES.length]; }
-  function viewInicio() {
-    const hr = new Date().getHours();
-    const saludo = hr < 5 ? '¿Qué onda, desvelado?' : hr < 12 ? '¡Qué onda!' : hr < 19 ? '¿Qué onda, cómo va?' : '¿Qué onda? Ya casi';
-    const { pend, hechas, antes } = hoyStats();
-    const total = pend.length + hechas.length;
-    const now = pendientesOrden()[0];
-    const loading = !(S.loadedItems && S.loadedProy);
-    const st = S.asking.get('frase');
-    const hero = h('section', { class: 'hero', id: 'resumen', 'aria-label': 'Resumen del día' }, topo(),
-      h('div', { class: 'hero-top' },
-        h('div', { class: 'frame' }, h('div', { class: 'hero-brand' }, logo(34), h('div', {}, h('p', { class: 'wordmark', text: 'Curtis' }), tagline())), h('p', { class: 'hero-greet', text: saludo }),
-          h('p', { class: 'hero-date' }, icon(hr >= 6 && hr < 19 ? 'sun' : 'moon', 'sm'), cap(new Date().toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))),
-          h('p', { class: 'hero-line', text: loading ? 'Abriendo tu registro…' : resumenLocal() })),
-        ring(total ? hechas.length / total : 0, total ? hechas.length + '/' + total : '0', 'hoy')),
-      h('p', { class: 'quote fade', id: 'frase' }, icon('quote'), h('span', { text: st && st.text ? st.text : fraseHoy() })),
-      loading ? null : (() => { const inv = invitaciones(); return inv.length ? h('div', { class: 'nudges' }, inv.slice(0, 1).map((n) => h('button', { type: 'button', class: 'nudge', onclick: n.go }, icon(n.icon), n.text, icon('right', 'sm go')))) : null; })(),
-      now ? h('div', { class: 'now-strip', id: 'ahora' },
-        h('span', { class: 'now-label' }, icon('arrow', 'sm'), 'Ahora'),
-        h('p', { class: 'now-title', text: now.titulo || 'Sin título' }),
-        h('div', { class: 'now-meta' }, taskMeta(now, true)),
-        h('div', { class: 'row-actions' },
-          h('button', { type: 'button', class: 'btn forest', onclick: () => { if (now.estado !== 'en proceso') patchItem(now.id, { estado: 'en proceso' }); S.foco.taskId = now.id; go('foco'); } }, icon('play', 'sm'), 'Empezar foco'),
-          h('button', { type: 'button', class: 'btn ok', onclick: (ev) => setEstado(now.id, 'listo', ev) }, icon('check', 'sm'), 'Listo'),
-          h('button', { type: 'button', class: 'btn soft', onclick: () => { patchItem(now.id, { estado: 'esperando' }); openItem(now.id, 'con_quien'); } }, icon('pause', 'sm'), 'Me trabé'),
-          h('button', { type: 'button', class: 'btn soft', onclick: () => openItem(now.id, 'ask') }, icon('sparkle', 'sm'), 'Preguntarle a Curtis')))
-        : (loading ? null : h('div', { class: 'now-strip' }, h('span', { class: 'now-label' }, icon('arrow', 'sm'), 'Ahora'), h('p', { class: 'muted', style: 'margin:0', text: 'Nada pendiente. Tocá + para anotar lo próximo.' }))),
-    );
-    const hoyList = [...antes, ...pend.filter((x) => x.fecha === hoy())];
-    const askBar = S.sample && !S.sampleOff ? (() => {
+  // ================= INICIO CON WIDGETS (chico, mediano, grande; se mueven) =================
+  const W_TAM = { s: 'Chico', m: 'Mediano', l: 'Grande' };
+  const W_BASE = [{ id: 'resumen', t: 'm' }, { id: 'citas', t: 'm' }, { id: 'ahora', t: 'l' }, { id: 'aviso', t: 's' }, { id: 'dinero', t: 's' }, { id: 'curtis', t: 'm' }, { id: 'hoy', t: 'l' }, { id: 'entregas', t: 'm' }];
+  function layoutInicio() {
+    try { const l = JSON.parse(localStorage.getItem('widgets') || 'null'); if (Array.isArray(l) && l.length) return l.filter((w) => WIDGETS[w.id] && W_TAM[w.t]); } catch (e) { /* sin memoria */ }
+    return W_BASE.map((w) => Object.assign({}, w));
+  }
+  function guardarLayout(l) { try { localStorage.setItem('widgets', JSON.stringify(l)); } catch (e) { /* sin memoria */ } renderMain(true); }
+  const WIDGETS = {
+    resumen: { titulo: 'Resumen', icon: 'sun', render: (t) => {
+      const hr = new Date().getHours();
+      const saludo = hr < 5 ? '¿Qué onda, desvelado?' : hr < 12 ? '¡Qué onda!' : hr < 19 ? '¿Qué onda, cómo va?' : '¿Qué onda? Ya casi';
+      const { pend, hechas } = hoyStats(); const total = pend.length + hechas.length;
+      const anillo = ring(total ? hechas.length / total : 0, total ? hechas.length + '/' + total : '0', 'hoy');
+      const fecha = cap(new Date().toLocaleDateString('es-GT', t === 'l' ? { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' } : { weekday: 'long', day: 'numeric', month: 'long' }));
+      const loading = !(S.loadedItems && S.loadedProy);
+      if (t === 's') return h('div', { class: 'w-center' }, anillo, h('p', { class: 'w-sub', text: fecha }));
+      return h('div', { class: 'w-resumen' },
+        h('div', { class: 'w-res-txt' }, h('p', { class: 'hero-greet', text: saludo }), h('p', { class: 'hero-date', text: fecha }),
+          t === 'l' ? h('p', { class: 'hero-line', text: loading ? 'Abriendo tu registro…' : resumenLocal() }) : null,
+          h('p', { class: 'quote', id: 'frase' }, h('span', { text: fraseHoy() }))),
+        anillo);
+    } },
+    ahora: { titulo: 'Ahora', icon: 'arrow', render: (t) => {
+      const now = pendientesOrden()[0];
+      if (!now) return h('p', { class: 'w-empty', text: 'Nada pendiente. Tocá + para anotar lo próximo.' });
+      const listo = h('button', { type: 'button', class: 'btn ok' + (t === 's' ? ' small' : ''), onclick: (ev) => setEstado(now.id, 'listo', ev) }, icon('check', 'sm'), 'Listo');
+      const foco = h('button', { type: 'button', class: 'btn forest', onclick: () => { if (now.estado !== 'en proceso') patchItem(now.id, { estado: 'en proceso' }); S.foco.taskId = now.id; go('foco'); } }, icon('play', 'sm'), 'Empezar foco');
+      return h('div', { id: 'ahora', class: 'w-ahora' },
+        h('button', { type: 'button', class: 'w-titulo', onclick: () => openItem(now.id), text: now.titulo || 'Sin título' }),
+        t !== 's' ? h('div', { class: 'now-meta' }, taskMeta(now, true)) : null,
+        h('div', { class: 'row-actions' }, t === 's' ? listo : [foco, listo,
+          t === 'l' ? h('button', { type: 'button', class: 'btn soft', onclick: () => { patchItem(now.id, { estado: 'esperando' }); openItem(now.id, 'con_quien'); } }, icon('pause', 'sm'), 'Me trabé') : null,
+          t === 'l' ? h('button', { type: 'button', class: 'btn soft', onclick: () => openItem(now.id, 'ask') }, icon('sparkle', 'sm'), 'Preguntarle a Curtis') : null]));
+    } },
+    hoy: { titulo: 'Hoy', icon: 'check', go: () => go('tareas'), render: (t) => {
+      const { pend, antes } = hoyStats(); const lista = [...antes, ...pend.filter((x) => x.fecha === hoy())];
+      if (t === 's') return h('div', { class: 'w-num' }, h('b', { text: String(lista.length) }), h('span', { text: lista.length === 1 ? 'pendiente hoy' : 'pendientes hoy' }), antes.length ? h('small', { class: 'u late', text: antes.length + ' atrasadas' }) : null);
+      if (t === 'm') return lista.length ? h('ul', { class: 'w-mini' }, lista.slice(0, 4).map((it) => h('li', {}, stButton(it), h('button', { type: 'button', class: 'w-link', onclick: () => openItem(it.id), text: it.titulo || 'Sin título' })))) : h('p', { class: 'w-empty', text: 'Nada para hoy.' });
+      return h('ul', { class: 'rows' }, filasAnidadas(lista.slice(0, 12), { showProj: true }), addRow('Agregar tarea para hoy', { fecha: hoy() }));
+    } },
+    citas: { titulo: 'Citas de hoy', icon: 'calendar', extra: () => gcalEstado(), render: (t) => {
+      const citas = gcalDel(hoy()); const manana = gcalDel(addDays(hoy(), 1));
+      if (!citas.length) return h('p', { class: 'w-empty', text: S.gcal.ok ? 'Hoy no tenés citas.' + (manana.length && t !== 's' ? ' Mañana: ' + manana.slice(0, 2).map((e) => evHora(e) + ' ' + e.titulo).join(' · ') + '.' : '') : S.gcal.err || 'Conectá Google Calendar.' });
+      if (t === 's') { const e = citas.find((x) => new Date(x.fin || x.inicio) > new Date()) || citas[citas.length - 1]; return h('div', { class: 'w-cita' }, h('b', { text: evHora(e) }), h('span', { text: e.titulo }), citas.length > 1 ? h('small', { text: '+' + (citas.length - 1) + ' más' }) : null); }
+      if (t === 'm') return h('ul', { class: 'w-mini' }, citas.slice(0, 3).map((e) => h('li', {}, h('span', { class: 'meet-h', text: evHora(e) }), h('button', { type: 'button', class: 'w-link', onclick: () => notasDeEvento(e), text: e.titulo }), e.cal ? h('small', { class: 'w-cal', text: e.cal }) : null)));
+      return h('div', {}, citas.map(meetRow));
+    } },
+    curtis: { titulo: 'Curtis', icon: 'brain', go: () => go('curtis'), render: (t) => {
+      if (!S.sample || S.sampleOff) return h('p', { class: 'w-empty', text: 'Curtis no está disponible en esta vista.' });
+      if (t === 's') return h('button', { type: 'button', class: 'w-center w-btn', onclick: () => go('curtis') }, logo(40), h('span', { text: 'Preguntale' }));
       const inp = h('input', { type: 'text', placeholder: 'Preguntale a Curtis…', 'aria-label': 'Preguntale a Curtis' });
-      const enviar = (q) => { const t = String(q || inp.value).trim(); if (!t) return; go('curtis'); setTimeout(() => ask('c:general', t), 60); };
+      const enviar = () => { const q = inp.value.trim(); if (!q) return; go('curtis'); setTimeout(() => ask('c:general', q), 60); };
       inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); enviar(); } });
-      return h('div', { class: 'ask-bar' }, h('span', { class: 'ask-bar-ico' }, logo(24)), inp, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Preguntar', onclick: () => enviar() }, icon('send')));
-    })() : null;
-    const citas = gcalDel(hoy());
-    const manana = gcalDel(addDays(hoy(), 1));
-    const entregas = proyActivos().filter((x) => isDay(x.entrega)).sort((x, y) => x.entrega.localeCompare(y.entrega)).slice(0, 4);
-    const dosCols = pref('inicioCols', '1') === '2';
-    const vistaTg = h('div', { class: 'vista-tg' }, h('div', { class: 'seg small', role: 'group', 'aria-label': 'Diagramación del inicio' }, [['1', 'list', 'Una columna'], ['2', 'board', 'Dos columnas']].map(([k, ic, l]) => h('button', { type: 'button', title: l, 'aria-label': l, 'aria-pressed': String((dosCols ? '2' : '1') === k), onclick: () => { setPref('inicioCols', k); renderMain(true); } }, icon(ic, 'sm')))));
-    return [vistaTg, h('div', { class: 'dash' + (dosCols ? '' : ' una') },
-      h('div', { class: 'dash-main' },
-        hero,
-        h('section', { class: 'b-hoy' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Hoy' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => go('tareas') }, 'Ver todas')),
-          h('ul', { class: 'rows' }, filasAnidadas(hoyList.slice(0, 9), { showProj: true }), addRow('Agregar tarea para hoy', { fecha: hoy() })))),
-      h('div', { class: 'dash-side' },
-        askBar ? h('section', { class: 'b-curtis' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Curtis' })), askBar) : null,
-        h('section', { class: 'b-citas' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Citas de hoy' }), gcalEstado()),
-          citas.length ? h('div', { class: 'card pad', style: 'padding-block:6px' }, citas.map(meetRow))
-            : h('p', { class: 'empty card', text: S.gcal.ok ? 'Hoy no tenés citas.' + (manana.length ? ' Mañana: ' + manana.map((e) => evHora(e) + ' ' + e.titulo).join(' · ') + '.' : '') : S.gcal.err || 'Conectá Google Calendar para ver tus citas aquí.' })),
-        entregas.length ? h('section', { class: 'b-ent' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Próximas entregas' })),
-          h('div', { class: 'card ent-list' }, entregas.map((x) => h('button', { type: 'button', class: 'ent-row', style: '--pc:' + colorDe(x), onclick: () => go('proyecto', x.id) }, h('span', { class: 'mono-e', text: x.icono || '📁' }), h('span', { class: 'ent-t', text: x.nombre || 'Sin nombre' }), urgPill(x.entrega, ''))))) : null))];
+      const ult = [...(S.curtisChat || [])].reverse().find((m) => m.rol === 'claude');
+      return h('div', { class: 'w-curtis' }, h('div', { class: 'ask-bar' }, inp, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Preguntar', onclick: enviar }, icon('send'))),
+        t === 'l' && ult ? h('p', { class: 'w-ult', text: ult.texto }) : null);
+    } },
+    entregas: { titulo: 'Próximas entregas', icon: 'package', go: () => go('proyectos'), render: (t) => {
+      const ents = proyActivos().filter((x) => isDay(x.entrega)).sort((x, y) => x.entrega.localeCompare(y.entrega));
+      if (!ents.length) return h('p', { class: 'w-empty', text: 'Sin entregas con fecha.' });
+      if (t === 's') { const x = ents[0]; return h('button', { type: 'button', class: 'w-cita w-btn', style: '--pc:' + colorDe(x), onclick: () => go('proyecto', x.id) }, h('span', { class: 'mono-e', text: x.icono || '📁' }), h('b', { text: x.nombre || '' }), urgPill(x.entrega, '')); }
+      return h('div', { class: 'ent-list' }, ents.slice(0, t === 'm' ? 3 : 8).map((x) => h('button', { type: 'button', class: 'ent-row', style: '--pc:' + colorDe(x), onclick: () => go('proyecto', x.id) }, h('span', { class: 'mono-e', text: x.icono || '📁' }), h('span', { class: 'ent-t', text: x.nombre || 'Sin nombre' }), urgPill(x.entrega, ''))));
+    } },
+    dinero: { titulo: 'Dinero', icon: 'receipt', go: () => { S.precioTab = 'resumen'; go('precios'); }, render: (t) => {
+      const mes = mesActual(); const ing = ingresosDelMes(mes); const pc = porCobrar(); const gas = gastosDelMes(mes);
+      const k = (l, v) => h('div', { class: 'w-k' }, h('span', { text: l }), h('b', { text: v }));
+      if (t === 's') return h('div', { class: 'w-num' }, h('b', { text: fmtBolsa(ing) }), h('span', { text: 'cobrado este mes' }));
+      if (t === 'm') return h('div', { class: 'w-ks' }, k('Cobrado este mes', fmtBolsa(ing)), k('Por cobrar', fmtBolsa(pc)));
+      return h('div', { class: 'w-ks' }, k('Cobrado este mes', fmtBolsa(ing)), k('Por cobrar', fmtBolsa(pc)), k('Gastos del mes', fmtBolsa(gas)), k('Te queda', money(ing.q - gas.q)));
+    } },
+    aviso: { titulo: 'Aviso', icon: 'flag', render: (t) => {
+      const inv = (S.loadedItems && S.loadedProy) ? invitaciones() : [];
+      if (!inv.length) return h('p', { class: 'w-empty', text: 'Todo en orden.' });
+      return h('div', { class: 'nudges' }, inv.slice(0, t === 'l' ? 2 : 1).map((n) => h('button', { type: 'button', class: 'nudge', onclick: n.go }, t !== 's' ? icon(n.icon) : null, n.text)));
+    } },
+    frase: { titulo: 'Frase', icon: 'quote', render: () => h('p', { class: 'quote w-frase', text: fraseHoy() }) },
+  };
+  function viewInicio() {
+    const lay = layoutInicio(); const ed = !!S.editInicio;
+    const mover = (i, d) => { const l = layoutInicio(); const j = i + d; if (j < 0 || j >= l.length) return; [l[i], l[j]] = [l[j], l[i]]; guardarLayout(l); };
+    const cards = lay.map((w, i) => {
+      const def = WIDGETS[w.id];
+      const el = h('section', { class: 'wg wg-' + w.t + ' wg-' + w.id, id: w.id === 'resumen' ? 'resumen' : null, draggable: ed ? 'true' : null, 'data-i': String(i) },
+        h('div', { class: 'wg-h' }, icon(def.icon, 'sm'), h('span', { class: 'wg-t', text: def.titulo }), def.extra && w.t !== 's' && !ed ? def.extra() : null,
+          def.go && !ed ? h('button', { type: 'button', class: 'icon-btn wg-go', 'aria-label': 'Abrir ' + def.titulo, onclick: def.go }, icon('right', 'sm')) : null),
+        h('div', { class: 'wg-b' }, def.render(w.t)),
+        ed ? h('div', { class: 'wg-ctl' },
+          h('div', { class: 'seg small', role: 'group', 'aria-label': 'Tamaño de ' + def.titulo }, Object.entries(W_TAM).map(([k, l]) => h('button', { type: 'button', title: l, 'aria-pressed': String(w.t === k), onclick: () => { const nl = layoutInicio(); nl[i].t = k; guardarLayout(nl); } }, k.toUpperCase()))),
+          h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Mover antes', onclick: () => mover(i, -1) }, icon('back', 'sm')),
+          h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Mover después', onclick: () => mover(i, 1) }, icon('right', 'sm')),
+          h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Quitar ' + def.titulo, onclick: () => { const nl = layoutInicio(); nl.splice(i, 1); guardarLayout(nl); } }, icon('x', 'sm'))) : null);
+      if (ed) {
+        el.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/plain', String(i)); el.classList.add('arrastrando'); });
+        el.addEventListener('dragend', () => el.classList.remove('arrastrando'));
+        el.addEventListener('dragover', (ev) => { ev.preventDefault(); el.classList.add('sobre'); });
+        el.addEventListener('dragleave', () => el.classList.remove('sobre'));
+        el.addEventListener('drop', (ev) => { ev.preventDefault(); el.classList.remove('sobre'); const from = Number(ev.dataTransfer.getData('text/plain')); if (Number.isNaN(from) || from === i) return; const nl = layoutInicio(); const [m] = nl.splice(from, 1); nl.splice(i, 0, m); guardarLayout(nl); });
+      }
+      return el;
+    });
+    const ocultos = Object.keys(WIDGETS).filter((id) => !lay.some((w) => w.id === id));
+    return [
+      h('div', { class: 'ini-bar' }, h('span', { class: 'hint', text: ed ? 'Arrastrá para mover. Elegí S, M o L para el tamaño.' : '' }),
+        ed ? h('button', { type: 'button', class: 'btn soft small', onclick: () => { try { localStorage.removeItem('widgets'); } catch (e) { /* sin memoria */ } renderMain(true); } }, 'Volver al original') : null,
+        h('button', { type: 'button', class: 'btn ' + (ed ? 'forest' : 'soft') + ' small', onclick: () => { S.editInicio = !ed; renderMain(true); } }, icon(ed ? 'check' : 'edit', 'sm'), ed ? 'Listo' : 'Editar inicio')),
+      h('div', { class: 'wgrid' + (ed ? ' editando' : '') }, cards),
+      ed && ocultos.length ? h('div', { class: 'card pad w-add' }, h('span', { class: 'hint', text: 'Agregar:' }), h('div', { class: 'chips' }, ocultos.map((id) => h('button', { type: 'button', class: 'chip', onclick: () => { const nl = layoutInicio(); nl.push({ id, t: 'm' }); guardarLayout(nl); } }, icon('plus', 'sm'), WIDGETS[id].titulo)))) : null,
+    ];
   }
   function aiSummary() {
     if (!S.sample || S.sampleOff) return null;
@@ -1928,6 +2048,7 @@ body { line-height: 1.55; }
     return [
       h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Tu asistente' }), h('h1', { text: 'Curtis' })), h('button', { type: 'button', class: 'btn soft small', onclick: abrirAjustes }, icon('sliders', 'sm'), 'Ajustes y etiquetas')),
       h('p', { class: 'quote', style: 'max-width:46ch' }, icon('quote'), h('span', { text: 'Voy aprendiendo cómo trabajás para ayudarte a hacer menos de lo repetitivo y cobrar mejor lo que hacés.' })),
+      h('section', {}, chatBox('c:general')),
       aiSummary(),
       seccionLimites(),
       guia(),
@@ -1939,7 +2060,6 @@ body { line-height: 1.55; }
         S.chatErr.get('analisis') ? h('p', { class: 'err', text: S.chatErr.get('analisis') }) : null,
         h('div', { style: 'display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px' }, tipoSel, nuevo),
         mem.length ? h('div', {}, mem.map(memRow)) : h('p', { class: 'hint', text: 'Todavía no hay nada. Curtis anota solo cuando entregás proyectos y cuando le contás cosas en el chat.' })),
-      h('section', {}, chatBox('c:general')),
     ];
   }
 
@@ -2125,12 +2245,21 @@ body { line-height: 1.55; }
 
   // ================= Curtis (IA) =================
   function perfil() {
-    return 'Sos Curtis, el socio de estudio de un diseñador gráfico e ilustrador de Guatemala (freelance en diseño corporativo para empresas grandes y medio tiempo a distancia en la NIHR, con mínimo de horas al mes). Tiene TDAH y vos lo entendés a fondo: te reís del caos con él (nunca de él) y lo acompañás con técnicas concretas: partir en pasos chicos, regla de 2 minutos, cuerpo presente (te quedás con él en un bloque de foco), estacionamiento de ardillas (anotar la distracción y volver), primero lo feo, bloques de tiempo en su mejor horario, hecho es mejor que perfecto. Sos experto en productos digitales, marcas, branding, diseño gráfico, ilustración, y en cómo cobrar y licenciar su trabajo. Meta: que trabaje ordenado, cobre bien y consiga clientes (LinkedIn primero).\n'
-      + 'Personalidad: chistoso y amigable, pero ordenado, estricto, puntual y resolutivo. Tu tono: un explorador de National Geographic documentando el caos creativo, con frases introspectivas al estilo de Carl Jung (la sombra, el inconsciente, darle sentido a lo que hace) y un giro de humor. Cómo respondés: español de Guatemala, de vos. Corto: máximo 5 líneas o 3 pasos. Una cosa a la vez. Sin palabras técnicas. Sin halagos vacíos ni logros falsos: si algo está mal o un precio está bajo, lo decís directo. Siempre cerrá con el siguiente paso concreto y cuándo hacerlo. No inventes datos: si falta algo, hacé una sola pregunta.\n' + limitesTexto();
+    return 'Sos Curtis, el asistente de trabajo de un diseñador gráfico e ilustrador de Guatemala (freelance en diseño corporativo para empresas grandes y medio tiempo a distancia en la NIHR). Tiene TDAH: le ayudás con orden, pasos chicos y foco. Sabés de productos digitales, marcas, branding, diseño gráfico, ilustración, y de cómo cotizar, cobrar y licenciar su trabajo.\n'
+      + 'CÓMO RESPONDÉS:\n'
+      + '- Español de Guatemala, de vos. Claro, directo y profesional. Sin chistes, sin metáforas, sin frases célebres, sin emojis.\n'
+      + '- Antes de responder, leé TODA la conversación y su último mensaje con cuidado. Usá lo que ya te dijo: no vuelvas a preguntar algo que ya respondió.\n'
+      + '- Si te corrige, aceptalo en una línea y seguí con el dato correcto. No te disculpes de más ni repitas tu error.\n'
+      + '- No repitas lo que ya dijiste en mensajes anteriores. Nada de relleno.\n'
+      + '- Preguntá solo si es imprescindible, una sola pregunta. Si te pide que dejes de preguntar, hacé lo mejor con lo que hay y anotá tus supuestos en una línea.\n'
+      + '- Cuando hay terceros (socios, proveedores, colaboradores), separá bien quién hace qué y quién cobra qué. Cada quien cobra lo suyo y se suma.\n'
+      + '- Respuestas cortas. Pero cuando te pida un documento (cotización, descripción, mensaje), escribilo completo, bien redactado y listo para usar.\n'
+      + '- Cerrá con un siguiente paso solo si aporta algo nuevo.\n'
+      + '- No inventes datos. Si una de tus herramientas puede hacer lo que pide, usala: nunca digas que no podés algo que tus herramientas hacen.\n' + limitesTexto();
   }
   const lineaTarea = (x) => '- ' + (x.titulo || 'Sin título') + ' [' + x.estado + (x.fecha ? ', ' + x.fecha : '') + (x.con_quien ? ', ' + x.con_quien : '') + (x.prioridad === 'alta' ? ', prioridad alta' : '') + ']';
   function memoriaTexto() {
-    const mem = [...S.memoria].sort((a, b) => (b.creado || 0) - (a.creado || 0)).slice(0, 20).map((m) => '- [' + (MEM_TIPOS[m.tipo] || MEM_TIPOS.otro)[0] + '] ' + m.texto).join('\n');
+    const mem = [...S.memoria].sort((a, b) => (b.creado || 0) - (a.creado || 0)).slice(0, 40).map((m) => '- [' + (MEM_TIPOS[m.tipo] || MEM_TIPOS.otro)[0] + '] ' + m.texto).join('\n');
     const ins = aprendizajes().map((x) => '- ' + x.text).join('\n');
     return '\n\nLO QUE SABÉS DE ÉL:\n' + (mem || '(nada todavía)') + '\nCALCULADO DE SUS DATOS:\n' + (ins || '(nada)');
   }
@@ -2162,7 +2291,7 @@ body { line-height: 1.55; }
     ctx += '\n\nSU FILA DE PENDIENTES:\n' + (pendientesOrden().slice(0, 8).map(lineaTarea).join('\n') || '(nada)');
     ctx += '\nESPERANDO A OTROS:\n' + (trabadas().slice(0, 5).map(lineaTarea).join('\n') || '(nada)');
     ctx += memoriaTexto();
-    if (S.sampleTools) ctx += '\n\nHERRAMIENTAS: podés agregar tareas o pasos; anotar aprendizajes sobre él (errores que repite, áreas de mejora, precios, tiempos, horario, qué lo motiva, pasos repetidos) con anotar_aprendizaje cuando notés algo nuevo y útil (una idea corta); listar, buscar, crear carpetas y mover archivos en su Google Drive; buscar clientes y crear cotizaciones en borrador en Zoho Books (quetzales); escribir la descripción de un servicio de su catálogo con guardar_descripcion_servicio (para el cliente: de usted, sin inventar). Antes de crear o mover algo en Drive o Zoho, la página le pide permiso: si dice que no, respetalo. Nunca borres archivos.';
+    if (S.sampleTools) ctx += '\n\nHERRAMIENTAS: podés agregar tareas o pasos; anotar aprendizajes sobre él (errores que repite, áreas de mejora, precios, tiempos, horario, qué lo motiva, pasos repetidos) con anotar_aprendizaje cuando notés algo nuevo y útil (una idea corta); listar, buscar, crear carpetas y mover archivos en su Google Drive; crear cotizaciones en Curtis con crear_cotizacion (cuando te pida armar una cotización, CREALA, no la escribás solo en el chat) y en Zoho como borrador con crear_cotizacion_zoho; buscar clientes en Zoho; escribir la descripción de un servicio de su catálogo con guardar_descripcion_servicio (para el cliente: de usted, sin inventar). Antes de crear o mover algo en Drive o Zoho, la página le pide permiso: si dice que no, respetalo. Nunca borres archivos.';
     return ctx;
   }
   function chatOf(key) { const [k, id] = key.split(':'); if (k === 'c') return S.curtisChat; const src = k === 'p' ? proyecto(id) : item(id); return src && Array.isArray(src.chat) ? src.chat : []; }
@@ -2252,11 +2381,28 @@ body { line-height: 1.55; }
     if (projId) tools.push(
       { name: 'crear_carpetas_de_trabajo', description: 'Crea la carpeta del proyecto actual en Drive («Cliente — Proyecto (año-mes)») con sus subcarpetas de trabajo. Pide permiso antes.',
         inputSchema: { type: 'object', properties: { carpetas: { type: 'array', items: { type: 'string' } } } },
-        execute: async (input) => { const r = await crearCarpetas(projId, Array.isArray(input.carpetas) && input.carpetas.length ? input.carpetas.map(String) : null); note(r.ok ? 'Creó carpetas de trabajo' : 'Drive: ' + r.msg); return r; } },
-      { name: 'crear_cotizacion_zoho', description: 'Crea una cotización en borrador en Zoho Books (quetzales) para un cliente existente. Pide permiso antes. No la envía.',
-        inputSchema: { type: 'object', properties: { cliente_id: { type: 'string' }, cliente_nombre: { type: 'string' }, lineas: { type: 'array', items: { type: 'object', properties: { nombre: { type: 'string' }, descripcion: { type: 'string' }, cantidad: { type: 'number' }, precio: { type: 'number' } }, required: ['nombre', 'cantidad', 'precio'] } }, notas: { type: 'string' } }, required: ['cliente_id', 'lineas'] },
-        execute: async (input) => { const r = await crearCotizacion(projId, { clienteId: String(input.cliente_id), clienteNombre: String(input.cliente_nombre || ''), lineas: (input.lineas || []).map((l) => ({ nombre: String(l.nombre || ''), descripcion: String(l.descripcion || ''), cantidad: Number(l.cantidad) || 1, precio: Number(l.precio) || 0 })), notas: String(input.notas || '') }); note(r.ok ? 'Creó la cotización ' + r.numero : 'Zoho: ' + r.msg); return r; } });
-    return tools;
+        execute: async (input) => { const r = await crearCarpetas(projId, Array.isArray(input.carpetas) && input.carpetas.length ? input.carpetas.map(String) : null); note(r.ok ? 'Creó carpetas de trabajo' : 'Drive: ' + r.msg); return r; } });
+    tools.push(
+      { name: 'crear_cotizacion', description: 'Crea una cotización en Curtis (pestaña Dinero → Cotizaciones) con título, cliente y renglones. Úsalo cuando te pida armar o hacer una cotización. Él la revisa y desde ahí la pasa a Zoho o la factura. Cada renglón: tipo "servicio" (nombre, cantidad, precio, descripcion para el cliente de usted, formato opcional), "titulo", "subtitulo" o "nota" (texto). Los servicios de terceros (ej. un socio) van como renglones propios con su precio.',
+        inputSchema: { type: 'object', properties: { titulo: { type: 'string' }, cliente: { type: 'string' }, contexto: { type: 'string', description: 'de qué se trata, en 2-4 líneas' }, notas: { type: 'string', description: 'condiciones: forma de pago, qué no incluye, extras cotizados aparte' }, renglones: { type: 'array', items: { type: 'object', properties: { tipo: { type: 'string', enum: ['servicio', 'titulo', 'subtitulo', 'nota'] }, nombre: { type: 'string' }, texto: { type: 'string' }, cantidad: { type: 'number' }, precio: { type: 'number' }, descripcion: { type: 'string' }, formato: { type: 'string' } } } } }, required: ['titulo', 'renglones'] },
+        execute: async (input) => {
+          const lineas = (Array.isArray(input.renglones) ? input.renglones : []).slice(0, 40).map((r) => { const t = ['titulo', 'subtitulo', 'nota'].includes(r.tipo) ? r.tipo : 'servicio'; return t === 'servicio' ? { id: uid(), tipo: t, nombre: String(r.nombre || r.texto || '').slice(0, 200), cantidad: Number(r.cantidad) || 1, precio: Math.max(0, Number(r.precio) || 0), formato: String(r.formato || '').slice(0, 200), descripcion: String(r.descripcion || '').slice(0, 900) } : { id: uid(), tipo: t, texto: String(r.texto || r.nombre || '').slice(0, 900) }; });
+          if (!S.db) return { ok: false, msg: 'El registro no está abierto.' };
+          const body = { titulo: String(input.titulo || 'Cotización').slice(0, 160), cliente: String(input.cliente || '').slice(0, 120), proyecto: projId || '', fecha: hoy(), validez: 15, contexto: String(input.contexto || '').slice(0, 2000), lineas, notas: String(input.notas || '').slice(0, 2000), estado: 'borrador', creado: Date.now(), actualizado: Date.now() };
+          body.total = totalesCot(body).total;
+          try { const ref = await S.db.collection('cotizaciones').add(body); note('Creó la cotización «' + body.titulo + '» · ' + money(body.total)); return { ok: true, id: ref.id, total: body.total, donde: 'Dinero → Cotizaciones' }; } catch (e) { return { ok: false, msg: dbErr(e) }; }
+        } },
+      { name: 'crear_cotizacion_zoho', description: 'Crea la cotización en borrador en Zoho (organización CREATIF, quetzales). Pasá el nombre del cliente tal como está en Zoho (o su id si lo tenés). La página le pide permiso antes. No la envía al cliente.',
+        inputSchema: { type: 'object', properties: { cliente_id: { type: 'string' }, cliente_nombre: { type: 'string' }, lineas: { type: 'array', items: { type: 'object', properties: { nombre: { type: 'string' }, descripcion: { type: 'string' }, cantidad: { type: 'number' }, precio: { type: 'number' } }, required: ['nombre', 'cantidad', 'precio'] } }, notas: { type: 'string' } }, required: ['lineas'] },
+        execute: async (input) => {
+          let cid = String(input.cliente_id || ''); let cnom = String(input.cliente_nombre || '');
+          if (!cid) { const lista = await zohoClientes(cnom); const m = lista.find((x) => norm(x.nombre) === norm(cnom)) || (lista.length === 1 ? lista[0] : null); if (!m) return { ok: false, msg: lista.length ? 'Hay varios clientes parecidos: ' + lista.map((x) => x.nombre).join(', ') + '. Preguntale cuál.' : 'No encontré ese cliente en Zoho.' }; cid = m.id; cnom = m.nombre; }
+          const r = await crearCotizacion(projId, { clienteId: cid, clienteNombre: cnom, lineas: (input.lineas || []).map((l) => ({ nombre: String(l.nombre || ''), descripcion: String(l.descripcion || ''), cantidad: Number(l.cantidad) || 1, precio: Number(l.precio) || 0 })), notas: String(input.notas || '') });
+          note(r.ok ? 'Creó la cotización ' + r.numero + ' en Zoho' : 'Zoho: ' + r.msg); return r;
+        } });
+    // lo más útil primero, por si hay un límite de herramientas
+    const ORDEN = ['agregar_tareas', 'crear_cotizacion', 'crear_cotizacion_zoho', 'buscar_cliente_zoho', 'actualizar_contexto_proyecto', 'anotar_aprendizaje', 'agregar_pasos', 'anotar_limite', 'buscar_en_drive', 'crear_carpetas_de_trabajo', 'crear_carpetas_drive', 'mover_archivos_drive', 'listar_carpeta_drive', 'guardar_descripcion_servicio'];
+    return tools.filter((t) => ORDEN.includes(t.name)).sort((a, b) => ORDEN.indexOf(a.name) - ORDEN.indexOf(b.name));
   }
   async function ask(key, question) {
     if (!S.sample || S.asking.has(key)) return;
@@ -2266,7 +2412,7 @@ body { line-height: 1.55; }
     const st = { question, text: '', ctl: new AbortController(), tools: [] };
     S.asking.set(key, st); S.chatErr.delete(key); renderChatBox(key);
     try {
-      const opts = { cache: false, signal: st.ctl.signal, onText: ({ text }) => { st.text = text; renderChatBox(key); } };
+      const opts = { cache: false, modelTier: 'complex', signal: st.ctl.signal, onText: ({ text }) => { st.text = text; renderChatBox(key); } };
       const tools = herramientas(key); if (tools) opts.tools = tools.slice(0, S.sampleToolsMax || 10);
       const { text } = await S.sample(turns, opts);
       const at = Date.now(); const extra = st.tools.length ? '\n\n(' + st.tools.join(' · ') + ')' : '';
@@ -2327,13 +2473,13 @@ body { line-height: 1.55; }
     const msgs = chat.map((m) => h('div', { class: 'msg ' + (m.rol === 'claude' ? 'claude' : 'yo'), text: m.texto }));
     if (st) { msgs.push(h('div', { class: 'msg yo', text: st.question })); st.tools.forEach((t) => msgs.push(h('div', { class: 'msg tool', text: '⚙ ' + t }))); msgs.push(h('div', { class: 'msg claude' + (st.text ? '' : ' pending'), text: st.text || 'Pensando…' })); }
     const prev = box.querySelector('textarea');
-    const ta = h('textarea', { rows: '1', placeholder: 'Contale qué estás haciendo o preguntale…', 'aria-label': 'Mensaje para Curtis' });
+    const ta = autosize(h('textarea', { rows: '3', placeholder: 'Escribile a Curtis… (Enter envía, Shift+Enter baja de línea)', 'aria-label': 'Mensaje para Curtis' }));
     if (prev) ta.value = prev.value;
     const send = (q) => { q = String(q || '').trim(); if (!q) return; ta.value = ''; ask(key, q); };
     ta.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); send(ta.value); } });
     const sug = key.startsWith('p:') ? SUG_P : key.startsWith('c:') ? SUG_C : SUG_T;
     const hadFocus = prev && document.activeElement === prev;
-    const dondeVive = key.startsWith('c:') ? 'Este chat general se guarda aquí. Curtis recuerda sus últimos 30 mensajes y todo lo de «Lo que recuerdo de vos».' : key.startsWith('p:') ? 'Este chat se guarda en este proyecto: cada vez que volvás, sigue donde lo dejaste (últimos 30 mensajes).' : 'Este chat se guarda en esta tarea: cada vez que volvás, sigue donde lo dejaste (últimos 30 mensajes).';
+    const dondeVive = key.startsWith('c:') ? 'Este chat general se guarda aquí. Curtis recuerda sus últimos 60 mensajes y todo lo de «Lo que recuerdo de vos».' : key.startsWith('p:') ? 'Este chat se guarda en este proyecto: cada vez que volvás, sigue donde lo dejaste (últimos 60 mensajes).' : 'Este chat se guarda en esta tarea: cada vez que volvás, sigue donde lo dejaste (últimos 60 mensajes).';
     put(box, head,
       h('p', { class: 'hint', style: 'margin-top:-4px', text: dondeVive }),
       chat.length || st ? h('div', { class: 'msgs', 'aria-live': 'polite' }, msgs) : h('p', { class: 'hint', text: key.startsWith('p:') ? 'Curtis ve este proyecto, sus tareas y lo que sabe de vos.' : key.startsWith('c:') ? 'Curtis ve tus proyectos, tus pendientes y lo que aprendió de vos.' : 'Curtis ve esta tarea, su proyecto y tu fila de pendientes.' }),

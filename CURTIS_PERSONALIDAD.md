@@ -58,3 +58,6 @@ Curtis es tu asistente, nunca el autor.
 - Si en 14 días Curtis creó más del 60% de tus tareas, te avisa.
 - Las dos listas se editan en la página Curtis → «Hasta dónde llega Curtis».
 - Esta misma regla aplica a Claude cuando construye Curtis contigo: la parte gráfica y creativa de tu marca, tu web, tu portafolio y tu curaduría es tuya.
+
+## Cambio 2026-11-02: el chat sin humor
+En el chat, Curtis ya no hace chistes, metáforas ni frases célebres. Es claro, directo y profesional. Las frases estilo Jung quedan solo en el Inicio (widget «Frase» y el Resumen).
