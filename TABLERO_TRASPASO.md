@@ -1,6 +1,6 @@
 # Curtis — traspaso
 
-> Actualizado: 2026-11-04 · versión 14. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
+> Actualizado: 2026-11-04 · versión 15. Plan para salir de claude.ai: `MIGRACION_APPS_SCRIPT.md`. El estado de cada parte y la bitácora están en `CURTIS_PARTES.md`.
 
 ## Qué existe
 - **Panel:** https://claude.ai/artifact/E4qZZG4D5jYK85Krv4WyHW — privado, solo el dueño lo lee y escribe.
@@ -10,13 +10,13 @@
 - **Conectores que usa (con la cuenta del dueño):**
   - Google Drive: `create_file` (carpetas y archivos), `search_files`, `update_file` (mover), `copy_file` (recopilar).
   - Google Calendar: `list_calendars` y `list_events` (por cada calendario activo), solo lectura. Las horas llegan en hora universal; el día se calcula en hora de Guatemala.
-  - Zoho Books: `list_contacts`, `create_estimate` (borrador, con descuento), `create_invoice` (borrador), `list_invoices` (leer estado y saldo).
+  - Zoho Books: `list_contacts`, `create_estimate` (borrador, con descuento), `create_invoice` (borrador), `list_invoices` (leer estado y saldo), `list_estimates` y `get_estimate` (v15, solo lectura: «Actualizar con Zoho»).
 - **Librería:** jsPDF 2.5.1 (cdnjs) para el PDF de links, la propuesta de licencia y la cotización.
 - **Zoho:** organización «CREATIF» `877643427` (Zoho Invoice, admin, GTQ, hora de Guatemala). Verificada el 2026-10-29: lista clientes y facturas con datos reales. La anterior, «Creatif» `914134862` (Zoho Books), tenía la prueba PREMIUM vencida y ya no se usa.
 - **Carpetas que Curtis crea en Drive cuando hace falta:** «Curtis · Ilustraciones», «Curtis · Bandeja», «Curtis · Reuniones / AAAA-MM-DD — cita» y la de cada proyecto.
 
 ## Datos
-- `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · etiquetas · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · gcalId (cita de Google Calendar) · padre (tarea dentro de otra) · tam (s|m|l, tamaño en Tarjetas, v14) · orden (orden en Tarjetas, v14) · reunionId (tarea → su reunión) · origen ('curtis' si la creó Curtis, v9) · reunión: tareaId · notasHtml · carpetaId · carpetaUrl · carpetaNombre · adjuntos[{nombre,driveUrl,asset,thumb}] · enviados[pendientes ya pasados a tareas] · creado · actualizado · terminado
+- `items/*`: tipo (tarea | reunion | bitacora | meta-mes | meta-año) · titulo · estado (por hacer, en proceso, esperando, listo) · fecha (AAAA-MM-DD; meta-mes AAAA-MM; meta-año AAAA) · proyecto · seccion · prioridad (''|alta) · etiquetas · con_quien · notas · que_sigue · horas · subtareas[{id,texto,hecho}] · minutosFoco · chat[{rol,texto,at}] (máx 30) · acuerdosEnviados · gcalId (cita de Google Calendar) · padre (tarea dentro de otra) · tam (s|m|l, tamaño en Tarjetas, v14) · orden (orden en Tarjetas, v14) · avances[{fecha, at}] (v15, botón «Avancé») · reunionId (tarea → su reunión) · origen ('curtis' si la creó Curtis, v9) · reunión: tareaId · notasHtml · carpetaId · carpetaUrl · carpetaNombre · adjuntos[{nombre,driveUrl,asset,thumb}] · enviados[pendientes ya pasados a tareas] · creado · actualizado · terminado
 - `proyectos/*`: sitioUrl (v10) · contextoMd · contextoAnterior · contextoFecha · contextoUrl · consultas[{fecha,duda,qa[{q,a}],sugerencia}] (máx 10) · area · clienteId · nombre · icono · color · cliente · categoria · precio (cobro final) · entrega · estado (activo|pausa|terminado) · etiquetas · descripcion · driveUrl · driveFolderId · secciones[{id,nombre}] · cotizaciones[{numero,id,total,fecha,cliente}] (las de Zoho) · chat · ilustraciones[ids] · licencia{producto,n,exclusividad,duracion,territorio,tiraje,modelo,base,diseno,disenoMonto,mayorista,regaliaPct,fx,total,unico,fecha} · entregado · entregaUrl · entregaFolderId
 - `servicios/*` (v6): titulo · subtitulo · grupo · precio · unidad · formato · tiempo · descripcion · creado · actualizado
 - `cotizaciones/*` (v6): titulo · cliente · proyecto · fecha · validez (días) · contexto (de qué se trata) · lineas[{id, tipo: titulo|subtitulo|servicio|nota|descuento, texto, servicioId, nombre, cantidad, precio, unidad, formato, descripcion, modo: monto|pct, valor}] · notas · estado (borrador|enviada|aceptada|rechazada) · total · pdfUrl · creado · actualizado
@@ -29,8 +29,10 @@
 - `ilustraciones/*`: titulo · thumb · driveId · driveUrl · archivo · ancho · alto · tema · anio · notas · estado
 - `etiquetas/*`: nombre · color · icono
 - `memoria/*`: tipo (precio|tiempo|horario|error|mejora|motivacion|pasos|cliente|otro) · texto · origen (auto|curtis|yo) · fecha · proyecto
-- `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · plantillaEntrega · plantillaLicencia · checklistEntrega · plantillasCat · firma · zohoOrg · ilusFolderId · bandejaFolderId (v6) · factoresLicencia (v6: multiplicadores «de siempre») · tipoCambio (v7) · calendarios {id: true/false} (v8) · ultimaCopia · ultimaCopiaUrl (v8) · limites {yo[], curtis[]} · avisosAutoria (v9)
-- `resumen/dia`, `frase/dia`: {fecha, texto}
+- `ajustes/general`: horasMin · plantillaSecciones · plantillaCarpetas · plantillaEntrega · plantillaLicencia · checklistEntrega · plantillasCat · firma · zohoOrg · ilusFolderId · bandejaFolderId (v6) · factoresLicencia (v6: multiplicadores «de siempre») · tipoCambio (v7) · calendarios {id: true/false} (v8) · ultimaCopia · ultimaCopiaUrl (v8) · limites {yo[], curtis[]} · avisosAutoria (v9) · frasesPropias [{t, a}] (v15) · calc {meta, horasSemana, impuesto, tarifaManual} (v15) · catIgnorar [claves] (v15) · zohoLeido (v15)
+- `zohocot/<estimate_id>` (v15, copia de lectura de Zoho): numero · cliente · clienteZoho · empresa · fecha · total · estado (draft|sent|accepted|invoiced…) · referencia · modificado · lineas[{nombre, descripcion, cantidad, precio, total}] · facturas[invoice_ids] · vence · leido
+- `zohofac/<invoice_id>` (v15): numero · cliente · fecha · vence · total · saldo · estado · pagadoEl · leido
+- `resumen/dia`, `frase/dia`: {fecha, texto, v15}
 - `curtis/chat`: chat general
 
 ## Cómo está armado
@@ -48,7 +50,7 @@
 - Probar antes de publicar; auditar el código antes de entregar.
 
 ## Pruebas
-- Automáticas en el navegador con conectores simulados: v14 178/178, v9 142/142 y la de v4 31/31 sin regresiones.
+- Automáticas en el navegador con conectores simulados: v15 206/206, v14 178/178, v9 142/142 y la de v4 31/31 sin regresiones.
 - Real (de solo lectura, desde esta sesión): Google Calendar devuelve 5 calendarios, incluido el importado de iCloud «Diego - Disart» con sus citas. Drive `search_files` responde como el panel espera. Zoho `list_invoices` responde (todavía sin facturas).
 - Falta la primera prueba real con Drive, Calendar y Zoho.
 
@@ -67,3 +69,4 @@
 - v12: menú abajo o a la izquierda (localStorage «menuPos»), Inicio en una o dos columnas (localStorage «inicioCols», por defecto una).
 - v13: Inicio con widgets (localStorage «widgets»: [{id, t: s|m|l}]), chat de Curtis con tono profesional, modelTier complex, MAX_CHAT 60, herramientas crear_cotizacion y crear_cotizacion_zoho en todos los chats.
 - v14: Mis tareas con selección múltiple (estado, mandar a, borrar con confirmación), vista Tarjetas (tamaño chico/mediano/grande y arrastrar para ordenar; localStorage «tareasModo»), clic derecho en tareas, más jerarquía de letra (Atrasadas, Hoy y Próximos 3 días más grandes), tareas estancadas (abiertas sin moverse hace más de 10 días y creadas hace más de 14, o vencidas hace 7+) con aviso en Mis tareas, en Inicio, al Actualizar y en el contexto de Curtis; botón de mensaje positivo en todas las vistas.
+- v15: sendero de avance (tareas con pasos) y botón «Avancé»; frases solo con autor verificable (Jung, Dhammapada, Dalai Lama, Thich Nhat Hanh) + tus frases + recordatorios de respirar y naturaleza; barra lateral con títulos y subtítulos; paleta más terrosa; selección tipo Gmail; Atrasadas, Hoy, Próximos 3 días y Tu calendario como bloques movibles (localStorage «bloquesTareas»: [{id, w: full|half, v: lista|tarjetas}]); calendario en Mis tareas y Registro; Dinero lee Zoho (por cobrar con factura final, borradores aparte, alertas de propuestas rápidas); Registro → Lo que cobré; Actualizar catálogo; Calculadora (tiempo y mural); Proyectos con destacados, áreas como títulos y pausados en lista.

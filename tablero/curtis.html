@@ -14,19 +14,19 @@
   --f-mark: "Fira Sans Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
   --r: 16px; --r-sm: 10px; --side: 252px;
   --c-in: #1f78b4; --c-out: #d0731f; --rule: rgba(26,31,27,.85);
-  --rose: #c2577a; --plum: #7a5aa0; --teal: #2a8a84; --sky: #3f8fd0; --olive: #8c8a2e; --coral: #e07a5f;
-  --rose-t: #9c3a5d; --plum-t: #5d4282; --teal-t: #1f6a65; --sky-t: #2a6aa0; --olive-t: #5f5d18; --coral-t: #a8482f;
+  --rose: #a65a68; --plum: #6f5b7d; --teal: #3d7a70; --sky: #557f9b; --olive: #848040; --coral: #c47355;
+  --rose-t: #874452; --plum-t: #574766; --teal-t: #2e5f57; --sky-t: #3f6580; --olive-t: #5f5c22; --coral-t: #9a5236;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #121512; --surface: #1b1f1b; --surface-2: #252a25; --ink: #eef0ea; --muted: #9ea397; --line: rgba(255,255,255,.09);
   --yellow: #ffcf47; --forest: #5e9a78; --moss: #a3b86f; --clay: #e0805f; --earth: #dcab5f; --lake: #6fb0cc; --sand: #4a4434;
   --forest-t: #86c3a0; --moss-t: #b9cc85; --clay-t: #ef9c80; --earth-t: #e8bf7c; --lake-t: #8fc6dd; --yellow-t: #ffd866;
-  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); --rose: #e88aa7; --plum: #b49ad6; --teal: #5fc0b8; --sky: #7ab8ea; --olive: #c2c05a; --coral: #f0a089; --rose-t: #f0a9bf; --plum-t: #c8b3e6; --teal-t: #8ad6cf; --sky-t: #a3cff2; --olive-t: #d6d48a; --coral-t: #f5bba9; } }
+  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); --rose: #d0919c; --plum: #a896b5; --teal: #7fb5aa; --sky: #8fb2c9; --olive: #bdb877; --coral: #dea084; --rose-t: #e0aeb6; --plum-t: #c2b4cc; --teal-t: #a3cdc4; --sky-t: #b0cadb; --olive-t: #d2ce9a; --coral-t: #ebbca4; } }
 :root[data-theme="dark"] {
   --bg: #121512; --surface: #1b1f1b; --surface-2: #252a25; --ink: #eef0ea; --muted: #9ea397; --line: rgba(255,255,255,.09);
   --yellow: #ffcf47; --forest: #5e9a78; --moss: #a3b86f; --clay: #e0805f; --earth: #dcab5f; --lake: #6fb0cc; --sand: #4a4434;
   --forest-t: #86c3a0; --moss-t: #b9cc85; --clay-t: #ef9c80; --earth-t: #e8bf7c; --lake-t: #8fc6dd; --yellow-t: #ffd866;
-  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); --rose: #e88aa7; --plum: #b49ad6; --teal: #5fc0b8; --sky: #7ab8ea; --olive: #c2c05a; --coral: #f0a089; --rose-t: #f0a9bf; --plum-t: #c8b3e6; --teal-t: #8ad6cf; --sky-t: #a3cff2; --olive-t: #d6d48a; --coral-t: #f5bba9; }
+  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark; --c-in: #3d9be0; --c-out: #d27a2c; --rule: rgba(238,240,234,.75); --rose: #d0919c; --plum: #a896b5; --teal: #7fb5aa; --sky: #8fb2c9; --olive: #bdb877; --coral: #dea084; --rose-t: #e0aeb6; --plum-t: #c2b4cc; --teal-t: #a3cdc4; --sky-t: #b0cadb; --olive-t: #d2ce9a; --coral-t: #ebbca4; }
 
 body { background: var(--bg); color: var(--ink); font-family: var(--f-ui); font-size: 15.5px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -926,6 +926,173 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
 .msg-burbuja.saliendo { opacity: 0; transition: opacity .35s; }
 @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .msg-burbuja { animation: none; } .tcard { transition: none; } }
+
+/* ===================== v15: jerarquía, paleta, sendero, bloques, Zoho, calculadora ===================== */
+:root { --t1: clamp(2.2rem, 5vw, 2.9rem); --t2: 1.45rem; --t3: 1.08rem; --body: .95rem; --gap-sec: 40px; }
+.main-in { gap: var(--gap-sec); }
+.page-h h1 { font-size: var(--t1); font-weight: 650; letter-spacing: -.025em; line-height: 1.02; }
+.sec-h h2, .card .sec-h h2, .p-area-h h2 { font-size: var(--t2); font-weight: 620; letter-spacing: -.012em; }
+.recuerda { margin: -26px 0 0; display: flex; gap: 8px; align-items: center; color: var(--moss-t); font-family: var(--f-head); font-style: italic; font-size: 1.02rem; }
+.recuerda .ic { color: var(--moss); flex: none; }
+
+/* --- barra lateral: título, subtítulo, cuerpo --- */
+@media (min-width: 761px) {
+  .side { gap: 0; padding-top: 26px; }
+  .brand { padding-bottom: 22px; }
+  .nav-main { display: grid; gap: 2px; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+  .nav-t1 { font-family: var(--f-head); font-size: 1.16rem; font-weight: 600; color: var(--ink); padding: 9px 10px; letter-spacing: -.005em; }
+  .nav-t1 .ic { width: 19px; height: 19px; color: var(--forest); }
+  .nav-sec { display: grid; gap: 0; padding-bottom: 6px; }
+  .nav-t2 { font-size: .9rem; font-weight: 550; color: var(--muted); padding: 6px 10px; }
+  .nav-t2 .ic { width: 16px; height: 16px; }
+  .nav-h { font-family: var(--f-head); font-size: 1.05rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--ink); padding: 20px 10px 8px; border-top: 1px solid var(--line); margin-top: 8px; }
+  .nav-area { font-size: .95rem; font-weight: 650; color: var(--ink); margin-top: 6px; }
+  .nav-p { font-size: .88rem; font-weight: 500; color: var(--muted); padding: 6px 10px; }
+  .nav-p.nav-sub { padding-left: 24px; }
+  .nav-btn[aria-current="page"] { color: var(--ink); }
+}
+
+/* --- sendero: avance de una tarea con pasos --- */
+.sendero { position: relative; flex: none; width: 7px; align-self: stretch; min-height: 30px; margin: 2px 0; border-radius: 99px; background: color-mix(in srgb, var(--moss) 18%, transparent); overflow: hidden; }
+.sendero .sd-fill { position: absolute; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, var(--forest), var(--moss)); border-radius: 99px; transition: height .4s ease; }
+.sendero .sd-marca { position: absolute; left: 1px; right: 1px; height: 2px; background: var(--bg); opacity: .9; }
+.sendero.lleno .sd-fill { background: var(--forest); }
+.tc-izq .sendero { width: 6px; min-height: 22px; align-self: center; height: 22px; }
+.sendero-g { display: grid; gap: 6px; }
+.sg-lista { list-style: none; margin: 0; padding: 0 0 0 4px; display: grid; position: relative; }
+.sg-lista li { display: flex; gap: 12px; align-items: center; padding: 5px 0; position: relative; color: var(--muted); }
+.sg-lista li::before { content: ''; position: absolute; left: 6px; top: 50%; bottom: -50%; width: 2px; background: color-mix(in srgb, var(--moss) 25%, transparent); }
+.sg-lista li:last-child::before { display: none; }
+.sg-lista li.ok { color: var(--ink); }
+.sg-lista li.ok::before { background: var(--forest); }
+.sg-punto { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--moss); background: var(--surface); flex: none; position: relative; z-index: 1; box-sizing: border-box; }
+.sg-lista li.ok .sg-punto { background: var(--forest); border-color: var(--forest); }
+.avance-btn { justify-self: start; }
+.avance-mini { flex: none; display: inline-flex; gap: 5px; align-items: center; border: 1px solid color-mix(in srgb, var(--forest) 35%, transparent); background: color-mix(in srgb, var(--forest) 7%, transparent); color: var(--forest-t); border-radius: 99px; padding: 4px 10px; font-size: .8rem; font-weight: 600; }
+.avance-mini:hover { background: color-mix(in srgb, var(--forest) 15%, transparent); }
+.trow-m .m-avance { color: var(--forest-t); font-weight: 600; }
+
+/* --- selección como Gmail --- */
+.sel-check { width: 18px; height: 18px; border-radius: 5px; border-width: 1.6px; opacity: .55; transition: opacity .15s; }
+.trow:hover .sel-check, .tcard:hover .sel-check, .sel-check:focus-visible, .sel-check[aria-checked="true"], .sel-check[aria-checked="mixed"], .tb-h .sel-check { opacity: 1; }
+@media (hover: none) { .sel-check { opacity: .8; } }
+.sel-check[aria-checked="true"], .sel-check[aria-checked="mixed"] { background: var(--forest); border-color: var(--forest); }
+.sel-check .menos { width: 9px; height: 2px; background: #fff; border-radius: 2px; }
+.sel-bar.sel-tareas { position: sticky; top: 10px; z-index: 6; }
+
+/* --- bloques de Mis tareas --- */
+.tb-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+.tblk { grid-column: span 2; background: var(--surface); border-radius: calc(var(--r) + 2px); box-shadow: var(--shadow); padding: 6px 18px 12px; box-sizing: border-box; min-width: 0; border-top: 3px solid transparent; }
+.tblk.half { grid-column: span 1; }
+@media (max-width: 760px) { .tb-grid { grid-template-columns: minmax(0, 1fr); } .tblk, .tblk.half { grid-column: span 1; } }
+.tblk.g-antes { border-top-color: var(--clay); }
+.tblk.g-hoy { border-top-color: var(--yellow); }
+.tblk.g-pronto { border-top-color: var(--moss); }
+.tblk.g-agenda { border-top-color: var(--lake); }
+.tblk .rows { background: none !important; box-shadow: none !important; padding: 0 !important; }
+.tblk.sobre { outline: 2px dashed var(--forest); outline-offset: 3px; }
+.tblk.arrastrando { opacity: .5; }
+.tb-h { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; cursor: grab; }
+.tb-h .group-h { flex: 1 1 auto; width: auto; min-width: 0; }
+.tb-h .act { margin-left: 0; }
+.tb-ctrl { display: inline-flex; gap: 2px; align-items: center; opacity: .5; transition: opacity .15s; }
+.tblk:hover .tb-ctrl, .tb-ctrl:focus-within { opacity: 1; }
+@media (hover: none) { .tb-ctrl { opacity: .9; } }
+.tb-ctrl .icon-btn { width: 30px; height: 30px; }
+.tb-ctrl .icon-btn:disabled { opacity: .3; }
+.tb-ctrl .icon-btn:nth-last-child(2) .ic { transform: rotate(90deg); }
+.tb-ctrl .icon-btn:last-child .ic { transform: rotate(90deg); }
+.seg.mini { padding: 2px; }
+.seg.mini button { padding: 4px 7px; }
+.tblk.g-antes .group-h, .tblk.g-hoy .group-h { font-size: clamp(1.5rem, 3.4vw, 1.85rem); }
+.tblk.half.g-hoy .group-h, .tblk.half.g-antes .group-h { font-size: 1.45rem; }
+.tblk.half .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tblk .tgrid { padding: 6px 0 4px; }
+.tb-resto { display: grid; gap: 10px; }
+
+/* --- agenda --- */
+.agenda { display: grid; gap: 12px; padding: 4px 0 6px; }
+.ag-h { margin: 0 0 4px; font-weight: 650; font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; color: var(--lake-t); }
+.ag-dia.hoy .ag-h { color: var(--ink); }
+.ag-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.ag-lista li { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; padding: 6px 10px; border-radius: 10px; background: color-mix(in srgb, var(--lake) 7%, transparent); border-left: 3px solid var(--lake); }
+.ag-hora { font-variant-numeric: tabular-nums; font-size: .85rem; color: var(--muted); min-width: 4.6rem; }
+.ag-dia .hint { margin: 0; }
+
+/* --- tarjetas --- */
+.tc-izq { display: inline-flex; gap: 8px; align-items: center; }
+.tcard { border-left: 4px solid var(--pc, var(--line)); }
+
+/* --- Proyectos con aire y jerarquía --- */
+.gallery { grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 20px; }
+.gallery-xl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: 22px; }
+.pcard-b { padding: 28px 18px 18px; gap: 10px; }
+.pcard-cover { height: 52px; }
+.pcard-xl .pcard-cover { height: 84px; }
+.pcard-xl .pcard-b { padding: 30px 24px 22px; gap: 12px; }
+.pcard-xl .pcard-t { font-size: 1.75rem !important; line-height: 1.1; }
+.pcard-xl .pcard-emoji { width: 54px; height: 54px; font-size: 2.2rem; bottom: -22px; left: 20px; }
+.pcard-sigue { display: grid; gap: 2px; padding: 10px 12px; border-radius: 10px; background: var(--surface-2); }
+.pcard-sigue small { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 650; }
+.p-area { display: grid; gap: 14px; }
+.p-area-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.p-area-h h2 { margin: 0; }
+.p-area-h .link-h { border: 0; background: none; padding: 0; display: inline-flex; gap: 10px; align-items: center; font-family: var(--f-head); font-size: 1.7rem; font-weight: 620; color: var(--ink); letter-spacing: -.015em; }
+.p-area-h .link-h .mono-e { --pc: var(--pc); }
+.p-area-d { margin: -4px 0 4px; color: var(--muted); max-width: 46rem; }
+.p-filas { display: grid; gap: 2px; }
+.p-fila { display: flex; gap: 12px; align-items: center; border: 0; background: none; text-align: left; padding: 9px 10px; border-radius: 10px; color: var(--muted); font: inherit; }
+.p-fila:hover { background: var(--surface-2); color: var(--ink); }
+.p-fila-t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 550; }
+.p-quietos .sec-h h2 { font-size: 1.1rem; color: var(--muted); }
+
+/* --- Dinero y Zoho --- */
+.pill.zest-draft { background: var(--surface-2); color: var(--muted); }
+.pill.zest-sent, .pill.zest-viewed { background: color-mix(in srgb, var(--lake) 15%, transparent); color: var(--lake-t); }
+.pill.zest-accepted, .pill.zest-approved, .pill.zest-signed { background: color-mix(in srgb, var(--forest) 15%, transparent); color: var(--forest-t); }
+.pill.zest-invoiced, .pill.zest-partially_invoiced { background: color-mix(in srgb, var(--earth) 18%, transparent); color: var(--earth-t); }
+.pill.zest-declined, .pill.zest-expired, .pill.zest-vencida { background: color-mix(in srgb, var(--clay) 14%, transparent); color: var(--clay-t); }
+.aviso-txt { display: flex; gap: 8px; align-items: flex-start; color: var(--earth-t); margin: 8px 0; font-size: .92rem; flex-wrap: wrap; }
+.aviso-txt .ic { flex: none; margin-top: 2px; }
+.aviso-props { border-left: 4px solid var(--earth); }
+.aviso-props .sec-h h2 { font-size: 1.2rem; display: flex; gap: 8px; align-items: center; }
+.prop-row { display: grid; gap: 10px; padding: 14px 0; border-top: 1px solid var(--line); }
+.prop-main { display: grid; gap: 2px; }
+.prop-main small { color: var(--muted); }
+.prop-match { margin: 6px 0 0; display: flex; gap: 6px; align-items: center; font-size: .9rem; color: var(--forest-t); }
+.prop-match.dif { color: var(--clay-t); }
+.prop-match.none { color: var(--muted); }
+.prop-row select { max-width: 260px; }
+.z-borradores summary { cursor: pointer; display: flex; gap: 4px; align-items: baseline; flex-wrap: wrap; }
+.precios-h { display: grid; gap: 0; }
+.ph-g { border-top: 1px solid var(--line); }
+.ph-g:first-child { border-top: 0; }
+.ph-g summary { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 12px 2px; cursor: pointer; flex-wrap: wrap; }
+.ph-n { font-weight: 600; flex: 1 1 14rem; min-width: 0; overflow-wrap: anywhere; }
+.ph-k { display: grid; justify-items: end; }
+.ph-k b { font-family: var(--f-head); font-size: 1.15rem; }
+.ph-k small { color: var(--muted); font-size: .8rem; }
+.tbl td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cat-sugs { border-left: 4px solid var(--moss); }
+.sug { padding: 12px 0; border-top: 1px solid var(--line); display: grid; gap: 6px; }
+.sug p { margin: 0; display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; }
+.sug.alerta > p:first-child { color: var(--clay-t); }
+
+/* --- calculadora --- */
+.calc-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+@media (max-width: 900px) { .calc-grid { grid-template-columns: minmax(0, 1fr); } }
+.calc-col { display: grid; gap: 22px; min-width: 0; }
+@media (min-width: 901px) { .calc-sticky { position: sticky; top: 16px; } }
+.calc-big { font-family: var(--f-head); font-size: 1.6rem; color: var(--forest-t); }
+.calc-tarifa { border-top: 3px solid var(--forest); }
+.calc-res { border-top: 3px solid var(--yellow); }
+.calc-tbl td { padding: 8px 4px; }
+.calc-tbl .calc-total td { font-family: var(--f-head); font-size: 1.5rem; font-weight: 650; border-top: 2px solid var(--ink); padding-top: 12px; }
+.calc-extra { display: grid; grid-template-columns: minmax(0, 1fr) 7rem auto; gap: 8px; align-items: center; margin-bottom: 6px; }
+.calc-comp { background: var(--surface-2); border-radius: 12px; padding: 10px 14px; display: grid; gap: 4px; }
+.calc-comp p { margin: 0; font-size: .92rem; }
+.calc-ref summary { cursor: pointer; font-weight: 600; }
+.calc-intro { margin-top: -10px; }
 </style>
 
 <div class="app">
@@ -963,22 +1130,31 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
   const SUG_P = ['Ordená este proyecto en tareas', '¿Cuánto debería cobrar por esto?', 'Armá las carpetas de trabajo en Drive'];
   const SUG_C = ['¿Cómo voy esta semana?', 'Revisemos mi LinkedIn', 'Ayudame a ordenar mi Drive de la NIHR', '¿Qué errores repito?'];
   const MEM_TIPOS = { precio: ['Precio', 'receipt', 'earth'], tiempo: ['Tiempo', 'clock', 'lake'], horario: ['Horario', 'sun', 'yellow'], error: ['Error que repito', 'alert', 'clay'], mejora: ['Área de mejora', 'trend', 'moss'], motivacion: ['Me motiva', 'leaf', 'forest'], pasos: ['Pasos repetidos', 'list', 'lake'], cliente: ['Cliente', 'users', 'earth'], limite: ['Límite de autoría', 'flag', 'clay'], otro: ['Nota', 'book', 'moss'] };
+  // v15: solo frases con autor verificable (o recordatorios sin autor). Nada inventado ni mal atribuido.
   const FRASES = [
-    'Lo que evitás hacer también te está diciendo algo. Escuchalo… y después hacelo igual.', 'Tu sombra no es el problema: el problema es dejarla manejar el calendario.',
-    'Nadie se ordena por fuera sin ordenarse un poco por dentro. Empezá por una tarea.', 'La distracción es el inconsciente pidiendo atención. Anotala y volvé.',
-    'Lo que no hacés consciente se repite como destino. Por eso anotamos los errores.', 'La creatividad nace del caos, pero se entrega en una carpeta ordenada.',
-    'No te convertís en lo que pensás, sino en lo que terminás. Terminá algo hoy.', 'Tu ardilla interior no se va. Pero se puede sentar a esperar.',
-    'Quien mira hacia afuera sueña; quien mira su lista de pendientes, despierta.', 'El talento sin método es un volcán bonito que no calienta a nadie.',
-    'Encontrarte a vos mismo está bien. Encontrar el archivo final también.', 'Lo que te irrita del cliente puede enseñarte qué no estás diciendo claro.',
-    'Hay días de hiperfoco y días de niebla. Los dos cuentan si dejás algo hecho.', 'Toda obra grande empezó como un boceto que daba vergüenza.',
-    'Tu psique y tu bandeja de entrada tienen algo en común: necesitan límites.', 'El perfeccionismo es miedo con buena tipografía.',
-    'No viniste a este mundo a contestar correos. Pero hoy tocan tres.', 'La procrastinación es una conversación pendiente con vos mismo. Que dure 2 minutos.',
-    'Integrá tus contradicciones: podés ser artista y mandar la factura a tiempo.', 'El inconsciente trabaja de noche. Vos trabajá de 10 a 12, que es cuando rendís.',
-    'Si te persigue una tarea, dejá de huir: dale la vuelta y mirala de frente.', 'La intuición dice «este diseño». La revisión dice «en RGB, por favor».',
-    'Crecer duele un poco. Cobrar bien, al principio, también.', 'La luz no se hace imaginando la luz, sino ordenando lo oscuro. Empezá por el Drive.',
-    'Tu mejor idea de hoy vale menos que la idea mediana que sí entregás.', 'Lo que niegás te somete; lo que anotás, te obedece.',
-    'Un símbolo bien hecho dice más que diez propuestas. Elegí una.', 'Sé el arquetipo del héroe: el que vuelve con la entrega lista.',
-    'La ardilla no es tu enemiga: es tu musa con mala gestión del tiempo.', 'Mirarte con honestidad es el primer paso. El segundo es cerrar esta pestaña.',
+    ['Quien mira hacia afuera, sueña; quien mira hacia adentro, despierta.', 'C. G. Jung'],
+    ['Uno no se ilumina imaginando figuras de luz, sino haciendo consciente la oscuridad.', 'C. G. Jung'],
+    ['La creación de algo nuevo no se logra con el intelecto, sino con el instinto de juego.', 'C. G. Jung'],
+    ['Todo lo que nos irrita de los demás puede llevarnos a entendernos a nosotros mismos.', 'C. G. Jung'],
+    ['El encuentro de dos personas es como el contacto de dos sustancias químicas: si hay reacción, las dos se transforman.', 'C. G. Jung'],
+    ['El zapato que le queda a una persona le aprieta a otra; no hay una receta de vida que sirva para todos.', 'C. G. Jung'],
+    ['La felicidad no es algo ya hecho. Viene de tus propias acciones.', 'Dalai Lama'],
+    ['Si querés que otros sean felices, practicá la compasión. Si querés ser feliz, practicá la compasión.', 'Dalai Lama'],
+    ['Mi religión es muy sencilla: mi religión es la bondad.', 'Dalai Lama'],
+    ['El odio nunca se apaga con odio; se apaga con amor. Esa es una ley eterna.', 'Dhammapada (Buda)'],
+    ['Mejor que mil palabras vacías es una sola palabra que traiga paz.', 'Dhammapada (Buda)'],
+    ['Como la roca firme no se mueve con el viento, el sabio no se altera con el elogio ni con la crítica.', 'Dhammapada (Buda)'],
+    ['Gota a gota se llena la vasija.', 'Dhammapada (Buda)'],
+    ['La mente va antes que todas las cosas.', 'Dhammapada (Buda)'],
+    ['Los sentimientos vienen y van como nubes en un cielo con viento. La respiración consciente es mi ancla.', 'Thich Nhat Hanh'],
+    ['Caminá como si besaras la tierra con tus pies.', 'Thich Nhat Hanh'],
+  ];
+  // recordatorios sin autor: cuerpo, naturaleza, presencia
+  const RECUERDA = [
+    'Recordá respirar. Tres respiraciones lentas antes de seguir.', 'Salí cinco minutos. Mirá un árbol, el cielo o una planta.', 'Soltá los hombros y la mandíbula.',
+    'Tomá agua.', 'Reconectá con la naturaleza: el sol también es parte del día.', 'Estirá la espalda. Tu cuerpo también trabaja.',
+    'Una cosa a la vez. Lo demás puede esperar.', 'Mirá lejos un momento: tus ojos descansan.', 'Agradecé algo que ya tenés hoy.',
+    'Lo que hacés con calma también sale bien.', 'Caminá un poco antes de decidir.', 'Volvé al presente: ¿qué estás haciendo ahora?',
   ];
 
   const ICONS = {
@@ -1018,10 +1194,10 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     db: null, sample: null, sampleTools: false, sampleOff: false, mcp: null, fileArgs: false, perms: null,
     items: [], proyectos: [], etiquetas: [], memoria: [], ilustraciones: [], ajustes: {}, resumen: null, frase: null, curtisChat: [],
     assets: null, sampleImages: null, gcal: { events: [], range: '', err: '', perm: '', cargando: false, ok: false }, pmenu: null, proyTab: 'proyectos',
-    servicios: [], cotizaciones: [], archivos: [], precioTab: 'resumen',
+    servicios: [], cotizaciones: [], zcots: [], zfacs: [], archivos: [], precioTab: 'resumen',
     areas: [], clientes: [], facturas: [], suscripciones: [], movimientos: [], areaId: null, loadedAreas: false, zohoLeyendo: false, zohoLeido: 0, zohoSueltas: null, cotId: null, cotDraft: null, cotVisto: false, sampleToolsMax: 10, catSel: new Set(), catRevision: '', catRevisando: false, loadedCot: false, subirA: '',
     loadedItems: false, loadedProy: false,
-    view: 'inicio', proyectoId: null, tareasModo: (() => { try { return localStorage.getItem('tareasModo') || 'lista'; } catch (e) { return 'lista'; } })(), selMode: false, sel: new Set(), proyModo: 'lista', registroTab: 'reuniones', filtroTag: '',
+    view: 'inicio', proyectoId: null, tareasModo: (() => { try { return localStorage.getItem('tareasModo') || 'lista'; } catch (e) { return 'lista'; } })(), sel: new Set(), proyModo: 'lista', registroTab: 'reuniones', filtroTag: '',
     calMes: '', calSel: '', drawer: null, picking: null, emojiOpen: false, collapsed: new Set(), asking: new Map(), chatErr: new Map(),
     pendingMain: false, pendingDrawer: false,
     foco: { taskId: '', mins: 25, endsAt: 0, remaining: 25 * 60, running: false, timer: 0 },
@@ -1071,7 +1247,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     el('circle', { cx: '24', cy: '20.4', r: '1.15', fill: '#1a1f1b' });
     return svg;
   }
-  const TAGLINES = ['explorador del caos creativo', 'guía de campo para cerebros inquietos', 'curador de ardillas', 'cartógrafo de pendientes', 'domador de pestañas abiertas', 'expedición al foco', 'editor de tus distracciones', 'especie protegida: tu tiempo', 'hábitat natural: la fecha de entrega', 'avistamiento del día: una tarea terminada', 'documentando lo que sí hiciste', 'temporada de cerrar pendientes'];
+  const TAGLINES = ['guía de campo para tu trabajo', 'un paso a la vez', 'tu estudio en orden', 'presente y en camino', 'trabajo con calma', 'lo importante primero']
   // una por día: cambia, pero no se mueve en la pantalla
   const tagline = () => h('span', { class: 'tagline', text: TAGLINES[Math.floor(Date.now() / 864e5) % TAGLINES.length] });
   const isoLocal = (d) => d.toLocaleDateString('en-CA');
@@ -1191,7 +1367,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     patchItem(id, { estado });
     if (estado === 'listo') { const r = ev && ev.target && ev.target.getBoundingClientRect ? ev.target.getBoundingClientRect() : null; confetti(r ? r.left + r.width / 2 : innerWidth / 2, r ? r.top : innerHeight / 2); toast(fraseListo()); }
   }
-  function fraseListo() { const f = ['Listo. Una ardilla menos.', 'Hecho. Siguiente, sin drama.', 'Eso ya no te persigue.', 'Cerrado. Un sorbo de agua y seguí.']; return f[Math.floor(Math.random() * f.length)]; }
+  function fraseListo() { const f = ['Listo. Respirá y seguí.', 'Hecho. Un paso más en el camino.', 'Cerrado. Tomá agua antes de lo siguiente.', 'Terminado. Bien hecho.']; return f[Math.floor(Math.random() * f.length)]; }
 
   // ================= urgencia =================
   function urgencia(fecha, estado) {
@@ -1414,8 +1590,9 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     const pendN = pendientesOrden().length;
     put($('#side'),
       h('div', { class: 'brand' }, logo(40), h('div', { class: 'brand-txt' }, h('b', { text: 'Curtis' }), tagline())),
-      NAV.map(([k, l, ic]) => h('button', { type: 'button', class: 'nav-btn', 'aria-current': cur === k && S.view !== 'proyecto' && S.view !== 'area' ? 'page' : null, onclick: () => go(k) }, icon(ic), k === 'tareas' ? 'Mis tareas' : l, k === 'tareas' && pendN ? h('span', { class: 'count', text: String(pendN) }) : null)),
-      h('div', { class: 'nav-h' }, 'Proyectos', h('button', { type: 'button', 'aria-label': 'Nuevo proyecto', title: 'Nuevo proyecto', onclick: nuevoProyecto }, icon('plus', 'sm'))),
+      h('nav', { class: 'nav-main', 'aria-label': 'Principal' }, NAV.filter(([k]) => ['inicio', 'tareas', 'proyectos'].includes(k)).map(([k, l, ic]) => h('button', { type: 'button', class: 'nav-btn nav-t1', 'aria-current': cur === k && S.view !== 'proyecto' && S.view !== 'area' ? 'page' : null, onclick: () => go(k) }, icon(ic), h('span', { class: 'nav-txt', text: k === 'tareas' ? 'Mis tareas' : l }), k === 'tareas' && pendN ? h('span', { class: 'count', text: String(pendN) }) : null))),
+      h('nav', { class: 'nav-sec', 'aria-label': 'Herramientas' }, NAV.filter(([k]) => !['inicio', 'tareas', 'proyectos'].includes(k)).map(([k, l, ic]) => h('button', { type: 'button', class: 'nav-btn nav-t2', 'aria-current': cur === k ? 'page' : null, onclick: () => go(k) }, icon(ic, 'sm'), h('span', { class: 'nav-txt', text: l })))),
+      h('div', { class: 'nav-h' }, h('span', { text: 'Tus proyectos' }), h('button', { type: 'button', 'aria-label': 'Nuevo proyecto', title: 'Nuevo proyecto', onclick: nuevoProyecto }, icon('plus', 'sm'))),
       S.areas.map((a) => [h('button', { type: 'button', class: 'nav-btn nav-area', 'aria-current': S.view === 'area' && S.areaId === a.id ? 'page' : null, onclick: () => go('area', a.id) }, h('span', { class: 'nav-emoji', text: a.icono || '🗂️' }), h('span', { class: 'nav-txt', text: a.nombre || 'Área' })),
         proyActivos().filter((p) => p.area === a.id).map((p) => navP(p, true))]),
       sinArea.map((p) => navP(p, false)),
@@ -1461,6 +1638,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     else content = viewInicio();
     $('#main').classList.toggle('ancho', v === 'inicio');
     put($('#main'), content);
+    const ph = $('#main').querySelector('.page-h'); if (ph && v !== 'inicio') ph.after(h('p', { class: 'recuerda' }, icon('leaf', 'sm'), h('span', { text: recordatorio(v) })));
     hacerPlegables();
   }
   // cualquier sección con título se puede plegar (se recuerda en este equipo)
@@ -1506,19 +1684,52 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
       p ? h('span', { class: 'm-proy', style: '--pc:' + colorDe(p) }, h('span', { class: 'dot', style: 'background:' + colorVar(p.color) }), (p.icono || '') + ' ' + (p.nombre || '')) : null,
       it.estado === 'esperando' && it.con_quien ? h('span', {}, 'a ' + it.con_quien) : null,
       subs.length ? h('span', {}, icon('check', 'sm'), done + '/' + subs.length) : null,
+      Array.isArray(it.avances) && it.avances.length ? h('span', { class: 'm-avance' }, icon('trend', 'sm'), it.avances.length + (it.avances.length === 1 ? ' avance' : ' avances')) : null,
       hs.length ? h('span', { class: 'hijos-n' }, icon('list', 'sm'), hs.filter((x) => x.estado === 'listo').length + '/' + hs.length + ' dentro') : null,
       padre ? h('span', {}, icon('right', 'sm'), 'en «' + (padre.titulo || '') + '»') : null,
       tagChips(it.etiquetas),
       Array.isArray(it.chat) && it.chat.length ? h('span', {}, icon('sparkle', 'sm')) : null,
     ];
   }
+
+  // ================= SENDERO: cuánto avanzó una tarea con pasos =================
+  function pasosDe(it) {
+    const subs = (Array.isArray(it.subtareas) ? it.subtareas : []).map((x) => ({ t: x.texto || '', ok: !!x.hecho }));
+    const hs = hijos(it.id).sort((a, b) => (a.creado || 0) - (b.creado || 0)).map((x) => ({ t: x.titulo || '', ok: x.estado === 'listo', id: x.id }));
+    return [...hs, ...subs];
+  }
+  function sendero(it) {
+    const ps = pasosDe(it); if (!ps.length) return null;
+    const ok = ps.filter((x) => x.ok).length; const pct = Math.round((ok / ps.length) * 100);
+    const n = Math.min(ps.length, 10);
+    return h('span', { class: 'sendero' + (pct === 100 ? ' lleno' : ''), role: 'img', title: ok + ' de ' + ps.length + ' pasos', 'aria-label': 'Avance: ' + ok + ' de ' + ps.length + ' pasos' },
+      h('span', { class: 'sd-fill', style: 'height:' + pct + '%' }),
+      Array.from({ length: n - 1 }, (_, i) => h('span', { class: 'sd-marca', style: 'bottom:' + Math.round(((i + 1) / n) * 100) + '%' })));
+  }
+  function senderoGrande(it) {
+    const ps = pasosDe(it); const av = Array.isArray(it.avances) ? it.avances : [];
+    if (!ps.length && !av.length) return null;
+    const ok = ps.filter((x) => x.ok).length; const pct = ps.length ? Math.round((ok / ps.length) * 100) : 0;
+    return h('div', { class: 'sendero-g' },
+      h('p', { class: 'block-h' }, icon('trend', 'sm'), 'Cómo vas', ps.length ? h('span', { text: '· ' + pct + '%' }) : null),
+      ps.length ? h('ol', { class: 'sg-lista' }, [...ps].reverse().map((x) => h('li', { class: x.ok ? 'ok' : '' }, h('span', { class: 'sg-punto' }), h('span', { text: x.t || 'Paso' })))) : null,
+      av.length ? h('p', { class: 'hint', text: av.length === 1 ? 'Marcaste avance 1 vez · ' + fmtDate(String(av[av.length - 1].fecha), { day: 'numeric', month: 'short' }) : 'Marcaste avance ' + av.length + ' veces · la última ' + fmtDate(String(av[av.length - 1].fecha), { day: 'numeric', month: 'short' }) }) : null);
+  }
+  function marcarAvance(id) {
+    const it = item(id); if (!it) return;
+    const av = (Array.isArray(it.avances) ? it.avances : []).concat([{ fecha: hoy(), at: Date.now() }]).slice(-30);
+    patchItem(id, { avances: av }); toast('Avance anotado. Seguí así.');
+  }
   function taskRow(it, opts) {
     opts = opts || {};
-    const li = h('li', { class: 'trow' + (it.estado === 'listo' ? ' done' : '') + (opts.child ? ' child' : '') + (opts.parent ? ' parent' : '') + (S.selMode && S.sel.has(it.id) ? ' sel' : '') + (estancada(it) ? ' quieta' : ''), draggable: opts.drag ? 'true' : null, 'data-id': it.id },
-      S.selMode ? h('button', { type: 'button', class: 'check sel-check', role: 'checkbox', 'aria-checked': String(S.sel.has(it.id)), 'aria-label': 'Seleccionar «' + (it.titulo || 'tarea') + '»', onclick: () => toggleSel(it.id) }, S.sel.has(it.id) ? icon('check', 'sm') : null) : stButton(it),
-      h('button', { type: 'button', class: 'trow-main', onclick: () => (S.selMode ? toggleSel(it.id) : openItem(it.id)) },
+    const li = h('li', { class: 'trow' + (it.estado === 'listo' ? ' done' : '') + (opts.child ? ' child' : '') + (opts.parent ? ' parent' : '') + (S.sel.has(it.id) ? ' sel' : '') + (estancada(it) ? ' quieta' : ''), draggable: opts.drag ? 'true' : null, 'data-id': it.id },
+      opts.selec ? h('button', { type: 'button', class: 'check sel-check', role: 'checkbox', 'aria-checked': String(S.sel.has(it.id)), 'aria-label': 'Seleccionar «' + (it.titulo || 'tarea') + '»', title: 'Seleccionar', onclick: () => toggleSel(it.id) }, S.sel.has(it.id) ? icon('check', 'sm') : null) : null,
+      stButton(it),
+      sendero(it),
+      h('button', { type: 'button', class: 'trow-main', onclick: () => openItem(it.id) },
         h('span', { class: 'trow-t', text: it.titulo || 'Sin título' }),
-        h('span', { class: 'trow-m' }, taskMeta(it, opts.showProj, opts.child || opts.parent))));
+        h('span', { class: 'trow-m' }, taskMeta(it, opts.showProj, opts.child || opts.parent))),
+      (opts.avance || estancada(it)) && !S.sel.size && isOpen(it) ? h('button', { type: 'button', class: 'avance-mini', title: 'Marcar que avanzaste', 'aria-label': 'Avancé en «' + (it.titulo || 'la tarea') + '»', onclick: () => marcarAvance(it.id) }, icon('trend', 'sm'), h('span', { text: 'Avancé' })) : null);
     if (opts.drag) li.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/plain', it.id); ev.dataTransfer.effectAllowed = 'move'; });
     const wrap = [li];
     if (S.picking === it.id) wrap.push(h('li', { style: 'list-style:none' }, picker(it)));
@@ -1642,7 +1853,11 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     }
     return svg;
   }
-  function fraseHoy() { return S.frase && S.frase.fecha === hoy() ? S.frase.texto : FRASES[dayOfYear() % FRASES.length]; }
+  const fraseTxt = (f) => (Array.isArray(f) ? f[0] + (f[1] ? ' — ' + f[1] : '') : String(f || ''));
+  function frasesTodas() { const propias = (Array.isArray(ajuste('frasesPropias', [])) ? ajuste('frasesPropias', []) : []).filter((x) => x && x.t).map((x) => [x.t, x.a || '']); return [...FRASES, ...propias]; }
+  function fraseHoy() { if (S.frase && S.frase.fecha === hoy() && S.frase.v15) return S.frase.texto; const l = frasesTodas(); return fraseTxt(l[dayOfYear() % l.length]); }
+  // un recordatorio distinto por vista y por día
+  function recordatorio(clave) { let n = dayOfYear(); for (const ch of String(clave || '')) n += ch.charCodeAt(0); return RECUERDA[n % RECUERDA.length]; }
   // ================= INICIO CON WIDGETS (chico, mediano, grande; se mueven) =================
   const W_TAM = { s: 'Chico', m: 'Mediano', l: 'Grande' };
   const W_BASE = [{ id: 'resumen', t: 'm' }, { id: 'citas', t: 'm' }, { id: 'ahora', t: 'l' }, { id: 'aviso', t: 's' }, { id: 'dinero', t: 's' }, { id: 'curtis', t: 'm' }, { id: 'hoy', t: 'l' }, { id: 'entregas', t: 'm' }];
@@ -1792,19 +2007,23 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
 
   // ================= SELECCIÓN MÚLTIPLE =================
   function toggleSel(id) { if (S.sel.has(id)) S.sel.delete(id); else S.sel.add(id); renderMain(true); }
-  function salirSel() { S.selMode = false; S.sel.clear(); renderMain(true); }
+  function salirSel() { S.sel.clear(); renderMain(true); }
   function barraSeleccion(visibles) {
-    if (!S.selMode) return null;
+    if (!S.sel.size) return null;
     const ids = [...S.sel].filter((id) => item(id)); const n = ids.length;
     const pSel = h('select', { 'aria-label': 'Mandar a proyecto', disabled: n ? null : true }, h('option', { value: '', text: 'Mandar a…' }), h('option', { value: '__none', text: 'Sin proyecto (Mis tareas)' }), proyActivos().map((p) => h('option', { value: p.id, text: (p.icono || '') + ' ' + (p.nombre || '') })));
     pSel.addEventListener('change', () => { if (!pSel.value) return; mandarA(ids, pSel.value === '__none' ? '' : pSel.value); salirSel(); });
     return h('div', { class: 'sel-bar sel-tareas', role: 'toolbar', 'aria-label': 'Acciones para las seleccionadas' },
       h('b', { text: n + (n === 1 ? ' seleccionada' : ' seleccionadas') }),
-      h('button', { type: 'button', class: 'btn ghost small', onclick: () => { (visibles || []).forEach((id) => S.sel.add(id)); renderMain(true); } }, 'Todas'),
       h('div', { class: 'chips' }, ESTADOS.map((e) => h('button', { type: 'button', class: 'chip', disabled: n ? null : true, onclick: () => { ids.forEach((id) => patchItem(id, { estado: e })); toast(n + ' → ' + e); salirSel(); } }, h('span', { class: 'st mini ' + slug(e) }), e))),
       pSel,
       h('button', { type: 'button', class: 'btn warn small', disabled: n ? null : true, onclick: () => confirmar('¿Borrar ' + n + (n === 1 ? ' tarea?' : ' tareas?'), 'Se borran de Curtis. No se puede deshacer.', 'Borrar', () => { ids.forEach((id) => { hijos(id).forEach((c) => patchItem(c.id, { padre: '' })); deleteItem(id); }); toast(n === 1 ? 'Borrada' : n + ' borradas'); salirSel(); }) }, icon('trash', 'sm'), 'Borrar'),
-      h('button', { type: 'button', class: 'btn soft small', onclick: salirSel }, 'Cancelar'));
+      h('button', { type: 'button', class: 'btn soft small', onclick: salirSel }, 'Quitar selección'));
+  }
+  function casillaTodas(ids) {
+    const n = ids.filter((id) => S.sel.has(id)).length; const st = !n ? 'false' : n === ids.length ? 'true' : 'mixed';
+    return h('button', { type: 'button', class: 'check sel-check todas', role: 'checkbox', 'aria-checked': st, 'aria-label': st === 'true' ? 'Quitar todas' : 'Seleccionar todas', title: st === 'true' ? 'Quitar todas' : 'Seleccionar todas', onclick: () => { if (st === 'true') ids.forEach((id) => S.sel.delete(id)); else ids.forEach((id) => S.sel.add(id)); renderMain(true); } },
+      st === 'true' ? icon('check', 'sm') : st === 'mixed' ? h('span', { class: 'menos' }) : null);
   }
   function mandarA(ids, pid) {
     const p = proyecto(pid);
@@ -1827,7 +2046,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
       sub('Fecha', h('div', { class: 'chips' }, [['Hoy', hoy()], ['Mañana', addDays(hoy(), 1)], ['Próx. semana', addDays(hoy(), 7)], ['Sin fecha', '']].map(([l, f]) => h('button', { type: 'button', class: 'chip', onclick: () => { cerrarMenu(); patchItem(id, { fecha: f }); toast(l); } }, l)))),
       sub('Mandar a', h('div', { class: 'ctx-list' }, it.proyecto ? fila('home', 'Sin proyecto (Mis tareas)', () => mandarA([id], '')) : null, otros.map((p) => h('button', { type: 'button', role: 'menuitem', class: 'ctx-row', style: '--pc:' + colorDe(p), onclick: () => { cerrarMenu(); mandarA([id], p.id); } }, h('span', { class: 'mono-e', text: p.icono || '📁' }), h('span', { text: p.nombre || 'Sin nombre' }))), !otros.length && !it.proyecto ? h('span', { class: 'hint', text: 'No hay otros proyectos.' }) : null)),
       sub('Tamaño en tarjetas', h('div', { class: 'seg small' }, [['s', 'Chica'], ['m', 'Mediana'], ['l', 'Grande']].map(([k, l]) => h('button', { type: 'button', 'aria-pressed': String((it.tam || 's') === k), onclick: () => { cerrarMenu(); patchItem(id, { tam: k }); } }, l)))),
-      fila('check', 'Seleccionar varias', () => { S.selMode = true; S.sel.add(id); renderMain(true); }),
+      fila('check', S.sel.has(id) ? 'Quitar de la selección' : 'Seleccionar', () => toggleSel(id)),
       fila('trash', 'Borrar', () => confirmar('¿Borrar «' + (it.titulo || 'la tarea') + '»?', 'Se borra de Curtis.', 'Borrar', () => { hijos(id).forEach((c) => patchItem(c.id, { padre: '' })); deleteItem(id); toast('Borrada'); }), 'peligro'));
     document.body.append(m);
     const r = m.getBoundingClientRect();
@@ -1862,6 +2081,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
         h('button', { type: 'button', class: 'w-link est-t', onclick: () => openItem(it.id), text: it.titulo || 'Sin título' }),
         h('small', { class: 'hint', text: (isDay(it.fecha) && diffDays(it.fecha) < 0 ? 'venció hace ' + -diffDays(it.fecha) + ' días' : 'quieta hace ' + dias(it) + ' días') + (it.proyecto && proyecto(it.proyecto) ? ' · ' + proyecto(it.proyecto).nombre : '') }),
         h('div', { class: 'row-actions' },
+          h('button', { type: 'button', class: 'btn forest small', onclick: () => marcarAvance(it.id) }, icon('trend', 'sm'), 'Avancé'),
           h('button', { type: 'button', class: 'btn soft small', onclick: () => { patchItem(it.id, { fecha: hoy() }); toast('Para hoy'); } }, 'Hoy'),
           h('button', { type: 'button', class: 'btn soft small', onclick: () => { patchItem(it.id, { fecha: addDays(hoy(), 7) }); toast('Para la próxima semana'); } }, 'Próx. semana'),
           h('button', { type: 'button', class: 'btn soft small', onclick: () => openItem(it.id) }, 'Partirla'),
@@ -1875,10 +2095,10 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     if (!ord.length) return h('p', { class: 'empty card', text: 'Nada pendiente. Tocá + para anotar.' });
     return h('div', { class: 'tgrid' }, ord.map((it, i) => {
       const tam = ['s', 'm', 'l'].includes(it.tam) ? it.tam : 's';
-      const c = h('div', { class: 'tcard tc-' + tam + (S.selMode && S.sel.has(it.id) ? ' sel' : ''), draggable: S.selMode ? null : 'true', 'data-id': it.id },
-        h('div', { class: 'tc-top' }, S.selMode ? h('button', { type: 'button', class: 'check', role: 'checkbox', 'aria-checked': String(S.sel.has(it.id)), 'aria-label': 'Seleccionar', onclick: () => toggleSel(it.id) }, S.sel.has(it.id) ? icon('check', 'sm') : null) : stButton(it),
+      const c = h('div', { class: 'tcard tc-' + tam + (S.sel.has(it.id) ? ' sel' : ''), draggable: 'true', 'data-id': it.id, style: it.proyecto && proyecto(it.proyecto) ? '--pc:' + colorDe(proyecto(it.proyecto)) : null },
+        h('div', { class: 'tc-top' }, h('span', { class: 'tc-izq' }, h('button', { type: 'button', class: 'check sel-check', role: 'checkbox', 'aria-checked': String(S.sel.has(it.id)), 'aria-label': 'Seleccionar «' + (it.titulo || 'tarea') + '»', onclick: () => toggleSel(it.id) }, S.sel.has(it.id) ? icon('check', 'sm') : null), stButton(it), sendero(it)),
           h('button', { type: 'button', class: 'icon-btn tc-tam', title: 'Cambiar tamaño', 'aria-label': 'Cambiar tamaño de la tarjeta', onclick: () => patchItem(it.id, { tam: tam === 's' ? 'm' : tam === 'm' ? 'l' : 's' }) }, icon('board', 'sm'))),
-        h('button', { type: 'button', class: 'tc-t', onclick: () => (S.selMode ? toggleSel(it.id) : openItem(it.id)), text: it.titulo || 'Sin título' }),
+        h('button', { type: 'button', class: 'tc-t', onclick: () => openItem(it.id), text: it.titulo || 'Sin título' }),
         h('div', { class: 'trow-m' }, taskMeta(it, true)),
         tam === 'l' && it.notas ? h('p', { class: 'tc-n', text: String(it.notas).slice(0, 280) }) : null);
       c.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/plain', String(i)); c.classList.add('arrastrando'); });
@@ -1915,8 +2135,29 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
   }
   document.body.append(h('button', { type: 'button', id: 'msg-fab', class: 'msg-fab', title: 'Un mensaje para vos', 'aria-label': 'Ver un mensaje positivo', onclick: mostrarMensaje }, icon('heart')));
 
+  // bloques de Mis tareas que se mueven (como los widgets de Inicio)
+  const TB_BASE = [{ id: 'antes', w: 'full', v: 'lista' }, { id: 'hoy', w: 'full', v: 'lista' }, { id: 'pronto', w: 'half', v: 'lista' }, { id: 'agenda', w: 'half', v: 'lista' }];
+  function bloquesTareas() {
+    try { const l = JSON.parse(localStorage.getItem('bloquesTareas') || 'null'); if (Array.isArray(l) && l.length) { const ok = l.filter((b) => TB_BASE.some((x) => x.id === b.id)); TB_BASE.forEach((b) => { if (!ok.some((x) => x.id === b.id)) ok.push(Object.assign({}, b)); }); return ok; } } catch (e) { /* sin memoria */ }
+    return TB_BASE.map((b) => Object.assign({}, b));
+  }
+  function guardarBloques(l) { try { localStorage.setItem('bloquesTareas', JSON.stringify(l)); } catch (e) { /* sin memoria */ } renderMain(true); }
+  // agenda de Google Calendar para los próximos días (solo lectura)
+  function agenda(dias, opts) {
+    opts = opts || {};
+    if (!S.mcp) return h('p', { class: 'hint', text: 'Tu calendario se ve cuando abrís Curtis en claude.ai.' });
+    if (!S.gcal.ok) return h('div', { class: 'row-actions' }, gcalEstado(), S.gcal.err ? h('span', { class: 'hint', text: S.gcal.err }) : null);
+    const t = hoy(); const out = [];
+    for (let k = 0; k < dias; k++) { const d = addDays(t, k); const ev = gcalDel(d); if (ev.length || k === 0) out.push([d, ev]); }
+    const nombreDia = (d) => (d === t ? 'Hoy' : d === addDays(t, 1) ? 'Mañana' : cap(fmtDate(d, { weekday: 'long', day: 'numeric', month: 'short' })));
+    return h('div', { class: 'agenda' }, out.map(([d, ev]) => h('div', { class: 'ag-dia' + (d === t ? ' hoy' : '') },
+      h('p', { class: 'ag-h', text: nombreDia(d) }),
+      ev.length ? h('ul', { class: 'ag-lista' }, ev.slice(0, opts.max || 8).map((e) => h('li', {}, h('span', { class: 'ag-hora', text: evHora(e) }), h('button', { type: 'button', class: 'w-link', onclick: () => notasDeEvento(e), text: e.titulo }), e.cal ? h('small', { class: 'w-cal', text: e.cal }) : null))) : h('p', { class: 'hint', text: 'Sin citas.' }))),
+      out.length <= 1 && !gcalDel(t).length ? h('p', { class: 'hint', text: 'No hay citas en los próximos ' + dias + ' días.' }) : null);
+  }
   function viewTareas() {
     const t = hoy(); const semana = addDays(t, 6);
+    if (S.tareasModo === 'tarjetas') S.tareasModo = 'lista';
     const open = tareas().filter((it) => isOpen(it) && pasaFiltro(it));
     const sortF = (a, b) => (b.prioridad === 'alta') - (a.prioridad === 'alta') || (a.fecha || '').localeCompare(b.fecha || '') || (a.creado || 0) - (b.creado || 0);
     const antes = open.filter((it) => isDay(it.fecha) && it.fecha < t).sort(sortF);
@@ -1926,11 +2167,10 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     const luego = open.filter((it) => isDay(it.fecha) && it.fecha > semana).sort(sortF);
     const sin = open.filter((it) => !isDay(it.fecha)).sort(sortF);
     const listas = tareas().filter((it) => it.estado === 'listo' && pasaFiltro(it)).sort((a, b) => (b.terminado || 0) - (a.terminado || 0)).slice(0, 30);
+    const visibles = open.map((x) => x.id);
     const head = h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Ordenadas por tiempo' }), h('h1', { text: 'Mis tareas' })),
       h('div', { class: 'seg', role: 'group', 'aria-label': 'Vista' },
-        [['lista', 'Lista', 'list'], ['tarjetas', 'Tarjetas', 'cards'], ['tablero', 'Tablero', 'board'], ['calendario', 'Calendario', 'calendar']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.tareasModo === k), onclick: () => { S.tareasModo = k; setPref('tareasModo', k); renderMain(true); } }, icon(ic, 'sm'), l))),
-      S.tareasModo === 'lista' || S.tareasModo === 'tarjetas' ? h('button', { type: 'button', class: 'btn soft small', 'aria-pressed': String(!!S.selMode), onclick: () => { if (S.selMode) salirSel(); else { S.selMode = true; renderMain(true); } } }, icon('check', 'sm'), S.selMode ? 'Listo' : 'Seleccionar') : null);
-    const visibles = open.map((x) => x.id);
+        [['lista', 'Lista', 'list'], ['tablero', 'Tablero', 'board'], ['calendario', 'Calendario', 'calendar']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.tareasModo === k), onclick: () => { S.tareasModo = k; setPref('tareasModo', k); renderMain(true); } }, icon(ic, 'sm'), l))));
     if (S.tareasModo === 'tablero') {
       const all = tareas().filter(pasaFiltro);
       return [head, filtroBar(), h('div', { class: 'board' }, ESTADOS.map((e) => boardCol(cap(e), all.filter((it) => (it.estado || 'por hacer') === e).sort(sortF).slice(0, e === 'listo' ? 20 : 200),
@@ -1938,21 +2178,56 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
         { st: slug(e), showProj: true, add: e === 'por hacer' ? addRow('Agregar tarea', { fecha: hoy() }) : null })))];
     }
     if (S.tareasModo === 'calendario') return [head, filtroBar(), h('div', { class: 'two' }, calendario(), fechasLimiteCard(45))];
-    if (S.tareasModo === 'tarjetas') return [head, barraSeleccion(visibles), filtroBar(), bloqueEstancadas(), h('p', { class: 'hint', text: 'Arrastrá para ordenar. El botón de la esquina cambia el tamaño. Clic derecho para más.' }), viewTarjetas(open)];
+    const DEF = {
+      antes: { titulo: 'Atrasadas', icon: 'alert', list: antes, opts: { avance: true, action: antes.length ? h('button', { type: 'button', class: 'btn soft small', onclick: (ev) => { ev.stopPropagation(); antes.forEach((it) => patchItem(it.id, { fecha: t })); toast('Todo pasó a hoy. Empezá limpio.'); } }, 'Pasar todo a hoy') : null } },
+      hoy: { titulo: 'Hoy', icon: 'sun', list: hoyL, opts: { add: addRow('Agregar tarea para hoy', { fecha: t }), empty: 'Nada para hoy todavía.' } },
+      pronto: { titulo: 'Próximos 3 días', icon: 'hourglass', list: pronto, opts: { add: addRow('Agregar para mañana', { fecha: addDays(t, 1) }), empty: 'Nada en los próximos días.' } },
+      agenda: { titulo: 'Tu calendario', icon: 'calendar' },
+    };
+    const lay = bloquesTareas().filter((b) => b.id !== 'antes' || antes.length);
+    const all = bloquesTareas();
+    const mover = (id, to) => { const l = [...all]; const from = l.findIndex((x) => x.id === id); const [m] = l.splice(from, 1); l.splice(Math.max(0, Math.min(l.length, to)), 0, m); guardarBloques(l); };
+    const cambiar = (id, patch) => guardarBloques(all.map((x) => (x.id === id ? Object.assign({}, x, patch) : x)));
+    const bloque = (b) => {
+      const d = DEF[b.id]; const abierto = !S.collapsed.has(b.id); const idx = all.findIndex((x) => x.id === b.id);
+      const ctrls = h('span', { class: 'tb-ctrl' },
+        d.list ? h('span', { class: 'seg mini', role: 'group', 'aria-label': 'Ver como' }, [['lista', 'list', 'Lista'], ['tarjetas', 'cards', 'Tarjetas']].map(([k, ic, l]) => h('button', { type: 'button', 'aria-pressed': String((b.v || 'lista') === k), title: l, 'aria-label': 'Ver ' + d.titulo + ' como ' + l, onclick: () => cambiar(b.id, { v: k }) }, icon(ic, 'sm')))) : null,
+        h('button', { type: 'button', class: 'icon-btn', title: b.w === 'half' ? 'Hacer ancho' : 'Hacer angosto', 'aria-label': (b.w === 'half' ? 'Ensanchar ' : 'Angostar ') + d.titulo, onclick: () => cambiar(b.id, { w: b.w === 'half' ? 'full' : 'half' }) }, icon(b.w === 'half' ? 'grid' : 'board', 'sm')),
+        h('button', { type: 'button', class: 'icon-btn', title: 'Subir', 'aria-label': 'Subir ' + d.titulo, disabled: idx === 0 ? true : null, onclick: () => mover(b.id, idx - 1) }, icon('back', 'sm')),
+        h('button', { type: 'button', class: 'icon-btn', title: 'Bajar', 'aria-label': 'Bajar ' + d.titulo, disabled: idx === all.length - 1 ? true : null, onclick: () => mover(b.id, idx + 1) }, icon('right', 'sm')));
+      const hd = h('div', { class: 'tb-h' },
+        h('button', { type: 'button', class: 'group-h', 'aria-expanded': String(abierto), onclick: () => { abierto ? S.collapsed.add(b.id) : S.collapsed.delete(b.id); renderMain(true); } },
+          icon('chev', 'sm chev'), icon(d.icon, 'sm'), d.titulo, d.list ? h('span', { class: 'n', text: String(d.list.length) }) : null),
+        d.list && d.list.length ? casillaTodas(d.list.map((x) => x.id)) : null,
+        d.opts && d.opts.action ? h('span', { class: 'act' }, d.opts.action) : null, ctrls);
+      let body = null;
+      if (abierto) {
+        if (b.id === 'agenda') body = agenda(7);
+        else if ((b.v || 'lista') === 'tarjetas') body = [viewTarjetas(d.list), d.opts.add ? h('ul', { class: 'rows' }, d.opts.add) : null];
+        else { const rows = d.list.flatMap((it) => taskRow(it, Object.assign({ showProj: true, selec: true }, d.opts))); if (d.opts.add) rows.push(d.opts.add); body = rows.length ? h('ul', { class: 'rows' }, rows) : h('p', { class: 'empty', text: d.opts.empty || 'Nada aquí.' }); }
+      }
+      const el = h('section', { class: 'group tblk g-' + b.id + (b.w === 'half' ? ' half' : '') + (abierto ? '' : ' cerrado'), 'data-blk': b.id }, hd, body);
+      hd.setAttribute('draggable', 'true');
+      hd.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/blk', b.id); el.classList.add('arrastrando'); });
+      hd.addEventListener('dragend', () => el.classList.remove('arrastrando'));
+      el.addEventListener('dragover', (ev) => { if ([...ev.dataTransfer.types].includes('text/blk')) { ev.preventDefault(); el.classList.add('sobre'); } });
+      el.addEventListener('dragleave', () => el.classList.remove('sobre'));
+      el.addEventListener('drop', (ev) => { const id = ev.dataTransfer.getData('text/blk'); el.classList.remove('sobre'); if (id && id !== b.id) { ev.preventDefault(); mover(id, idx); } });
+      return el;
+    };
+    const opL = { showProj: true, selec: true };
     return [head, barraSeleccion(visibles), filtroBar(), bloqueEstancadas(),
-      antes.length ? group('antes', 'Atrasadas', antes, { icon: 'alert', showProj: true, action: h('button', { type: 'button', class: 'btn soft small', onclick: (ev) => { ev.stopPropagation(); antes.forEach((it) => patchItem(it.id, { fecha: t })); toast('Todo pasó a hoy. Empezá limpio.'); } }, 'Pasar todo a hoy') }) : null,
-      group('hoy', 'Hoy', hoyL, { icon: 'sun', showProj: true, add: addRow('Agregar tarea para hoy', { fecha: t }), empty: 'Nada para hoy todavía.' }),
-      group('pronto', 'Próximos 3 días', pronto, { icon: 'hourglass', showProj: true, add: addRow('Agregar para mañana', { fecha: addDays(t, 1) }) }),
-      group('semana', 'Resto de la semana', sem, { icon: 'calendar', showProj: true }),
-      group('luego', 'Más adelante', luego, { icon: 'leaf', showProj: true }),
-      sin.length ? group('sin', 'Sin fecha · ardillas estacionadas', sin, { icon: 'dashed', showProj: true }) : null,
-      group('listas', 'Listas (últimas 30)', listas, { icon: 'check', showProj: true, empty: 'Todavía nada terminado.' })];
+      h('div', { class: 'tb-grid' }, lay.map(bloque)),
+      h('div', { class: 'tb-resto' },
+        group('semana', 'Resto de la semana', sem, Object.assign({ icon: 'calendar' }, opL)),
+        group('luego', 'Más adelante', luego, Object.assign({ icon: 'leaf' }, opL)),
+        sin.length ? group('sin', 'Sin fecha', sin, Object.assign({ icon: 'dashed' }, opL)) : null,
+        group('listas', 'Listas (últimas 30)', listas, { icon: 'check', showProj: true, empty: 'Todavía nada terminado.' }))];
   }
-
   // ================= PROYECTOS =================
-  function pcard(p) {
-    const card = pcardInner(p);
-    return h('div', { class: 'pwrap' }, card,
+  function pcard(p, xl) {
+    const card = pcardInner(p, xl);
+    return h('div', { class: 'pwrap' + (xl ? ' pwrap-xl' : '') }, card,
       h('button', { type: 'button', class: 'icon-btn pmenu-btn', 'aria-label': 'Opciones de ' + (p.nombre || 'proyecto'), 'aria-expanded': String(S.pmenu === p.id), onclick: (ev) => { ev.stopPropagation(); S.pmenu = S.pmenu === p.id ? null : p.id; renderMain(true); } }, icon('dots')),
       S.pmenu === p.id ? h('div', { class: 'pmenu', role: 'menu' },
         h('button', { type: 'button', role: 'menuitem', onclick: () => { S.pmenu = null; renombrarProyecto(p.id); } }, icon('edit', 'sm'), 'Renombrar'),
@@ -1981,16 +2256,18 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     });
   }
   document.addEventListener('click', (ev) => { if (S.pmenu && !(ev.target.closest && ev.target.closest('.pwrap'))) { S.pmenu = null; renderMain(true); } });
-  function pcardInner(p) {
+  function pcardInner(p, xl) {
     const s = proyStats(p);
-    return h('button', { type: 'button', class: 'pcard', style: '--pc:' + colorDe(p), onclick: () => go('proyecto', p.id) },
+    const sigue = xl ? tareas().filter((it) => it.proyecto === p.id && isOpen(it)).sort((a, b) => (a.fecha || '9999').localeCompare(b.fecha || '9999'))[0] : null;
+    return h('button', { type: 'button', class: 'pcard' + (xl ? ' pcard-xl' : ''), style: '--pc:' + colorDe(p), onclick: () => go('proyecto', p.id) },
       h('div', { class: 'pcard-cover', style: 'background:linear-gradient(135deg,' + colorVar(p.color) + ', color-mix(in srgb,' + colorVar(p.color) + ' 40%, var(--surface)))' }, h('span', { class: 'pcard-emoji', text: p.icono || '📁' })),
       h('div', { class: 'pcard-b' },
         h('p', { class: 'pcard-t', text: p.nombre || 'Sin nombre' }),
         h('div', { class: 'trow-m' }, p.estado === 'terminado' ? h('span', { class: 'u done' }, icon('package', 'sm'), 'Entregado' + (p.entregado ? ' ' + fmtDate(p.entregado, { day: 'numeric', month: 'short' }) : '')) : (isDay(p.entrega) ? urgPill(p.entrega, '', 'Entrega ') : null),
           p.cliente ? h('span', {}, icon('users', 'sm'), p.cliente) : null, Number(p.precio) ? h('span', {}, icon('receipt', 'sm'), money(p.precio)) : null, p.categoria ? h('span', { text: p.categoria }) : null, p.estado === 'pausa' ? h('span', { class: 'u none', text: 'En pausa' }) : null, tagChips(p.etiquetas)),
         h('div', { class: 'bar', role: 'img', 'aria-label': s.done + ' de ' + s.total + ' tareas listas' }, h('span', { style: 'width:' + Math.round(s.pct * 100) + '%' })),
-        h('span', { class: 'hint', text: s.total ? s.done + ' de ' + s.total + ' tareas listas' : 'Sin tareas todavía' })));
+        h('span', { class: 'hint', text: s.total ? s.done + ' de ' + s.total + ' tareas listas' : 'Sin tareas todavía' }),
+        sigue ? h('span', { class: 'pcard-sigue' }, h('small', { text: 'Lo que sigue' }), h('b', { text: sigue.titulo || 'Sin título' })) : null));
   }
   async function nuevoProyecto() {
     const id = await addProyecto({});
@@ -2003,14 +2280,22 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     if (S.proyTab === 'ilustraciones') return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Tu catálogo para licenciar' }), h('h1', { text: 'Ilustraciones' }))), tabs, viewIlustraciones()];
     const act = S.proyectos.filter((p) => p.estado !== 'terminado' && pasaFiltro(p)).sort((a, b) => (a.entrega || '9999').localeCompare(b.entrega || '9999'));
     const fin = S.proyectos.filter((p) => p.estado === 'terminado' && pasaFiltro(p)).sort((a, b) => (b.entregado || '').localeCompare(a.entregado || ''));
-    const conArea = S.areas.map((a) => ({ a, ps: act.filter((p) => p.area === a.id) }));
-    const sueltos = act.filter((p) => !p.area || !area(p.area));
+    const pausa = act.filter((p) => p.estado === 'pausa');
+    const vivos = act.filter((p) => p.estado !== 'pausa');
+    const destacados = vivos.filter((p) => isDay(p.entrega)).slice(0, 2);
+    const dIds = new Set(destacados.map((p) => p.id));
+    const conArea = S.areas.map((a) => ({ a, ps: vivos.filter((p) => p.area === a.id && !dIds.has(p.id)) }));
+    const sueltos = vivos.filter((p) => (!p.area || !area(p.area)) && !dIds.has(p.id));
+    const filaChica = (p) => h('button', { type: 'button', class: 'p-fila', style: '--pc:' + colorDe(p), onclick: () => go('proyecto', p.id) }, h('span', { class: 'mono-e', text: p.icono || '📁' }), h('span', { class: 'p-fila-t', text: p.nombre || 'Sin nombre' }), h('small', { text: p.estado === 'terminado' ? 'Entregado' + (p.entregado ? ' ' + fmtDate(p.entregado, { day: 'numeric', month: 'short' }) : '') : 'En pausa' }));
     return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Áreas y proyectos, por entrega' }), h('h1', { text: 'Proyectos' })), h('div', { class: 'row-actions' }, btnActualizar(), h('button', { type: 'button', class: 'btn soft', onclick: () => nuevaArea() }, icon('grid', 'sm'), 'Área'), h('button', { type: 'button', class: 'btn forest', onclick: nuevoProyecto }, icon('plus', 'sm'), 'Nuevo proyecto'))),
       tabs, filtroBar(),
-      S.areas.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Áreas' }), h('span', { class: 'hint', text: 'La sombrilla de tus proyectos grandes' })), h('div', { class: 'gallery areas' }, S.areas.map(acard))) : h('p', { class: 'hint area-tip', text: '' }),
-      conArea.filter((x) => x.ps.length).map((x) => h('section', {}, h('div', { class: 'sec-h' }, h('h2', {}, h('button', { type: 'button', class: 'link-h', onclick: () => go('area', x.a.id) }, (x.a.icono || '🗂️') + ' ' + (x.a.nombre || ''))), h('span', { class: 'hint', text: x.ps.length + (x.ps.length === 1 ? ' proyecto' : ' proyectos') })), h('div', { class: 'gallery' }, x.ps.map(pcard)))),
-      h('section', {}, S.areas.length ? h('div', { class: 'sec-h' }, h('h2', { text: 'Sin área' })) : null, h('div', { class: 'gallery' }, sueltos.map(pcard), h('button', { type: 'button', class: 'pcard pcard-new', onclick: nuevoProyecto }, icon('plus', 'lg'), 'Nuevo proyecto'))),
-      fin.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Entregados' })), h('div', { class: 'gallery' }, fin.map(pcard))) : null];
+      destacados.length ? h('section', { class: 'p-destacados' }, h('div', { class: 'sec-h' }, h('h2', { text: 'Lo próximo a entregar' })), h('div', { class: 'gallery-xl' }, destacados.map((p) => pcard(p, true)))) : null,
+      conArea.map((x) => h('section', { class: 'p-area', style: '--pc:' + colorVar(x.a.color) },
+        h('div', { class: 'p-area-h' }, h('button', { type: 'button', class: 'link-h', onclick: () => go('area', x.a.id) }, h('span', { class: 'mono-e', text: x.a.icono || '🗂️' }), h('span', { text: x.a.nombre || 'Área' })), h('span', { class: 'hint', text: x.ps.length ? x.ps.length + (x.ps.length === 1 ? ' proyecto' : ' proyectos') : 'sin proyectos activos' })),
+        x.a.descripcion ? h('p', { class: 'p-area-d', text: x.a.descripcion }) : null,
+        x.ps.length ? h('div', { class: 'gallery' }, x.ps.map((p) => pcard(p))) : null)),
+      h('section', { class: 'p-area' }, h('div', { class: 'p-area-h' }, h('h2', { text: S.areas.length ? 'Otros proyectos' : 'Proyectos activos' })), h('div', { class: 'gallery' }, sueltos.map((p) => pcard(p)), h('button', { type: 'button', class: 'pcard pcard-new', onclick: nuevoProyecto }, icon('plus', 'lg'), 'Nuevo proyecto'))),
+      pausa.length || fin.length ? h('section', { class: 'p-quietos' }, h('div', { class: 'sec-h' }, h('h2', { text: 'En pausa y entregados' })), h('div', { class: 'p-filas' }, [...pausa, ...fin].map(filaChica))) : null];
   }
   function tagPicker(ids, onChange) {
     const sel = Array.isArray(ids) ? ids : [];
@@ -2135,7 +2420,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
   function viewRegistro() {
     const tab = S.registroTab;
     const conBit = usaBitacoras(); if (!conBit && tab === 'bitacoras') S.registroTab = 'reuniones';
-    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Registro' }, [['reuniones', 'Reuniones', 'users'], conBit ? ['bitacoras', 'Bitácoras NIHR', 'book'] : null, ['metas', 'Metas', 'target']].filter(Boolean).map(([k, l, ic]) =>
+    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Registro' }, [['reuniones', 'Reuniones', 'users'], ['calendario', 'Calendario', 'calendar'], ['precios', 'Lo que cobré', 'receipt'], conBit ? ['bitacoras', 'Bitácoras NIHR', 'book'] : null, ['metas', 'Metas', 'target']].filter(Boolean).map(([k, l, ic]) =>
       h('button', { type: 'button', 'aria-pressed': String(tab === k), onclick: () => { S.registroTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
     const byDate = (a, b) => (b.fecha || '').localeCompare(a.fecha || '') || (b.creado || 0) - (a.creado || 0);
     let body;
@@ -2144,6 +2429,10 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
       body = [h('div', { class: 'page-h' }, h('h2', { style: 'margin:0', text: 'Reuniones' }), h('button', { type: 'button', class: 'btn forest', onclick: () => nuevoRegistro('reunion') }, icon('plus', 'sm'), 'Reunión')),
         h('p', { class: 'hint', text: '' }),
         arr.length ? h('div', { class: 'entries' }, arr.map(entradaReunion)) : h('p', { class: 'empty card', text: 'Sin reuniones. Tocá «Reunión», o en una cita de Inicio tocá «Activar notas de reunión».' })];
+    } else if (tab === 'calendario') {
+      body = [h('div', { class: 'page-h' }, h('h2', { style: 'margin:0', text: 'Tus próximos 14 días' }), gcalEstado()), h('section', { class: 'card pad' }, agenda(14, { max: 12 }))];
+    } else if (tab === 'precios') {
+      body = historialPrecios();
     } else if (tab === 'bitacoras') {
       const arr = S.items.filter((it) => it.tipo === 'bitacora').sort(byDate);
       const min = Number(ajuste('horasMin', 0)) || 0; const hm = horasMes();
@@ -2165,7 +2454,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
       const mk = (t, titulo) => { const arr = metas.filter((x) => x.tipo === t).sort((a, b) => (a.estado === 'listo') - (b.estado === 'listo') || (b.fecha || '').localeCompare(a.fecha || '')); return group('m-' + t, titulo, arr, { icon: 'target', empty: 'Sin metas todavía.', action: h('button', { type: 'button', class: 'btn soft small', onclick: (ev) => { ev.stopPropagation(); nuevoRegistro(t); } }, icon('plus', 'sm'), 'Meta') }); };
       body = [mk('meta-mes', 'Metas del mes'), mk('meta-año', 'Metas del año')];
     }
-    return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'NIHR, reuniones y metas' }), h('h1', { text: 'Registro' }))), h('div', { class: 'scroll-x' }, seg), body];
+    return [h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Reuniones, calendario, lo que cobraste y metas' }), h('h1', { text: 'Registro' }))), h('div', { class: 'scroll-x' }, seg), body];
   }
 
   // ================= FOCO =================
@@ -2212,10 +2501,10 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
           it ? h('button', { type: 'button', class: 'btn ok', onclick: (ev) => { const spent = Math.round((f.mins * 60 - f.remaining) / 60); if (spent > 0) patchItem(it.id, { minutosFoco: (Number(it.minutosFoco) || 0) + spent }); clearInterval(f.timer); f.running = false; f.remaining = f.mins * 60; setEstado(it.id, 'listo', ev); f.taskId = ''; saveFoco(); renderMain(true); } }, icon('check', 'sm'), 'Terminé la tarea') : null),
         it && it.minutosFoco ? h('p', { class: 'hint', text: 'Ya le dedicaste ' + it.minutosFoco + ' min de foco a esta tarea.' }) : null,
         (() => {
-          const inp = h('input', { type: 'text', placeholder: '¿Se cruzó una ardilla? Anotala y seguí', 'aria-label': 'Estacionar una distracción' });
-          const go2 = async () => { const t = inp.value.trim(); if (!t) return; inp.value = ''; await addItem({ titulo: t, fecha: '', notas: 'Ardilla estacionada durante el foco · ' + fmtDate(hoy()) }); toast('Estacionada. Volvé al foco.'); };
+          const inp = h('input', { type: 'text', placeholder: '¿Se cruzó otra idea? Anotala y volvé al foco', 'aria-label': 'Anotar una idea para después' });
+          const go2 = async () => { const t = inp.value.trim(); if (!t) return; inp.value = ''; await addItem({ titulo: t, fecha: '', notas: 'Idea anotada durante el foco · ' + fmtDate(hoy()) }); toast('Estacionada. Volvé al foco.'); };
           inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); go2(); } });
-          return h('div', { class: 'ardilla' }, inp, h('button', { type: 'button', class: 'btn soft', onclick: go2 }, 'Estacionar'));
+          return h('div', { class: 'ardilla' }, inp, h('button', { type: 'button', class: 'btn soft', onclick: go2 }, 'Anotar'));
         })())];
   }
 
@@ -2336,6 +2625,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     const extra = [];
     if (tipo === 'bitacora') extra.push(h('div', {}, h('p', { class: 'block-h' }, icon('arrow', 'sm'), 'Qué sigue'), bindField(autosize(h('textarea', { class: 'desc', placeholder: 'Lo próximo que toca' }, it.que_sigue || '')), id, 'que_sigue')));
     if (tipo === 'reunion') extra.push(h('button', { type: 'button', class: 'btn soft', style: 'justify-self:start', onclick: () => (it.notasHtml ? pendientesATareas(id, it.notasHtml) : acuerdosATareas(id)) }, icon('check', 'sm'), 'Pasar pendientes a tareas'));
+    if (task) { const sg = senderoGrande(it); if (sg) extra.push(sg); extra.push(h('button', { type: 'button', class: 'btn soft small avance-btn', onclick: () => { marcarAvance(it.id); setTimeout(() => renderDrawer(true), 80); } }, icon('trend', 'sm'), 'Avancé hoy')); }
     if (task && !it.padre) extra.push(tareasDentro(it));
     if (task && (it.subtareas || []).length) extra.push(subtareas(it));
     if (task) { const r = reunionDeTarea(it); extra.push(h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => { const ta = document.querySelector('.drawer textarea[data-f="notas"]'); const cur = Object.assign({}, item(it.id) || it); if (ta) cur.notas = ta.value; closeDrawer(); notasDeTarea(cur); } }, icon('users', 'sm'), r ? 'Abrir notas de la reunión' : 'Activar notas de reunión'), !r ? h('span', { class: 'hint', text: '' }) : null)); }
@@ -2423,6 +2713,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
       sec('calendar', 'Calendarios que leo', 'Curtis lee (nunca cambia) los calendarios de tu Google. Si agregaste iCloud a Google, aparece aquí. Apagá los que no querés ver.', calendariosAjuste()),
       sec('package', 'Copia de seguridad', 'Guarda todo lo de Curtis (tareas, proyectos, reuniones, dinero, clientes) en un archivo en tu Drive, en «' + COPIAS_FOLDER + '». Si algo se pierde, con esa copia se recupera.', copiaAjuste()),
       sec('clock', 'Horas NIHR al mes', 'Solo si llevás bitácoras de horas. Si lo dejás vacío, las bitácoras se esconden.', minI),
+      sec('quote', 'Tus frases', 'Agregá frases que te inspiran (de Jacobo Grinberg, por ejemplo). Una por línea; si querés el autor, ponelo después de « — ». Se mezclan con las de Jung, Buda, el Dalai Lama y Thich Nhat Hanh.', (() => { const t = h('textarea', { rows: '4', 'aria-label': 'Tus frases', placeholder: 'Frase — Autor' }, (ajuste('frasesPropias', []) || []).map((x) => x.t + (x.a ? ' — ' + x.a : '')).join('\n')); t.addEventListener('change', () => { const l = t.value.split('\n').map((x) => x.trim()).filter(Boolean).slice(0, 80).map((x) => { const k = x.lastIndexOf(' — '); return k > 0 ? { t: x.slice(0, k).trim(), a: x.slice(k + 3).trim() } : { t: x, a: '' }; }); saveAjustes({ frasesPropias: l }); toast('Frases guardadas'); }); return t; })()),
       sec('edit', 'Tu firma', 'Tu nombre como ilustrador. Va en el crédito de las licencias y en las propuestas.', firmaI),
       sec('list', 'Columnas de cada proyecto nuevo', 'Las secciones con las que nace cada proyecto. Una por línea. Ejemplo: Brief, Diseño, Revisión, Entrega.', ta('plantillaSecciones', SECCIONES_BASE.join('\n'), 4)),
       sec('folder', 'Carpetas de trabajo en Drive', 'Lo que Curtis crea en Drive cuando tocás «Carpetas de trabajo» en un proyecto: donde guardás bocetos y versiones mientras trabajás. Una por línea.', ta('plantillaCarpetas', CARPETAS_BASE.join('\n'), 6)),
@@ -2477,6 +2768,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     }
     if (kind === 'c') { const mes = mesActual(); ctx += '\n\nDINERO ESTE MES: cobrado ' + fmtBolsa(ingresosDelMes(mes)) + ', gastos ' + fmtBolsa(gastosDelMes(mes)) + ', por cobrar ' + fmtBolsa(porCobrar()) + '. Áreas: ' + (S.areas.map((a) => a.nombre).join(', ') || '(ninguna)') + '. Clientes: ' + (S.clientes.map((c) => c.nombre).slice(0, 20).join(', ') || '(ninguno)') + '.'; }
     if (kind !== 'i' && S.servicios.length) ctx += '\n\nSU CATÁLOGO DE SERVICIOS (Precios):\n' + S.servicios.slice(0, 40).map((x) => '- ' + (x.titulo || '') + (x.subtitulo ? ' — ' + x.subtitulo : '') + ' [' + grupoDe(x) + '] ' + money(Number(x.precio) || 0) + ' ' + (x.unidad || '') + (x.formato ? ' · entrega: ' + x.formato : '') + ' (id ' + x.id + ')' + (x.descripcion ? '\n  ' + String(x.descripcion).slice(0, 300) : '\n  (sin descripción)')).join('\n');
+    if (kind !== 'i' && S.zcots.length) { const gs = gruposPrecios(true).slice(0, 15); const z = zPorCobrar(); ctx += '\n\nLO QUE HA COTIZADO EN ZOHO (la cotización final siempre es la de Zoho; las de Curtis son propuestas rápidas):\n' + gs.map((g) => '- ' + g.nombre + ': ' + g.n + ' vez/veces, mediana ' + money(g.med) + ' (' + money(g.min) + '–' + money(g.max) + ')').join('\n') + '\nPor cobrar en Zoho: ' + money(z.total) + ' (' + z.facs.length + ' facturas con saldo, ' + z.cots.length + ' cotizaciones enviadas o aprobadas sin factura). Borradores en Zoho: ' + zBorradores().length + ' (no cuentan).'; }
     ctx += '\n\nREUNIONES DE HOY (Google Calendar):\n' + (gcalDel(hoy()).map((e) => '- ' + evHora(e) + ' ' + e.titulo + (e.gente.length ? ' con ' + e.gente.join(', ') : '')).join('\n') || '(ninguna o sin acceso)');
     ctx += '\n\nSU FILA DE PENDIENTES:\n' + (pendientesOrden().slice(0, 8).map(lineaTarea).join('\n') || '(nada)');
     const estq = estancadas(); if (estq.length) ctx += '\nTAREAS ESTANCADAS (abiertas, sin moverse hace más de 10 días o vencidas hace 7+; al revisar, pedile que decida con cada una: hacer con fecha real, partirla, cambiarla o soltarla):\n' + estq.slice(0, 8).map(lineaTarea).join('\n');
@@ -2633,12 +2925,12 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     const st = { text: '', ctl: new AbortController(), tools: [] };
     S.asking.set('frase', st);
     if (manual) renderMain(true);
-    const prompt = 'Escribí UNA frase corta (máximo 22 palabras) en español de Guatemala, de vos, para un diseñador gráfico e ilustrador con TDAH. Estilo introspectivo, como Carl Jung (la sombra, el inconsciente, darle sentido a lo que hacés), con un giro de humor al final, ligada a lo que está haciendo hoy y a lo que sabés de él. Original: no cites ni atribuyas la frase a nadie. Nada de logros vacíos ni frases de taza. Sin comillas, sin autor, sin emojis.\n\nLo que tiene hoy:\n' + (pendientesOrden().slice(0, 5).map(lineaTarea).join('\n') || '(nada)') + '\nPróximas entregas:\n' + (fechasLimite(7).filter((x) => x.kind === 'p').map((x) => '- ' + x.p.nombre + ' ' + x.fecha).join('\n') || '(ninguna)') + memoriaTexto();
+    const prompt = 'Escribí UNA frase corta (máximo 22 palabras) en español de Guatemala, de vos, para un diseñador gráfico e ilustrador. Tono sereno, espiritual sin dogma (presencia, respiración, naturaleza, sentido del trabajo), sin humor ni sarcasmo y sin religión. Original: no cites ni atribuyas la frase a nadie. Respondé solo la frase.';
     try {
       const { text } = await S.sample(prompt, { cache: false, modelTier: 'quick', signal: st.ctl.signal });
       const t = String(text).replace(/^["«“]+|["»”]+$/g, '').trim().slice(0, 200);
       S.asking.delete('frase');
-      await enqueue('frase', () => S.db.doc('frase/dia').set({ fecha: hoy(), texto: t, at: Date.now() }));
+      await enqueue('frase', () => S.db.doc('frase/dia').set({ fecha: hoy(), texto: t, at: Date.now(), v15: true }));
     } catch (e) { S.asking.delete('frase'); if (manual && (!e || e.code !== 'cancelled')) toast(sampleErr(e)); }
     renderMain();
   }
@@ -3408,15 +3700,16 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
   }
   function viewPrecios() {
     if (S.cotId && S.cotDraft) return editorCot();
-    const tabs = h('div', { class: 'seg', role: 'group', 'aria-label': 'Ver' }, [['resumen', 'Resumen', 'trend'], ['cotizaciones', 'Cotizaciones', 'receipt'], ['facturas', 'Facturas', 'book'], ['catalogo', 'Catálogo', 'list'], ['gastos', 'Gastos', 'clock']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.precioTab === k), onclick: () => { S.precioTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
+    const tabs = h('div', { class: 'seg', role: 'group', 'aria-label': 'Ver' }, [['resumen', 'Resumen', 'trend'], ['cotizaciones', 'Cotizaciones', 'receipt'], ['facturas', 'Facturas', 'book'], ['catalogo', 'Catálogo', 'list'], ['calculadora', 'Calculadora', 'sliders'], ['gastos', 'Gastos', 'clock']].map(([k, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(S.precioTab === k), onclick: () => { S.precioTab = k; renderMain(true); } }, icon(ic, 'sm'), l)));
     const head = h('div', { class: 'page-h' }, h('div', {}, h('p', { class: 'kicker', text: 'Cuánto cobrás, cuánto te deben y cuánto gastás' }), h('h1', { text: 'Dinero' })),
-      h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn soft', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Servicio'), h('button', { type: 'button', class: 'btn forest', onclick: () => nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }] }) }, icon('receipt', 'sm'), 'Cotización rápida')));
+      h('div', { class: 'row-actions' }, S.mcp ? h('button', { type: 'button', class: 'btn soft', disabled: S.zohoLeyendo ? true : null, title: 'Leer cotizaciones y facturas de Zoho (solo lectura)', onclick: actualizarDinero }, icon('refresh', 'sm' + (S.zohoLeyendo ? ' girando' : '')), S.zohoLeyendo || 'Actualizar con Zoho') : null,
+        h('button', { type: 'button', class: 'btn ghost', title: 'Una propuesta rápida; la cotización final se hace en Zoho', onclick: () => nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }] }) }, icon('receipt', 'sm'), 'Propuesta rápida')));
     const t = S.precioTab;
-    return [head, tabs, t === 'cotizaciones' ? listaCots() : t === 'catalogo' ? catalogo() : t === 'facturas' ? viewFacturas() : t === 'gastos' ? viewGastos() : viewResumenDinero()];
+    return [head, h('div', { class: 'scroll-x' }, tabs), t === 'cotizaciones' ? [viewCotsZoho(), S.cotizaciones.length ? h('section', {}, h('div', { class: 'sec-h' }, h('h2', { text: 'Propuestas rápidas (Curtis)' }), h('span', { class: 'hint', text: 'No son la cotización final' })), listaCots()) : null] : t === 'catalogo' ? catalogo() : t === 'calculadora' ? viewCalculadora() : t === 'facturas' ? viewFacturas() : t === 'gastos' ? viewGastos() : viewResumenDinero()];
   }
   function catalogo() {
     const list = [...S.servicios].sort((a, b) => grupoDe(a).localeCompare(grupoDe(b)) || (a.creado || 0) - (b.creado || 0));
-    if (!list.length) return h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Tu catálogo está vacío' }), h('p', { class: 'hint', text: 'Guardá cada servicio una vez y cotizá en segundos.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Agregar el primer servicio'));
+    if (!list.length) return [h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn forest', onclick: () => { S.catSugs = revisarCatalogo(); renderMain(true); } }, icon('refresh', 'sm'), 'Actualizar catálogo')), panelCatalogo(), h('div', { class: 'card pad empty-state' }, icon('receipt', 'lg'), h('h3', { text: 'Tu catálogo está vacío' }), h('p', { class: 'hint', text: 'Guardá cada servicio una vez y cotizá en segundos.' }), h('button', { type: 'button', class: 'btn forest', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Agregar el primer servicio'))];
     const grupos = [...new Set(list.map(grupoDe))];
     const sel = list.filter((x) => S.catSel.has(x.id));
     const selTotal = sel.reduce((s, x) => s + (Number(x.precio) || 0), 0);
@@ -3426,7 +3719,8 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
       try { const { text } = await S.sample(perfil() + '\nRevisá su catálogo de servicios (precios en quetzales, mercado de Guatemala y Centroamérica). En máximo 8 líneas: qué precio está bajo o alto y por qué, qué descripción no se entiende o promete de más, y qué servicio le falta para vender más. Directo, sin rodeos. Cerrá con el siguiente paso.\n\nCATÁLOGO:\n' + txt + memoriaTexto(), { cache: false }); S.catRevision = text; } catch (e) { S.catRevision = sampleErr(e); }
       S.catRevisando = false; if (S.view === 'precios') renderMain(true);
     } }, icon('sparkle', 'sm'), S.catRevisando ? 'Curtis está revisando…' : 'Que Curtis revise mi catálogo') : null;
-    return [h('div', { class: 'row-actions' }, revisar, h('span', { class: 'hint', text: 'Marcá servicios y armá una cotización con ellos.' })),
+    return [h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn forest', onclick: () => { S.catSugs = revisarCatalogo(); renderMain(true); } }, icon('refresh', 'sm'), 'Actualizar catálogo'), h('button', { type: 'button', class: 'btn soft', onclick: () => abrirServicio(null) }, icon('plus', 'sm'), 'Servicio'), revisar, h('span', { class: 'hint', text: 'Marcá servicios y armá una propuesta con ellos.' })),
+      panelCatalogo(),
       S.catRevision ? h('div', { class: 'review' }, h('b', {}, icon('sparkle', 'sm'), ' Curtis opina'), h('p', { style: 'white-space:pre-wrap;margin:0', text: S.catRevision })) : null,
       grupos.map((g) => h('section', { class: 'svc-group' }, h('div', { class: 'sec-h' }, h('h2', { text: g })),
         h('div', { class: 'card svc-list' }, list.filter((x) => grupoDe(x) === g).map((x) => h('div', { class: 'svc' },
@@ -3440,8 +3734,8 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
         h('button', { type: 'button', class: 'btn soft small', onclick: () => { S.catSel.clear(); renderMain(true); } }, 'Quitar marcas'),
         h('button', { type: 'button', class: 'btn yellow', onclick: async () => { const l = lineasDeServicios(sel); S.catSel.clear(); await nuevaCotizacion({ lineas: [{ id: uid(), tipo: 'titulo', texto: 'Propuesta' }, ...l] }); } }, icon('receipt', 'sm'), 'Armar cotización')) : null];
   }
-  function abrirServicio(id) {
-    const x = Object.assign({ titulo: '', subtitulo: '', grupo: '', precio: '', unidad: 'por proyecto', formato: '', tiempo: '', descripcion: '' }, id ? servicio(id) : {});
+  function abrirServicio(id, pre) {
+    const x = Object.assign({ titulo: '', subtitulo: '', grupo: '', precio: '', unidad: 'por proyecto', formato: '', tiempo: '', descripcion: '' }, id ? servicio(id) : {}, pre || {});
     let pensando = false;
     const grupos = [...new Set(S.servicios.map((s) => String(s.grupo || '').trim()).filter(Boolean).concat(['Branding', 'Ilustración', 'Licencias', 'Editorial', 'Digital']))];
     const draw = () => {
@@ -3954,7 +4248,7 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
   const subsActivasEn = (mes) => S.suscripciones.filter((s) => s.activa !== false && (!s.desde || mesDe(s.desde) <= mes) && (!s.hasta || mesDe(s.hasta) >= mes));
   function ingresosDelMes(mes) { const b = bolsa(); S.facturas.filter((f) => f.estado === 'pagada' && mesDe(f.pagadoEl) === mes).forEach((f) => sumar(b, f.total, f.moneda)); S.movimientos.filter((m) => m.tipo === 'ingreso' && mesDe(m.fecha) === mes).forEach((m) => sumar(b, m.monto, m.moneda)); return b; }
   function gastosDelMes(mes) { const b = bolsa(); subsActivasEn(mes).forEach((s) => sumar(b, mensual(s), s.moneda)); S.movimientos.filter((m) => m.tipo === 'gasto' && mesDe(m.fecha) === mes).forEach((m) => sumar(b, m.monto, m.moneda)); return b; }
-  function porCobrar() { const b = bolsa(); S.facturas.filter((f) => f.estado === 'pendiente').forEach((f) => sumar(b, (f.saldo != null && f.saldo !== '' ? f.saldo : f.total), f.moneda)); return b; }
+  function porCobrar() { const b = bolsa(); S.facturas.filter((f) => f.estado === 'pendiente').forEach((f) => sumar(b, (f.saldo != null && f.saldo !== '' ? f.saldo : f.total), f.moneda)); sumar(b, zPorCobrar().total, 'Q'); return b; }
   function dineroProyecto(p) {
     const cots = S.cotizaciones.filter((c) => c.proyecto === p.id && c.estado !== 'rechazada');
     const acept = cots.filter((c) => c.estado === 'aceptada');
@@ -4145,13 +4439,19 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     return [
       h('div', { class: 'kpis' },
         kpi('Cobrado este mes', fmtBolsa(ing), cap(fmtDate(mes)), 'hero-kpi'),
-        kpi('Por cobrar', fmtBolsa(pc), pend.length + (pend.length === 1 ? ' factura' : ' facturas')),
+        kpi('Por cobrar', fmtBolsa(pc), (() => { const z = zPorCobrar(); const n = pend.length + z.facs.length; return n + (n === 1 ? ' factura' : ' facturas') + (z.cots.length ? ' + ' + z.cots.length + (z.cots.length === 1 ? ' cotización' : ' cotizaciones') : ''); })()),
         kpi('Gastos del mes', fmtBolsa(gas), S.suscripciones.filter((s) => s.activa !== false).length + ' suscripciones'),
         kpi('Te queda este mes', money(ing.q - gas.q), ing.usd || gas.usd ? 'sin contar dólares' : 'cobrado − gastos', ing.q - gas.q < 0 ? 'neg' : ''),
         kpi('Cobrado en ' + anioActual(), fmtBolsa(anio), 'facturas pagadas e ingresos')),
       graficaMeses(),
       h('section', { class: 'card pad' }, h('div', { class: 'sec-h', style: 'margin:0' }, h('h2', { text: 'Por cobrar' }), h('button', { type: 'button', class: 'btn soft small', onclick: () => { S.precioTab = 'facturas'; renderMain(true); } }, 'Ver facturas')),
-        pend.length ? h('div', { class: 'fac-list' }, pend.slice(0, 6).map((f) => facRow(f, true))) : h('p', { class: 'hint', text: 'Nada pendiente. Cuando facturés una cotización, aparece aquí hasta que te paguen.' })),
+        pend.length ? h('div', { class: 'fac-list' }, pend.slice(0, 6).map((f) => facRow(f, true))) : null,
+        (() => { const z = zPorCobrar(); if (!z.facs.length && !z.cots.length) return pend.length ? null : h('p', { class: 'hint', text: S.zcots.length ? 'Nada pendiente.' : 'Nada pendiente en Curtis. Tocá «Actualizar con Zoho» para ver lo de Zoho.' });
+          return h('div', { class: 'fac-list' },
+            z.facs.map((f) => { const c = S.zcots.find((x) => (x.facturas || []).includes(f.id)); const venc = isDay(f.vence) && diffDays(f.vence) < 0; return h('div', { class: 'fac-row' }, h('span', { class: 'fac-main' }, h('b', { text: 'Factura ' + f.numero + ' · ' + f.cliente }), h('small', { text: [c ? 'de la cotización ' + c.numero : '', venc ? 'venció hace ' + -diffDays(f.vence) + ' días: ¿ya te pagaron? Registralo en Zoho' : f.vence ? 'vence ' + fmtDate(f.vence, { day: 'numeric', month: 'short' }) : ''].filter(Boolean).join(' · ') })), h('span', { class: 'pill ' + (venc ? 'zest-vencida' : ''), text: ZFAC[f.estado] || f.estado }), h('span', { class: 'cot-total', text: money(f.saldo) })); }),
+            z.cots.map((c) => h('div', { class: 'fac-row' }, h('span', { class: 'fac-main' }, h('b', { text: 'Cotización ' + c.numero + ' · ' + c.cliente }), h('small', { text: 'Todavía sin factura final' })), h('span', { class: 'pill zest-' + c.estado, text: ZEST[c.estado] || c.estado }), h('span', { class: 'cot-total', text: money(c.total) }))));
+        })(),
+        zBorradores().length ? h('p', { class: 'aviso-txt' }, icon('alert', 'sm'), zBorradores().length + ' cotizaciones en borrador en Zoho no cuentan aquí. ', h('button', { type: 'button', class: 'w-link', onclick: () => { S.precioTab = 'cotizaciones'; renderMain(true); } }, 'Revisalas')) : null),
       h('section', { class: 'card pad' }, h('div', { class: 'sec-h', style: 'margin:0' }, h('h2', { text: 'Por proyecto' })),
         proys.length ? h('table', { class: 'tbl' }, h('thead', {}, h('tr', {}, h('th', { text: 'Proyecto' }), h('th', { text: 'Cobro final' }), h('th', { text: 'Cobrado' }), h('th', { text: 'Falta' }))),
           h('tbody', {}, proys.map((x) => h('tr', { onclick: () => go('proyecto', x.p.id), style: 'cursor:pointer' }, h('td', { text: (x.p.icono || '') + ' ' + (x.p.nombre || '') }), h('td', { text: money(x.final) }), h('td', { text: money(x.cobrado) }), h('td', { class: x.falta ? 'falta' : '', text: x.falta ? money(x.falta) : '✓' }))))) : h('p', { class: 'hint', text: 'Poné el «Cobro final» en cada proyecto para verlo aquí.' })),
@@ -4501,6 +4801,275 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     return det;
   }
 
+
+  // ================= DINERO CON ZOHO (v15): Zoho es la verdad; Curtis solo lee =================
+  const ZEST = { draft: 'Borrador', sent: 'Enviada', viewed: 'Vista', accepted: 'Aprobada', signed: 'Aprobada', approved: 'Aprobada', invoiced: 'Facturada', partially_invoiced: 'Facturada en parte', declined: 'No se dio', rejected: 'No se dio', expired: 'Vencida', pending_approval: 'Por aprobar' };
+  const ZFAC = { draft: 'Borrador', sent: 'Enviada', viewed: 'Vista', overdue: 'Vencida', unpaid: 'Sin pagar', partially_paid: 'Pago parcial', paid: 'Pagada', void: 'Anulada' };
+  const Z_VIVAS = ['sent', 'viewed', 'accepted', 'signed', 'approved', 'pending_approval'];
+  function zPayload(r) { const pl = (r && r.payload) || {}; const d = pl.data || pl; if (d.code != null && d.code !== 0) throw { code: 'tool_error', message: d.message || 'Zoho no respondió.' }; return d; }
+  async function zohoLlamar(tool, args) { return zPayload(await S.mcp.callTool('Zoho Books', tool, args)); }
+  const nombreLinea = (l) => String(l.name || '').trim() || String(l.description || '').split('\n').map((x) => x.replace(/^[^\p{L}\p{N}]+/u, '').trim()).find(Boolean) || 'Servicio';
+  const normTxt = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  function lev(a, b) { if (Math.abs(a.length - b.length) > 3) return 9; const m = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) m[0][j] = j; for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return m[a.length][b.length]; }
+  const palabras = (t) => normTxt(t).split(' ').filter((w) => w.length >= 4 && !['para', 'con', 'de', 'del', 'las', 'los', 'una', 'que', 'socio', 'tienda', 'grupo'].includes(w));
+  // ¿se parecen dos nombres? (tolera faltas como «Areopuerto»)
+  function parecido(a, b) { const A = palabras(a); const B = palabras(b); if (!A.length || !B.length) return 0; let hit = 0; A.forEach((w) => { if (B.some((v) => v === w || (w.length >= 5 && v.length >= 5 && lev(w, v) <= 2))) hit++; }); return hit / Math.max(A.length, B.length); }
+  async function actualizarDinero() {
+    if (!S.mcp) { toast('Zoho no está disponible en esta vista.'); return; }
+    if (S.zohoLeyendo) return;
+    S.zohoLeyendo = 'Leyendo cotizaciones…'; renderMain(true);
+    const org = ajuste('zohoOrg', ZOHO_ORG);
+    try {
+      let ests = [];
+      for (let page = 1; page <= 5; page++) { const d = await zohoLlamar('list_estimates', { query_params: { organization_id: org, per_page: 200, page, sort_column: 'date' } }); ests = ests.concat(d.estimates || []); if (!(d.page_context && d.page_context.has_more_page)) break; }
+      S.zohoLeyendo = 'Leyendo facturas…'; renderMain(true);
+      const di = await zohoLlamar('list_invoices', { query_params: { organization_id: org, per_page: 200, sort_column: 'date' } }); const invs = di.invoices || [];
+      const prev = new Map(S.zcots.map((x) => [x.id, x]));
+      let k = 0; let leidas = 0; let fallos = 0;
+      for (const e of ests) {
+        k++; const id = String(e.estimate_id); const p = prev.get(id);
+        const base = { numero: e.estimate_number || '', cliente: e.customer_name || '', clienteZoho: String(e.customer_id || ''), empresa: e.company_name || '', fecha: e.date || '', total: Number(e.total) || 0, estado: e.status || '', referencia: e.reference_number || '', modificado: e.last_modified_time || '', leido: Date.now() };
+        let extra = {};
+        if (!p || p.modificado !== base.modificado || !Array.isArray(p.lineas)) {
+          S.zohoLeyendo = 'Leyendo el detalle ' + k + ' de ' + ests.length + '…'; renderMain(true);
+          try {
+            const d = await zohoLlamar('get_estimate', { path_variables: { estimate_id: id }, query_params: { organization_id: org } }); const es = d.estimate || {};
+            extra = { lineas: (es.line_items || []).map((l) => ({ nombre: nombreLinea(l).slice(0, 120), descripcion: String(l.description || '').slice(0, 1500), cantidad: Number(l.quantity) || 0, precio: Number(l.rate) || 0, total: Number(l.item_total) || 0 })), facturas: (es.invoice_ids || []).map(String), vence: es.expiry_date || '' };
+            leidas++;
+          } catch (err) { fallos++; }
+        }
+        const doc = Object.assign({ lineas: p && Array.isArray(p.lineas) ? p.lineas : null, facturas: p && p.facturas ? p.facturas : [] }, base, extra);
+        await enqueue('zc/' + id, () => S.db.doc('zohocot/' + id).set(doc));
+      }
+      for (const inv of invs) {
+        const id = String(inv.invoice_id);
+        await enqueue('zf/' + id, () => S.db.doc('zohofac/' + id).set({ numero: inv.invoice_number || '', cliente: inv.customer_name || '', clienteZoho: String(inv.customer_id || ''), fecha: inv.date || '', vence: inv.due_date || '', total: Number(inv.total) || 0, saldo: Number(inv.balance) || 0, estado: inv.status || '', pagadoEl: inv.last_payment_date || '', leido: Date.now() }));
+      }
+      // lo que ya no está en Zoho sale del registro de Curtis (en Zoho no se toca nada)
+      const vivos = new Set(ests.map((e) => String(e.estimate_id))); for (const x of S.zcots) if (!vivos.has(x.id)) await enqueue('zc/' + x.id, () => S.db.doc('zohocot/' + x.id).delete());
+      const vivas = new Set(invs.map((e) => String(e.invoice_id))); for (const x of S.zfacs) if (!vivas.has(x.id)) await enqueue('zf/' + x.id, () => S.db.doc('zohofac/' + x.id).delete());
+      saveAjustes({ zohoLeido: Date.now() });
+      const bor = ests.filter((e) => e.status === 'draft').length;
+      toast('Zoho al día: ' + ests.length + ' cotizaciones y ' + invs.length + ' facturas' + (bor ? ' · ' + bor + ' en borrador (no cuentan)' : '') + (fallos ? ' · ' + fallos + ' sin detalle' : ''));
+    } catch (e) { toast(mcpErr(e, 'Zoho Books')); }
+    S.zohoLeyendo = false; renderMain(true);
+  }
+  const zFac = (id) => S.zfacs.find((x) => x.id === String(id));
+  const zFacturasDe = (c) => (c.facturas || []).map(zFac).filter(Boolean);
+  const zFacEnCurtis = (zid) => S.facturas.some((f) => f.zohoId && f.zohoId === String(zid));
+  // por cobrar en Zoho: facturas con saldo + cotizaciones enviadas o aprobadas que todavía no se facturan
+  function zPorCobrar() {
+    const facs = S.zfacs.filter((f) => f.saldo > 0 && !['void', 'draft', 'paid'].includes(f.estado) && !zFacEnCurtis(f.id)).sort((a, b) => (a.vence || '').localeCompare(b.vence || ''));
+    const cots = S.zcots.filter((c) => Z_VIVAS.includes(c.estado) && !(c.facturas || []).length).sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+    return { facs, cots, total: facs.reduce((s, f) => s + f.saldo, 0) + cots.reduce((s, c) => s + c.total, 0) };
+  }
+  const zBorradores = () => S.zcots.filter((c) => c.estado === 'draft').sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''));
+  // ¿esta propuesta rápida ya está en Zoho?
+  function enZohoDe(c) {
+    if (c.zohoEstimateId) { const z = S.zcots.find((x) => x.id === String(c.zohoEstimateId)); if (z) return { z, seguro: true }; }
+    const cands = S.zcots.map((z) => ({ z, pc: Math.max(parecido(c.cliente, z.cliente), parecido(c.cliente, z.empresa), parecido(c.titulo, z.cliente)), mismo: Math.abs((Number(c.total) || 0) - z.total) < 1 })).filter((x) => x.pc >= 0.5 || (x.mismo && x.pc > 0));
+    cands.sort((a, b) => (b.mismo - a.mismo) || (b.pc - a.pc) || (b.z.fecha || '').localeCompare(a.z.fecha || ''));
+    return cands.length ? { z: cands[0].z, seguro: cands[0].mismo && cands[0].pc >= 0.5 } : null;
+  }
+  function filaZcot(z) {
+    const fs = zFacturasDe(z);
+    return h('div', { class: 'fac-row zrow est-' + (z.estado || '') },
+      h('span', { class: 'fac-main' }, h('b', { text: (z.numero || '') + ' · ' + (z.cliente || '') }),
+        h('small', { text: [z.fecha ? fmtDate(z.fecha, { day: 'numeric', month: 'short', year: 'numeric' }) : '', (z.lineas || []).slice(0, 2).map((l) => l.nombre).join(' + '), fs.length ? 'Factura final: ' + fs.map((f) => f.numero + ' (' + (ZFAC[f.estado] || f.estado) + ')').join(', ') : ''].filter(Boolean).join(' · ') })),
+      h('span', { class: 'pill zest-' + (z.estado || ''), text: ZEST[z.estado] || z.estado || '—' }), h('span', { class: 'cot-total', text: money(z.total) }));
+  }
+  function avisoPropuestas() {
+    const props = S.cotizaciones.filter((c) => (c.estado || 'borrador') === 'borrador');
+    if (!props.length) return null;
+    return h('section', { class: 'card pad aviso-props' },
+      h('div', { class: 'sec-h' }, h('h2', {}, icon('alert'), props.length === 1 ? '1 propuesta rápida en borrador' : props.length + ' propuestas rápidas en borrador'), h('span', { class: 'hint', text: 'La cotización que vale es la de Zoho' })),
+      h('p', { class: 'hint', text: 'Las propuestas de aquí son solo para mandar algo rápido. Si ya está en Zoho, borrala. Si todavía no, pasala a Zoho o borrala.' }),
+      props.map((c) => {
+        const m = enZohoDe(c); const dif = m && Math.abs(m.z.total - (Number(c.total) || 0)) >= 1;
+        const sel = h('select', { 'aria-label': 'Es esta cotización de Zoho' }, h('option', { value: '', text: m ? 'Otra de Zoho…' : '¿Cuál es en Zoho?' }), [...S.zcots].sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '')).slice(0, 40).map((z) => h('option', { value: z.id, text: z.numero + ' · ' + z.cliente + ' · ' + money(z.total) })));
+        sel.addEventListener('change', () => { if (sel.value) enqueue('cot/' + c.id, () => S.db.doc('cotizaciones/' + c.id).update({ zohoEstimateId: sel.value, actualizado: Date.now() })).then(() => renderMain(true)); });
+        const borrar = () => confirmar('¿Borrar la propuesta «' + (c.titulo || 'propuesta') + '»?', m ? 'La que vale es ' + m.z.numero + ' en Zoho. Esta propuesta se borra de Curtis; Zoho no se toca.' : 'Se borra de Curtis. Zoho no se toca.', 'Borrar', () => { enqueue('cot/' + c.id, () => S.db.doc('cotizaciones/' + c.id).delete()); toast('Propuesta borrada'); });
+        return h('div', { class: 'prop-row' },
+          h('div', { class: 'prop-main' }, h('b', { text: (c.titulo || 'Propuesta') + ' · ' + money(Number(c.total) || 0) }), h('small', { text: [c.cliente, isDay(c.fecha) ? fmtDate(c.fecha, { day: 'numeric', month: 'short' }) : ''].filter(Boolean).join(' · ') || 'Sin cliente' }),
+            m ? h('p', { class: 'prop-match' + (dif ? ' dif' : '') }, icon(dif ? 'alert' : 'check', 'sm'), (m.seguro ? 'En Zoho es ' : 'Parece que en Zoho es ') + m.z.numero + ' (' + m.z.cliente + ', ' + money(m.z.total) + ', ' + (ZEST[m.z.estado] || m.z.estado) + ')' + (dif ? '. El monto no coincide: vale el de Zoho.' : '.')) : h('p', { class: 'prop-match none' }, 'No la encontré en Zoho' + (S.zcots.length ? '.' : ' (tocá «Actualizar con Zoho» primero).'))),
+          h('div', { class: 'row-actions' },
+            m ? h('button', { type: 'button', class: 'btn forest small', onclick: borrar }, icon('trash', 'sm'), 'Ya está en Zoho: borrar') : h('button', { type: 'button', class: 'btn forest small', onclick: () => abrirCotizacion(c.proyecto, (c.lineas || []).filter((l) => l.tipo === 'servicio' && l.nombre).map((l) => ({ nombre: l.nombre, descripcion: l.descripcion || '', cantidad: Number(l.cantidad) || 1, precio: Number(l.precio) || 0 })), { cliente: c.cliente }) }, icon('receipt', 'sm'), 'Pasarla a Zoho'),
+            m ? null : h('button', { type: 'button', class: 'btn soft small', onclick: borrar }, icon('trash', 'sm'), 'Borrar'),
+            h('button', { type: 'button', class: 'btn ghost small', onclick: () => abrirCot(c) }, 'Abrir'), S.zcots.length ? sel : null));
+      }));
+  }
+  function viewCotsZoho() {
+    const vivas = S.zcots.filter((z) => z.estado !== 'draft').sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+    const bor = zBorradores();
+    const leido = ajuste('zohoLeido', 0);
+    return [
+      avisoPropuestas(),
+      h('section', { class: 'card pad' },
+        h('div', { class: 'sec-h' }, h('h2', { text: 'Cotizaciones en Zoho' }), h('span', { class: 'hint', text: leido ? 'Leído ' + fmtDate(isoLocal(new Date(leido)), { day: 'numeric', month: 'short' }) + ' ' + new Date(leido).toLocaleTimeString('es-GT', { hour: 'numeric', minute: '2-digit' }) : 'Todavía no leído' })),
+        S.zcots.length ? null : h('p', { class: 'hint', text: 'Tocá «Actualizar con Zoho» arriba para traer tus cotizaciones y facturas. Curtis solo lee: no cambia nada en Zoho.' }),
+        vivas.length ? h('div', { class: 'fac-list' }, vivas.map(filaZcot)) : S.zcots.length ? h('p', { class: 'hint', text: 'No hay cotizaciones enviadas ni aprobadas. Todas están en borrador.' }) : null),
+      bor.length ? h('details', { class: 'card pad z-borradores' },
+        h('summary', {}, h('b', { text: bor.length + (bor.length === 1 ? ' borrador en Zoho' : ' borradores en Zoho') }), h('span', { class: 'hint', text: ' · no cuentan para lo que te deben' })),
+        h('p', { class: 'aviso-txt' }, icon('alert', 'sm'), 'El más viejo es de ' + fmtDate(bor[0].fecha, { month: 'long', year: 'numeric' }) + '. Si ya se aprobó, marcala en Zoho como enviada o aceptada. Si ya no va, anulala allá. Así lo que te deben se ve real.'),
+        h('div', { class: 'fac-list' }, [...bor].reverse().map(filaZcot))) : null,
+    ];
+  }
+  // ---------- lo que cobraste, servicio por servicio ----------
+  function lineasCobradas(conBorr) {
+    const out = [];
+    S.zcots.filter((z) => (conBorr || z.estado !== 'draft') && Array.isArray(z.lineas)).forEach((z) => z.lineas.forEach((l) => { if (l.precio > 0) out.push(Object.assign({ cot: z.numero, cliente: z.cliente, fecha: z.fecha, estado: z.estado }, l)); }));
+    return out;
+  }
+  const mediana = (a) => { const v = [...a].sort((x, y) => x - y); const n = v.length; return n ? (n % 2 ? v[(n - 1) / 2] : (v[n / 2 - 1] + v[n / 2]) / 2) : 0; };
+  function gruposPrecios(conBorr) {
+    const g = new Map();
+    lineasCobradas(conBorr).forEach((l) => { const k = normTxt(l.nombre).slice(0, 60) || 'servicio'; if (!g.has(k)) g.set(k, { nombre: l.nombre, filas: [] }); g.get(k).filas.push(l); });
+    return [...g.values()].map((x) => { x.filas.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '')); const ps = x.filas.map((f) => f.precio); return Object.assign(x, { n: ps.length, min: Math.min(...ps), max: Math.max(...ps), med: mediana(ps), ultimo: x.filas[0] }); }).sort((a, b) => b.n - a.n || (b.ultimo.fecha || '').localeCompare(a.ultimo.fecha || ''));
+  }
+  function historialPrecios() {
+    const conBorr = pref('preciosBorr', '1') === '1';
+    const gs = gruposPrecios(conBorr);
+    const q = S.preciosQ || '';
+    const vis = q ? gs.filter((g) => normTxt(g.nombre + ' ' + g.filas.map((f) => f.cliente).join(' ')).includes(normTxt(q))) : gs;
+    const buscar = h('input', { type: 'search', placeholder: 'Buscar servicio o cliente', value: q, 'aria-label': 'Buscar en lo que cobraste' });
+    buscar.addEventListener('input', () => { S.preciosQ = buscar.value; clearTimeout(historialPrecios.t); historialPrecios.t = setTimeout(() => { renderMain(true); const n = document.querySelector('input[aria-label="Buscar en lo que cobraste"]'); if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); } }, 250); });
+    return [
+      h('div', { class: 'page-h' }, h('h2', { style: 'margin:0', text: 'Lo que cobré, servicio por servicio' }), S.mcp ? h('button', { type: 'button', class: 'btn soft', disabled: S.zohoLeyendo ? true : null, onclick: actualizarDinero }, icon('refresh', 'sm'), S.zohoLeyendo || 'Actualizar con Zoho') : null),
+      h('p', { class: 'hint', text: 'Sale de las líneas de tus cotizaciones en Zoho. Sirve para ordenar y pulir tu catálogo con lo que de verdad cobrás.' }),
+      h('div', { class: 'row-actions' }, buscar, h('label', { class: 'hint', style: 'display:flex;gap:6px;align-items:center' }, h('button', { type: 'button', class: 'switch', role: 'switch', 'aria-checked': String(conBorr), 'aria-label': 'Incluir borradores', onclick: () => { setPref('preciosBorr', conBorr ? '0' : '1'); renderMain(true); } }), 'Incluir borradores')),
+      !S.zcots.length ? h('p', { class: 'empty card', text: 'Todavía no leí Zoho. Tocá «Actualizar con Zoho».' }) : !vis.length ? h('p', { class: 'empty card', text: 'Nada con ese nombre.' }) :
+        h('div', { class: 'card pad precios-h' }, vis.map((g) => h('details', { class: 'ph-g' },
+          h('summary', {}, h('span', { class: 'ph-n', text: g.nombre }), h('span', { class: 'ph-k' }, h('b', { text: money(g.med) }), h('small', { text: g.n === 1 ? '1 vez' : g.n + ' veces · ' + money(g.min) + ' a ' + money(g.max) }))),
+          h('table', { class: 'tbl' }, h('tbody', {}, g.filas.map((f) => h('tr', {}, h('td', { text: fmtDate(f.fecha, { day: 'numeric', month: 'short', year: 'numeric' }) }), h('td', { text: f.cliente }), h('td', { text: f.cot + (f.estado === 'draft' ? ' · borrador' : '') }), h('td', { class: 'num', text: (f.cantidad !== 1 ? num(f.cantidad) + ' × ' : '') + money(f.precio) })))))))),
+    ];
+  }
+  // ---------- actualizar catálogo: comparar el catálogo con lo que cobrás ----------
+  function revisarCatalogo() {
+    const gs = gruposPrecios(true); const out = [];
+    const ignorar = new Set(ajuste('catIgnorar', []) || []);
+    const usados = new Set();
+    S.servicios.forEach((x) => {
+      const m = gs.map((g) => ({ g, pc: Math.max(parecido(x.titulo, g.nombre), normTxt(g.nombre).includes(normTxt(x.titulo)) && normTxt(x.titulo).length > 3 ? 1 : 0) })).filter((y) => y.pc >= 0.6);
+      if (!m.length) return;
+      const filas = m.flatMap((y) => { usados.add(y.g.nombre); return y.g.filas; }).sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '')).slice(0, 6);
+      const med = mediana(filas.map((f) => f.precio)); const cat = Number(x.precio) || 0;
+      const clave = 'p:' + x.id + ':' + Math.round(med);
+      if (cat && med && Math.abs(med - cat) / cat > 0.25 && !ignorar.has(clave)) out.push({ tipo: 'cambio', x, med, cat, filas, clave });
+    });
+    gs.filter((g) => !usados.has(g.nombre) && !S.servicios.some((x) => parecido(x.titulo, g.nombre) >= 0.6) && (g.n >= 2 || g.filas.some((f) => f.estado !== 'draft'))).forEach((g) => { const clave = 'n:' + normTxt(g.nombre).slice(0, 40); if (!ignorar.has(clave)) out.push({ tipo: 'nuevo', g, clave }); });
+    return out;
+  }
+  function panelCatalogo() {
+    if (!S.catSugs) return null;
+    const ign = (clave) => { saveAjustes({ catIgnorar: [...(ajuste('catIgnorar', []) || []), clave].slice(-200) }); S.catSugs = S.catSugs.filter((y) => y.clave !== clave); renderMain(true); };
+    return h('section', { class: 'card pad cat-sugs' },
+      h('div', { class: 'sec-h' }, h('h2', {}, icon('sparkle'), 'Lo que encontré en tus cotizaciones'), h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Cerrar', onclick: () => { S.catSugs = null; renderMain(true); } }, icon('x', 'sm'))),
+      !S.catSugs.length ? h('p', { class: 'hint', text: S.zcots.length ? 'Tu catálogo coincide con lo que venís cobrando. Nada que cambiar.' : 'Primero tocá «Actualizar con Zoho» para leer tus cotizaciones.' }) :
+        S.catSugs.map((y) => y.tipo === 'cambio'
+          ? h('div', { class: 'sug alerta' }, h('p', {}, icon('alert', 'sm'), h('b', { text: y.x.titulo }), ' · en el catálogo ' + money(y.cat) + ', últimamente cobrás ' + money(y.med) + ' (' + (y.med > y.cat ? '+' : '') + Math.round(((y.med - y.cat) / y.cat) * 100) + '%).'),
+            h('p', { class: 'hint', text: '¿Por qué cambió tanto? Si es el mismo servicio, actualizá el precio. Si cambió el alcance, quizás es un servicio nuevo. Últimas: ' + y.filas.slice(0, 3).map((f) => f.cot + ' ' + money(f.precio)).join(', ') }),
+            h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn forest small', onclick: () => confirmar('¿Cambiar el precio de «' + y.x.titulo + '» a ' + money(y.med) + '?', 'Solo cambia en tu catálogo de Curtis.', 'Cambiar', () => { enqueue('s/' + y.x.id, () => S.db.doc('servicios/' + y.x.id).update({ precio: y.med, actualizado: Date.now() })); S.catSugs = S.catSugs.filter((z) => z !== y); renderMain(true); toast('Precio actualizado'); }) }, 'Actualizar a ' + money(y.med)),
+              h('button', { type: 'button', class: 'btn soft small', onclick: () => abrirServicio(null, { titulo: y.x.titulo + ' (nuevo alcance)', grupo: y.x.grupo || '', precio: y.med, descripcion: y.filas[0].descripcion || '' }) }, 'Crear servicio nuevo'),
+              h('button', { type: 'button', class: 'btn ghost small', onclick: () => ign(y.clave) }, 'Dejar así')))
+          : h('div', { class: 'sug' }, h('p', {}, icon('plus', 'sm'), h('b', { text: y.g.nombre }), ' · no está en tu catálogo. Lo cobraste ' + (y.g.n === 1 ? '1 vez' : y.g.n + ' veces') + (y.g.n > 1 ? ', de ' + money(y.g.min) + ' a ' + money(y.g.max) : ' a ' + money(y.g.med)) + '.'),
+            h('div', { class: 'row-actions' }, h('button', { type: 'button', class: 'btn forest small', onclick: () => abrirServicio(null, { titulo: y.g.nombre.slice(0, 80), grupo: 'De Zoho', precio: y.g.med, descripcion: (y.g.ultimo.descripcion || '').slice(0, 1200) }) }, 'Agregar al catálogo'),
+              h('button', { type: 'button', class: 'btn ghost small', onclick: () => ign(y.clave) }, 'No es un servicio')))));
+  }
+
+  // ================= CALCULADORA DE SERVICIOS (v15) =================
+  // Método: tu tarifa por hora sale de tu meta y tus gastos reales; el proyecto suma horas × tarifa, factores que vos decidís,
+  // el uso (licencia) como línea aparte y los gastos directos. Ningún precio viene inventado: lo que está vacío no se cuenta.
+  const CALC_FASES = [['brief', 'Brief y reuniones'], ['idea', 'Investigación y bocetos'], ['prod', 'Producción'], ['rev', 'Revisiones'], ['entrega', 'Entrega y administración']];
+  const CALC_REF = 'Referencias que encontré (otras calculadoras de diseñadores e ilustradores): horas facturables reales ≈ 20–27 por semana, no 40; el uso comercial suele cobrarse aparte, a veces 50–100% del honorario creativo, y la exclusividad otro 50–100%. En murales: precio por m² según complejidad, más preparación de pared, materiales, sellador y andamio como líneas aparte. Son guías, no reglas: vos decidís.';
+  function calcBase() {
+    const c = Object.assign({ meta: '', horasSemana: '', impuesto: '', tarifaManual: '' }, ajuste('calc', {}) || {});
+    const fijos = gastosDelMes(mesActual()).q;
+    const horasMes = (Number(c.horasSemana) || 0) * 4.33;
+    let tarifa = 0; let como = '';
+    if (Number(c.tarifaManual) > 0) { tarifa = Number(c.tarifaManual); como = 'la que escribiste'; }
+    else if (Number(c.meta) > 0 && horasMes > 0) { const imp = Math.min(60, Math.max(0, Number(c.impuesto) || 0)) / 100; tarifa = ((Number(c.meta) + fijos) / (1 - imp)) / horasMes; como = '(meta ' + money(Number(c.meta)) + ' + gastos fijos ' + money(fijos) + (imp ? ', con ' + Math.round(imp * 100) + '% de impuestos' : '') + ') ÷ ' + num(Math.round(horasMes)) + ' h al mes'; }
+    return { c, fijos, horasMes, tarifa: Math.round(tarifa * 100) / 100, como };
+  }
+  function calcEstado() {
+    if (!S.calc) S.calc = { modo: 'tiempo', nombre: '', horas: {}, complejidad: 1, urgencia: 0, uso: 0, extras: [], ancho: '', alto: '', m2dia: '', horasDia: '', prep: '', mat: '', sellador: '', andamio: '', exterior: 0 };
+    return S.calc;
+  }
+  function calcular() {
+    const b = calcBase(); const k = calcEstado(); const n = (v) => Number(v) || 0;
+    let horas = 0; const lineas = [];
+    if (k.modo === 'mural') {
+      const m2 = n(k.ancho) * n(k.alto); const dias = n(k.m2dia) ? m2 / n(k.m2dia) : 0; horas = dias * (n(k.horasDia) || 0);
+      lineas.push(['Área', num(Math.round(m2 * 100) / 100) + ' m²', null]);
+      if (dias) lineas.push(['Días de pintura', num(Math.round(dias * 10) / 10) + ' días', null]);
+      const honor = horas * b.tarifa * (1 + n(k.exterior) / 100) * n(k.complejidad || 1) * (1 + n(k.urgencia) / 100);
+      const directos = m2 * (n(k.prep) + n(k.mat) + n(k.sellador)) + n(k.andamio);
+      const extras = (k.extras || []).reduce((s, x) => s + n(x.monto), 0);
+      return { b, horas, honor, uso: honor * n(k.uso) / 100, directos: directos + extras, m2, lineas, total: honor * (1 + n(k.uso) / 100) + directos + extras };
+    }
+    CALC_FASES.forEach(([key]) => { horas += n((k.horas || {})[key]); });
+    const honor = horas * b.tarifa * n(k.complejidad || 1) * (1 + n(k.urgencia) / 100);
+    const extras = (k.extras || []).reduce((s, x) => s + n(x.monto), 0);
+    return { b, horas, honor, uso: honor * n(k.uso) / 100, directos: extras, lineas, total: honor * (1 + n(k.uso) / 100) + extras };
+  }
+  function viewCalculadora() {
+    const b = calcBase(); const k = calcEstado(); const r = calcular();
+    const redraw = () => { const a = document.activeElement; const lab = a && a.getAttribute('aria-label'); renderMain(true); if (lab) { const n = document.querySelector('#main [aria-label="' + lab.replace(/"/g, '') + '"]'); if (n) { n.focus(); try { n.setSelectionRange(n.value.length, n.value.length); } catch (e) { /* select */ } } } };
+    const inN = (label, val, onv, ph, attrs) => { const el = h('input', Object.assign({ type: 'number', min: '0', step: 'any', inputmode: 'decimal', value: val === '' || val == null ? '' : val, placeholder: ph || '', 'aria-label': label }, attrs || {})); el.addEventListener('input', () => { onv(el.value); clearTimeout(viewCalculadora.t); viewCalculadora.t = setTimeout(redraw, 450); }); return h('label', { class: 'field' }, h('span', { text: label }), el); };
+    const setC = (key) => (v) => { const c = Object.assign({}, ajuste('calc', {}) || {}, { [key]: v }); S.ajustes = Object.assign({}, S.ajustes, { calc: c }); saveAjustes({ calc: c }); };
+    const setK = (key) => (v) => { k[key] = v; };
+    const tarifaCard = h('section', { class: 'card pad calc-tarifa' },
+      h('div', { class: 'sec-h' }, h('h2', { text: '1 · Tu tarifa por hora' }), b.tarifa ? h('b', { class: 'calc-big', text: money(b.tarifa) + ' / h' }) : null),
+      h('p', { class: 'hint', text: 'Se guarda para siempre. Tus gastos fijos salen solos de tus suscripciones activas (' + money(b.fijos) + ' al mes).' }),
+      h('div', { class: 'opt-grid' },
+        inN('Cuánto querés ganar al mes (Q)', b.c.meta, setC('meta'), 'Tu meta, limpia'),
+        inN('Horas que de verdad cobrás por semana', b.c.horasSemana, setC('horasSemana'), 'Sin contar correos ni admin'),
+        inN('Impuestos que separás (%)', b.c.impuesto, setC('impuesto'), 'Opcional'),
+        inN('O escribí tu tarifa directo (Q/h)', b.c.tarifaManual, setC('tarifaManual'), 'Opcional')),
+      b.tarifa ? h('p', { class: 'hint', text: 'Cómo sale: ' + b.como + '.' }) : h('p', { class: 'aviso-txt' }, icon('alert', 'sm'), 'Escribí tu meta y tus horas (o tu tarifa) para que la calculadora funcione. No invento ese número.'));
+    const modo = h('div', { class: 'seg', role: 'group', 'aria-label': 'Tipo de trabajo' }, [['tiempo', 'Diseño o ilustración', 'edit'], ['mural', 'Mural', 'grid']].map(([m, l, ic]) => h('button', { type: 'button', 'aria-pressed': String(k.modo === m), onclick: () => { k.modo = m; renderMain(true); } }, icon(ic, 'sm'), l)));
+    const nombre = h('input', { type: 'text', value: k.nombre || '', placeholder: 'Ej. Logotipo para restaurante', 'aria-label': 'Nombre del trabajo' }); nombre.addEventListener('input', () => { k.nombre = nombre.value; clearTimeout(viewCalculadora.t2); viewCalculadora.t2 = setTimeout(redraw, 600); });
+    const sel = (label, val, opts, onv) => { const el = h('select', { 'aria-label': label }, opts.map(([v, l]) => h('option', { value: String(v), selected: String(val) === String(v) ? true : null, text: l }))); el.addEventListener('change', () => { onv(el.value); renderMain(true); }); return h('label', { class: 'field' }, h('span', { text: label }), el); };
+    const trabajo = h('section', { class: 'card pad' },
+      h('div', { class: 'sec-h' }, h('h2', { text: '2 · El trabajo' }), modo),
+      h('label', { class: 'field' }, h('span', { text: 'Qué es' }), nombre),
+      k.modo === 'mural'
+        ? h('div', { class: 'opt-grid' }, inN('Ancho (m)', k.ancho, setK('ancho')), inN('Alto (m)', k.alto, setK('alto')), inN('m² que pintás por día', k.m2dia, setK('m2dia'), 'Tu ritmo real'), inN('Horas por día de pintura', k.horasDia, setK('horasDia')),
+          inN('Preparar pared (Q por m²)', k.prep, setK('prep'), '0 si no hace falta'), inN('Pintura y materiales (Q por m²)', k.mat, setK('mat')), inN('Sellador (Q por m²)', k.sellador, setK('sellador')), inN('Andamio o acceso (Q total)', k.andamio, setK('andamio')),
+          sel('¿Dónde?', k.exterior, [[0, 'Interior'], [15, 'Exterior (+15%)'], [30, 'Exterior difícil (+30%)']], setK('exterior')))
+        : h('div', { class: 'opt-grid' }, CALC_FASES.map(([key, l]) => inN(l + ' (h)', (k.horas || {})[key], (v) => { k.horas = Object.assign({}, k.horas, { [key]: v }); }))),
+      h('div', { class: 'opt-grid' },
+        sel('Complejidad', k.complejidad, [[1, 'Normal (×1)'], [1.15, 'Algo compleja (×1.15)'], [1.3, 'Compleja (×1.3)'], [1.5, 'Muy compleja (×1.5)']], setK('complejidad')),
+        sel('Urgencia', k.urgencia, [[0, 'Tiempo normal'], [25, 'Rápido (+25%)'], [50, 'Urgente (+50%)']], setK('urgencia')),
+        sel('Uso o licencia', k.uso, [[0, 'Sin cobro de uso'], [25, 'Uso limitado (+25%)'], [50, 'Comercial (+50%)'], [100, 'Comercial amplio o exclusivo (+100%)']], setK('uso'))),
+      h('p', { class: 'hint', text: 'Los porcentajes son puntos de partida; cambialos según el cliente. Para licenciar ilustraciones con detalle, usá la licencia dentro del proyecto.' }),
+      h('div', { class: 'calc-extras' }, h('p', { class: 'block-h' }, icon('receipt', 'sm'), 'Gastos directos (traslado, impresión, terceros…)'),
+        (k.extras || []).map((x, i) => { const c1 = h('input', { type: 'text', value: x.concepto || '', placeholder: 'Concepto', 'aria-label': 'Concepto ' + (i + 1) }); c1.addEventListener('input', () => { x.concepto = c1.value; }); const c2 = h('input', { type: 'number', min: '0', step: 'any', value: x.monto || '', placeholder: 'Q', 'aria-label': 'Monto ' + (i + 1) }); c2.addEventListener('input', () => { x.monto = c2.value; clearTimeout(viewCalculadora.t); viewCalculadora.t = setTimeout(redraw, 450); }); return h('div', { class: 'calc-extra' }, c1, c2, h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Quitar gasto', onclick: () => { k.extras.splice(i, 1); renderMain(true); } }, icon('x', 'sm'))); }),
+        h('button', { type: 'button', class: 'btn ghost small', onclick: () => { k.extras = [...(k.extras || []), { concepto: '', monto: '' }]; renderMain(true); } }, icon('plus', 'sm'), 'Gasto')));
+    // comparar con lo que ya cobraste
+    const parecidos = k.nombre && k.nombre.trim().length > 3 ? gruposPrecios(true).filter((g) => parecido(k.nombre, g.nombre) >= 0.5 || normTxt(g.nombre).includes(normTxt(k.nombre))).slice(0, 3) : [];
+    const catal = k.nombre && k.nombre.trim().length > 3 ? S.servicios.filter((x) => parecido(k.nombre, x.titulo) >= 0.5).slice(0, 2) : [];
+    const listo = b.tarifa > 0 && (r.horas > 0 || r.directos > 0);
+    const res = h('section', { class: 'card pad calc-res' },
+      h('div', { class: 'sec-h' }, h('h2', { text: '3 · Cuánto cobrar' })),
+      !b.tarifa ? h('p', { class: 'hint', text: 'Falta tu tarifa por hora (paso 1).' }) : !listo ? h('p', { class: 'hint', text: k.modo === 'mural' ? 'Escribí medidas, tu ritmo por día y las horas por día.' : 'Escribí las horas de cada fase.' }) :
+        [h('table', { class: 'tbl calc-tbl' }, h('tbody', {},
+          r.lineas.map(([a, v]) => h('tr', {}, h('td', { text: a }), h('td', { class: 'num', text: v }))),
+          h('tr', {}, h('td', { text: 'Horas de trabajo' }), h('td', { class: 'num', text: num(Math.round(r.horas * 10) / 10) + ' h × ' + money(b.tarifa) })),
+          h('tr', {}, h('td', { text: 'Honorario creativo' + (Number(k.complejidad) !== 1 || Number(k.urgencia) || Number(k.exterior) ? ' (con tus factores)' : '') }), h('td', { class: 'num', text: money(Math.round(r.honor)) })),
+          r.uso ? h('tr', {}, h('td', { text: 'Uso o licencia' }), h('td', { class: 'num', text: money(Math.round(r.uso)) })) : null,
+          r.directos ? h('tr', {}, h('td', { text: 'Gastos directos' }), h('td', { class: 'num', text: money(Math.round(r.directos)) })) : null,
+          h('tr', { class: 'calc-total' }, h('td', { text: 'Total sugerido' }), h('td', { class: 'num', text: money(Math.round(r.total)) })))),
+        h('p', { class: 'hint', text: 'Piso (sin factores ni uso): ' + money(Math.round(r.horas * b.tarifa + r.directos)) + '. Por debajo de eso perdés.' }),
+        parecidos.length || catal.length ? h('div', { class: 'calc-comp' }, h('p', { class: 'block-h' }, icon('book', 'sm'), 'Lo que ya cobraste parecido'),
+          catal.map((x) => h('p', {}, 'Catálogo: ' + x.titulo + ' · ' + money(Number(x.precio) || 0))),
+          parecidos.map((g) => h('p', {}, g.nombre + ' · ' + (g.n === 1 ? money(g.med) : 'mediana ' + money(g.med) + ' (' + g.n + ' veces)') + ' · última ' + g.ultimo.cot))) : null,
+        h('div', { class: 'row-actions' },
+          h('button', { type: 'button', class: 'btn forest', onclick: () => abrirServicio(null, { titulo: (k.nombre || 'Servicio').slice(0, 80), precio: Math.round(r.total), unidad: k.modo === 'mural' ? 'por mural' : 'por proyecto', tiempo: r.horas ? num(Math.round(r.horas)) + ' h' : '', grupo: k.modo === 'mural' ? 'Murales' : '' }) }, icon('plus', 'sm'), 'Guardar en el catálogo'),
+          h('button', { type: 'button', class: 'btn soft', onclick: () => nuevaCotizacion({ titulo: k.nombre || 'Propuesta', lineas: [{ id: uid(), tipo: 'titulo', texto: k.nombre || 'Propuesta' }, { id: uid(), tipo: 'servicio', nombre: k.nombre || 'Servicio', cantidad: 1, precio: Math.round(r.total), descripcion: '' }] }) }, icon('receipt', 'sm'), 'Propuesta rápida'))]);
+    return [h('p', { class: 'hint calc-intro', text: 'Tres pasos: tu tarifa, el trabajo y el resultado. Los datos los ponés vos; Curtis solo hace la cuenta y te muestra lo que ya cobraste parecido.' }),
+      h('div', { class: 'calc-grid' }, h('div', { class: 'calc-col' }, tarifaCard, trabajo), h('div', { class: 'calc-col calc-sticky' }, res, h('details', { class: 'card pad calc-ref' }, h('summary', { text: 'De dónde salen estas ideas' }), h('p', { class: 'hint', text: CALC_REF }))))];
+  }
+
   // ================= Zoho =================
   async function zohoClientes(nombre) {
     if (!S.mcp) throw new Error('Zoho no está disponible en esta vista');
@@ -4646,6 +5215,8 @@ body.menu-izq .msg-burbuja { bottom: 78px; }
     db.collection('facturas').onSnapshot((snap) => { S.facturas = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('proyectos', 'proyecto', 'area', 'precios')) renderMain(); if (S.cotId) { const box = document.getElementById('fac-box'); if (box && S.cotDraft) { const nb = bloqueFacturasCot(S.cotDraft); nb.id = 'fac-box'; box.replaceWith(nb); } } }, () => {});
     db.collection('suscripciones').onSnapshot((snap) => { S.suscripciones = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('precios')) renderMain(); }, () => {});
     db.collection('movimientos').onSnapshot((snap) => { S.movimientos = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('precios', 'proyecto')) renderMain(); }, () => {});
+    db.collection('zohocot').onSnapshot((snap) => { S.zcots = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('precios', 'registro') && !S.cotId && !S.zohoLeyendo) renderMain(); }, () => {});
+    db.collection('zohofac').onSnapshot((snap) => { S.zfacs = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (enVista('precios', 'inicio') && !S.cotId && !S.zohoLeyendo) renderMain(); }, () => {});
     db.collection('servicios').onSnapshot((snap) => { S.servicios = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); if (S.view === 'precios' && !S.cotId) renderMain(); }, () => {});
     db.collection('cotizaciones').onSnapshot((snap) => { S.cotizaciones = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())); S.loadedCot = true;
       if (S.cotId) { if (S.cotizaciones.some((c) => c.id === S.cotId)) S.cotVisto = true; else if (S.cotVisto) { S.cotId = null; S.cotDraft = null; if (S.view === 'precios') renderMain(true); } }

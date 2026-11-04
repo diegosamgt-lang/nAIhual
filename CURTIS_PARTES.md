@@ -319,3 +319,22 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
   - Tareas estancadas: aviso en Mis tareas (Hoy, Próx. semana, Partirla, Ya no va), en Inicio, al tocar Actualizar y cuando Curtis revisa.
   - Botón ♥ en todas las vistas: un mensaje positivo nuevo cada vez que lo tocás.
   - Pruebas: 178/178 + 31/31.
+- **v15 (2026-11-04)**:
+  - **Sendero:** una línea vertical a la par de cada tarea que tiene pasos; se llena con cada paso hecho. El detalle muestra «Cómo vas» con los pasos. El botón «Avancé» sirve para atrasadas, estancadas y tareas sin pasos.
+  - **Frases:** sin ardillas. Solo frases con autor verificable: Jung, Dhammapada, Dalai Lama y Thich Nhat Hanh. En Ajustes → Tus frases agregás las tuyas (por ejemplo, de Grinberg). Hay un recordatorio debajo del título de cada vista.
+  - **Barra lateral:** Inicio, Mis tareas y Proyectos van como títulos; Dinero, Registro, Foco y Curtis como subtítulos; los proyectos como cuerpo.
+  - **Paleta:** los colores extra (rosa, morado, celeste, coral, turquesa y oliva) ahora son tonos terrosos.
+  - **Mis tareas:**
+    - Selección como Gmail: una casilla en cada fila y otra de «todas» en cada bloque.
+    - Atrasadas, Hoy, Próximos 3 días y Tu calendario son bloques que se mueven, cambian de ancho y se ven como lista o como tarjetas.
+  - **Calendario:** está en Mis tareas (7 días) y en Registro → Calendario (14 días).
+  - **Dinero con Zoho (solo lectura):**
+    - «Actualizar con Zoho» lee cotizaciones y facturas.
+    - Por cobrar suma las facturas con saldo y las cotizaciones enviadas o aprobadas sin factura; cada una dice cuál es su factura final.
+    - Los borradores no cuentan, solo avisan.
+    - Las propuestas rápidas de Curtis piden decisión: borrarlas si ya están en Zoho, o pasarlas a Zoho.
+  - **Registro → Lo que cobré:** cada servicio cotizado, con su precio.
+  - **Actualizar catálogo:** avisa cuando un precio cambió más del 25% y propone los servicios que faltan.
+  - **Calculadora:** tu tarifa sale de tu meta, tus horas y tus gastos fijos. Calcula por horas de cada fase o un mural (m², ritmo, materiales y andamio), con factores que vos elegís, y compara con lo que ya cobraste.
+  - **Proyectos:** «Lo próximo a entregar» en grande, las áreas como títulos, y los pausados y entregados en lista.
+  - Pruebas: 206/206 + 31/31.
