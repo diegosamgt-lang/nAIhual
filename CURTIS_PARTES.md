@@ -311,3 +311,11 @@ Tu socio de estudio dentro de un panel. Mezcla Asana (tareas y proyectos) con No
     - 9 disponibles: Resumen, Ahora, Hoy, Citas, Curtis, Entregas, Dinero, Aviso y Frase.
     - «Editar inicio»: arrastrar para mover (o flechas), cambiar tamaño, quitar, agregar y «Volver al original». Se recuerda en cada equipo.
   - Pruebas: 157/157 + 31/31.
+- **v14 (2026-11-04)** — Mis tareas:
+  - Seleccionar varias: cambiar estado, mandar a otro proyecto o borrar (con confirmación).
+  - Vista «Tarjetas»: cada tarea chica, mediana o grande, una a la par de otra; se arrastran para ordenar.
+  - Clic derecho en una tarea: abrir, estado, fecha, mandar a, tamaño, seleccionar, borrar.
+  - Más jerarquía: Atrasadas y Hoy grandes, Próximos 3 días mediano, lo demás chico y gris; el proyecto se ve en negrita con su color.
+  - Tareas estancadas: aviso en Mis tareas (Hoy, Próx. semana, Partirla, Ya no va), en Inicio, al tocar Actualizar y cuando Curtis revisa.
+  - Botón ♥ en todas las vistas: un mensaje positivo nuevo cada vez que lo tocás.
+  - Pruebas: 178/178 + 31/31.
