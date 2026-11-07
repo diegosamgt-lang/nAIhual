@@ -1,5 +1,7 @@
 # Prompts · inventario (Gemini) y libretas (NotebookLM)
 
+**Más fácil:** la página con un prompt por categoría y botón «Copiar» está en el visor privado (claude.ai/artifact/3UpapUFaV6uFu8UDjLNFuw) y en `docs/prompts/prompts-gemini.html`.
+
 Versión del 7-nov-2026. Lo que te devuelvan, pasáselo a Claude: «cargá el directorio» (inventario) o pegalo en «Memoria» de la beta (libretas).
 
 ## Orden y clasificación
