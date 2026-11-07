@@ -335,7 +335,7 @@ Tata (cultura)                                accesibilidad            playlists
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
-**App vigente: nAIhual 3.9.1** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
+**App vigente: nAIhual 3.10** (`app/index.html` + `app/data/`). Se abre directo en el navegador y en el visor privado de Claude (artifact «nAIhual»).
 - **Dos modos** (`modo` en `app/data/config.js`):
   - **Vista previa** (hoy): todo el catálogo con su «Referencia web», vista interna del equipo, beta de Diego y Claude respondiendo lo que se escribe libre.
   - **Pública**: solo lo verificado, sin vista interna, sin beta y sin Claude.
@@ -465,6 +465,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 # PARTE 5 · HISTORIAL
 
 **nAIhual 3.7 — 28-oct-2026 (CONSTRUYE · thermos):** Inicio con vida: el cielo de la portada cambia con la hora (amanecer, día, atardecer, noche con estrellas y ventanas encendidas) y saluda; «Hoy te sugiere [guía]» con una idea de su rama y «Otra idea»; todo el Inicio en widgets que se contraen; perfiles como interruptores (hasta 2). «+ Publicar» como red social, ordenado por Claude y usado por el chat al confirmarlo. Los botones del chat los contesta Claude, variando. Mapa con nombres al tocar. Directorio curado (37 activos, 167 en reserva). Toques que responden (se achican al tocar y vibran si el teléfono deja). ✅ 243/243 pruebas.
+
+**nAIhual 3.10 — 7-nov-2026:** 3 perfiles para empezar (Local, Turista, Mochilero; después nacional, internacional y visita regular); «Registro» con todos los lugares, A–Z, Z–A, por categoría y por quién lo trajo (Diego o «IA · 20»); cada lugar con su `origen`; Memoria ordenada por categoría; prompts nuevos (`docs/prompts/prompt-directorio.md`): inventario de Gemini con máximo 20 y libretas de NotebookLM por categoría. My Maps: gratis, con íconos propios. ✅ 264/264 pruebas.
 
 **nAIhual 3.9.1 — 7-nov-2026:** se quitó «Curar» de la app: la curaduría vive en la hoja de Diego (columnas para, confirmo, estado) y llega con «cargá el directorio». ✅ 261/261 pruebas.
 

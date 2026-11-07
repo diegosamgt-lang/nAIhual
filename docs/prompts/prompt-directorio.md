@@ -1,23 +1,41 @@
-# Prompt · directorio de Antigua (agente aparte)
+# Prompts · inventario (Gemini) y libretas (NotebookLM)
 
-Pegá esto en el agente que va a armar el directorio (por ejemplo, Gemini). Orden sugerido de categorías (Diego, 7-nov): hospedaje (hostales y hoteles locales) → transporte → mercados y comedores → artesanos y talleres → miradores y naturaleza → fiestas y eventos con fecha. Lo que devuelva, pasáselo a Claude («cargá el directorio») para que lo revise y lo pase al catálogo de nAIhual.
+Versión del 7-nov-2026. Lo que te devuelvan, pasáselo a Claude: «cargá el directorio» (inventario) o pegalo en «Memoria» de la beta (libretas).
 
-> Armá un directorio de lugares de Antigua Guatemala para nAIhual, una guía de turismo consciente. Empezá por esta categoría: **[categoría]** (cafe, comida, postres, noche, parque, cultura, hotel, transporte o tienda).
+## Orden y clasificación
+1. **Una categoría por vez, máximo 20 lugares** (por defecto).
+2. **Orden:** hospedaje → comida → cafés → pan y postres → de noche → transporte → mercados y comedores → artesanos y talleres → miradores y naturaleza → fiestas y eventos (con fecha).
+3. **Etiqueta `origen`:** lo que trae Gemini va `ia`. Lo que agregás vos, `diego`. En la app, «Registro» los separa: «IA · 20» y «Diego».
+4. **Columnas tuyas para curar** (las llenás vos, no Gemini): `para` (local, turista, mochilero, separados por coma) · `confirmo` (fecha en que confirmaste que existe y es así) · `estado` (activo, reserva o fuera).
+
+## Prompt para Gemini (inventario)
+
+> Armá un inventario de **[categoría]** en Antigua Guatemala para nAIhual, una guía de turismo consciente. **Máximo 20 lugares**, empezando por los de tradición y familiares.
 >
 > Reglas:
 > - Solo lugares que aparezcan en una fuente pública que puedas citar (Google Maps, la web o las redes del negocio, guías de viaje, medios). No inventes nada.
-> - Sin horarios, sin precios y sin datos de personas (nombres de empleados, teléfonos personales).
 > - **Sin calificaciones, estrellas ni número de reseñas.** Sin copiar reseñas.
-> - `maps_url`: el enlace del lugar en Google Maps (Compartir → Copiar enlace), no un enlace de búsqueda.
-> - Una categoría por vez, máximo 20 lugares, empezando por los de tradición y familiares.
+> - Sin horarios, sin precios y sin datos de personas (nombres de empleados, teléfonos personales).
 > - Sin significados mayas ni ceremonias.
 > - El «contexto» son datos, no opiniones: de quién es (familiar, nacional, cadena, extranjero), desde cuándo y qué lo hace distinto, según la fuente.
+> - Incluí también cadenas, marcadas como cadena: sirven de contexto.
+> - `maps_url`: el enlace del lugar en Google Maps (Compartir → Copiar enlace), no un enlace de búsqueda.
 > - Si un dato no está en la fuente, dejalo vacío.
-> - Incluí también cadenas (Pollo Campero, San Martín…), marcadas como cadena: sirven de contexto.
 >
-> Devolvé una línea JSON por lugar, exactamente con estos campos:
-> `{"nombre": "", "categoria": "", "momento": "", "direccion": "", "maps_url": "", "contexto": "", "redes_o_web": "", "fuente": "", "fuente_url": "", "fecha_consulta": "AAAA-MM-DD"}`
+> Devolvé una tabla (o una línea JSON por lugar) con estas columnas, en este orden:
+> `nombre · categoria · tipo · direccion · maps_url · contexto · redes_o_web · fuente · fuente_url · fecha_consulta (AAAA-MM-DD) · origen (siempre «ia») · para (vacío) · confirmo (vacío) · estado (vacío)`
 >
-> Columnas de Diego para curar (las llena él, no el agente): `para` (perfiles para los que lo recomienda: local, nacional, internacional, regular, mochilero, separados por coma) · `confirmo` (fecha en que confirmó que existe y es así) · `estado` (activo, reserva o fuera).
->
-> `momento` es uno de: llegue, transporte, hotel, comida, cerca, noche.
+> `categoria` es una de: hospedaje, comida, cafe, postres, noche, transporte, mercado, artesania, mirador, evento.
+
+## Prompt para NotebookLM (libretas por categoría)
+
+Para que nAIhual aprenda siempre en el mismo orden: **una libreta por categoría**, con el mismo nombre que en la Memoria de la app (hospedaje, comida, cafés, pan y postres, de noche, parques, monumentos, historia y cultura, consejos, transporte, fiestas y eventos, otros).
+
+> Con las fuentes de este cuaderno, armá un informe de **[categoría]** para nAIhual (Antigua Guatemala).
+> - Solo lo que dicen las fuentes; al final de cada párrafo, entre paréntesis, la fuente.
+> - Párrafos cortos, uno por tema o por lugar, separados por una línea en blanco.
+> - Sin opiniones como verdad, sin calificaciones, sin precios ni horarios.
+> - Lo maya o cultural, marcado con * (falta que lo valide un tata).
+> - Al principio, una línea: «Categoría: [categoría] · fecha: [hoy]».
+
+Lo que te devuelva, pegalo en **Beta → Memoria**, eligiendo la misma categoría.

@@ -555,7 +555,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.9.1 · 7-nov-2026';
+var VERSION = 'nAIhual 3.10 · 7-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -631,7 +631,7 @@ var P = {}, PIDS = [];
     estado: estado, patro: r.patrocinado === true, pendiente: String(r.pendiente || '').trim(), foto: String(r.foto || '').trim(), fotoCredito: String(r.foto_credito || '').trim(),
     horario: r.fuente_horario ? String(r.horario || '').trim() : '', precio: r.fuente_precio ? String(r.precio || '').trim() : '',
     pos: m && isFinite(m.avenida) && isFinite(m.calle) ? { av: +m.avenida, ca: +m.calle, aprox: !!m.aprox } : null,
-    tipo: String(r.tipo || '').trim(), para: (Array.isArray(r.para) ? r.para : []).filter(function (q) { return !!PERFIL[q]; }), web: /^https:\/\//.test(String(r.web || '')) ? String(r.web).trim() : '', aviso: String(r.aviso || '').trim(),
+    tipo: String(r.tipo || '').trim(), para: (Array.isArray(r.para) ? r.para : []).filter(function (q) { return !!PERFIL[q]; }), origen: r.origen === 'ia' ? 'ia' : r.origen === 'diego' ? 'diego' : '', web: /^https:\/\//.test(String(r.web || '')) ? String(r.web).trim() : '', aviso: String(r.aviso || '').trim(),
     why: { es: f.es || '', en: f.en || f.es || '' }, fraseDe: String(r.frase_de || '').trim() };
   if (P[r.id].name) PIDS.push(r.id); else delete P[r.id];
 });
@@ -827,6 +827,8 @@ var X3 = {
     find: 'Buscá un lugar para anotar', findPh: 'Nombre o tipo: pizza, panadería, café…', quick: 'Anotar rápido', addNew: 'Agregar un lugar que no está', del: 'Borrar',
     galTitle: 'Galería', galBody: 'Subí aquí tus fotos y gráficos y decí para qué son: la portada, el ícono, cada guía, cada lugar o la línea gráfica. La app las usa sola.', galUse: '¿Para qué es?', galNote: 'Nota (opcional)', galAdd: 'Subir a la galería', galSaved: 'Subida a la galería', galNone: 'Todavía no hay fotos.', galNoVisor: 'Las fotos se suben desde el visor de Claude.',
     useCover: 'Portada', useIcon: 'Ícono de la app', useGraphic: 'Línea gráfica / ideas', useGuide: 'Guía:', usePlace: 'Lugar:',
+    regTitle: 'Registro', regBody: 'Todos los lugares cargados, con quién los trajo: Diego o la IA (hasta 20 por categoría).', regSort: 'Orden', regByCat: 'Por categoría', regWho: 'Quién lo trajo', fromDiego: 'Diego', fromAI: 'IA · 20', noAddr: 'Sin dirección', regCount: function (n) { return n === 1 ? '1 lugar' : n + ' lugares'; },
+    memCat: 'Categoría', memExtra: [['historia', 'Historia y cultura'], ['consejos', 'Consejos'], ['transporte', 'Transporte'], ['eventos', 'Fiestas y eventos'], ['otros', 'Otros']],
     memTitle: 'Memoria', memBody: 'Pegá textos grandes (por ejemplo, de NotebookLM): historia, consejos, lo que investigaste. El chat busca ahí lo que sirve para cada pregunta.', memName: 'Título', memText: 'Texto', memSave: 'Guardar en la memoria', memSaved: 'Guardado en la memoria', memEmpty: 'Poné un título y el texto.', memSize: function (n) { return n.toLocaleString('es') + ' caracteres'; },
     hoursMaps: 'Ver horario en Google Maps', recoBy: function (n) { return 'A ' + n + ' le gusta'; }, myMaps: 'Mapas de Diego',
     paraTag: function (p) { return 'Diego lo recomienda para: ' + p; },
@@ -868,6 +870,8 @@ var X3 = {
     find: 'Find a place to note', findPh: 'Name or type: pizza, bakery, coffee…', quick: 'Quick note', addNew: 'Add a place that is not here', del: 'Delete',
     galTitle: 'Gallery', galBody: 'Upload your photos and graphics here and say what each is for: the cover, the icon, each guide, each place or the visual identity. The app uses them on its own.', galUse: 'What is it for?', galNote: 'Note (optional)', galAdd: 'Upload to the gallery', galSaved: 'Uploaded to the gallery', galNone: 'No photos yet.', galNoVisor: 'Photos are uploaded from the Claude viewer.',
     useCover: 'Cover', useIcon: 'App icon', useGraphic: 'Visual identity / ideas', useGuide: 'Guide:', usePlace: 'Place:',
+    regTitle: 'Register', regBody: 'Every place loaded, with who brought it: Diego or the AI (up to 20 per category).', regSort: 'Order', regByCat: 'By category', regWho: 'Who brought it', fromDiego: 'Diego', fromAI: 'AI · 20', noAddr: 'No address', regCount: function (n) { return n === 1 ? '1 place' : n + ' places'; },
+    memCat: 'Category', memExtra: [['historia', 'History and culture'], ['consejos', 'Tips'], ['transporte', 'Transport'], ['eventos', 'Festivities and events'], ['otros', 'Other']],
     memTitle: 'Memory', memBody: 'Paste long texts (for example, from NotebookLM): history, tips, your research. The chat looks there for what fits each question.', memName: 'Title', memText: 'Text', memSave: 'Save to memory', memSaved: 'Saved to memory', memEmpty: 'Add a title and the text.', memSize: function (n) { return n.toLocaleString('en') + ' characters'; },
     hoursMaps: 'See hours on Google Maps', recoBy: function (n) { return n + ' likes it'; }, myMaps: 'Diego’s maps',
     paraTag: function (p) { return 'Diego recommends it for: ' + p; },
@@ -1538,7 +1542,7 @@ function memPick(q) {
   var words = norm(String(q || '')).split(/[^a-z0-9ñ]+/).filter(function (w) { return w.length >= 4 && !AI_STOP[w]; }).map(function (w) { return w.slice(0, 6); });
   if (!words.length || !MEM.items.length) return [];
   var parts = [];
-  MEM.items.forEach(function (m) { String(m.texto).split(/\n\s*\n/).forEach(function (par) { var n = norm(par), sc = words.filter(function (w) { return n.indexOf(w) >= 0; }).length; if (sc) parts.push({ titulo: m.titulo || '', texto: par.trim().slice(0, 1200), sc: sc }); }); });
+  MEM.items.forEach(function (m) { String(m.texto).split(/\n\s*\n/).forEach(function (par) { var n = norm(par), sc = words.filter(function (w) { return n.indexOf(w) >= 0; }).length; if (sc) parts.push({ titulo: (m.categoria ? m.categoria + ' · ' : '') + (m.titulo || ''), texto: par.trim().slice(0, 1200), sc: sc }); }); });
   parts.sort(function (a, b) { return b.sc - a.sc; });
   var out = [], size = 0;
   parts.forEach(function (p) { if (size + p.texto.length <= 4000) { out.push({ de: p.titulo, texto: p.texto }); size += p.texto.length; } });
@@ -1821,6 +1825,34 @@ function betaDelete(key) {
   if (BETA.db) { BETA.db.doc('beta/' + id).delete().then(function () { dropPhoto(); toast(true, x.toastDeleted); }, function () { render({ keep: true }); toast(false); }); return; }
   BETA.items = BETA.items.filter(function (b) { return b._id !== id; }); betaSaveLocal(); dropPhoto(); render({ keep: true }); toast(true, x.toastDeleted);
 }
+// ===================== REGISTRO (beta): todos los lugares cargados, A–Z, con filtros =====================
+var RQ = { q: '', cat: 'all', origen: 'all', orden: 'az' };
+function registroList() {
+  var q = norm(RQ.q.trim());
+  return PIDS.filter(function (id) { var p = P[id];
+    return (RQ.cat === 'all' || p.cat === RQ.cat) && (RQ.origen === 'all' || p.origen === RQ.origen) && (!q || norm(p.name + ' ' + (p.tipo || '')).indexOf(q) >= 0); })
+    .sort(function (a, b) { var A = P[a], B = P[b];
+      if (RQ.orden === 'cat') return catName(A.cat).localeCompare(catName(B.cat), 'es') || A.name.localeCompare(B.name, 'es');
+      return RQ.orden === 'za' ? B.name.localeCompare(A.name, 'es') : A.name.localeCompare(B.name, 'es'); });
+}
+function registroRows() {
+  var x = X(), lang = L();
+  return registroList().map(function (id) { var p = P[id];
+    return '<button type="button" class="rowlink" data-open="p:' + esc(id) + '" data-reg="' + esc(id) + '"><span class="tags"><span class="tag">' + esc(catName(p.cat)) + '</span>' +
+      (p.origen ? '<span class="tag' + (p.origen === 'ia' ? ' check' : ' ok') + '" data-origen="' + p.origen + '">' + esc(p.origen === 'ia' ? x.fromAI : x.fromDiego) + '</span>' : '') +
+      (p.para.length ? '<span class="tag like">' + esc(p.para.map(function (q) { return PERFIL[q].label[lang]; }).join(', ')) + '</span>' : '') + (p.addr ? '' : '<span class="tag">' + esc(x.noAddr) + '</span>') + '</span>' +
+      '<b>' + esc(p.name) + '</b><small>' + esc(p.tipo || '') + (p.addr ? ' · ' + esc(p.addr) : '') + '</small></button>'; }).join('');
+}
+function registroHTML() {
+  var x = X(), lang = L(), n = registroList().length;
+  var chip = function (attr, val, on, label) { return '<button type="button" class="chip" ' + attr + '="' + esc(val) + '" aria-pressed="' + on + '">' + esc(label) + '</button>'; };
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.regTitle) + '</h1><p>' + esc(x.regBody) + '</p></div>' +
+    '<label class="search">' + icon('search') + '<input id="rq" type="search" autocomplete="off" value="' + esc(RQ.q) + '" placeholder="' + esc(x.findPh) + '" aria-label="' + esc(x.find) + '"></label>' +
+    '<div class="chips" role="group" aria-label="' + esc(x.regSort) + '">' + [['az', 'A–Z'], ['za', 'Z–A'], ['cat', x.regByCat]].map(function (o) { return chip('data-rorden', o[0], RQ.orden === o[0], o[1]); }).join('') + '</div>' +
+    '<div class="chips" role="group" aria-label="' + esc(T().filtersLabel) + '">' + chip('data-rcat', 'all', RQ.cat === 'all', T().filterAll) + CATEGORIAS.map(function (c) { return chip('data-rcat', c[0], RQ.cat === c[0], c[2][lang]); }).join('') + '</div>' +
+    '<div class="chips" role="group" aria-label="' + esc(x.regWho) + '">' + [['all', T().filterAll], ['diego', x.fromDiego], ['ia', x.fromAI]].map(function (o) { return chip('data-rorigen', o[0], RQ.origen === o[0], o[1]); }).join('') + '</div>' +
+    '<p class="note" data-reg-count>' + esc(x.regCount(n)) + '</p><div class="list" id="reg-out">' + registroRows() + '</div>';
+}
 // ===================== GALERÍA Y MEMORIA (beta) =====================
 function galUsos() {
   var x = X(), lang = L();
@@ -1838,11 +1870,13 @@ function galeriaHTML() {
     '<section class="sec" data-galeria><h2>' + esc(x.galTitle) + ' · ' + items.length + '</h2>' + (items.length ? '<div class="gal">' + items.map(function (g) { var u = safeHttps(g.url);
       return '<figure data-gal="' + esc(g.uso || '') + '">' + (u ? '<img src="' + esc(u) + '" alt="">' : '') + '<figcaption>' + esc(name[g.uso] || g.uso || '') + (g.nota ? ' · ' + esc(g.nota) : '') + '</figcaption>' + delBtns('gal:' + g._id) + '</figure>'; }).join('') + '</div>' : '<p class="note">' + esc(x.galNone) + '</p>') + '</section>';
 }
+// Categorías de la memoria: las del catálogo y las de contexto. Siempre las mismas, para que todo quede ordenado igual.
+function MEMCATS() { var x = X(); return CATEGORIAS.map(function (c) { return [c[0], c[2][L()]]; }).concat(x.memExtra); }
 function memoriaHTML() {
   var x = X(), items = MEM.items.slice().sort(byDate);
   return '<section class="sec" data-memoria><h2>' + esc(x.memTitle) + ' · ' + items.length + '</h2><p class="muted">' + esc(x.memBody) + '</p>' +
-    '<form class="bform" data-bform="memoria"><label>' + esc(x.memName) + '<input type="text" name="titulo" maxlength="120" required></label><label>' + esc(x.memText) + '<textarea name="texto" maxlength="60000" style="min-height:140px"></textarea></label><p class="note" role="status" data-mem-msg></p><button type="submit" class="btn primary">' + esc(x.memSave) + '</button></form>' +
-    (items.length ? '<div class="list">' + items.map(function (m) { return '<div class="bitem" data-mem><b>' + esc(m.titulo || '—') + '</b><small>' + esc(x.memSize(String(m.texto).length)) + ' · ' + esc(String(m.fecha || '').slice(0, 10)) + '</small><div class="row">' + delBtns('mem:' + m._id) + '</div></div>'; }).join('') + '</div>' : '') + '</section>';
+    '<form class="bform" data-bform="memoria"><label>' + esc(x.memCat) + '<select name="categoria">' + MEMCATS().map(function (c) { return '<option value="' + c[0] + '">' + esc(c[1]) + '</option>'; }).join('') + '</select></label><label>' + esc(x.memName) + '<input type="text" name="titulo" maxlength="120" required></label><label>' + esc(x.memText) + '<textarea name="texto" maxlength="60000" style="min-height:140px"></textarea></label><p class="note" role="status" data-mem-msg></p><button type="submit" class="btn primary">' + esc(x.memSave) + '</button></form>' +
+    (items.length ? '<div class="list">' + items.sort(function (a, b) { return String(a.categoria || '').localeCompare(String(b.categoria || '')) || String(a.titulo || '').localeCompare(String(b.titulo || '')); }).map(function (m) { var mc = MEMCATS().filter(function (c) { return c[0] === m.categoria; })[0]; return '<div class="bitem" data-mem><span class="tags"><span class="tag">' + esc(mc ? mc[1] : '—') + '</span></span><b>' + esc(m.titulo || '—') + '</b><small>' + esc(x.memSize(String(m.texto).length)) + ' · ' + esc(String(m.fecha || '').slice(0, 10)) + '</small><div class="row">' + delBtns('mem:' + m._id) + '</div></div>'; }).join('') + '</div>' : '') + '</section>';
 }
 // «+ Publicar»: lo más simple posible, como en una red social. Temas: los de X3.temas (uno solo para todo).
 var TEMAS = X3.es.temas.map(function (t) { return t[0]; });
@@ -1912,7 +1946,7 @@ function betaFichaHTML(p) {
 function betaCard() {
   var x = X(), n = BETA.items.length;
   return '<div class="wpad" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><p>' + esc(x.betaBody) + '</p>' +
-    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div></div>';
+    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button><button type="button" class="btn" data-go="registro">' + esc(x.regTitle) + '</button></div></div>';
 }
 function byDate(a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }
 function bqRows(q) {
@@ -1970,7 +2004,7 @@ function betaHTML() {
   return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
     '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
     '<details class="panel" data-beta-how><summary><b>' + esc(x.howTitle) + '</b></summary><ol>' + x.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></details>' +
-    wallHTML() + '<div class="row"><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div>' + memoriaHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
+    wallHTML() + '<div class="row"><button type="button" class="btn" data-go="registro">' + esc(x.regTitle) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div>' + memoriaHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
 }
 function scoreOf(form) { var r = form.querySelector('input[name="puntaje"]'); return r && r.getAttribute('data-touched') ? +r.value : null; }
 function withPhoto(form, item, onSaved) {
@@ -2001,7 +2035,7 @@ function betaSubmit(form) {
     if (!mt || !mx2) { if (mm) mm.textContent = x.memEmpty; return; }
     // Textos largos se guardan en partes de 20,000 caracteres.
     var chunks = []; for (var ci = 0; ci < mx2.length; ci += 20000) chunks.push(mx2.slice(ci, ci + 20000));
-    chunks.forEach(function (ch, k) { var doc = { titulo: chunks.length > 1 ? mt + ' (' + (k + 1) + '/' + chunks.length + ')' : mt, texto: ch, fecha: new Date().toISOString() };
+    chunks.forEach(function (ch, k) { var doc = { categoria: f.categoria.value, titulo: chunks.length > 1 ? mt + ' (' + (k + 1) + '/' + chunks.length + ')' : mt, texto: ch, fecha: new Date().toISOString() };
       if (BETA.db) BETA.db.collection('memoria').add(doc).catch(function () { toast(false); }); else { doc._id = 'local-' + Date.now() + '-' + k; MEM.items = MEM.items.concat([doc]); } });
     toast(true, x.memSaved); form.reset(); if (!BETA.db) render({ keep: true });
     return;
@@ -2447,8 +2481,8 @@ function tallerHTML() {
 // ===================== DIBUJAR Y NAVEGAR =====================
 // En la beta, «+ Publicar» va al centro de la barra, como en una red social.
 var TABS = [['inicio', 'home'], ['rutas', 'map']].concat(BETA_ON ? [['publicar', 'plus']] : [], [['guia', 'chat'], ['guardados', 'heart']]);
-var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, galeria: galeriaHTML, taller: tallerHTML };
-var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', galeria: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
+var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, galeria: galeriaHTML, registro: registroHTML, taller: tallerHTML };
+var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', galeria: 'inicio', registro: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
 var main = document.getElementById('main');
 document.addEventListener('visibilitychange', function () { if (!document.hidden) fuiBar(); });
 function render(opts) {
@@ -2483,7 +2517,7 @@ function render(opts) {
 function nav(view, o) {
   o = o || {};
   if (view === 'taller' && !PREVIEW) view = 'inicio';
-  if ((view === 'beta' || view === 'galeria') && !BETA_ON) view = 'inicio';
+  if ((view === 'beta' || view === 'galeria' || view === 'registro') && !BETA_ON) view = 'inicio';
   if (!o.tab && view !== S.view) S.stack.push({ view: S.view, detail: S.detail, nawal: S.nawal, route: S.route });
   if (o.tab) S.stack = [];
   S.view = view;
@@ -2554,6 +2588,9 @@ var ACTIONS = [
   ['data-wtoggle', function (v, e, el) { CLOSED[v] = !CLOSED[v]; saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
   ['data-idea', function () { S.ideaN++; tick(); var b = document.getElementById('idea-body'); if (b) b.innerHTML = ideaHTML(); }],
   ['data-publish', function (v) { tick(); openDialog(postForm(v)); }],
+  ['data-rorden', function (v) { RQ.orden = v; render({ keep: true }); }],
+  ['data-rcat', function (v) { RQ.cat = v; render({ keep: true }); }],
+  ['data-rorigen', function (v) { RQ.origen = v; render({ keep: true }); }],
   ['data-post-ok', function (v) { postUpdate(v, { estado: 'confirmado' }); tick(); }],
   ['data-post-retry', function (v) { var it = BETA.items.filter(function (x) { return x._id === v; })[0]; if (it) postClassify(v, it); }],
   ['data-ref', function (v) { S.refOpen = S.refOpen === v ? '' : v; [].forEach.call(document.querySelectorAll('.map [data-ref]'), function (g) { g.classList.toggle('open', g.getAttribute('data-ref') === S.refOpen); g.setAttribute('aria-expanded', String(g.getAttribute('data-ref') === S.refOpen)); }); }],
@@ -2578,13 +2615,14 @@ document.addEventListener('input', function (e) {
   if (e.target.name === 'puntaje') { var sc = e.target, w = sc.closest('[data-score]'); sc.setAttribute('data-touched', '1'); w.querySelector('[data-score-out]').textContent = sc.value; w.querySelector('[data-score-warn]').hidden = sc.value !== '10'; return; }
   if (e.target.id === 'bq') { BETA.q = e.target.value; var out = document.getElementById('bq-out'); if (out) out.innerHTML = bqRows(BETA.q); return; }
   if (e.target.id === 'fq') { S.query = e.target.value; render({ keep: true }); }
+  if (e.target.id === 'rq') { RQ.q = e.target.value; var ro = document.getElementById('reg-out'); if (ro) ro.innerHTML = registroRows(); var rc = document.querySelector('[data-reg-count]'); if (rc) rc.textContent = X().regCount(registroList().length); }
 });
 
 // Abrir una pantalla directa con un enlace: #rutas, #guia, #guardados, #explorar, #cultura, #costumbres, #nawales, #guardianes
 // y, en vista previa, #beta, #taller o una sección interna (#revision, #textos, #modelo, #aprendizaje, #arquitectura, #sistema).
 (function () {
   var h = String(location.hash || '').slice(1);
-  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'galeria') && !BETA_ON)) S.view = h;
+  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'galeria' || h === 'registro') && !BETA_ON)) S.view = h;
   else if (PREVIEW && SECS.some(function (s) { return s[0] === h; })) { S.view = 'taller'; S.sec = h; }
   if (S.view !== 'inicio') S.stack = [{ view: 'inicio' }];
 })();
