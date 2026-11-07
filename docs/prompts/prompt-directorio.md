@@ -9,7 +9,7 @@ Pegá esto en el agente que va a armar el directorio (por ejemplo, Gemini). Orde
 > - Sin horarios, sin precios y sin datos de personas (nombres de empleados, teléfonos personales).
 > - **Sin calificaciones, estrellas ni número de reseñas.** Sin copiar reseñas.
 > - `maps_url`: el enlace del lugar en Google Maps (Compartir → Copiar enlace), no un enlace de búsqueda.
-> - Una categoría por vez, hasta 30 lugares, empezando por los de tradición y familiares.
+> - Una categoría por vez, máximo 20 lugares, empezando por los de tradición y familiares.
 > - Sin significados mayas ni ceremonias.
 > - El «contexto» son datos, no opiniones: de quién es (familiar, nacional, cadena, extranjero), desde cuándo y qué lo hace distinto, según la fuente.
 > - Si un dato no está en la fuente, dejalo vacío.
