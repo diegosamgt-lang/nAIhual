@@ -194,11 +194,6 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .temas input { position: absolute; opacity: 0; pointer-events: none; }
 .bform .temas label.chip:has(input:checked) { background: var(--basalto); color: var(--cal); border-color: transparent; }
 .temas label.chip:has(input:focus-visible) { outline: 3px solid var(--anil); outline-offset: 2px; }
-.cur { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
-.cur-h b { display: block; font-family: var(--f-display); font-size: var(--t-md); }
-.cur-h small { color: var(--ink-3); font-size: 12.5px; }
-.cur-q { font-size: var(--t-sm); font-weight: 600; color: var(--ink-2); }
-.cur-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 /* Resultados como en el teléfono: mapa con íconos arriba, tarjetas simples abajo. */
 .results { display: flex; flex-direction: column; gap: 8px; }
 .results .rmap { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; }
@@ -560,7 +555,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.9 · 7-nov-2026';
+var VERSION = 'nAIhual 3.9.1 · 7-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -636,7 +631,7 @@ var P = {}, PIDS = [];
     estado: estado, patro: r.patrocinado === true, pendiente: String(r.pendiente || '').trim(), foto: String(r.foto || '').trim(), fotoCredito: String(r.foto_credito || '').trim(),
     horario: r.fuente_horario ? String(r.horario || '').trim() : '', precio: r.fuente_precio ? String(r.precio || '').trim() : '',
     pos: m && isFinite(m.avenida) && isFinite(m.calle) ? { av: +m.avenida, ca: +m.calle, aprox: !!m.aprox } : null,
-    tipo: String(r.tipo || '').trim(), web: /^https:\/\//.test(String(r.web || '')) ? String(r.web).trim() : '', aviso: String(r.aviso || '').trim(),
+    tipo: String(r.tipo || '').trim(), para: (Array.isArray(r.para) ? r.para : []).filter(function (q) { return !!PERFIL[q]; }), web: /^https:\/\//.test(String(r.web || '')) ? String(r.web).trim() : '', aviso: String(r.aviso || '').trim(),
     why: { es: f.es || '', en: f.en || f.es || '' }, fraseDe: String(r.frase_de || '').trim() };
   if (P[r.id].name) PIDS.push(r.id); else delete P[r.id];
 });
@@ -665,8 +660,8 @@ function isPub(p) { return !!p && !missing(p).length; }
 function visible(p) { return !!p && (PREVIEW || isPub(p)); }
 // Recorrido «Quiero un café»: pública = hasta 3 publicados. Vista previa = publicados primero y después los que tienen dirección, marcados «por verificar».
 function pilotCafes() {
-  var pub = PIDS.filter(function (id) { return P[id].cat === 'cafe' && isPub(P[id]) && !P[id].aviso && !curNo(id); });
-  if (PREVIEW) pub = pub.concat(PIDS.filter(function (id) { return P[id].cat === 'cafe' && !isPub(P[id]) && P[id].addr && !P[id].aviso && !curNo(id); }));
+  var pub = PIDS.filter(function (id) { return P[id].cat === 'cafe' && isPub(P[id]) && !P[id].aviso; });
+  if (PREVIEW) pub = pub.concat(PIDS.filter(function (id) { return P[id].cat === 'cafe' && !isPub(P[id]) && P[id].addr && !P[id].aviso; }));
   return pub.slice(0, PILOT_MAX);
 }
 
@@ -833,10 +828,8 @@ var X3 = {
     galTitle: 'Galería', galBody: 'Subí aquí tus fotos y gráficos y decí para qué son: la portada, el ícono, cada guía, cada lugar o la línea gráfica. La app las usa sola.', galUse: '¿Para qué es?', galNote: 'Nota (opcional)', galAdd: 'Subir a la galería', galSaved: 'Subida a la galería', galNone: 'Todavía no hay fotos.', galNoVisor: 'Las fotos se suben desde el visor de Claude.',
     useCover: 'Portada', useIcon: 'Ícono de la app', useGraphic: 'Línea gráfica / ideas', useGuide: 'Guía:', usePlace: 'Lugar:',
     memTitle: 'Memoria', memBody: 'Pegá textos grandes (por ejemplo, de NotebookLM): historia, consejos, lo que investigaste. El chat busca ahí lo que sirve para cada pregunta.', memName: 'Título', memText: 'Texto', memSave: 'Guardar en la memoria', memSaved: 'Guardado en la memoria', memEmpty: 'Poné un título y el texto.', memSize: function (n) { return n.toLocaleString('es') + ' caracteres'; },
-    hoursMaps: 'Ver horario en Google Maps', recoBy: function (n) { return 'A ' + n + ' le gusta'; }, confirmIt: 'Lo confirmo: existe y es así', myMaps: 'Mapas de Diego',
-    curTitle: 'Curar lugares', curBody: 'Tocá para quién lo recomendarías. Lo que marcás sale firmado («Diego lo recomienda para…»). «No lo recomendaría» es privado: el lugar sale de las recomendaciones y nadie lo ve.',
-    curActive: 'En la app', curReserve: 'Reserva', curNone: 'Sin curar', inReserve: 'en reserva', forWho: '¿Para quién es?', notRec: 'No lo recomendaría', toReserve: 'Pasar a reserva', toActive: 'Traer a la app',
-    curCount: function (n) { return n === 1 ? '1 lugar' : n + ' lugares'; }, more: 'Ver más', curHow: 'Mover entre la app y la reserva lo hace Claude cuando le decís «leé la beta».', paraTag: function (p) { return 'Diego lo recomienda para: ' + p; },
+    hoursMaps: 'Ver horario en Google Maps', recoBy: function (n) { return 'A ' + n + ' le gusta'; }, myMaps: 'Mapas de Diego',
+    paraTag: function (p) { return 'Diego lo recomienda para: ' + p; },
     postEmpty: 'Escribí algo para publicar.', badMaps: 'El enlace tiene que ser de Google Maps (Compartir → Copiar enlace).', postRetry: 'Ordenar otra vez', postNoOrder: 'Sin ordenar todavía.',
     publish: 'Publicar', postTitle: '¿Qué querés contar?', postPh: 'Un lugar, una historia, un consejo, un evento…', postMaps: 'Enlace de Google Maps (opcional)',
     temas: [['lugar', 'Lugar'], ['historia', 'Historia'], ['consejo', 'Consejo'], ['evento', 'Evento'], ['ofrezco', 'Ofrezco una experiencia']], postSaved: 'Publicado. Claude lo ordena.',
@@ -876,10 +869,8 @@ var X3 = {
     galTitle: 'Gallery', galBody: 'Upload your photos and graphics here and say what each is for: the cover, the icon, each guide, each place or the visual identity. The app uses them on its own.', galUse: 'What is it for?', galNote: 'Note (optional)', galAdd: 'Upload to the gallery', galSaved: 'Uploaded to the gallery', galNone: 'No photos yet.', galNoVisor: 'Photos are uploaded from the Claude viewer.',
     useCover: 'Cover', useIcon: 'App icon', useGraphic: 'Visual identity / ideas', useGuide: 'Guide:', usePlace: 'Place:',
     memTitle: 'Memory', memBody: 'Paste long texts (for example, from NotebookLM): history, tips, your research. The chat looks there for what fits each question.', memName: 'Title', memText: 'Text', memSave: 'Save to memory', memSaved: 'Saved to memory', memEmpty: 'Add a title and the text.', memSize: function (n) { return n.toLocaleString('en') + ' characters'; },
-    hoursMaps: 'See hours on Google Maps', recoBy: function (n) { return n + ' likes it'; }, confirmIt: 'I confirm: it exists and is like this', myMaps: 'Diego’s maps',
-    curTitle: 'Curate places', curBody: 'Tap who you would recommend it to. What you mark shows signed («Diego recommends it for…»). «Would not recommend» is private: the place leaves the recommendations and nobody sees it.',
-    curActive: 'In the app', curReserve: 'Reserve', curNone: 'Not curated', inReserve: 'in reserve', forWho: 'Who is it for?', notRec: 'Would not recommend', toReserve: 'Move to reserve', toActive: 'Bring to the app',
-    curCount: function (n) { return n === 1 ? '1 place' : n + ' places'; }, more: 'See more', curHow: 'Claude moves places between the app and the reserve when you say «read the beta».', paraTag: function (p) { return 'Diego recommends it for: ' + p; },
+    hoursMaps: 'See hours on Google Maps', recoBy: function (n) { return n + ' likes it'; }, myMaps: 'Diego’s maps',
+    paraTag: function (p) { return 'Diego recommends it for: ' + p; },
     postEmpty: 'Write something to post.', badMaps: 'The link must be from Google Maps (Share → Copy link).', postRetry: 'Sort again', postNoOrder: 'Not sorted yet.',
     publish: 'Post', postTitle: 'What do you want to share?', postPh: 'A place, a story, a tip, an event…', postMaps: 'Google Maps link (optional)',
     temas: [['lugar', 'Place'], ['historia', 'Story'], ['consejo', 'Tip'], ['evento', 'Event'], ['ofrezco', 'I offer an experience']], postSaved: 'Posted. Claude sorts it.',
@@ -1506,7 +1497,7 @@ var AI_STOP = {};
 function aiPick(q, gid) {
   var t = norm(String(q || '')), words = t.split(/[^a-z0-9ñ]+/).filter(function (w) { return w.length >= 3 && !AI_STOP[w]; }), keys = [];
   words.forEach(function (w) { keys.push(w.slice(0, 6)); Object.keys(AI_SYN).forEach(function (k) { if (w.indexOf(k.slice(0, 5)) === 0) keys = keys.concat(AI_SYN[k]); }); });
-  var vis = PIDS.filter(function (id) { return visible(P[id]) && !curNo(id); }), out = [];
+  var vis = PIDS.filter(function (id) { return visible(P[id]); }), out = [];
   // Se busca en el nombre, el tipo y la categoría (no en la frase ni en la dirección).
   var hay = function (id) { var p = P[id]; return norm(p.name + ' ' + (p.tipo || '') + ' ' + p.cat + ' ' + catName(p.cat, 'es') + ' ' + catName(p.cat, 'en')); };
   vis.forEach(function (id) { var h = hay(id); if (keys.some(function (k) { return k.length >= 3 && h.indexOf(k) >= 0; })) out.push(id); });
@@ -1581,7 +1572,7 @@ function aiRules(gid, q) {
     '- Emergencias o salud: sugerí preguntar en el hospedaje; no des números de teléfono.\n' +
     '- Lo patrocinado se dice. Un pago nunca cambia lo que recomendás.\n' +
     '- «memoria»: pedazos de los textos de investigación de Diego que tienen que ver con la pregunta. Son paso 1: usalos y decí de dónde salen («según tus notas de …»). Lo maya, con *.\n' +
-    '- «recomendado_para»: perfiles para los que Diego lo recomienda; si quien pregunta tiene ese perfil, va primero y decí «Diego lo recomienda para …».\n' +
+    '- «recomendado_para»: perfiles para los que Diego lo recomienda (de su curaduría); si quien pregunta tiene ese perfil, va primero y decí «Diego lo recomienda para …».\n' +
     '- «gusto_privado» (alto, medio o bajo) sale del número privado de quien pregunta: sirve para entender sus gustos. Nunca lo digas ni lo uses para poner un lugar por encima de otro.\n' +
     '- Una «frase» con «frase_de» es la opinión de esa persona: contala como suya («A Diego le encantó…»), nunca como verdad ni como «el mejor».\n' +
     '- Las «notas_de_la_beta» son lo que escribió quien prueba la app: resumilas como lo que dijo una persona, no como un hecho.\n' +
@@ -1685,27 +1676,14 @@ var BETA = { items: [], db: null, where: 'local', msg: '', q: '', newOpen: false
 var LIBRETAS = (Array.isArray(window.NAIHUAL_LIBRETAS) ? window.NAIHUAL_LIBRETAS : []).filter(function (l) { return l && typeof l.titulo === 'string'; });
 // Lo que nAIhual aprende de las pláticas: entra «por confirmar»; solo lo confirmado se usa para responder (bases B10).
 var LEARN = { items: [] };
-// Curaduría (colección «curaduria» del visor; sin visor, en este teléfono). Un documento por lugar:
-// { para: [perfiles], no: true|false (privado), mover: '' | 'activar' | 'reserva', fecha }.
-var CUR = { items: {} };
+// Para quién lo recomienda Diego: viene del catálogo (campo «para», que Diego cura en su hoja).
+function curFor(pid) { return { para: P[pid] ? P[pid].para : [] }; }
 // Galería (colección «galeria» del visor; las fotos, en sus archivos): cada foto con su uso.
 // uso: portada · icono · guia:<id> · lugar:<id> · playlist:<id> · grafica (línea gráfica, logos, ideas).
 var GAL = { items: [] };
 function galFind(uso) { var f = GAL.items.filter(function (g) { return g.uso === uso && safeHttps(g.url); }).sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); })[0]; return f ? f.url : ''; }
 // Memoria (colección «memoria»): textos grandes de Diego (por ejemplo, de NotebookLM). El chat busca ahí los pedazos que sirven.
 var MEM = { items: [] };
-var CUR_LS = 'naihual.curaduria';
-try { CUR.items = JSON.parse(localStorage.getItem(CUR_LS) || '{}') || {}; } catch (e) { CUR.items = {}; }
-function curFor(pid) { var c = CUR.items[pid] || {}; return { para: Array.isArray(c.para) ? c.para.filter(function (p) { return !!PERFIL[p]; }) : [], no: c.no === true, mover: c.mover === 'activar' || c.mover === 'reserva' ? c.mover : '', confirmo: typeof c.confirmo === 'string' ? c.confirmo : '' }; }
-// «No lo recomendaría» saca al lugar de las recomendaciones (solo en la beta; nunca se muestra).
-function curNo(pid) { return BETA_ON && curFor(pid).no; }
-function curSet(pid, patch) {
-  var c = Object.assign(curFor(pid), patch, { fecha: new Date().toISOString() });
-  CUR.items[pid] = c; tick();
-  if (BETA.db) BETA.db.doc('curaduria/' + pid).set(c).catch(function () { toast(false); });
-  else { try { localStorage.setItem(CUR_LS, JSON.stringify(CUR.items)); } catch (e) {} }
-  render({ keep: true });
-}
 var LEARN_LS = 'naihual.aprendido';
 var BETA_LS = 'naihual.beta';
 function betaLoadLocal() { try { var a = JSON.parse(localStorage.getItem(BETA_LS) || '[]'); BETA.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.tipo === 'string'; }) : []; } catch (e) { BETA.items = []; } }
@@ -1727,9 +1705,6 @@ if (BETA_ON) {
       googleProbe();
       db.collection('galeria').onSnapshot(function (snap) { GAL.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }); betaRefresh(); }, function () {});
       db.collection('memoria').onSnapshot(function (snap) { MEM.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; }); betaRefresh(); }, function () {});
-      db.collection('curaduria').onSnapshot(function (snap) {
-        var it = {}; snap.docs.forEach(function (d) { it[d.id] = d.data() || {}; }); CUR.items = it; betaRefresh();
-      }, function () {});
       db.collection('aprendido').onSnapshot(function (snap) {
         LEARN.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; });
         betaRefresh();
@@ -1869,38 +1844,6 @@ function memoriaHTML() {
     '<form class="bform" data-bform="memoria"><label>' + esc(x.memName) + '<input type="text" name="titulo" maxlength="120" required></label><label>' + esc(x.memText) + '<textarea name="texto" maxlength="60000" style="min-height:140px"></textarea></label><p class="note" role="status" data-mem-msg></p><button type="submit" class="btn primary">' + esc(x.memSave) + '</button></form>' +
     (items.length ? '<div class="list">' + items.map(function (m) { return '<div class="bitem" data-mem><b>' + esc(m.titulo || '—') + '</b><small>' + esc(x.memSize(String(m.texto).length)) + ' · ' + esc(String(m.fecha || '').slice(0, 10)) + '</small><div class="row">' + delBtns('mem:' + m._id) + '</div></div>'; }).join('') + '</div>' : '') + '</section>';
 }
-// ===================== CURAR (beta): todo el catálogo y la reserva, un toque por decisión =====================
-var CQ = { q: '', f: 'activos', n: 30 };
-function reservaLoad() {
-  if (window.NAIHUAL_RESERVA || reservaLoad.busy) return; reservaLoad.busy = true;
-  var sc = document.createElement('script'); sc.src = 'data/reserva.js'; sc.onload = function () { render({ keep: true }); }; sc.onerror = function () { reservaLoad.busy = false; }; document.head.appendChild(sc);
-}
-reservaLoad.busy = false;
-function curList() {
-  var act = PIDS.map(function (id) { var p = P[id]; return { id: id, name: p.name, tipo: p.tipo || catName(p.cat), activo: true }; });
-  var res = (window.NAIHUAL_RESERVA || []).filter(function (r) { return r && r.id && !P[r.id]; }).map(function (r) { return { id: r.id, name: String(r.nombre || ''), tipo: String(r.tipo || catName(r.categoria) || ''), activo: false }; });
-  var all = CQ.f === 'activos' ? act : CQ.f === 'reserva' ? res : act.concat(res).filter(function (r) { var c = curFor(r.id); return !c.para.length && !c.no; });
-  var q = norm(CQ.q.trim());
-  return q ? all.filter(function (r) { return norm(r.name + ' ' + r.tipo).indexOf(q) >= 0; }) : all;
-}
-function curRow(r) {
-  var x = X(), lang = L(), c = curFor(r.id);
-  return '<div class="cur" data-cur-row="' + esc(r.id) + '"><div class="cur-h"><b>' + esc(r.name) + '</b><small>' + esc(r.tipo) + (r.activo ? '' : ' · ' + esc(x.inReserve)) + '</small></div>' +
-    '<div class="cur-q">' + esc(x.forWho) + '</div><div class="cur-chips">' + PERFILES.map(function (p) { var on = c.para.indexOf(p[0]) >= 0; return '<button type="button" class="chip" data-cur="' + esc(r.id) + '|para|' + p[0] + '" aria-pressed="' + on + '">' + esc(p[1][lang]) + '</button>'; }).join('') + '</div>' +
-    (r.activo ? '<div class="cur-chips"><button type="button" class="chip" data-cur="' + esc(r.id) + '|confirmo|1" aria-pressed="' + !!c.confirmo + '">' + icon('check', 'sm') + esc(x.confirmIt) + '</button></div>' : '') +
-    '<div class="cur-chips"><button type="button" class="chip" data-cur="' + esc(r.id) + '|no|1" aria-pressed="' + c.no + '">' + esc(x.notRec) + '</button>' +
-    '<button type="button" class="chip" data-cur="' + esc(r.id) + '|mover|' + (r.activo ? 'reserva' : 'activar') + '" aria-pressed="' + !!c.mover + '">' + esc(r.activo ? x.toReserve : x.toActive) + '</button></div></div>';
-}
-function curarHTML() {
-  var x = X(), list = curList(), n = Math.min(list.length, CQ.n);
-  if (CQ.f !== 'activos') reservaLoad();
-  return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.curTitle) + '</h1><p>' + esc(x.curBody) + '</p></div>' +
-    '<div class="chips" role="group" aria-label="' + esc(x.curTitle) + '">' + [['activos', x.curActive], ['reserva', x.curReserve], ['sin', x.curNone]].map(function (f) { return '<button type="button" class="chip" data-curf="' + f[0] + '" aria-pressed="' + (CQ.f === f[0]) + '">' + esc(f[1]) + '</button>'; }).join('') + '</div>' +
-    '<label class="search">' + icon('search') + '<input id="cq" type="search" autocomplete="off" value="' + esc(CQ.q) + '" placeholder="' + esc(x.findPh) + '" aria-label="' + esc(x.find) + '"></label>' +
-    '<p class="note" data-cur-count>' + esc(x.curCount(list.length)) + '</p><div class="list" id="cur-out">' + list.slice(0, n).map(curRow).join('') + '</div>' +
-    (list.length > n ? '<button type="button" class="btn block" data-cur-more>' + esc(x.more) + '</button>' : '') +
-    '<p class="note">' + esc(x.curHow) + '</p>';
-}
 // «+ Publicar»: lo más simple posible, como en una red social. Temas: los de X3.temas (uno solo para todo).
 var TEMAS = X3.es.temas.map(function (t) { return t[0]; });
 function postForm(tema) {
@@ -1969,7 +1912,7 @@ function betaFichaHTML(p) {
 function betaCard() {
   var x = X(), n = BETA.items.length;
   return '<div class="wpad" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><p>' + esc(x.betaBody) + '</p>' +
-    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="curar">' + icon('check', 'sm') + esc(x.curTitle) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div></div>';
+    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div></div>';
 }
 function byDate(a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }
 function bqRows(q) {
@@ -2027,7 +1970,7 @@ function betaHTML() {
   return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
     '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
     '<details class="panel" data-beta-how><summary><b>' + esc(x.howTitle) + '</b></summary><ol>' + x.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></details>' +
-    wallHTML() + '<div class="row"><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button><button type="button" class="btn" data-go="curar">' + esc(x.curTitle) + '</button></div>' + memoriaHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
+    wallHTML() + '<div class="row"><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div>' + memoriaHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
 }
 function scoreOf(form) { var r = form.querySelector('input[name="puntaje"]'); return r && r.getAttribute('data-touched') ? +r.value : null; }
 function withPhoto(form, item, onSaved) {
@@ -2216,7 +2159,7 @@ function ideas(gid) {
   var r = RAMA[gid], out = [];
   Object.keys(TIPS).forEach(function (id) { if (r.consejos === TIPS[id].cat || (Array.isArray(r.consejos) && r.consejos.indexOf(id) >= 0)) out.push('t:' + id); });
   if (r.playlists) Object.keys(ROUTES).forEach(function (id) { out.push('r:' + id); });
-  r.cats.forEach(function (c) { PIDS.forEach(function (id) { if (P[id].cat === c && visible(P[id]) && !P[id].aviso && !curNo(id)) out.push('p:' + id); }); });
+  r.cats.forEach(function (c) { PIDS.forEach(function (id) { if (P[id].cat === c && visible(P[id]) && !P[id].aviso) out.push('p:' + id); }); });
   out = out.filter(shown);
   return out.length ? out : Object.keys(TIPS).map(function (id) { return 't:' + id; });
 }
@@ -2504,8 +2447,8 @@ function tallerHTML() {
 // ===================== DIBUJAR Y NAVEGAR =====================
 // En la beta, «+ Publicar» va al centro de la barra, como en una red social.
 var TABS = [['inicio', 'home'], ['rutas', 'map']].concat(BETA_ON ? [['publicar', 'plus']] : [], [['guia', 'chat'], ['guardados', 'heart']]);
-var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, curar: curarHTML, galeria: galeriaHTML, taller: tallerHTML };
-var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', curar: 'inicio', galeria: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
+var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, galeria: galeriaHTML, taller: tallerHTML };
+var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', galeria: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
 var main = document.getElementById('main');
 document.addEventListener('visibilitychange', function () { if (!document.hidden) fuiBar(); });
 function render(opts) {
@@ -2540,7 +2483,7 @@ function render(opts) {
 function nav(view, o) {
   o = o || {};
   if (view === 'taller' && !PREVIEW) view = 'inicio';
-  if ((view === 'beta' || view === 'curar' || view === 'galeria') && !BETA_ON) view = 'inicio';
+  if ((view === 'beta' || view === 'galeria') && !BETA_ON) view = 'inicio';
   if (!o.tab && view !== S.view) S.stack.push({ view: S.view, detail: S.detail, nawal: S.nawal, route: S.route });
   if (o.tab) S.stack = [];
   S.view = view;
@@ -2611,13 +2554,6 @@ var ACTIONS = [
   ['data-wtoggle', function (v, e, el) { CLOSED[v] = !CLOSED[v]; saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
   ['data-idea', function () { S.ideaN++; tick(); var b = document.getElementById('idea-body'); if (b) b.innerHTML = ideaHTML(); }],
   ['data-publish', function (v) { tick(); openDialog(postForm(v)); }],
-  ['data-cur', function (v) { var a = v.split('|'), pid = a[0], k = a[1], val = a[2], c = curFor(pid);
-    if (k === 'para') { var i = c.para.indexOf(val); if (i >= 0) c.para.splice(i, 1); else c.para.push(val); curSet(pid, { para: c.para, no: c.para.length ? false : c.no }); }
-    else if (k === 'no') curSet(pid, { no: !c.no, para: !c.no ? [] : c.para });
-    else if (k === 'confirmo') curSet(pid, { confirmo: c.confirmo ? '' : new Date().toISOString().slice(0, 10) });
-    else curSet(pid, { mover: c.mover ? '' : val }); }],
-  ['data-curf', function (v) { CQ.f = v; CQ.n = 30; render({ keep: true }); }],
-  ['data-cur-more', function () { CQ.n += 30; render({ keep: true }); }],
   ['data-post-ok', function (v) { postUpdate(v, { estado: 'confirmado' }); tick(); }],
   ['data-post-retry', function (v) { var it = BETA.items.filter(function (x) { return x._id === v; })[0]; if (it) postClassify(v, it); }],
   ['data-ref', function (v) { S.refOpen = S.refOpen === v ? '' : v; [].forEach.call(document.querySelectorAll('.map [data-ref]'), function (g) { g.classList.toggle('open', g.getAttribute('data-ref') === S.refOpen); g.setAttribute('aria-expanded', String(g.getAttribute('data-ref') === S.refOpen)); }); }],
@@ -2642,14 +2578,13 @@ document.addEventListener('input', function (e) {
   if (e.target.name === 'puntaje') { var sc = e.target, w = sc.closest('[data-score]'); sc.setAttribute('data-touched', '1'); w.querySelector('[data-score-out]').textContent = sc.value; w.querySelector('[data-score-warn]').hidden = sc.value !== '10'; return; }
   if (e.target.id === 'bq') { BETA.q = e.target.value; var out = document.getElementById('bq-out'); if (out) out.innerHTML = bqRows(BETA.q); return; }
   if (e.target.id === 'fq') { S.query = e.target.value; render({ keep: true }); }
-  if (e.target.id === 'cq') { CQ.q = e.target.value; CQ.n = 30; var o = document.getElementById('cur-out'), list = curList(); if (o) o.innerHTML = list.slice(0, CQ.n).map(curRow).join(''); var cc = document.querySelector('[data-cur-count]'); if (cc) cc.textContent = X().curCount(list.length); }
 });
 
 // Abrir una pantalla directa con un enlace: #rutas, #guia, #guardados, #explorar, #cultura, #costumbres, #nawales, #guardianes
 // y, en vista previa, #beta, #taller o una sección interna (#revision, #textos, #modelo, #aprendizaje, #arquitectura, #sistema).
 (function () {
   var h = String(location.hash || '').slice(1);
-  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'curar' || h === 'galeria') && !BETA_ON)) S.view = h;
+  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'galeria') && !BETA_ON)) S.view = h;
   else if (PREVIEW && SECS.some(function (s) { return s[0] === h; })) { S.view = 'taller'; S.sec = h; }
   if (S.view !== 'inicio') S.stack = [{ view: 'inicio' }];
 })();

@@ -18,4 +18,6 @@ Pegá esto en el agente que va a armar el directorio (por ejemplo, Gemini). Orde
 > Devolvé una línea JSON por lugar, exactamente con estos campos:
 > `{"nombre": "", "categoria": "", "momento": "", "direccion": "", "maps_url": "", "contexto": "", "redes_o_web": "", "fuente": "", "fuente_url": "", "fecha_consulta": "AAAA-MM-DD"}`
 >
+> Columnas de Diego para curar (las llena él, no el agente): `para` (perfiles para los que lo recomienda: local, nacional, internacional, regular, mochilero, separados por coma) · `confirmo` (fecha en que confirmó que existe y es así) · `estado` (activo, reserva o fuera).
+>
 > `momento` es uno de: llegue, transporte, hotel, comida, cerca, noche.
