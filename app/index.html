@@ -5,13 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>nAIhual</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="icon" href="data:,">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1d2125">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="nAIhual">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* =====================================================================
-   nAIhual 3.8 · sistema visual (tokens). Cambiar un token cambia toda la app.
+   nAIhual 3.9 · sistema visual (tokens). Cambiar un token cambia toda la app.
    Concepto: Antigua en piedra, cal y basalto. Muros encalados (fondo), basalto volcánico (tinta),
    añil de fachada (acento de rutas y enlaces) y los cuatro colores de los guardianes por rumbo*.
    Layout: app de celular en una columna (máx. 560px). Cada pantalla abre con una imagen, un mapa o una ilustración.
@@ -193,6 +199,29 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .cur-h small { color: var(--ink-3); font-size: 12.5px; }
 .cur-q { font-size: var(--t-sm); font-weight: 600; color: var(--ink-2); }
 .cur-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Resultados como en el teléfono: mapa con íconos arriba, tarjetas simples abajo. */
+.results { display: flex; flex-direction: column; gap: 8px; }
+.results .rmap { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; }
+.map .rpin circle { fill: var(--heart); stroke: var(--papel); stroke-width: 2; }
+.map .rpin path { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linecap: round; }
+.map .rpin text { font-family: var(--f-body); font-size: 9px; font-weight: 700; fill: var(--basalto); paint-order: stroke; stroke: var(--piedra); stroke-width: 3px; }
+.lcard { display: grid; grid-template-columns: 64px minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
+.lcard .thumb { width: 64px; height: 64px; border-radius: 12px; overflow: hidden; background: var(--piedra); }
+.lcard .thumb img, .lcard .thumb svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lcard b { display: block; font-family: var(--f-display); font-size: var(--t-md); line-height: 1.2; }
+.lcard .sub { display: block; color: var(--ink-3); font-size: 13px; }
+.lcard .reco { display: block; color: var(--ok); font-size: 13px; font-weight: 600; }
+.lcard .more { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin-top: 2px; }
+.lcard .more .linkish, .lcard .more summary { font-size: 12.5px; }
+.lcard .go { display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
+.lcard .go .btn { min-height: 44px; padding: 0 12px; font-size: 13px; }
+.gal { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+.gal figure { margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.gal img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; background: var(--piedra); }
+.gal figcaption { font-size: 11.5px; color: var(--ink-3); }
+.hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-photo + .hero-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.62)); }
+.mymap { width: 100%; aspect-ratio: 4 / 5; border: 0; border-radius: var(--r-lg); background: var(--piedra); }
 .post { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: var(--r-lg); background: var(--papel); border: 1px solid var(--line); }
 .post .who { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
 .post b.ttl { font-family: var(--f-display); font-size: var(--t-md); }
@@ -531,8 +560,8 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.8.1 · 29-oct-2026';
-var INSTR_VERSION = 'reglas-fijas 3.8';
+var VERSION = 'nAIhual 3.9 · 7-nov-2026';
+var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
 // Dos modos. Sin configuración = pública (lo más seguro).
@@ -801,6 +830,10 @@ var X3 = {
     score: 'Del 0 al 10 · privado: no se muestra, solo le enseña a nAIhual tus gustos', scoreNone: 'Sin número', score0: 'Meh', score10: 'Lo mejor que he probado', score10Warn: 'Ojo: el 10 es lo mejor que has probado en tu vida.',
     comment: 'Tu comentario', photo: 'Foto (opcional)', photoNote: 'Si sale una persona, solo con su permiso.', saveVisit: 'Guardar mi visita', uploading: 'Subiendo la foto…',
     find: 'Buscá un lugar para anotar', findPh: 'Nombre o tipo: pizza, panadería, café…', quick: 'Anotar rápido', addNew: 'Agregar un lugar que no está', del: 'Borrar',
+    galTitle: 'Galería', galBody: 'Subí aquí tus fotos y gráficos y decí para qué son: la portada, el ícono, cada guía, cada lugar o la línea gráfica. La app las usa sola.', galUse: '¿Para qué es?', galNote: 'Nota (opcional)', galAdd: 'Subir a la galería', galSaved: 'Subida a la galería', galNone: 'Todavía no hay fotos.', galNoVisor: 'Las fotos se suben desde el visor de Claude.',
+    useCover: 'Portada', useIcon: 'Ícono de la app', useGraphic: 'Línea gráfica / ideas', useGuide: 'Guía:', usePlace: 'Lugar:',
+    memTitle: 'Memoria', memBody: 'Pegá textos grandes (por ejemplo, de NotebookLM): historia, consejos, lo que investigaste. El chat busca ahí lo que sirve para cada pregunta.', memName: 'Título', memText: 'Texto', memSave: 'Guardar en la memoria', memSaved: 'Guardado en la memoria', memEmpty: 'Poné un título y el texto.', memSize: function (n) { return n.toLocaleString('es') + ' caracteres'; },
+    hoursMaps: 'Ver horario en Google Maps', recoBy: function (n) { return 'A ' + n + ' le gusta'; }, confirmIt: 'Lo confirmo: existe y es así', myMaps: 'Mapas de Diego',
     curTitle: 'Curar lugares', curBody: 'Tocá para quién lo recomendarías. Lo que marcás sale firmado («Diego lo recomienda para…»). «No lo recomendaría» es privado: el lugar sale de las recomendaciones y nadie lo ve.',
     curActive: 'En la app', curReserve: 'Reserva', curNone: 'Sin curar', inReserve: 'en reserva', forWho: '¿Para quién es?', notRec: 'No lo recomendaría', toReserve: 'Pasar a reserva', toActive: 'Traer a la app',
     curCount: function (n) { return n === 1 ? '1 lugar' : n + ' lugares'; }, more: 'Ver más', curHow: 'Mover entre la app y la reserva lo hace Claude cuando le decís «leé la beta».', paraTag: function (p) { return 'Diego lo recomienda para: ' + p; },
@@ -840,6 +873,10 @@ var X3 = {
     score: 'From 0 to 10 · private: never shown, it only teaches nAIhual your taste', scoreNone: 'No number', score0: 'Meh', score10: 'The best I have ever had', score10Warn: 'Careful: 10 means the best you have ever had.',
     comment: 'Your comment', photo: 'Photo (optional)', photoNote: 'If a person is in it, only with their permission.', saveVisit: 'Save my visit', uploading: 'Uploading the photo…',
     find: 'Find a place to note', findPh: 'Name or type: pizza, bakery, coffee…', quick: 'Quick note', addNew: 'Add a place that is not here', del: 'Delete',
+    galTitle: 'Gallery', galBody: 'Upload your photos and graphics here and say what each is for: the cover, the icon, each guide, each place or the visual identity. The app uses them on its own.', galUse: 'What is it for?', galNote: 'Note (optional)', galAdd: 'Upload to the gallery', galSaved: 'Uploaded to the gallery', galNone: 'No photos yet.', galNoVisor: 'Photos are uploaded from the Claude viewer.',
+    useCover: 'Cover', useIcon: 'App icon', useGraphic: 'Visual identity / ideas', useGuide: 'Guide:', usePlace: 'Place:',
+    memTitle: 'Memory', memBody: 'Paste long texts (for example, from NotebookLM): history, tips, your research. The chat looks there for what fits each question.', memName: 'Title', memText: 'Text', memSave: 'Save to memory', memSaved: 'Saved to memory', memEmpty: 'Add a title and the text.', memSize: function (n) { return n.toLocaleString('en') + ' characters'; },
+    hoursMaps: 'See hours on Google Maps', recoBy: function (n) { return n + ' likes it'; }, confirmIt: 'I confirm: it exists and is like this', myMaps: 'Diego’s maps',
     curTitle: 'Curate places', curBody: 'Tap who you would recommend it to. What you mark shows signed («Diego recommends it for…»). «Would not recommend» is private: the place leaves the recommendations and nobody sees it.',
     curActive: 'In the app', curReserve: 'Reserve', curNone: 'Not curated', inReserve: 'in reserve', forWho: 'Who is it for?', notRec: 'Would not recommend', toReserve: 'Move to reserve', toActive: 'Bring to the app',
     curCount: function (n) { return n === 1 ? '1 place' : n + ' places'; }, more: 'See more', curHow: 'Claude moves places between the app and the reserve when you say «read the beta».', paraTag: function (p) { return 'Diego recommends it for: ' + p; },
@@ -1205,8 +1242,8 @@ function photoArt(cat, gid) {
 }
 // noNote: en el muro de miniaturas no se repite «Foto pendiente».
 function phHTML(p, t, ratio, noNote) {
-  var g = p.g[0] || 'kej';
-  if (p.foto) return '<div class="ph"' + (ratio ? ' style="aspect-ratio:' + ratio + '"' : '') + '><img src="' + esc(p.foto) + '" alt="' + esc(p.name) + '" style="width:100%;height:100%;object-fit:cover">' + (p.fotoCredito ? '<span class="ph-note">' + esc(p.fotoCredito) + '</span>' : '') + '</div>';
+  var g = p.g[0] || 'kej', foto = p.foto || (BETA_ON ? galFind('lugar:' + p.id) : '');
+  if (foto) return '<div class="ph"' + (ratio ? ' style="aspect-ratio:' + ratio + '"' : '') + '><img src="' + esc(foto) + '" alt="' + esc(p.name) + '" style="width:100%;height:100%;object-fit:cover">' + (p.fotoCredito ? '<span class="ph-note">' + esc(p.fotoCredito) + '</span>' : '') + '</div>';
   return '<div class="ph"' + (ratio ? ' style="aspect-ratio:' + ratio + '"' : '') + '>' + photoArt(p.cat, g) + (noNote ? '' : '<span class="ph-note">' + esc(t.photoSoon) + '</span>') + '</div>';
 }
 
@@ -1383,14 +1420,6 @@ function fraseHTML(p, cls) {
   var q = L() === 'en' ? ['“', '”'] : ['«', '»'];
   return '<p' + (cls ? ' class="' + cls + '"' : '') + '>' + (p.fraseDe ? esc(q[0] + f + q[1]) + ' <span class="frase-de" data-frase-de>— ' + esc(p.fraseDe) + '</span>' : esc(f)) + '</p>';
 }
-function placeCard(p) {
-  var t = T();
-  return '<article class="pcard" data-place="' + esc(p.id) + '" data-pub="' + isPub(p) + '">' + heartBtn('p:' + p.id) +
-    '<button type="button" class="pin" data-open="p:' + p.id + '" aria-label="' + esc(p.name) + '">' + phHTML(p, t) + '</button>' +
-    '<div class="pc-body">' + catTags(p) + '<h3>' + esc(p.name) + '</h3>' + fraseHTML(p) +
-    (p.addr ? '<span class="addr">' + esc(p.addr) + '</span>' : '') +
-    '<div class="row">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(p.id) + '">' + esc(t.info) + '</button>' + sealHTML(p) + (p.hist ? infoHTML('hist') : '') + '</div></div></article>';
-}
 function miniMap(ids, extra) {
   return '<div class="map">' + mapSVG({ routes: [{ ids: ids }], stops: ids, crop: cropFor(ids, 34), label: extra || '' }) + '</div>';
 }
@@ -1507,10 +1536,22 @@ function aiData(q, gid) {
     aprendido_confirmado: learnedConfirmed(),
     publicaciones_confirmadas: BETA.items.filter(function (x) { return x.tipo === 'post' && x.estado === 'confirmado'; }).slice(-30).map(function (x) { var o = postClean(x.orden) || {}; return { fecha: String(x.fecha || '').slice(0, 10), tema: o.tema || x.tema, guardian: o.guardian || null, lugar: o.lugar ? P[o.lugar].name : null, titulo: o.titulo || null, texto: String(x.texto || '').slice(0, 300) }; }),
     ya_mostrados: shownBefore(),
+    memoria: memPick(q),
     consejos: Object.keys(TIPS).map(function (id) { return { id: id, texto: TIPS[id].body.es, cultural_pendiente_de_validacion: !!TIPS[id].star }; }),
     playlists: routeIds().map(function (id) { var r = ROUTES[id]; return { id: id, titulo: r.title.es, de: r.autor, gasto: r.gasto || null, paradas: r.stops.map(function (x) { return P[x].name; }) }; }),
     nawales_del_cholqij: NAWALES.map(function (r) { return r[1] + ': ' + r[2].es + ' · ' + r[3].es; })
   };
+}
+// Memoria: de los textos de Diego, los párrafos que más tienen que ver con la pregunta (hasta unos 4,000 caracteres).
+function memPick(q) {
+  var words = norm(String(q || '')).split(/[^a-z0-9ñ]+/).filter(function (w) { return w.length >= 4 && !AI_STOP[w]; }).map(function (w) { return w.slice(0, 6); });
+  if (!words.length || !MEM.items.length) return [];
+  var parts = [];
+  MEM.items.forEach(function (m) { String(m.texto).split(/\n\s*\n/).forEach(function (par) { var n = norm(par), sc = words.filter(function (w) { return n.indexOf(w) >= 0; }).length; if (sc) parts.push({ titulo: m.titulo || '', texto: par.trim().slice(0, 1200), sc: sc }); }); });
+  parts.sort(function (a, b) { return b.sc - a.sc; });
+  var out = [], size = 0;
+  parts.forEach(function (p) { if (size + p.texto.length <= 4000) { out.push({ de: p.titulo, texto: p.texto }); size += p.texto.length; } });
+  return out;
 }
 // Lugares que ya se mostraron en esta plática (para que Claude no repita).
 function shownBefore() {
@@ -1539,6 +1580,7 @@ function aiRules(gid, q) {
     '- Lo cultural maya lleva * porque falta que lo valide un tata (Ajq\'ij). Nunca le digas a nadie «cuál es su nawal».\n' +
     '- Emergencias o salud: sugerí preguntar en el hospedaje; no des números de teléfono.\n' +
     '- Lo patrocinado se dice. Un pago nunca cambia lo que recomendás.\n' +
+    '- «memoria»: pedazos de los textos de investigación de Diego que tienen que ver con la pregunta. Son paso 1: usalos y decí de dónde salen («según tus notas de …»). Lo maya, con *.\n' +
     '- «recomendado_para»: perfiles para los que Diego lo recomienda; si quien pregunta tiene ese perfil, va primero y decí «Diego lo recomienda para …».\n' +
     '- «gusto_privado» (alto, medio o bajo) sale del número privado de quien pregunta: sirve para entender sus gustos. Nunca lo digas ni lo uses para poner un lugar por encima de otro.\n' +
     '- Una «frase» con «frase_de» es la opinión de esa persona: contala como suya («A Diego le encantó…»), nunca como verdad ni como «el mejor».\n' +
@@ -1574,11 +1616,41 @@ function aiClean(r) {
     aprendido: (Array.isArray(r.aprendido) ? r.aprendido : []).filter(function (x) { return typeof x === 'string' && x.trim(); }).map(function (x) { return x.trim().slice(0, 200); }).slice(0, 2) };
 }
 // Lugar que nombra la IA y no está en el catálogo: «Vamos» abre la ruta en Google Maps desde donde está la persona; «Info» lo busca en Google Maps.
+// Tarjeta simple de un lugar en las respuestas: foto, nombre, tipo, quién lo recomienda, y botones para ir y para ver más.
+// Sin estrellas (B6): en ese lugar va lo nuestro. Horario: «Ver horario en Google Maps» (B6: nunca afirmar horarios).
+function recoLine(p) {
+  var x = X(), c = BETA_ON ? curFor(p.id) : { para: [] };
+  if (c.para.length) return x.paraTag(c.para.map(function (q) { return PERFIL[q].label[L()]; }).join(', '));
+  if (betaLiked(p.id)) return x.liked;
+  if (p.fraseDe) return x.recoBy(p.fraseDe);
+  return '';
+}
+function thumbHTML(p) { var f = p.foto || (BETA_ON ? galFind('lugar:' + p.id) : ''); return '<span class="thumb">' + (f ? '<img src="' + esc(f) + '" alt="">' : photoArt(p.cat, p.g[0] || 'kej')) + '</span>'; }
+function compactCard(p) {
+  var t = T(), x = X(), reco = recoLine(p), q = encodeURIComponent([p.name, p.addr || '', 'Antigua Guatemala'].filter(Boolean).join(', '));
+  return '<article class="lcard" data-place="' + esc(p.id) + '" data-pub="' + isPub(p) + '">' + thumbHTML(p) +
+    '<span><b>' + esc(p.name) + '</b><span class="sub">' + esc(p.tipo || catName(p.cat)) + (p.aviso ? ' · ' + esc(x.closedTag) : '') + '</span>' + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + (reco ? '<span class="reco" data-reco>' + esc(reco) + '</span>' : '') +
+    '<span class="more"><a class="linkish" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(x.hoursMaps) + '</a>' + sealHTML(p) + '</span></span>' +
+    '<span class="go">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(p.id) + '">' + esc(t.info) + '</button></span></article>';
+}
+// Mapa de arriba: los lugares de la respuesta que están en el mapa del centro, con su ícono y su nombre.
+var CAT_GLYPH = { cafe: 'M-3 -1 h5 v3 a2 2 0 0 1 -2 2 h-1 a2 2 0 0 1 -2 -2 z M2 0 h1.5 a1.2 1.2 0 0 1 0 2.4 H2', comida: 'M-3 -4 v4 M-1.5 -4 v8 M0 -4 v4 M3 -4 c-1.5 1 -1.5 4 0 5 v3', postres: 'M-4 2 a4 3.5 0 0 1 8 0 z', noche: 'M-3 -3 h6 l-3 4 z M0 1 v3', parque: 'M0 -4 a3.5 3.5 0 1 1 -0.1 0 M0 2 v3', cultura: 'M-4 4 V-1 a4 4 0 0 1 8 0 V4', hospedaje: 'M-4 3 V-2 M-4 1 h8 v2 M-1 -1 h4' };
+function resultsMap(ids) {
+  var pts = ids.filter(function (id) { return P[id] && P[id].pos; });
+  if (!pts.length) return '';
+  var s = mapSVG({ crop: cropFor(pts, 46), label: '' });
+  var pins = pts.map(function (id) { var p = P[id], x = mx(p.pos.av), y = my(p.pos.ca);
+    return '<g class="rpin" transform="translate(' + x + ' ' + y + ')"><circle r="9"/><path d="' + (CAT_GLYPH[p.cat] || CAT_GLYPH.cultura) + '"/><text x="12" y="3">' + esc(p.name) + '</text></g>'; }).join('');
+  return '<div class="rmap map" data-results-map>' + s.replace('</svg>', pins + '</svg>') + '</div>';
+}
+function resultsHTML(ids, cls, extra) {
+  return '<div class="cards results' + (cls ? ' ' + cls : '') + '"' + (cls === 'pilot' ? ' data-count="' + ids.length + '"' : '') + '>' + resultsMap(ids) + ids.map(function (id) { return compactCard(P[id]); }).join('') + (extra || '') + '</div>';
+}
 function iaPlaceCard(o) {
   var t = T(), x = X(), q = encodeURIComponent(o.nombre + ', Antigua Guatemala');
-  return '<article class="pcard ia" data-ia-place="' + esc(o.nombre) + '"><div class="pc-body"><div class="tags"><span class="tag check">' + esc(x.iaTag) + '</span></div><h3>' + esc(o.nombre) + '</h3>' + (o.porque ? '<p>' + esc(o.porque) + '</p>' : '') +
-    '<div class="row"><a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener" data-vamos-name="' + esc(o.nombre) + '" aria-label="' + esc(t.mapsAria(o.nombre)) + '">' + icon('pin', 'sm') + esc(t.maps) + '</a>' +
-    '<a class="btn" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(t.info) + '</a></div></div></article>';
+  return '<article class="lcard ia" data-ia-place="' + esc(o.nombre) + '"><span class="thumb">' + photoArt('cultura', 'kej') + '</span><span><b>' + esc(o.nombre) + '</b><span class="sub">' + esc(x.iaTag) + '</span>' + (o.porque ? '<span class="sub">' + esc(o.porque) + '</span>' : '') + '</span>' +
+    '<span class="go"><a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener" data-vamos-name="' + esc(o.nombre) + '" aria-label="' + esc(t.mapsAria(o.nombre)) + '">' + icon('pin', 'sm') + esc(t.maps) + '</a>' +
+    '<a class="btn" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(t.info) + '</a></span></article>';
 }
 function askClaude(text, rulesMsg, pend) {
   AI.busy = true; AI.ctl = new AbortController();
@@ -1616,9 +1688,15 @@ var LEARN = { items: [] };
 // Curaduría (colección «curaduria» del visor; sin visor, en este teléfono). Un documento por lugar:
 // { para: [perfiles], no: true|false (privado), mover: '' | 'activar' | 'reserva', fecha }.
 var CUR = { items: {} };
+// Galería (colección «galeria» del visor; las fotos, en sus archivos): cada foto con su uso.
+// uso: portada · icono · guia:<id> · lugar:<id> · playlist:<id> · grafica (línea gráfica, logos, ideas).
+var GAL = { items: [] };
+function galFind(uso) { var f = GAL.items.filter(function (g) { return g.uso === uso && safeHttps(g.url); }).sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); })[0]; return f ? f.url : ''; }
+// Memoria (colección «memoria»): textos grandes de Diego (por ejemplo, de NotebookLM). El chat busca ahí los pedazos que sirven.
+var MEM = { items: [] };
 var CUR_LS = 'naihual.curaduria';
 try { CUR.items = JSON.parse(localStorage.getItem(CUR_LS) || '{}') || {}; } catch (e) { CUR.items = {}; }
-function curFor(pid) { var c = CUR.items[pid] || {}; return { para: Array.isArray(c.para) ? c.para.filter(function (p) { return !!PERFIL[p]; }) : [], no: c.no === true, mover: c.mover === 'activar' || c.mover === 'reserva' ? c.mover : '' }; }
+function curFor(pid) { var c = CUR.items[pid] || {}; return { para: Array.isArray(c.para) ? c.para.filter(function (p) { return !!PERFIL[p]; }) : [], no: c.no === true, mover: c.mover === 'activar' || c.mover === 'reserva' ? c.mover : '', confirmo: typeof c.confirmo === 'string' ? c.confirmo : '' }; }
 // «No lo recomendaría» saca al lugar de las recomendaciones (solo en la beta; nunca se muestra).
 function curNo(pid) { return BETA_ON && curFor(pid).no; }
 function curSet(pid, patch) {
@@ -1647,6 +1725,8 @@ if (BETA_ON) {
         betaRefresh();
       }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
       googleProbe();
+      db.collection('galeria').onSnapshot(function (snap) { GAL.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }); betaRefresh(); }, function () {});
+      db.collection('memoria').onSnapshot(function (snap) { MEM.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; }); betaRefresh(); }, function () {});
       db.collection('curaduria').onSnapshot(function (snap) {
         var it = {}; snap.docs.forEach(function (d) { it[d.id] = d.data() || {}; }); CUR.items = it; betaRefresh();
       }, function () {});
@@ -1758,10 +1838,36 @@ function betaDelete(key) {
   var kind = key.split(':')[0], id = key.slice(kind.length + 1), x = X();
   BETA.delAsk = '';
   if (kind === 'learn') { learnSet(id, null); return; }
+  if (kind === 'mem') { if (BETA.db) BETA.db.doc('memoria/' + id).delete().catch(function () { toast(false); }); else { MEM.items = MEM.items.filter(function (m) { return m._id !== id; }); render({ keep: true }); } return; }
+  if (kind === 'gal') { var gi = GAL.items.filter(function (g) { return g._id === id; })[0]; if (gi && gi.foto_id && ASSETS && typeof ASSETS.delete === 'function') ASSETS.delete(gi.foto_id).catch(function () {});
+    if (BETA.db) BETA.db.doc('galeria/' + id).delete().catch(function () { toast(false); }); else { GAL.items = GAL.items.filter(function (g) { return g._id !== id; }); render({ keep: true }); } return; }
   var it = BETA.items.filter(function (b) { return b._id === id; })[0];
   var dropPhoto = function () { if (it && it.foto_id && ASSETS && typeof ASSETS.delete === 'function') ASSETS.delete(it.foto_id).catch(function () {}); };
   if (BETA.db) { BETA.db.doc('beta/' + id).delete().then(function () { dropPhoto(); toast(true, x.toastDeleted); }, function () { render({ keep: true }); toast(false); }); return; }
   BETA.items = BETA.items.filter(function (b) { return b._id !== id; }); betaSaveLocal(); dropPhoto(); render({ keep: true }); toast(true, x.toastDeleted);
+}
+// ===================== GALERÍA Y MEMORIA (beta) =====================
+function galUsos() {
+  var x = X(), lang = L();
+  return [['portada', x.useCover], ['icono', x.useIcon], ['grafica', x.useGraphic]].concat(ORDER.map(function (g) { return ['guia:' + g, x.useGuide + ' ' + G[g].name]; }),
+    Object.keys(ROUTES).map(function (r) { return ['playlist:' + r, 'Playlist · ' + ROUTES[r].title[lang]]; }), PIDS.map(function (id) { return ['lugar:' + id, x.usePlace + ' ' + P[id].name]; }));
+}
+function galeriaHTML() {
+  var x = X(), usos = galUsos(), name = {}; usos.forEach(function (u) { name[u[0]] = u[1]; });
+  var items = GAL.items.slice().sort(byDate);
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.galTitle) + '</h1><p>' + esc(x.galBody) + '</p></div>' +
+    (ASSETS ? '<form class="bform" data-bform="galeria"><label>' + esc(x.photo) + '<input type="file" name="foto" accept="image/*" required></label>' +
+      '<label>' + esc(x.galUse) + '<select name="uso">' + usos.map(function (u) { return '<option value="' + esc(u[0]) + '">' + esc(u[1]) + '</option>'; }).join('') + '</select></label>' +
+      '<label>' + esc(x.galNote) + '<input type="text" name="nota" maxlength="200"></label><p class="note">' + esc(x.photoNote) + '</p><button type="submit" class="btn primary">' + icon('plus', 'sm') + esc(x.galAdd) + '</button></form>'
+      : '<div class="status plain"><span>' + esc(x.galNoVisor) + '</span></div>') +
+    '<section class="sec" data-galeria><h2>' + esc(x.galTitle) + ' · ' + items.length + '</h2>' + (items.length ? '<div class="gal">' + items.map(function (g) { var u = safeHttps(g.url);
+      return '<figure data-gal="' + esc(g.uso || '') + '">' + (u ? '<img src="' + esc(u) + '" alt="">' : '') + '<figcaption>' + esc(name[g.uso] || g.uso || '') + (g.nota ? ' · ' + esc(g.nota) : '') + '</figcaption>' + delBtns('gal:' + g._id) + '</figure>'; }).join('') + '</div>' : '<p class="note">' + esc(x.galNone) + '</p>') + '</section>';
+}
+function memoriaHTML() {
+  var x = X(), items = MEM.items.slice().sort(byDate);
+  return '<section class="sec" data-memoria><h2>' + esc(x.memTitle) + ' · ' + items.length + '</h2><p class="muted">' + esc(x.memBody) + '</p>' +
+    '<form class="bform" data-bform="memoria"><label>' + esc(x.memName) + '<input type="text" name="titulo" maxlength="120" required></label><label>' + esc(x.memText) + '<textarea name="texto" maxlength="60000" style="min-height:140px"></textarea></label><p class="note" role="status" data-mem-msg></p><button type="submit" class="btn primary">' + esc(x.memSave) + '</button></form>' +
+    (items.length ? '<div class="list">' + items.map(function (m) { return '<div class="bitem" data-mem><b>' + esc(m.titulo || '—') + '</b><small>' + esc(x.memSize(String(m.texto).length)) + ' · ' + esc(String(m.fecha || '').slice(0, 10)) + '</small><div class="row">' + delBtns('mem:' + m._id) + '</div></div>'; }).join('') + '</div>' : '') + '</section>';
 }
 // ===================== CURAR (beta): todo el catálogo y la reserva, un toque por decisión =====================
 var CQ = { q: '', f: 'activos', n: 30 };
@@ -1781,6 +1887,7 @@ function curRow(r) {
   var x = X(), lang = L(), c = curFor(r.id);
   return '<div class="cur" data-cur-row="' + esc(r.id) + '"><div class="cur-h"><b>' + esc(r.name) + '</b><small>' + esc(r.tipo) + (r.activo ? '' : ' · ' + esc(x.inReserve)) + '</small></div>' +
     '<div class="cur-q">' + esc(x.forWho) + '</div><div class="cur-chips">' + PERFILES.map(function (p) { var on = c.para.indexOf(p[0]) >= 0; return '<button type="button" class="chip" data-cur="' + esc(r.id) + '|para|' + p[0] + '" aria-pressed="' + on + '">' + esc(p[1][lang]) + '</button>'; }).join('') + '</div>' +
+    (r.activo ? '<div class="cur-chips"><button type="button" class="chip" data-cur="' + esc(r.id) + '|confirmo|1" aria-pressed="' + !!c.confirmo + '">' + icon('check', 'sm') + esc(x.confirmIt) + '</button></div>' : '') +
     '<div class="cur-chips"><button type="button" class="chip" data-cur="' + esc(r.id) + '|no|1" aria-pressed="' + c.no + '">' + esc(x.notRec) + '</button>' +
     '<button type="button" class="chip" data-cur="' + esc(r.id) + '|mover|' + (r.activo ? 'reserva' : 'activar') + '" aria-pressed="' + !!c.mover + '">' + esc(r.activo ? x.toReserve : x.toActive) + '</button></div></div>';
 }
@@ -1862,7 +1969,7 @@ function betaFichaHTML(p) {
 function betaCard() {
   var x = X(), n = BETA.items.length;
   return '<div class="wpad" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><p>' + esc(x.betaBody) + '</p>' +
-    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="curar">' + icon('check', 'sm') + esc(x.curTitle) + '</button></div></div>';
+    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="curar">' + icon('check', 'sm') + esc(x.curTitle) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div></div>';
 }
 function byDate(a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }
 function bqRows(q) {
@@ -1920,7 +2027,7 @@ function betaHTML() {
   return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
     '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
     '<details class="panel" data-beta-how><summary><b>' + esc(x.howTitle) + '</b></summary><ol>' + x.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></details>' +
-    wallHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
+    wallHTML() + '<div class="row"><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button><button type="button" class="btn" data-go="curar">' + esc(x.curTitle) + '</button></div>' + memoriaHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
 }
 function scoreOf(form) { var r = form.querySelector('input[name="puntaje"]'); return r && r.getAttribute('data-touched') ? +r.value : null; }
 function withPhoto(form, item, onSaved) {
@@ -1936,6 +2043,24 @@ function betaSubmit(form) {
     var pv = form.getAttribute('data-lugar');
     withPhoto(form, { tipo: 'visita', fui: true, lugar: pv || null, nombre: form.getAttribute('data-nombre'), texto: String(f.texto.value || '').trim().slice(0, 600) });
     var d = document.getElementById('dlg'); if (d.open) d.close(); fuiSet(null); fuiBar();
+    return;
+  }
+  if (kind === 'galeria') {
+    var gf = form.querySelector('input[name="foto"]').files[0]; if (!gf || !ASSETS) return;
+    var gb = form.querySelector('button[type="submit"]'); gb.disabled = true; gb.textContent = x.uploading;
+    var gdoc = { uso: f.uso.value, nota: String(f.nota.value || '').trim().slice(0, 200), fecha: new Date().toISOString() };
+    shrinkPhoto(gf).then(function (blob) { return ASSETS.upload(blob); }).then(function (a) { gdoc.url = a.url; gdoc.foto_id = a.id;
+      if (BETA.db) return BETA.db.collection('galeria').add(gdoc); gdoc._id = 'local-' + Date.now(); GAL.items = GAL.items.concat([gdoc]); }).then(function () { toast(true, x.galSaved); render({ keep: true }); }, function () { toast(false, x.photoFail); render({ keep: true }); });
+    return;
+  }
+  if (kind === 'memoria') {
+    var mt = String(f.titulo.value || '').trim(), mx2 = String(f.texto.value || '').trim(), mm = form.querySelector('[data-mem-msg]');
+    if (!mt || !mx2) { if (mm) mm.textContent = x.memEmpty; return; }
+    // Textos largos se guardan en partes de 20,000 caracteres.
+    var chunks = []; for (var ci = 0; ci < mx2.length; ci += 20000) chunks.push(mx2.slice(ci, ci + 20000));
+    chunks.forEach(function (ch, k) { var doc = { titulo: chunks.length > 1 ? mt + ' (' + (k + 1) + '/' + chunks.length + ')' : mt, texto: ch, fecha: new Date().toISOString() };
+      if (BETA.db) BETA.db.collection('memoria').add(doc).catch(function () { toast(false); }); else { doc._id = 'local-' + Date.now() + '-' + k; MEM.items = MEM.items.concat([doc]); } });
+    toast(true, x.memSaved); form.reset(); if (!BETA.db) render({ keep: true });
     return;
   }
   if (kind === 'post') {
@@ -2010,7 +2135,7 @@ function ask(text) {
   askClaude(text, m, pend);
 }
 function askIntent(intent) { var c = T().chips.concat(T().clarifyOpts).filter(function (x) { return x[0] === intent; })[0]; if (S.view !== 'guia') nav('guia', { silent: true }); ask(c ? c[1] : intent); }
-function cardsFor(list) { return list.map(function (c) { if (c.plan) return planRow(c.plan); var k = c.key.split(':')[0], id = c.key.split(':')[1]; return k === 'p' ? placeCard(P[id]) : k === 'r' ? routeRow(id) : tipCard(id); }).join(''); }
+function cardsFor(list) { var ps = [], out = ''; list.forEach(function (c) { if (c.plan) out += planRow(c.plan); else { var k = c.key.split(':')[0], id = c.key.split(':')[1]; if (k === 'p') ps.push(id); else out += k === 'r' ? routeRow(id) : tipCard(id); } }); return (ps.length ? resultsHTML(ps) : '') + out; }
 function chipsHTML(opts, attr) { return '<div class="chips" role="group" aria-label="' + esc(T().clarifyLabel) + '">' + opts.map(function (o) { return '<button type="button" class="chip" ' + attr + '="' + esc(o[0]) + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>'; }
 function msgHTML(m, isNew) {
   if (m.user) return '<div class="msg' + (isNew ? ' new' : '') + '"><div class="me">' + esc(m.user) + '</div></div>';
@@ -2020,7 +2145,7 @@ function msgHTML(m, isNew) {
   else if (m.kind === 'thinking') paras.push('<span class="thinking" aria-label="' + esc(t.aiThinking) + '"><i></i><i></i><i></i></span>');
   else if (m.kind === 'r' && m.intent === 'cafe') {
     var ids = pilotCafes();
-    if (ids.length) { paras.push(esc(R.cafe[m.from].t[lang])); cards = '<div class="cards pilot" data-count="' + ids.length + '">' + ids.map(function (id) { return placeCard(P[id]); }).join('') + '</div>'; }
+    if (ids.length) { paras.push(esc(R.cafe[m.from].t[lang])); cards = resultsHTML(ids, 'pilot'); }
     else {
       paras.push(esc(t.coffeeSoon));
       var ready = Object.keys(ROUTES)[0];
@@ -2044,7 +2169,8 @@ function msgHTML(m, isNew) {
     var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.filter(function (id) { return !seen[id]; }).map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
     if (m.ai.cultural) paras.push('<span class="note" data-cult>* ' + esc(t.infoCultBody) + '</span>');
     var otros = (m.ai.otros || []).map(iaPlaceCard).join('');
-    if (list.length || otros) cards = '<div class="cards">' + cardsFor(list) + otros + '</div>';
+    var plist = list.filter(function (c) { return c.key.charAt(0) === 'p'; }).map(function (c) { return c.key.slice(2); }), rest = list.filter(function (c) { return c.key.charAt(0) !== 'p'; });
+    if (plist.length || otros || rest.length) cards = resultsHTML(plist, '', otros + cardsFor(rest));
     if (m.ai.opciones.length) after = '<div class="chips" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';
   }
   else if (m.kind === 'gap') paras.push(esc(GAP_VOICE[m.from][lang].replace('{x}', GAPS[m.gap][lang]) + ' ' + MEANWHILE[lang]));
@@ -2125,7 +2251,8 @@ function inicioHTML() {
       '<span class="rc-body"><span class="eyebrow">' + routeMeta(r) + '</span><span class="rc-title">' + esc(r.title[lang]) + '</span>' + routeTags(r) + '</span></button>';
   }).join('') + '</div>' : empty(t.routesSoon, t.routesSoonBody);
   var tiles = [['explorar', 'lugares'], ['cultura', 'cultura'], ['costumbres', 'costumbres'], ['guardianes', 'guardianes']];
-  return '<section class="hero"><div class="hero-art">' + heroArt() + '<div class="hero-copy"><span class="hello" data-saludo>' + esc(saludo()) + '</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
+  var portada = BETA_ON ? galFind('portada') : '';
+  return '<section class="hero"><div class="hero-art">' + (portada ? '<img class="hero-photo" src="' + esc(portada) + '" alt=""><span class="hero-shade"></span>' : heroArt()) + '<div class="hero-copy"><span class="hello" data-saludo>' + esc(saludo()) + '</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
     '<div class="cta-row"><button type="button" class="btn anil big" data-ask="cafe" id="cta-cafe">' + icon('coffee') + esc(t.coffee) + '</button><button type="button" class="btn big" data-ask="empezar">' + esc(t.arrived) + '</button></div></section>' +
     widget('idea', t.ideaTitle(G[S.guide].name), 'spark', '<div class="wpad" id="idea-body" data-sugerencia>' + ideaHTML() + '</div>', '', S.guide) +
     widget('que', x.introKicker, 'info', '<div class="wpad intro-in" data-intro><h3>' + esc(x.introTitle) + '</h3><p class="muted">' + esc(x.introBody) + '</p></div>') +
@@ -2138,6 +2265,13 @@ function inicioHTML() {
       return '<button type="button" class="tile" data-go="' + z[0] + '"><span><b>' + esc(t.tiles[z[1]][0]) + '</b><small>' + esc(t.tiles[z[1]][1]) + '</small></span>' + icon('arrow', 'sm') + '</button>'; }).join('') + '</div></div>') +
     footHTML();
 }
+// Mapas de Diego hechos en Google My Maps (data/config.js → mapas: [{ titulo, url }]). Sin llave: se incrustan tal cual.
+function myMapEmbed(u) { var m = /^https:\/\/www\.google\.com\/maps\/d\/(?:u\/\d+\/)?(?:edit|viewer|embed)\?mid=([A-Za-z0-9_-]+)/.exec(String(u || '')); return m ? 'https://www.google.com/maps/d/embed?mid=' + m[1] : ''; }
+function myMapsHTML() {
+  var maps = (Array.isArray(CFG.mapas) ? CFG.mapas : []).map(function (m) { return { titulo: String((m && m.titulo) || ''), src: myMapEmbed(m && m.url) }; }).filter(function (m) { return m.src; });
+  if (!maps.length) return '';
+  return '<section class="sec" data-mymaps><h2>' + esc(X().myMaps) + '</h2>' + maps.map(function (m) { return (m.titulo ? '<p><b>' + esc(m.titulo) + '</b></p>' : '') + '<iframe class="mymap" src="' + esc(m.src) + '" title="' + esc(m.titulo || X().myMaps) + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'; }).join('') + '</section>';
+}
 function rutasHTML() {
   var t = T(), lang = L(), rids = routeIds();
   if (!rids.length) return '<div class="pagehead"><h1>' + esc(t.routes) + '</h1></div>' + empty(t.routesSoon, t.routesSoonBody);
@@ -2145,7 +2279,7 @@ function rutasHTML() {
   return '<div class="pagehead"><h1>' + esc(t.routes) + '</h1></div>' +
     '<div class="chips" role="group" aria-label="' + esc(t.routes) + '">' + rids.map(function (rid) { return '<button type="button" class="chip" data-selroute="' + rid + '" aria-pressed="' + (rid === sel) + '">' + esc(ROUTES[rid].title[lang]) + '</button>'; }).join('') + '</div>' +
     '<div class="mapframe map" data-map="' + sel + '">' + mapSVG({ routes: rids.filter(function (x) { return x !== sel; }).map(function (x) { return { ids: ROUTES[x].stops, faint: true }; }).concat([{ ids: r.stops }]), stops: r.stops, labels: true, refs: true, lang: lang, label: r.title[lang] }) + '</div>' +
-    '<p class="note" data-map-note>' + esc(t.mapNote + ' · ' + t.outside) + '</p>' +
+    '<p class="note" data-map-note>' + esc(t.mapNote + ' · ' + t.outside) + '</p>' + myMapsHTML() +
     '<section class="sec" data-route-detail="' + sel + '"><span class="eyebrow">' + routeMeta(r) + '</span><div class="sec-head"><h2>' + esc(r.title[lang]) + '</h2>' + infoHTML('hist') + '</div>' + routeTags(r) + '<p>' + esc(r.intro[lang]) + '</p>' +
       '<ol class="stops">' + r.stops.map(function (id, i) { var p = P[id]; return '<li><button type="button" data-open="p:' + id + '"><span class="n">' + (i + 1) + '</span><span><b>' + esc(p.name) + '</b>' + (r.hacer[id] && r.hacer[id][lang] ? '<small data-hacer>' + esc(r.hacer[id][lang]) + '</small><br>' : '') + '<small>' + esc(p.addr) + (p.pos && p.pos.aprox ? ' · ' + esc(t.aprox) : '') + '</small></span>' + icon('arrow', 'sm') + '</button></li>'; }).join('') + '</ol>' +
       '<div class="actions"><a class="btn anil" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(t.openRoute) + '</a>' +
@@ -2226,7 +2360,8 @@ function guardianesHTML() {
   return backBtn() + '<div class="pagehead"><div class="sec-head"><h1>' + esc(t.guardsTitle) + '</h1>' + infoHTML('guard') + '</div><p>' + esc(t.guardsSub) + '</p></div>' +
     '<figure class="artbox" data-art="rumbos">' + compassArt() + '</figure>' +
     ORDER.map(function (id) { var g = G[id];
-      return '<article class="gfull g-' + id + '" data-gcard="' + id + '">' + portrait(id, 76) + '<div><h2>' + esc(g.name) + '</h2><small class="muted">' + esc(g.tag[lang]) + '</small><dl>' +
+      var gfoto = BETA_ON ? galFind('guia:' + id) : '';
+      return '<article class="gfull g-' + id + '" data-gcard="' + id + '">' + (gfoto ? '<img src="' + esc(gfoto) + '" alt="' + esc(g.name) + '" width="76" height="76" style="border-radius:50%;object-fit:cover">' : portrait(id, 76)) + '<div><h2>' + esc(g.name) + '</h2><small class="muted">' + esc(g.tag[lang]) + '</small><dl>' +
         [[t.dValue, g.value[lang]], [t.dDir, g.dir[lang]], [t.dRole, g.role[lang]], [t.dSpeaks, g.speaks[lang]], [t.dRecs, g.recs[lang]], [t.dPdf, g.pdf[lang]]].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
         '</dl><button type="button" class="btn" data-guide="' + id + '" style="margin-top:10px">' + icon('chat', 'sm') + esc(t.talk + ' ' + g.name) + '</button></div></article>'; }).join('');
 }
@@ -2369,8 +2504,8 @@ function tallerHTML() {
 // ===================== DIBUJAR Y NAVEGAR =====================
 // En la beta, «+ Publicar» va al centro de la barra, como en una red social.
 var TABS = [['inicio', 'home'], ['rutas', 'map']].concat(BETA_ON ? [['publicar', 'plus']] : [], [['guia', 'chat'], ['guardados', 'heart']]);
-var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, curar: curarHTML, taller: tallerHTML };
-var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', curar: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
+var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, curar: curarHTML, galeria: galeriaHTML, taller: tallerHTML };
+var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', curar: 'inicio', galeria: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
 var main = document.getElementById('main');
 document.addEventListener('visibilitychange', function () { if (!document.hidden) fuiBar(); });
 function render(opts) {
@@ -2405,7 +2540,7 @@ function render(opts) {
 function nav(view, o) {
   o = o || {};
   if (view === 'taller' && !PREVIEW) view = 'inicio';
-  if ((view === 'beta' || view === 'curar') && !BETA_ON) view = 'inicio';
+  if ((view === 'beta' || view === 'curar' || view === 'galeria') && !BETA_ON) view = 'inicio';
   if (!o.tab && view !== S.view) S.stack.push({ view: S.view, detail: S.detail, nawal: S.nawal, route: S.route });
   if (o.tab) S.stack = [];
   S.view = view;
@@ -2479,6 +2614,7 @@ var ACTIONS = [
   ['data-cur', function (v) { var a = v.split('|'), pid = a[0], k = a[1], val = a[2], c = curFor(pid);
     if (k === 'para') { var i = c.para.indexOf(val); if (i >= 0) c.para.splice(i, 1); else c.para.push(val); curSet(pid, { para: c.para, no: c.para.length ? false : c.no }); }
     else if (k === 'no') curSet(pid, { no: !c.no, para: !c.no ? [] : c.para });
+    else if (k === 'confirmo') curSet(pid, { confirmo: c.confirmo ? '' : new Date().toISOString().slice(0, 10) });
     else curSet(pid, { mover: c.mover ? '' : val }); }],
   ['data-curf', function (v) { CQ.f = v; CQ.n = 30; render({ keep: true }); }],
   ['data-cur-more', function () { CQ.n += 30; render({ keep: true }); }],
@@ -2513,12 +2649,14 @@ document.addEventListener('input', function (e) {
 // y, en vista previa, #beta, #taller o una sección interna (#revision, #textos, #modelo, #aprendizaje, #arquitectura, #sistema).
 (function () {
   var h = String(location.hash || '').slice(1);
-  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'curar') && !BETA_ON)) S.view = h;
+  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'curar' || h === 'galeria') && !BETA_ON)) S.view = h;
   else if (PREVIEW && SECS.some(function (s) { return s[0] === h; })) { S.view = 'taller'; S.sec = h; }
   if (S.view !== 'inicio') S.stack = [{ view: 'inicio' }];
 })();
 S.msgs.push({ from: ORDER[0], kind: 'welcome' });
 render({});
+// Instalable y sin señal: solo cuando la app está sola en su sitio (no dentro del visor de Claude).
+try { if ('serviceWorker' in navigator && location.protocol === 'https:' && window.top === window) navigator.serviceWorker.register('sw.js').catch(function () {}); } catch (e) {}
 })();
 </script>
 </body>

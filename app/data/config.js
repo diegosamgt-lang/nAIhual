@@ -7,5 +7,8 @@ window.NAIHUAL_CONFIG = {
   // true = en vista previa, dentro del visor de Claude, Claude responde las preguntas libres (con la cuenta de quien abre la página).
   claude_responde: true,
   // true = en vista previa se puede anotar «me gustó», «dato mal», notas, visitas y lugares nuevos (beta).
-  beta: true
+  beta: true,
+  // Mapas de Diego hechos en Google My Maps (compartidos «cualquiera con el enlace»). Salen en «Rutas».
+  // Ejemplo: { titulo: 'Cafés de Antigua', url: 'https://www.google.com/maps/d/edit?mid=...' }
+  mapas: []
 };
