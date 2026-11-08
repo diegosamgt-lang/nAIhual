@@ -10,5 +10,8 @@ window.NAIHUAL_CONFIG = {
   beta: true,
   // Mapas de Diego hechos en Google My Maps (compartidos «cualquiera con el enlace»). Salen en «Rutas».
   // Ejemplo: { titulo: 'Cafés de Antigua', url: 'https://www.google.com/maps/d/edit?mid=...' }
-  mapas: []
+  mapas: [],
+  // Dirección del servidor de la IA (Gemini) para cuando la app vive afuera del visor de Claude (servidor/gemini-worker.js).
+  // Vacío = sin IA afuera del visor (contestan las reglas fijas).
+  servidor_ia: ''
 };

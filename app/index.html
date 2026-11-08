@@ -555,7 +555,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.10 · 7-nov-2026';
+var VERSION = 'nAIhual 3.11 · 8-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -928,8 +928,8 @@ var STR = {
     bizTag: 'Patrocinado',
     sos: 'Emergencias', sosTitle: 'Emergencias', sosBody: 'Pendiente de números oficiales. Se activan cuando cada número esté confirmado con su fuente oficial.', close: 'Cerrar',
     internal: 'Vista interna', foot: VERSION, months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-    aiThinking: 'Pensando', aiStop: 'Detener', aiBy: 'con Claude',
-    aiReady: 'Vista previa: Claude responde con tu cuenta. Lo que escribís se envía a Claude para responder. nAIhual solo guarda lo que aprende y lo que le faltó saber, en tu beta; la pregunta tal cual, no.',
+    aiThinking: 'Pensando', aiStop: 'Detener', aiBy: 'con IA',
+    aiReady: 'Vista previa: responde la IA (Claude en tu visor; Gemini en tu sitio). Lo que escribís se envía a la IA para responder. nAIhual solo guarda lo que aprende y lo que le faltó saber, en tu beta; la pregunta tal cual, no.',
     aiLoading: 'Conectando con Claude…', aiOffFoot: 'Claude no está disponible aquí: responden las reglas fijas.',
     aiBad: 'Claude no respondió bien esta vez; respondí con las reglas fijas.',
     aiBusy: 'Claude está ocupado o llegaste a tu límite; respondí con las reglas fijas.', aiOff: 'Claude no está permitido aquí; respondo con las reglas fijas.', aiStopped: 'Detuviste a Claude; respondí con las reglas fijas.',
@@ -978,8 +978,8 @@ var STR = {
     bizTag: 'Sponsored',
     sos: 'Emergency', sosTitle: 'Emergency', sosBody: 'Official numbers pending. They switch on once each number is confirmed with its official source.', close: 'Close',
     internal: 'Team view', foot: VERSION, months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    aiThinking: 'Thinking', aiStop: 'Stop', aiBy: 'with Claude',
-    aiReady: 'Preview: Claude answers with your account. What you type is sent to Claude to answer. nAIhual only keeps what it learns and what it was missing, in your beta; never your exact question.',
+    aiThinking: 'Thinking', aiStop: 'Stop', aiBy: 'with AI',
+    aiReady: 'Preview: the AI answers (Claude in your viewer; Gemini on your site). What you type is sent to the AI to answer. nAIhual only keeps what it learns and what it was missing, in your beta; never your exact question.',
     aiLoading: 'Connecting to Claude…', aiOffFoot: 'Claude isn’t available here: fixed rules answer.',
     aiBad: 'Claude didn’t answer properly this time; I answered with the fixed rules.',
     aiBusy: 'Claude is busy or you reached your limit; I answered with the fixed rules.', aiOff: 'Claude isn’t allowed here; I answer with the fixed rules.', aiStopped: 'You stopped Claude; I answered with the fixed rules.',
@@ -1487,9 +1487,19 @@ var PROVIDER = RulesProvider;
 // y los lugares que Claude nombra fuera del catálogo salen con «Según la IA · confirmá en Google».
 // Se guarda solo lo que aprende («aprendido») y, si no supo, qué información faltaba. La pregunta tal cual no se guarda.
 var AI_ON = PREVIEW && CFG.claude_responde === true; // solo en vista previa
-var AI = { fn: null, state: AI_ON ? 'cargando' : 'apagado', busy: false, turns: [], ctl: null };
+var AI = { fn: null, state: AI_ON ? 'cargando' : 'apagado', busy: false, turns: [], ctl: null, name: 'Claude' };
 var AI_OFF_CODES = { not_granted: 1, sampling_disabled: 1, not_declared: 1, capability_disabled: 1, capability_removed: 1, session_expired: 1 };
-if (AI_ON && window.claude && typeof window.claude.use === 'function') {
+// Afuera del visor de Claude: Gemini por el servidor propio (data/config.js → servidor_ia). La llave vive en el servidor, nunca aquí.
+function serverAI(url) {
+  return { json: function (input, opts) {
+    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input: input }), signal: opts && opts.signal })
+      .then(function (r) { return r.json().catch(function () { return { error: 'invalid_response' }; }); }, function (e) { return Promise.reject({ code: e && e.name === 'AbortError' ? 'cancelled' : 'red' }); })
+      .then(function (d) { return d && d.result !== undefined ? d.result : Promise.reject({ code: (d && d.error) || 'invalid_response' }); });
+  } };
+}
+var SERVER_AI = /^https:\/\//.test(String(CFG.servidor_ia || '')) ? String(CFG.servidor_ia) : '';
+if (AI_ON && !(window.claude && typeof window.claude.use === 'function') && SERVER_AI) { AI.fn = serverAI(SERVER_AI); AI.state = 'listo'; AI.name = 'Gemini'; }
+else if (AI_ON && window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then(function (fn) { AI.fn = fn || null; AI.state = fn ? 'listo' : 'no-disponible'; render({ keep: true }); }, function () { AI.state = 'no-disponible'; render({ keep: true }); });
 } else if (AI_ON) AI.state = 'no-disponible';
 // Con más de 200 lugares no se manda todo: los que coinciden con la pregunta, los que tienen notas y una muestra por categoría.
@@ -2154,7 +2164,7 @@ function msgHTML(m, isNew) {
   else if (m.kind === 'safety') paras.push(esc(SAFETY[lang]));
   else if (m.kind === 'clarify') { paras.push(esc(CLARIFY[m.from][lang])); after = chipsHTML(t.clarifyOpts, 'data-chip'); }
   if (m.kind === 'thinking') after = '<button type="button" class="chip" data-stop style="align-self:flex-start">' + esc(t.aiStop) + '</button>';
-  var by = m.kind === 'ai' || m.kind === 'thinking' ? ' · ' + t.aiBy : '';
+  var by = m.kind === 'ai' || m.kind === 'thinking' ? ' · ' + t.aiBy.replace('IA', AI.name).replace('AI', AI.name) : '';
   return '<div class="msg g-' + m.from + (isNew ? ' new' : '') + '" data-kind="' + m.kind + '"><div class="by">' + portrait(m.from, 22) + '<span>' + esc(g.name + ' · ' + g.tag[lang] + by) + '</span></div>' +
     (paras.length ? '<div class="bubble">' + paras.map(function (p) { return '<p>' + p + '</p>'; }).join('') + '</div>' : '') + cards + after +
     (m.aiNote ? '<p class="note">' + esc(t[m.aiNote]) + '</p>' : '') + '</div>';

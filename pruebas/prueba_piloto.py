@@ -801,6 +801,27 @@ def main():
         check('[Claude] Consola sin errores', not errors, errors)
         ctx.close()
 
+        # =============== D2. Afuera del visor: Gemini por el servidor propio (simulado) ===============
+        ctx = browser.new_context(viewport={'width': 390, 'height': 844})
+        page = ctx.new_page()
+        errs = []
+        page.on('pageerror', lambda e: errs.append(str(e)))
+        sent = []
+        page.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', dict(PREV, servidor_ia='https://ia.example.test/'))))
+        def gem(r):
+            sent.append(r.request.post_data or '')
+            r.fulfill(status=200, content_type='application/json', body=json.dumps({'result': {'texto': 'Hola desde Gemini.', 'lugares': [], 'otros': [], 'consejos': [], 'cultural': False, 'suficiente': True, 'opciones': [], 'aprendido': []}}))
+        page.route('https://ia.example.test/**', gem)
+        page.goto(url + '#guia')
+        page.wait_for_selector('main > *')
+        page.fill('#q', 'Busco un hostal tranquilo')
+        page.press('#q', 'Enter')
+        page.wait_for_selector('[data-kind="ai"]', timeout=5000)
+        body = json.loads(sent[0]) if sent else {}
+        check('[Gemini] Afuera del visor responde Gemini por el servidor, marcado «con Gemini»', 'Hola desde Gemini.' in page.locator('.msg').last.inner_text() and 'con Gemini' in page.locator('.msg').last.inner_text())
+        check('[Gemini] Al servidor van las reglas y la pregunta; ninguna llave en la app', 'Orden para buscar' in body.get('input', [{}])[0].get('content', '') and 'key' not in json.dumps(body).lower().replace('keys', '') and not errs, errs)
+        ctx.close()
+
         # =============== E. Beta con la base de datos del visor (simulada) ===============
         ctx = browser.new_context(viewport={'width': 390, 'height': 844}, has_touch=True)
         page = ctx.new_page()
