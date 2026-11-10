@@ -28,7 +28,8 @@ APP = os.path.join(ROOT, 'app')
 EXE = '/opt/pw-browsers/chromium'
 RESULTS = []
 HOSTS = {}
-PERMITIDOS = {'127.0.0.1', 'fonts.googleapis.com', 'fonts.gstatic.com', 'file'}
+# cdnjs: el programa del mapa real (Leaflet), solo al abrir «Mapa»; tile.openstreetmap.org: sus imágenes.
+PERMITIDOS = {'127.0.0.1', 'fonts.googleapis.com', 'fonts.gstatic.com', 'file', 'cdnjs.cloudflare.com', 'tile.openstreetmap.org'}
 
 
 def catalogo_real():
@@ -237,16 +238,30 @@ def main():
         M = '[vista previa]'
         check(M + ' Carga el catálogo (%d), la configuración y las fuentes (%d)' % (TOTAL, N_FUENTES), page.evaluate("n => window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length === n[0] && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === n[1]", [TOTAL, N_FUENTES]))
         check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in ' '.join((r.get('frase') or {}).values()).lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
-        check(M + ' Inicio: portada ilustrada, «Quiero un café» y «Recién llegué»', page.locator('.hero-art svg').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
-        check(M + ' Inicio ordenado (3.14): arriba preguntar, la idea del guía y las playlists; lo demás agrupado y cerrado', page.locator('.hero .askbar[data-guide]').count() == 1 and page.locator('[data-widget="idea"]:not(.closed)').count() == 1 and page.locator('[data-widget="playlists"]:not(.closed)').count() == 1 and page.locator('[data-more] .widget.closed').count() == 5)
+        check(M + ' Inicio «¿Qué hay?» (3.16): sin portada grande; preguntar, «Quiero un café» y «Recién llegué» arriba', page.locator('.hero-art').count() == 0 and page.locator('.home-top .askbar[data-guide]').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
+        check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-sugerencia] .idea').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 10 and page.locator('[data-more] .widget.closed').count() == 5)
+        fq = page.locator('[data-feed^="p:"] .fquote').first.inner_text() if page.locator('[data-feed^="p:"] .fquote').count() else ''
+        check(M + ' Feed: los lugares traen el porqué en palabras de quien recomienda', '«' in fq and '— Diego' in fq, fq)
+        page.click('[data-feedcat="postres"]')
+        cats = page.evaluate("[...document.querySelectorAll('[data-feed^=\"p:\"]')].map(e => e.dataset.place)")
+        check(M + ' Feed: el filtro «Pan y postres» deja solo pan y postres y quita las playlists', len(cats) >= 3 and page.locator('[data-feed^="r:"]').count() == 0 and all(page.evaluate("id => window.NAIHUAL_LUGARES.find(r => r.id === id).categoria", c) == 'postres' for c in cats), cats)
+        page.click('[data-feedcat="all"]')
+        n_geo = page.evaluate("window.NAIHUAL_LUGARES.filter(r => r.coords && r.estado !== 'retirado' && r.estado !== 'pausado').length")
+        check(M + ' Catálogo: la mayoría de lugares con coordenadas reales (OpenStreetMap) para el mapa', n_geo >= 30, n_geo)
+        page.route('https://cdnjs.cloudflare.com/**', lambda r: r.fulfill(status=200, content_type='text/css' if r.request.url.endswith('.css') else 'application/javascript', body='/* sin mapa */'))
+        page.click('[data-home="mapa"]')
+        page.wait_for_selector('#realmap[data-ok]', timeout=12000)
+        check(M + ' Mapa sin internet: muestra el plano del centro con sus íconos, sin romperse', page.locator('#realmap[data-ok="plano"] [data-results-map] .rpin').count() >= 10 and page.locator('.hseg [data-home="mapa"][aria-selected="true"]').count() == 1)
+        page.click('[data-home="feed"]')
+        page.unroute('https://cdnjs.cloudflare.com/**')
         page.click('[data-wtoggle="guias"]')
         page.click('[data-wtoggle="perfil"]')
         g = [page.locator('.guard-strip .gbtn b').nth(i).inner_text() for i in range(page.locator('.guard-strip .gbtn').count())]
         check(M + " Inicio: exactamente 4 guardianes, en orden No'j, Iq', Kej, E'", g == GUARDIANES, g)
         check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4)
-        check(M + ' Inicio: %d playlists con su mapa, autor y gasto' % N_PLAYLISTS, page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.route-card svg path.route').count() == N_PLAYLISTS and page.locator('.route-card [data-autor]').count() == N_PLAYLISTS)
+        check(M + ' Inicio: %d playlists como experiencia (sin cuadrícula): foto o escena, paradas, autor y gasto' % N_PLAYLISTS, page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.fplay .fmedia svg path.route').count() == 0 and page.locator('.fplay .fstops li').count() >= N_PLAYLISTS * 2 and page.locator('.fplay [data-autor]').count() == N_PLAYLISTS)
         check(M + ' Inicio: «¿Cómo venís a Antigua?» con 3 perfiles para empezar, sin agente', page.locator('[data-perfil]').count() == 3 and 'Agente' not in page.inner_text('[data-perfil-pick]'))
-        check(M + ' Inicio vivo: saludo según la hora, cielo del momento e idea del guía', page.locator('[data-saludo]').count() == 1 and page.locator('.hero-art svg[data-momento]').count() == 1 and page.locator('[data-sugerencia] .idea').count() == 1)
+        check(M + ' Inicio vivo: saludo según la hora, cielo del momento e idea del guía', page.locator('[data-saludo]').count() == 1 and page.locator('[data-sugerencia] .idea').count() == 1)
         k1 = page.locator('[data-idea-key]').get_attribute('data-idea-key')
         page.click('[data-idea]')
         check(M + ' «Otra idea» cambia la sugerencia', page.locator('[data-idea-key]').get_attribute('data-idea-key') != k1)
@@ -255,7 +270,7 @@ def main():
         page.click('[data-wtoggle="que"]')
         check(M + ' Widget: se contrae con un toque', page.locator('[data-widget="que"].closed').count() == 1 and page.locator('[data-wtoggle="que"][aria-expanded="false"]').count() == 1)
         page.click('[data-perfil="mochilero"]')
-        check(M + ' Perfil «Viajo con poco»: primero su playlist, marcada «Para vos», sin esconder las otras', page.locator('.route-card').first.get_attribute('data-route') == 'tanque' and page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.route-card').first.locator('[data-para-vos]').count() == 1)
+        check(M + ' Perfil «Viajo con poco»: primero su playlist, marcada «Para vos», sin esconder las otras', page.locator('.route-card').first.get_attribute('data-route') == 'tanque' and page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.fplay').first.locator('[data-para-vos]').count() == 1)
         page.reload()
         page.wait_for_selector('main > *')
         page.click('[data-perfil="local"]')
@@ -603,7 +618,7 @@ def main():
         a = page.inner_text('main')
         check(M + ' Aprendizaje: «Diseño futuro / no activo» y «Datos ficticios de demostración»', 'Diseño futuro / no activo' in a and 'Datos ficticios de demostración' in a)
         page.click('[data-demo-fb="si"]')
-        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta" || k === "naihual.aprendido" || k === "naihual.fuiste" || k === "naihual.widgets")'))
+        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta" || k === "naihual.aprendido" || k === "naihual.fuiste" || k === "naihual.widgets" || k === "naihual.home")'))
         page.click('[data-sec="arquitectura"]')
         r = page.inner_text('main')
         check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.9' in r and 'Beta' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
@@ -662,11 +677,11 @@ def main():
         check(M + ' Consola sin errores', not errors, errors)
         ctx.close()
         ctx, page, errors = new_page(browser, url, None, 'light', PUB, '#constructor')
-        check('[pública] Un enlace raro (#constructor) abre Inicio sin romperse', page.locator('.hero').count() == 1 and '[object' not in page.inner_text('main'))
+        check('[pública] Un enlace raro (#constructor) abre Inicio sin romperse', page.locator('.home-top').count() == 1 and '[object' not in page.inner_text('main'))
         ctx.close()
         for h in ['#taller', '#revision']:
             ctx, page, errors = new_page(browser, url, None, 'light', PUB, h)
-            check(M + ' El enlace %s no abre la vista interna' % h, page.locator('[id^="taller-"]').count() == 0 and page.locator('.hero').count() == 1)
+            check(M + ' El enlace %s no abre la vista interna' % h, page.locator('[id^="taller-"]').count() == 0 and page.locator('.home-top').count() == 1)
             ctx.close()
         ctx, page, errors = new_page(browser, url, None, 'light', 'sin')
         check('[sin config] Sin archivo de configuración = modo pública', not page.locator('#sos').is_visible() and page.locator('.route-card').count() == 0 and page.locator('[data-go="taller"]').count() == 0)
@@ -1016,7 +1031,7 @@ def main():
 
         # =============== H. Recorridos de turista (toques desde Inicio) y enlaces ===============
         ctx, page, errors = new_page(browser, url)
-        check('Recorrido 1 · llegar sin saber nada: Inicio explica qué es, quién guía y qué hacer (0 toques)', page.locator('.hero h1').count() == 1 and page.locator('.guard-strip .gbtn').count() == 4 and page.locator('#cta-cafe').is_visible())
+        check('Recorrido 1 · llegar sin saber nada: Inicio muestra qué hay, quién guía y qué hacer (0 toques)', page.locator('.home-top .askbar').count() == 1 and page.locator('[data-feed]').count() >= 5 and page.locator('.guard-strip .gbtn').count() == 4 and page.locator('#cta-cafe').is_visible())
         page.click('#cta-cafe')
         check('Recorrido 2 · café en 1 toque', page.locator('.cards.pilot [data-place]').count() >= 1)
         page.click('[data-tab="inicio"]')
@@ -1069,7 +1084,7 @@ def main():
         errs = []
         page.on('pageerror', lambda e: errs.append(str(e)))
         page.goto('file://' + os.path.join(APP, 'index.html'))
-        page.wait_for_selector('.hero')
+        page.wait_for_selector('.home-top')
         check('Abre directo desde el archivo (file://) con los datos', page.evaluate("window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length") == TOTAL and not errs, errs)
         ctx.close()
         browser.close()
