@@ -43,7 +43,7 @@ button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 <main>
 <header>
   <h1>Cerebro de nAIhual</h1>
-  <p class="lead">Cómo piensa, de dónde lee y dónde subís cada cosa. Versión 3.12 · 10-nov-2026.</p>
+  <p class="lead">Cómo piensa, de dónde lee y dónde subís cada cosa. Versión 3.13 · 10-nov-2026.</p>
 </header>
 
 <section>
@@ -97,12 +97,7 @@ flowchart TD
   <h2>NotebookLM a nAIhual, paso a paso</h2>
   <ol class="steps">
     <li>En NotebookLM, abrí el cuaderno de una categoría (por ejemplo, comida).</li>
-    <li>Pedile el informe con este prompt (cambiá [categoría]):<pre id="nb" class="prompt">Con las fuentes de este cuaderno, armá un informe de [categoría] para nAIhual (Antigua Guatemala).
-- Solo lo que dicen las fuentes; al final de cada párrafo, entre paréntesis, la fuente.
-- Párrafos cortos, uno por tema o por lugar, separados por una línea en blanco.
-- Sin opiniones como verdad, sin calificaciones, sin precios ni horarios.
-- Lo maya o cultural, marcado con * (falta que lo valide un tata).
-- Al principio, una línea: «Categoría: [categoría] · fecha: [hoy]».</pre><button type="button" id="cpnb">Copiar prompt</button></li>
+    <li>Pedile el informe con el prompt de la página <b>Gemini y prompts</b> (sección 2, botón «Copiar»). Es el único lugar donde viven los prompts.</li>
     <li>Copiá lo que te devuelve y pegalo en un Google Doc nuevo llamado <code>nAIhual · comida</code>.</li>
     <li>Guardalo en la carpeta de Drive <code>nAIhual libretas</code>. Un doc por categoría.</li>
     <li>Escribime: <span class="say">«cargá las libretas»</span></li>
@@ -116,12 +111,3 @@ flowchart TD
   <p><b>Gemini a veces se inventa nombres</b> cuando tu catálogo no alcanza (en la prueba propuso un «Comedor Doña María» que no pude confirmar). Por eso salen marcados «confirmá en Google». Mientras más libretas y lugares cargués, menos inventa.</p>
 </section>
 </main>
-<script>
-(function () { var b = document.getElementById('cpnb'), t = document.getElementById('nb').textContent;
-  b.addEventListener('click', function () {
-    var done = function () { b.textContent = 'Copiado ✓'; setTimeout(function () { b.textContent = 'Copiar prompt'; }, 2500); };
-    var pick = function () { var r = document.createRange(); r.selectNodeContents(document.getElementById('nb')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
-    try { navigator.clipboard.writeText(t).then(done, pick); } catch (e) { pick(); }
-  });
-})();
-</script>

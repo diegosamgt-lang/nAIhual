@@ -2,7 +2,8 @@
 
 1. Leé completo `docs/nAIhual.md`, **empezando por la Parte 1 (Bases)**. Es el **único** documento vivo: bases, abierto, estado, cómo alimentar e historial. Actualizá ese archivo; no creés otros. `docs/historial/` es archivo congelado: no se edita.
 2. El método de Diego es obligatorio e intocable: `0_PROMPT_MAESTRO.md`, `1_PROCESO.md`, `2_REGLAS.md`, `3_PREGUNTAS.md`, `4_LECCIONES.md`.
-3. App vigente: `app/index.html`. En `versiones/` hay prototipos viejos; son solo referencia y no se editan.
+3. App vigente: `app/index.html`. Las versiones viejas viven solo en el historial de GitHub (la limpieza del 10-nov borró las copias).
+4. **Gemini y prompts: un solo lugar**, `docs/gemini.html` (publicado en https://claude.ai/artifact/3UpapUFaV6uFu8UDjLNFuw). Cuando Diego diga algo de prompts o de Gemini, se cambia ahí y se vuelve a publicar en esa misma dirección. No se crean archivos nuevos de prompts. El código del servidor vive en `servidor/gemini-worker.js` y se copia a esa página.
 
 ## Tu rol (pedido de Diego)
 - **Organizar, contrastar y construir.** No validés todo.
