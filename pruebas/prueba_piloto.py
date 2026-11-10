@@ -127,7 +127,7 @@ def js(name, value):
     return 'window.%s = %s;' % (name, json.dumps(value, ensure_ascii=False))
 
 
-def new_page(browser, url, fixture=None, scheme='light', config=None, hash_='', claude=None):
+def new_page(browser, url, fixture=None, scheme='light', config=None, hash_='', claude=None, abiertos=True):
     """config: dict = configuración de prueba · 'sin' = como si faltara data/config.js · None = la real."""
     ctx = browser.new_context(viewport={'width': 390, 'height': 844}, color_scheme=scheme, has_touch=True)
     page = ctx.new_page()
@@ -144,6 +144,9 @@ def new_page(browser, url, fixture=None, scheme='light', config=None, hash_='', 
         page.route('**/data/config.js', lambda r: r.fulfill(status=404, body=''))
     elif config is not None:
         page.route('**/data/config.js', ok(js('NAIHUAL_CONFIG', config)))
+    if abiertos:
+        # Desde la 3.14 lo secundario del Inicio empieza cerrado; las pruebas viejas lo abren como lo haría una persona que ya lo usó.
+        page.add_init_script("if (!localStorage.getItem('naihual.app1')) localStorage.setItem('naihual.app1', JSON.stringify({ closed: { perfil: false, que: false, brujula: false, guias: false, explorar: false } }));")
     if claude is not None:
         # Simula la función del visor de Claude (window.claude.use('sample')). Nunca llama a Claude de verdad.
         page.add_init_script('''(() => { window.__calls = []; window.__reply = %s;
@@ -230,11 +233,14 @@ def main():
         check('Datos: las respuestas fijas, las playlists y las referencias nombran solo lugares activos del catálogo', not faltan, faltan)
 
         # =============== A. VISTA PREVIA con el catálogo real ===============
-        ctx, page, errors = new_page(browser, url)
+        ctx, page, errors = new_page(browser, url, abiertos=False)
         M = '[vista previa]'
         check(M + ' Carga el catálogo (%d), la configuración y las fuentes (%d)' % (TOTAL, N_FUENTES), page.evaluate("n => window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length === n[0] && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === n[1]", [TOTAL, N_FUENTES]))
         check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in ' '.join((r.get('frase') or {}).values()).lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
         check(M + ' Inicio: portada ilustrada, «Quiero un café» y «Recién llegué»', page.locator('.hero-art svg').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
+        check(M + ' Inicio ordenado (3.14): arriba preguntar, la idea del guía y las playlists; lo demás agrupado y cerrado', page.locator('.hero .askbar[data-guide]').count() == 1 and page.locator('[data-widget="idea"]:not(.closed)').count() == 1 and page.locator('[data-widget="playlists"]:not(.closed)').count() == 1 and page.locator('[data-more] .widget.closed').count() == 5)
+        page.click('[data-wtoggle="guias"]')
+        page.click('[data-wtoggle="perfil"]')
         g = [page.locator('.guard-strip .gbtn b').nth(i).inner_text() for i in range(page.locator('.guard-strip .gbtn').count())]
         check(M + " Inicio: exactamente 4 guardianes, en orden No'j, Iq', Kej, E'", g == GUARDIANES, g)
         check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4)
@@ -244,6 +250,8 @@ def main():
         k1 = page.locator('[data-idea-key]').get_attribute('data-idea-key')
         page.click('[data-idea]')
         check(M + ' «Otra idea» cambia la sugerencia', page.locator('[data-idea-key]').get_attribute('data-idea-key') != k1)
+        page.click('[data-wtoggle="que"]')
+        check(M + ' Widget: se abre con un toque', page.locator('[data-widget="que"]:not(.closed)').count() == 1 and page.locator('[data-wtoggle="que"][aria-expanded="true"]').count() == 1)
         page.click('[data-wtoggle="que"]')
         check(M + ' Widget: se contrae con un toque', page.locator('[data-widget="que"].closed').count() == 1 and page.locator('[data-wtoggle="que"][aria-expanded="false"]').count() == 1)
         page.click('[data-perfil="mochilero"]')
@@ -267,6 +275,8 @@ def main():
         check(M + ' Apagados, vuelve el orden de siempre', page.locator('[data-perfil][aria-checked="true"]').count() == 0 and page.locator('.route-card').first.get_attribute('data-route') == 'centro')
         check(M + ' Inicio: 4 accesos (Lugares, Cultura maya, Costumbres, Guardianes)', page.locator('.tiles .tile').count() == 4)
         check(M + ' Inicio: sin Aliados Fundadores ni Q250', page.locator('section.biz').count() == 0 and 'Q250' not in page.inner_text('main') and 'Aliados' not in page.inner_text('main'))
+        page.click('[data-wtoggle="brujula"]')
+        page.click('[data-wtoggle="explorar"]')
         intro = page.locator('[data-intro]')
         check(M + ' Inicio: «Qué es nAIhual» con la frase del fundador', intro.count() == 1 and 'gracias a su gente' in intro.inner_text())
         bru = page.locator('[data-brujula]')
@@ -407,6 +417,7 @@ def main():
 
         # Explorar
         page.click('[data-tab="inicio"]')
+        if page.locator('[data-widget="explorar"].closed').count(): page.click('[data-wtoggle="explorar"]')
         page.click('[data-go="explorar"]')
         filtros = page.evaluate("[...document.querySelectorAll('[data-filter]')].map(b => [b.dataset.filter, b.textContent.trim()]).filter(f => !['all', 'route', 'tip'].includes(f[0]))")
         check(M + ' Explorar: un filtro por cada categoría del catálogo', sorted(f[0] for f in filtros) == sorted(POR_CAT), filtros)
@@ -548,6 +559,7 @@ def main():
         check(M + ' Seguridad: lo que se anota se muestra como texto, no como código', page.evaluate('window.__xss === undefined') and page.locator('main img[src="x"]').count() == 0 and '<img src=x' in page.inner_text('main'))
         check(M + ' 390 px sin desplazamiento horizontal (Beta)', no_hscroll(page))
         page.click('[data-tab="inicio"]')
+        if page.locator('[data-widget="explorar"].closed').count(): page.click('[data-wtoggle="explorar"]')
         page.click('[data-go="explorar"]')
         page.locator('[data-open="p:siena"]').first.click()
         page.click('[data-beta-like="siena"]')
@@ -637,6 +649,7 @@ def main():
         page.click('[data-tab="rutas"]')
         check(M + ' Rutas: estado vacío diseñado', 'Las rutas vienen en camino' in page.inner_text('main') and page.locator('.empty .map svg').count() == 1)
         page.click('[data-tab="inicio"]')
+        if page.locator('[data-widget="explorar"].closed').count(): page.click('[data-wtoggle="explorar"]')
         page.click('[data-go="explorar"]')
         ex = page.inner_text('main')
         check(M + ' Explorar: solo cultura y costumbres, sin lugares', page.locator('.grid [data-pin^="p:"]').count() == PUBLICADOS and page.locator('.grid [data-pin^="t:"]').count() == 11 and (PUBLICADOS or not sin_nombres(ex)))
@@ -677,6 +690,7 @@ def main():
                 check('[pública] Inglés: «Verified · Oct 20, 2026»', 'Verified · Oct 20, 2026' in page.locator('.cards.pilot').last.inner_text())
                 page.click('#lang-es')
             page.click('[data-tab="inicio"]')
+            if page.locator('[data-widget="explorar"].closed').count(): page.click('[data-wtoggle="explorar"]')
             page.click('[data-go="explorar"]')
             feed = page.inner_text('main')
             n_pub = {'cero': 0, 'uno': 1, 'cuatro': 4}[name]
@@ -903,6 +917,7 @@ def main():
         page.wait_for_function("document.querySelectorAll('[data-beta-item]').length === 1", timeout=5000)
         check('[beta · visor] Borrar una anotación borra también su foto', page.evaluate('window.__assetsDeleted') == ['foto123'] and not page.evaluate('Object.values(window.__store).some(x => x.foto_id === "foto123")'))
         page.click('[data-tab="inicio"]')
+        if page.locator('[data-widget="explorar"].closed').count(): page.click('[data-wtoggle="explorar"]')
         page.click('[data-go="explorar"]')
         page.locator('[data-open="p:siena"]').first.click()
         page.click('[data-beta-like="siena"]')
@@ -993,6 +1008,7 @@ def main():
         # Cada «Cómo llegar» y cada «Abrir ruta» se arma con el nombre, la dirección y Antigua Guatemala.
         datos = page.evaluate("window.NAIHUAL_LUGARES.filter(p => p.estado !== 'pausado' && p.estado !== 'retirado').map(p => [p.id, p.nombre, p.direccion, p.maps_url || ''])")
         page.click('[data-tab="inicio"]')
+        if page.locator('[data-widget="explorar"].closed').count(): page.click('[data-wtoggle="explorar"]')
         page.click('[data-go="explorar"]')
         # Abre cada ficha y lee su botón dentro de la página, en una sola pasada (los clics dibujan al instante).
         hrefs = page.evaluate('''(ids) => ids.map(id => {
