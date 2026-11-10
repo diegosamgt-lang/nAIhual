@@ -816,7 +816,7 @@ var X3 = {
     betaFicha: 'Beta · ¿qué sabés de este lugar?', kind: 'Tipo', text: 'Qué querés anotar', save: 'Guardar anotación',
     name: 'Nombre del lugar', mapsLink: 'Enlace de Google Maps (Compartir → Copiar enlace)', moment: 'Momento del viaje', didLike: 'Me gustó', addNote: 'Nota corta, en tus palabras', addBtn: 'Agregar',
     moments: [['llegue', 'Llegué'], ['transporte', 'Transporte'], ['hotel', 'Hotel'], ['comida', 'Comida'], ['cerca', 'Qué hay cerca'], ['otro', 'Otro']],
-    list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
+    list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereBuzon: 'Se guarda en el buzón de los agentes: lo ven todos y Claude lo lee.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
     savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
     kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo', brujula: 'Prueba de la brújula', visita: 'Visita', post: 'Publicación' },
     iaTag: 'Según la IA · confirmá en Google', searchTitle: 'Buscalo en Google Maps', searchSub: 'todavía no está en nAIhual', searchBtn: 'Buscar', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
@@ -859,7 +859,7 @@ var X3 = {
     betaFicha: 'Beta · what do you know about this place?', kind: 'Type', text: 'What do you want to note', save: 'Save note',
     name: 'Place name', mapsLink: 'Google Maps link (Share → Copy link)', moment: 'Moment of the trip', didLike: 'I liked it', addNote: 'Short note, in your words', addBtn: 'Add',
     moments: [['llegue', 'Just arrived'], ['transporte', 'Getting around'], ['hotel', 'Hotel'], ['comida', 'Food'], ['cerca', 'Nearby'], ['otro', 'Other']],
-    list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
+    list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereBuzon: 'Saved in the agents’ inbox: everyone sees it and Claude reads it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
     savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
     kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place', brujula: 'Compass test', visita: 'Visit', post: 'Post' },
     iaTag: 'From the AI · check on Google', searchTitle: 'Look it up on Google Maps', searchSub: 'not in nAIhual yet', searchBtn: 'Search', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
@@ -1501,6 +1501,40 @@ function serverAI(url) {
   } };
 }
 var SERVER_AI = /^https:\/\//.test(String(CFG.servidor_ia || '')) ? String(CFG.servidor_ia) : '';
+var SERVER_BASE = SERVER_AI.replace(/\/?$/, '/');
+// Buzón compartido de los agentes (mismo servidor). Imita lo que usa la app de la base del visor: collection().add/onSnapshot y doc().set/update/delete.
+// Cada colección se vuelve a leer después de escribir y cada 30 segundos mientras la app está a la vista.
+function remoteDb(base) {
+  var subs = {};
+  function req(method, path, body) {
+    return fetch(base + path, { method: method, headers: body ? { 'Content-Type': 'text/plain;charset=utf-8' } : {}, body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) { return r.json(); }).then(function (d) { return d && !d.error ? d : Promise.reject(d || {}); });
+  }
+  function pull(col) {
+    return req('GET', 'buzon/' + col).then(function (d) {
+      var snap = { docs: (Array.isArray(d.docs) ? d.docs : []).filter(function (x) { return x && typeof x === 'object'; }).map(function (x) {
+        return { id: String(x._id), data: function () { var c = {}; Object.keys(x).forEach(function (k) { if (k !== '_id') c[k] = x[k]; }); return c; } }; }) };
+      (subs[col] || []).forEach(function (s) { s.ok(snap); });
+    }, function (e) { var l = subs[col] || []; subs[col] = []; l.forEach(function (s) { if (s.err) s.err(e); }); });
+  }
+  setInterval(function () { if (document.visibilityState !== 'hidden') Object.keys(subs).forEach(function (c) { if (subs[c].length) pull(c); }); }, 30000);
+  function path(p) { var a = String(p).split('/'); return { col: a[0], id: encodeURIComponent(a.slice(1).join('/')) }; }
+  return {
+    collection: function (col) { return {
+      add: function (doc) { return req('POST', 'buzon/' + col, { doc: doc }).then(function (d) { pull(col); return { id: d.id }; }); },
+      onSnapshot: function (ok, err) { (subs[col] = subs[col] || []).push({ ok: ok, err: err }); pull(col); }
+    }; },
+    doc: function (p) { var x = path(p), put = function (d, merge) { return req('PUT', 'buzon/' + x.col + '/' + x.id, { doc: d, merge: merge }).then(function () { pull(x.col); }); };
+      return { set: function (d) { return put(d, false); }, update: function (d) { return put(d, true); }, delete: function () { return req('DELETE', 'buzon/' + x.col + '/' + x.id).then(function () { pull(x.col); }); } }; }
+  };
+}
+// Fotos del buzón: se suben al mismo servidor (ya achicadas por la app).
+function remoteAssets(base) {
+  return {
+    upload: function (blob) { return fetch(base + 'buzon-foto', { method: 'POST', headers: { 'Content-Type': blob.type || 'image/jpeg' }, body: blob }).then(function (r) { return r.json(); }).then(function (d) { return d && d.url ? d : Promise.reject(d); }); },
+    delete: function (id) { return fetch(base + 'buzon-foto/' + encodeURIComponent(id), { method: 'DELETE' }); }
+  };
+}
 if (AI_ON && !(window.claude && typeof window.claude.use === 'function') && SERVER_AI) { AI.fn = serverAI(SERVER_AI); AI.state = 'listo'; AI.name = 'Gemini'; }
 else if (AI_ON && window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then(function (fn) { AI.fn = fn || null; AI.state = fn ? 'listo' : 'no-disponible'; render({ keep: true }); }, function () { AI.state = 'no-disponible'; render({ keep: true }); });
@@ -1720,15 +1754,13 @@ function learnLoadLocal() { try { var a = JSON.parse(localStorage.getItem(LEARN_
 function learnSaveLocal() { try { localStorage.setItem(LEARN_LS, JSON.stringify(LEARN.items)); } catch (e) {} }
 if (BETA_ON) {
   betaLoadLocal(); learnLoadLocal();
-  if (window.claude && typeof window.claude.use === 'function') {
-    window.claude.use('db').then(function (db) {
-      if (!db) return;
-      BETA.db = db; BETA.where = 'db';
+  var attachDb = function (db, visor) {
+      BETA.db = db; BETA.where = visor ? 'db' : 'buzon';
       db.collection('beta').onSnapshot(function (snap) {
         BETA.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; });
         betaRefresh();
       }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
-      googleProbe();
+      if (visor) googleProbe();
       db.collection('galeria').onSnapshot(function (snap) { GAL.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }); betaRefresh(); }, function () {});
       db.collection('memoria').onSnapshot(function (snap) { MEM.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; }); betaRefresh(); }, function () {});
       db.collection('aprendido').onSnapshot(function (snap) {
@@ -1736,8 +1768,10 @@ if (BETA_ON) {
         betaRefresh();
       }, function () { learnLoadLocal(); betaRefresh(); });
       betaRefresh();
-    }, function () {});
-  }
+  };
+  if (window.claude && typeof window.claude.use === 'function') window.claude.use('db').then(function (db) { if (db) attachDb(db, true); }, function () {});
+  // Afuera del visor: el buzón de agentes en el servidor de Diego (FIJA 10-nov). Si el buzón no está listo, todo sigue en el teléfono.
+  else if (SERVER_AI) setTimeout(function () { attachDb(remoteDb(SERVER_BASE), false); }, 0); // después de que la pantalla exista
 }
 function betaLiked(pid) { return BETA_ON && BETA.items.some(function (x) { return x.tipo === 'gusta' && x.lugar === pid; }); }
 function betaToggleLike(pid) {
@@ -1811,6 +1845,8 @@ function fuiBar() {
 // Archivos del visor (fotos). Sin visor no hay fotos.
 var ASSETS = null;
 if (BETA_ON && window.claude && typeof window.claude.use === 'function') window.claude.use('assets').then(function (a) { ASSETS = a || null; }, function () {});
+// Afuera del visor, las fotos van al buzón solo si el buzón responde (si no, el formulario no pide foto).
+else if (BETA_ON && SERVER_AI) fetch(SERVER_BASE + 'buzon/galeria').then(function (r) { return r.json(); }).then(function (d) { if (d && Array.isArray(d.docs)) { ASSETS = remoteAssets(SERVER_BASE); render({ keep: true }); } }, function () {});
 // Achica la foto y la vuelve a dibujar: así sale sin la ubicación ni los datos ocultos de la cámara.
 // Si el teléfono no la puede abrir (por ejemplo, HEIC), no se sube.
 function shrinkPhoto(file) {
@@ -2024,7 +2060,7 @@ function betaListHTML() {
 function betaHTML() {
   var x = X();
   return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
-    '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
+    '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : BETA.where === 'buzon' ? x.whereBuzon : x.whereLocal) + '</span></div>' +
     '<details class="panel" data-beta-how><summary><b>' + esc(x.howTitle) + '</b></summary><ol>' + x.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></details>' +
     wallHTML() + '<div class="row"><button type="button" class="btn" data-go="registro">' + esc(x.regTitle) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div>' + memoriaHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
 }
@@ -2067,7 +2103,7 @@ function betaSubmit(form) {
     if (!pt) { if (bm) bm.textContent = x.postEmpty; return; }
     if (pm && !MAPS_RE.test(pm)) { if (bm) bm.textContent = x.badMaps; return; }
     var tema = (form.querySelector('input[name="tema"]:checked') || {}).value || 'lugar';
-    var post = { tipo: 'post', tema: tema, texto: pt.slice(0, 800), maps: pm.slice(0, 500), estado: 'por_confirmar' };
+    var post = { tipo: 'post', tema: tema, texto: pt.slice(0, 800), maps: pm.slice(0, 500), estado: 'confirmado' }; // sin restricciones para publicar (FIJA de Diego, 10-nov): sale al momento
     // La ventana se cierra solo cuando quedó guardado: si falla, lo escrito sigue ahí.
     withPhoto(form, post, function (id) { var dp = document.getElementById('dlg'); if (dp.open) dp.close(); postClassify(id, post); });
     return;

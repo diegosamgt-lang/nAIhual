@@ -330,7 +330,7 @@ def main():
         page.fill('[data-bform="post"] textarea[name="texto"]', 'Hay concierto en el Tanque el sábado')
         page.click('[data-bform="post"] button[type="submit"]')
         post = page.evaluate('(JSON.parse(localStorage.getItem("naihual.beta") || "[]").filter(x => x.tipo === "post")[0]) || null')
-        check(M + ' «+ Publicar»: en 3 toques queda en tu muro, «por confirmar»', post is not None and post['tema'] == 'evento' and post['estado'] == 'por_confirmar' and 'Publicado' in page.inner_text('#toast'), post)
+        check(M + ' «+ Publicar»: en 3 toques queda publicado, sin esperar confirmación (FIJA 10-nov)', post is not None and post['tema'] == 'evento' and post['estado'] == 'confirmado' and 'Publicado' in page.inner_text('#toast'), post)
         page.evaluate('localStorage.removeItem("naihual.beta")')
         page.reload()
         page.wait_for_selector('main > *')
@@ -783,8 +783,7 @@ def main():
         page.click('[data-tab="inicio"]')
         page.click('[data-beta-card] [data-go="beta"]')
         check('[Claude] Tu muro muestra la publicación ordenada, con su guía', page.locator('[data-wall] [data-post-guia="iq"]').count() == 1 and 'Catación los jueves' in page.inner_text('[data-wall]'))
-        page.click('[data-wall] [data-post-ok]')
-        check('[Claude] Confirmarla la marca «Confirmado»', page.locator('[data-wall] [data-post="confirmado"]').count() == 1)
+        check('[Claude] Sale publicada al momento («Confirmado»), sin botón de confirmar', page.locator('[data-wall] [data-post="confirmado"]').count() == 1 and page.locator('[data-wall] [data-post-ok]').count() == 0)
         page.evaluate("window.__reply = {texto: 'Ok.', lugares: [], otros: [], consejos: [], cultural: false, suficiente: true, opciones: [], aprendido: []}")
         page.click('[data-tab="guia"]')
         page.fill('#q', '¿Qué hay los jueves?')
@@ -820,7 +819,24 @@ def main():
         page.on('pageerror', lambda e: errs.append(str(e)))
         sent = []
         page.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', dict(PREV, servidor_ia='https://ia.example.test/'))))
+        buz = {}
         def gem(r):
+            # Buzón de agentes simulado (mismo servidor): una lista por colección.
+            path = r.request.url.split('ia.example.test/')[1]
+            if path.startswith('buzon'):
+                parts = path.split('/'); col = parts[1]; docs = buz.setdefault(col, []); m = r.request.method
+                if m == 'GET':
+                    return r.fulfill(status=200, content_type='application/json', body=json.dumps({'docs': docs}))
+                if m == 'OPTIONS':
+                    return r.fulfill(status=204, headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE', 'Access-Control-Allow-Headers': 'Content-Type'})
+                body_ = json.loads(r.request.post_data or '{}'); d = body_.get('doc', {})
+                nid = parts[2] if len(parts) > 2 else 'b%d' % (len(docs) + 1)
+                old = [x for x in docs if x['_id'] == nid]
+                if body_.get('merge') and old: d = dict(old[0], **d)
+                docs[:] = [x for x in docs if x['_id'] != nid]
+                if m != 'DELETE':
+                    d['_id'] = nid; docs.append(d)
+                return r.fulfill(status=200, content_type='application/json', body=json.dumps({'id': nid}))
             sent.append(r.request.post_data or '')
             r.fulfill(status=200, content_type='application/json', body=json.dumps({'result': {'texto': 'Hola desde Gemini.', 'lugares': [], 'otros': [], 'consejos': [], 'cultural': False, 'suficiente': True, 'opciones': [], 'aprendido': []}}))
         page.route('https://ia.example.test/**', gem)
@@ -832,6 +848,22 @@ def main():
         body = json.loads(sent[0]) if sent else {}
         check('[Gemini] Afuera del visor responde Gemini por el servidor, marcado «con Gemini»', 'Hola desde Gemini.' in page.locator('.msg').last.inner_text() and 'con Gemini' in page.locator('.msg').last.inner_text())
         check('[Gemini] Al servidor van las reglas y la pregunta; ninguna llave en la app', 'Orden para buscar' in body.get('input', [{}])[0].get('content', '') and 'key' not in json.dumps(body).lower().replace('keys', '') and not errs, errs)
+        # Buzón de agentes: lo que publica un agente lo ven los demás (FIJA 10-nov)
+        page.click('#tabs [data-publish]')
+        page.fill('[data-bform="post"] textarea[name="texto"]', 'Hay mercado de artesanos el domingo')
+        page.click('[data-bform="post"] button[type="submit"]')
+        page.wait_for_function("() => true")
+        page.wait_for_timeout(600)
+        check('[Buzón] Afuera del visor, «+ Publicar» va al buzón compartido, ya publicado, y no solo al teléfono', any(x.get('tipo') == 'post' and x.get('texto') == 'Hay mercado de artesanos el domingo' and x.get('estado') == 'confirmado' for x in buz.get('beta', [])) and 'mercado de artesanos' not in (page.evaluate('localStorage.getItem("naihual.beta")') or ''), buz.get('beta'))
+        p2 = ctx.new_page()
+        p2.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', dict(PREV, servidor_ia='https://ia.example.test/'))))
+        p2.route('https://ia.example.test/**', gem)
+        p2.goto(url)
+        p2.wait_for_selector('main > *')
+        p2.wait_for_timeout(500)
+        p2.click('[data-beta-card] [data-go="beta"]')
+        p2.wait_for_timeout(500)
+        check('[Buzón] Otro agente, en otro teléfono, lo ve en el muro y la beta dice que es el buzón', 'Hay mercado de artesanos el domingo' in p2.inner_text('main') and p2.locator('[data-beta-where="buzon"]').count() == 1, p2.inner_text('main')[:300])
         ctx.close()
 
         # =============== E. Beta con la base de datos del visor (simulada) ===============
@@ -860,10 +892,8 @@ def main():
         page.click('#tabs [data-publish]')
         page.fill('[data-bform="post"] textarea[name="texto"]', 'Publicado en el visor')
         page.click('[data-bform="post"] button[type="submit"]')
-        page.wait_for_selector('[data-wall] [data-post-ok]', timeout=5000)
-        page.click('[data-wall] [data-post-ok]')
         page.wait_for_selector('[data-wall] [data-post="confirmado"]', timeout=5000)
-        check('[beta · visor] «+ Publicar» llega a la base de datos y «Confirmar» la actualiza', page.evaluate('Object.values(window.__store).some(x => x.tipo === "post" && x.texto === "Publicado en el visor" && x.estado === "confirmado")'))
+        check('[beta · visor] «+ Publicar» llega a la base de datos, ya publicada', page.evaluate('Object.values(window.__store).some(x => x.tipo === "post" && x.texto === "Publicado en el visor" && x.estado === "confirmado")'))
         page.evaluate("Object.keys(window.__store).filter(k => window.__store[k].tipo === 'post').forEach(k => window.__db.doc('beta/' + k).delete())")
         page.wait_for_function("document.querySelectorAll('[data-wall] .post').length === 0", timeout=5000)
         page.evaluate("window.__db.collection('beta').add({tipo: 'nota', lugar: 'siena', nombre: 'Siena Luz', texto: 'Con foto', foto: 'https://example.invalid/f.jpg', foto_id: 'foto123', fecha: '2026-10-28T10:00:00Z'})")

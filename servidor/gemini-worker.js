@@ -3,7 +3,9 @@
 
    La forma fácil: pegá tu llave entre las comillas de LLAVE, solo en el editor de Cloudflare (nunca en GitHub).
    Si preferís, las variables de Cloudflare mandan sobre lo de abajo: GEMINI_KEY, ORIGENES y MODELO
-   (uno o varios separados por coma). Sin MODELO, prueba MODELOS en orden y usa el primero que responda. */
+   (uno o varios separados por coma). Sin MODELO, prueba MODELOS en orden y usa el primero que responda.
+   Buzón de agentes (FIJA de Diego, 10-nov): lo que publican los agentes desde la app se guarda en un KV de
+   Cloudflare enlazado con el nombre BUZON (Settings → Bindings → KV namespace). Sin BUZON, la app guarda en el teléfono. */
 const LLAVE = 'PEGÁ_AQUÍ_TU_LLAVE';
 const MODELOS = ['gemini-flash-latest', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash'];
 const ORIGENES_BASE = 'https://diegosamgt-lang.github.io,https://www.disartstudio.com,https://disartstudio.com';
@@ -13,6 +15,54 @@ const MAX_TEXTO = 120000;      // letras en total
 const ESPERA_MODELO = 20000;   // ms por modelo
 const ESPERA_TOTAL = 45000;    // ms entre todos los modelos
 
+const COLECCIONES = ['beta', 'galeria', 'memoria', 'aprendido'];
+const MAX_DOC = 30000;          // letras por anotación (la memoria va en partes de 20,000)
+const MAX_DOCS = 3000;          // anotaciones por colección
+const MAX_FOTO = 2000000;       // bytes por foto (la app las achica antes)
+const nuevoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+// Buzón: una lista por colección (pocos agentes; leer y escribir la lista completa es simple y barato).
+async function buzon(req, env, url, reply) {
+  const partes = url.pathname.split('/').filter(Boolean); // ['buzon', col, id?] o ['buzon-foto', id?]
+  if (!env.BUZON) return reply({ error: 'sin_buzon' }, 501);
+  if (partes[0] === 'buzon-foto') {
+    if (req.method === 'POST') {
+      const tipo = req.headers.get('Content-Type') || '';
+      if (!/^image\/(jpeg|png|webp|gif)$/.test(tipo)) return reply({ error: 'invalid_request' }, 400);
+      const buf = await req.arrayBuffer();
+      if (!buf.byteLength || buf.byteLength > MAX_FOTO) return reply({ error: 'invalid_request' }, 413);
+      const id = nuevoId();
+      await env.BUZON.put('foto:' + id, buf, { metadata: { tipo } });
+      return reply({ id, url: url.origin + '/buzon-foto/' + id });
+    }
+    if (req.method === 'DELETE' && partes[1]) { await env.BUZON.delete('foto:' + partes[1]); return reply({ ok: true }); }
+    return reply({ error: 'metodo' }, 405);
+  }
+  const col = partes[1];
+  if (!COLECCIONES.includes(col)) return reply({ error: 'invalid_request' }, 400);
+  const leer = async () => { try { const v = await env.BUZON.get('col:' + col, 'json'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+  if (req.method === 'GET') return reply({ docs: await leer() });
+  let body = {};
+  if (req.method === 'POST' || req.method === 'PUT') {
+    try { body = JSON.parse(await req.text()); } catch (e) { return reply({ error: 'invalid_request' }, 400); }
+    if (!body || typeof body.doc !== 'object' || Array.isArray(body.doc) || JSON.stringify(body.doc).length > MAX_DOC) return reply({ error: 'invalid_request' }, 400);
+    delete body.doc._id;
+  }
+  const docs = await leer();
+  const id = req.method === 'POST' ? nuevoId() : String(partes[2] || '').slice(0, 80);
+  if (!id) return reply({ error: 'invalid_request' }, 400);
+  const i = docs.findIndex(d => d._id === id);
+  if (req.method === 'POST' || req.method === 'PUT') {
+    const doc = Object.assign(body.merge && i >= 0 ? docs[i] : {}, body.doc, { _id: id });
+    if (i >= 0) docs[i] = doc; else docs.push(doc);
+    if (docs.length > MAX_DOCS) return reply({ error: 'lleno' }, 507);
+  } else if (req.method === 'DELETE') {
+    if (i >= 0) docs.splice(i, 1);
+  } else return reply({ error: 'metodo' }, 405);
+  await env.BUZON.put('col:' + col, JSON.stringify(docs));
+  return reply({ id });
+}
+
 const lista = (v) => String(v || '').split(',').map(s => s.trim()).filter(Boolean);
 
 export default {
@@ -20,12 +70,20 @@ export default {
     const origin = req.headers.get('Origin') || '';
     const ok = origin !== '' && lista(env.ORIGENES || ORIGENES_BASE).includes(origin);
     const cors = ok
-      ? { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '86400', 'Vary': 'Origin' }
+      ? { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '86400', 'Vary': 'Origin' }
       : { 'Vary': 'Origin' };
     const reply = (obj, status) => new Response(JSON.stringify(obj), { status: status || 200, headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }, cors) });
 
+    const url = new URL(req.url);
+    // Las fotos del buzón se ven desde cualquier lado (una etiqueta <img> no manda origen).
+    if (req.method === 'GET' && url.pathname.startsWith('/buzon-foto/') && env.BUZON) {
+      const f = await env.BUZON.getWithMetadata('foto:' + url.pathname.split('/')[2], 'arrayBuffer');
+      if (!f || !f.value) return new Response('', { status: 404 });
+      return new Response(f.value, { headers: { 'Content-Type': (f.metadata && f.metadata.tipo) || 'image/jpeg', 'Cache-Control': 'public, max-age=31536000, immutable' } });
+    }
     if (req.method === 'OPTIONS') return new Response(null, { status: ok ? 204 : 403, headers: cors });
     if (!ok) return reply({ error: 'not_granted' }, 403);
+    if (url.pathname.startsWith('/buzon')) { try { return await buzon(req, env, url, reply); } catch (e) { return reply({ error: 'buzon' }, 502); } }
     const key = env.GEMINI_KEY || (LLAVE !== 'PEGÁ_AQUÍ_TU_LLAVE' ? LLAVE : '');
     if (!key) return reply({ error: 'sin_llave' }, 500);
 
