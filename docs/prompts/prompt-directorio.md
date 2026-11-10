@@ -10,6 +10,10 @@ Versión del 7-nov-2026. Lo que te devuelvan, pasáselo a Claude: «cargá el di
 3. **Etiqueta `origen`:** lo que trae Gemini va `ia`. Lo que agregás vos, `diego`. En la app, «Registro» los separa: «IA · 20» y «Diego».
 4. **Columnas tuyas para curar** (las llenás vos, no Gemini): `para` (local, turista, mochilero, separados por coma) · `confirmo` (fecha en que confirmaste que existe y es así) · `estado` (activo, reserva o fuera).
 
+## Instrucciones fijas de Gemini (10-nov-2026)
+
+Texto completo en `docs/prompts/instrucciones-gemini.txt` (y con botón «Copiar» en la página de prompts). Es la versión de nAIhual de las instrucciones que Diego tenía en Gemini: sin calificaciones, reseñas, horarios ni precios; máximo 20 por categoría; con bitácora de búsqueda y «Casos aparte».
+
 ## Prompt para Gemini (inventario)
 
 > Armá un inventario de **[categoría]** en Antigua Guatemala para nAIhual, una guía de turismo consciente. **Máximo 20 lugares**, empezando por los de tradición y familiares.
@@ -25,7 +29,7 @@ Versión del 7-nov-2026. Lo que te devuelvan, pasáselo a Claude: «cargá el di
 > - Si un dato no está en la fuente, dejalo vacío.
 >
 > Devolvé una tabla (o una línea JSON por lugar) con estas columnas, en este orden:
-> `nombre · categoria · tipo · direccion · maps_url · contexto · redes_o_web · fuente · fuente_url · fecha_consulta (AAAA-MM-DD) · origen (siempre «ia») · para (vacío) · confirmo (vacío) · estado (vacío)`
+> `nombre · categoria · tipo · zona · direccion · maps_url · contexto · redes_o_web · redes_actividad · fuente · fuente_url · fecha_consulta (AAAA-MM-DD) · origen (siempre «ia») · para (vacío) · confirmo (vacío) · estado (vacío)`
 >
 > `categoria` es una de: hospedaje, comida, cafe, postres, noche, transporte, mercado, artesania, mirador, evento.
 
