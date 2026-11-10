@@ -312,6 +312,31 @@ Tata (cultura)                                accesibilidad            playlists
 
 ---
 
+## ❓ Borrador · Prompt maestro de la app (Diego, 10-nov; falta FIJA)
+Diego: «la siento vacía, no encuentro un flujo, no siento que sea una app». Este texto guía el rediseño completo de la app del visitante. Se arma con sus respuestas del 10-nov.
+
+**1. Qué es.** Una app para descubrir Antigua como la vive alguien de aquí. La llenan los locales y los agentes con sus opiniones, y se siente como Instagram y como un mapa al mismo tiempo. Siempre antigentrificación: primero lo local, familiar y de tradición; las cadenas, marcadas.
+
+**2. Para quién.** Visitante y agentes en la misma app. El agente ve, además, «+ Publicar» y su taller (buzón, Cerebro).
+
+**3. Lo primero al abrir: «¿Qué hay?».** Un feed vertical de lo que hay cerca y ahora: playlists, lugares y publicaciones de la gente, con foto grande, quién lo recomienda y por qué. Arriba, buscar o preguntarle al guía.
+
+**4. Playlists = experiencias, no rutas.** Una playlist es un plan con alma, no un punto A→B. Ejemplos: «Couples trip»; un café cerca del Tanque La Unión, y no cualquier mesa sino **esa** mesa con vista al parque; comida en un lugar alto que nadie conoce. Cada parada dice qué vivir ahí (la mesa, la vista, el árbol). La playlist puede traer una lista de canciones que dure lo mismo que la caminata (enlace a Spotify o YouTube; la app no aloja música). Solo un local conoce esos lugares: por eso cada playlist tiene creador.
+
+**5. Mapa con la misma importancia que el feed.** Un mapa de verdad, no la cuadrícula de cuadros (a Diego no le gusta). Los lugares y las playlists se ven sobre el mapa.
+
+**6. Directorio con gustos.** Todo lo que hay, filtrado por los gustos de quien recomienda. Por ejemplo: un creador que prefiere el pollo recomienda ciertos restaurantes; una agente vegana, ciertas actividades. Cada recomendación lleva el nombre de quien la hace, con su permiso (A4).
+
+**7. Idiomas y traductor.** Español, inglés y más idiomas. Además, un traductor de bolsillo con frases hechas para comunicarse con la gente de aquí, incluido **K'iche'** (por ahora, la única lengua indígena). Busca inclusión y apoyo al país.
+
+**Choques con las bases (Claude los señala):**
+- ⚠️ **K'iche':** la IA no traduce bien lenguas mayas. Las frases en K'iche' tienen que venir de un hablante o una fuente oficial (por ejemplo, la Academia de Lenguas Mayas de Guatemala) y llevar \* hasta que las valide un tata o un hablante. Nunca se generan en vivo con Gemini.
+- ⚠️ **Nombres de agentes:** en la app, con su permiso. En este repositorio, que es público, no van (se escribe «Agente 3»).
+- ⚠️ **Música:** solo enlaces a Spotify o YouTube; no se sube música a la app.
+- ✅ «Que la mara la llene» encaja con el buzón (B9). Hace falta definir qué no se publica (A9) antes de abrirla al público.
+
+**Orden propuesto (una capa a la vez):** 1) feed «¿Qué hay?» + mapa real; 2) playlists como experiencias (parada con «qué vivir aquí», creador, canciones); 3) directorio con gustos; 4) traductor de frases (español/inglés primero; K'iche' cuando haya fuente validada).
+
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
