@@ -278,6 +278,33 @@ Tata (cultura)                                accesibilidad            playlists
 
 ---
 
+## B17. Prompt maestro de la app (FIJA de Diego, 10-nov)
+Diego: «la siento vacía, no encuentro un flujo, no siento que sea una app». Este texto guía el rediseño completo de la app. Se armó con sus respuestas del 10-nov y quedó FIJA ese día.
+
+**1. Qué es.** Una app para descubrir Antigua como la vive alguien de aquí. La llenan los locales y los agentes con sus opiniones, y se siente como Instagram y como un mapa al mismo tiempo. Siempre antigentrificación: primero lo local, familiar y de tradición; las cadenas, marcadas.
+
+**2. Para quién.** Visitante y agentes en la misma app. El agente ve, además, «+ Publicar» y su taller (buzón, Cerebro).
+
+**3. Lo primero al abrir: «¿Qué hay?».** Un feed vertical de lo que hay cerca y ahora: playlists, lugares y publicaciones de la gente, con foto grande, quién lo recomienda y por qué. Arriba, buscar o preguntarle al guía.
+
+**4. Playlists = experiencias, no rutas.** Una playlist es un plan con alma, no un punto A→B. Ejemplos: «Couples trip»; un café cerca del Tanque La Unión, y no cualquier mesa sino **esa** mesa con vista al parque; comida en un lugar alto que nadie conoce. Cada parada dice qué vivir ahí (la mesa, la vista, el árbol). La playlist puede traer una lista de canciones que dure lo mismo que la caminata (enlace a Spotify o YouTube; la app no aloja música). Solo un local conoce esos lugares: por eso cada playlist tiene creador.
+
+**5. Mapa con la misma importancia que el feed.** Un mapa de verdad, no la cuadrícula de cuadros (a Diego no le gusta). Los lugares y las playlists se ven sobre el mapa.
+
+**6. Directorio con gustos.** Todo lo que hay, filtrado por los gustos de quien recomienda. Por ejemplo: un creador que prefiere el pollo recomienda ciertos restaurantes; una agente vegana, ciertas actividades. Cada recomendación lleva el nombre de quien la hace, con su permiso (A4).
+
+**7. Idiomas y traductor.** Español, inglés y más idiomas. Además, un traductor de bolsillo con frases hechas para comunicarse con la gente de aquí, incluido **K'iche'** (por ahora, la única lengua indígena). Busca inclusión y apoyo al país.
+
+**Choques con las bases (Claude los señala):**
+- ⚠️ **K'iche':** la IA no traduce bien lenguas mayas. Las frases en K'iche' tienen que venir de un hablante o una fuente oficial (por ejemplo, la Academia de Lenguas Mayas de Guatemala) y llevar \* hasta que las valide un tata o un hablante. Nunca se generan en vivo con Gemini.
+- ⚠️ **Nombres de agentes:** en la app, con su permiso. En este repositorio, que es público, no van (se escribe «Agente 3»).
+- ⚠️ **Música:** solo enlaces a Spotify o YouTube; no se sube música a la app.
+- ✅ «Que la mara la llene» encaja con el buzón (B9). Hace falta definir qué no se publica (A9) antes de abrirla al público.
+
+**Orden propuesto (una capa a la vez):** 1) feed «¿Qué hay?» + mapa real; 2) playlists como experiencias (parada con «qué vivir aquí», creador, canciones); 3) directorio con gustos; 4) traductor de frases (español/inglés primero; K'iche' cuando haya fuente validada).
+
+---
+
 # PARTE 2 · ABIERTO (no es final todavía)
 
 | # | Qué falta decidir | Propuesta de Claude |
@@ -315,7 +342,7 @@ Tata (cultura)                                accesibilidad            playlists
 # PARTE 3 · ESTADO (lo que existe hoy)
 
 ## Producto
-**App vigente: nAIhual 3.15** (`app/index.html` + `app/data/`). En línea: https://diegosamgt-lang.github.io/nAIhual/ (se publica sola cuando cambia la rama principal). También en el visor privado de Claude (artifact «nAIhual»).
+**App vigente: nAIhual 3.16** (`app/index.html` + `app/data/`). En línea: https://diegosamgt-lang.github.io/nAIhual/ (se publica sola cuando cambia la rama principal). También en el visor privado de Claude (artifact «nAIhual»).
 - **Quién responde:** afuera, Gemini por el servidor de Diego en Cloudflare (la llave nunca va en el teléfono); en el visor, Claude. Si Gemini falla, contestan las reglas fijas. Cómo piensa: `docs/cerebro-naihual.html`.
 - **Dos modos** (`modo` en `app/data/config.js`): **vista previa** (hoy: catálogo con «Referencia web», beta, «+ Publicar») y **pública** (solo lo verificado).
 - **Pestañas:** Inicio (portada, qué es nAIhual, brújula del paisaje, guardianes, rutas, accesos) · Rutas (mapa esquemático y Google Maps a pie) · Guía (chat con el guardián de turno) · Guardados (♥ y plan a pie).
@@ -448,6 +475,10 @@ Prompts e instrucciones: `docs/gemini.html` (único lugar). Columnas de la tabla
 **Instrucciones de Gemini — 10-nov-2026:** Diego trajo las instrucciones de su chat de Gemini (directorio gastronómico). Se adaptaron a las Bases: fuera calificaciones, orden por estrellas y resumen de reseñas (chocan con «sin estrellas ni reseñas»); máximo 20 por categoría en vez de directorio completo; se quedan la ficha de Maps obligatoria, el límite del municipio, la bitácora, los «Casos aparte» y la actividad de redes. Dos columnas nuevas: `zona` y `redes_actividad`. Texto: `docs/prompts/instrucciones-gemini.txt`. ✅ FIJA (10-nov-2026).
 
 **Servidor de Gemini — 10-nov-2026:** primera prueba real: la llave llega a Google. Google respondió «falta pago» (proyecto con cobro y saldo en cero); Diego apagó el cobro del proyecto. Después respondió «modelo no existe»: gemini-2.5-flash ya no se ofrece a proyectos nuevos (Google lo retira el 1-dic-2026, según notas de terceros ❓). El servidor ahora prueba una lista de modelos y usa el primero disponible. Auditoría del servidor (pedido de Diego): tiempo máximo de 45 s, pasa al siguiente modelo si uno está saturado o tarda, se detiene si el error es de la llave o del cobro, las reglas nunca se pierden en pláticas largas, turnos ordenados como pide Gemini, no se rompe si Google devuelve algo raro, revisión de modelos disponibles (GET). Pruebas: `pruebas/prueba_servidor.mjs` ✅ 35/35 (Google simulado). ❓ Límite conocido: cualquiera puede imitar el origen desde fuera de un navegador y gastar la cuota gratis; no cobra porque el cobro está apagado.
+
+**nAIhual 3.16 — 10-nov-2026 (B17, capa 1):** ✅ Inicio nuevo: arriba «Preguntale a [guía]», «Quiero un café», «Recién llegué» y dos pestañas con la misma importancia, **«¿Qué hay?»** y **«Mapa»**. «¿Qué hay?» es un feed tipo Instagram: la idea del guía, playlists como experiencia (sin la cuadrícula: escena o foto, paradas, autor) y lugares con foto grande, la frase de quien recomienda («… — Diego») y para quién; mezcla lo que publica la gente (buzón). Filtros por categoría. **Mapa real**: Leaflet + OpenStreetMap (gratis, sin llave; B15), con un punto por lugar y su ficha al tocarlo; sin internet, el plano del centro. Coordenadas reales de 36 lugares sacadas de OpenStreetMap el 10-nov (9 marcadas «aproximada»). My Maps (A44) queda para los mapas personalizados de Diego. Pruebas ✅ 279/279; mapa probado en vivo (36 puntos). 🟡 El feed muestra ilustraciones hasta que Diego suba fotos por lugar (Galería → «Lugar: …»): las fotos son lo que más vida le va a dar.
+
+**FIJA · Prompt maestro de la app — 10-nov-2026:** pasó de borrador (Parte 2) a la base **B17**: feed «¿Qué hay?» tipo Instagram, mapa real con la misma importancia, playlists como experiencias (con creador y canciones), directorio con gustos de quien recomienda, traductor con frases (K'iche' solo con fuente validada), antigentrificación, que la mara la llene. Orden: 1 feed + mapa · 2 playlists · 3 directorio · 4 traductor.
 
 **nAIhual 3.15 — 10-nov-2026 (Diego: «el tono sigue igual, no obedece; necesito un centro de control»):** ✅ **Cerebro**, centro de control en la app (Inicio → Alimentá nAIhual → «Cerebro»): Diego lee y edita el tono (una instrucción por línea), las palabras prohibidas y el largo; se guarda en el buzón y se aplica desde la siguiente pregunta, para todos. Ahí también se leen las reglas de base (no editables), cómo arma cada respuesta, de dónde saca lo que dice y el mensaje completo que recibe Gemini. Tono de fábrica en `app/data/cerebro.js`. Respuestas: ya no dice «no está» cuando sí muestra lugares; tarjetas sin «Ver horario» repetido; sin «Acá tenés opciones» ni «confirmalo en Google Maps» en cada respuesta; no inventa zonas. Probado con Gemini real (panaderías): respuestas directas en 2 a 4 segundos. Pruebas ✅ 275/275. La conversación original de panaderías no se pudo recuperar: la app no guarda las preguntas (privacidad, 3.5). ❓ En modo público (sin beta) el tono de Diego todavía no se carga: revisar antes de abrir al público. Directorios del Drive (10-nov): «Directorios Antigua» tiene «url» en vez de enlaces; «Inventario de Cafés» trae búsquedas, no fichas: falta el enlace real de Maps antes de «cargá el directorio».
 

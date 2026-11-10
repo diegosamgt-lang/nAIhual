@@ -184,6 +184,41 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .more-group .wtoggle { min-height: 50px; }
 .askbar { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; border-radius: 999px; background: var(--papel); border: 1px solid var(--line); color: var(--ink-2); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
 .askbar .ico { color: var(--anil); }
+/* 3.16 · Inicio «¿Qué hay?»: feed tipo Instagram y mapa real (B17). */
+.home-top { display: flex; flex-direction: column; gap: var(--s-3); }
+.hello-line { margin: 0; font-family: var(--f-data); font-size: var(--t-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.hseg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 999px; background: var(--piedra); }
+.hseg button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; border-radius: 999px; font-weight: 700; color: var(--ink-2); }
+.hseg button[aria-selected="true"] { background: var(--papel); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.hseg button:focus-visible { outline: 3px solid var(--anil); outline-offset: 2px; }
+.fcats { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 2px; }
+.fcats::-webkit-scrollbar { display: none; }
+.fcats .chip { flex: none; }
+.feed { display: flex; flex-direction: column; gap: var(--s-5); }
+.fcard { position: relative; border-radius: var(--r-xl); background: var(--papel); border: 1px solid var(--line); overflow: hidden; }
+.fcard .fhead .heart { position: absolute; top: 12px; right: 12px; z-index: 2; }
+.fcard .fmedia.route-card { width: 100%; max-width: none; border-radius: 0; border: 0; background: var(--piedra); display: block; aspect-ratio: 4 / 3; flex: initial; }
+.quick { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.quick .chip { display: inline-flex; align-items: center; gap: 6px; }
+.fstops { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.fstops li { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--piedra); color: var(--ink-2); }
+.fmedia { all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; aspect-ratio: 4 / 3; background: var(--piedra); overflow: hidden; }
+.fmedia img, .fmedia > svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fbody { padding: var(--s-4); display: flex; flex-direction: column; gap: var(--s-2); }
+.fbody h3 { margin: 0; font-family: var(--f-display); font-size: var(--t-lg); line-height: 1.15; }
+.fhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.fquote { margin: 0; font-size: 17px; line-height: 1.45; }
+.fwho { color: var(--ink-3); font-size: 14px; white-space: nowrap; }
+.fcard .reco { margin: 0; color: var(--ok); font-weight: 600; font-size: 14px; }
+.idea-card { padding: var(--s-4); }
+.realmap-wrap { display: flex; flex-direction: column; gap: var(--s-2); margin: 0 -16px; }
+.realmap { height: min(68vh, 560px); background: var(--piedra); border-block: 1px solid var(--line); }
+.realmap.offline { height: auto; padding: 0 16px; background: none; border: 0; }
+.realmap-wrap > .note { padding: 0 16px; }
+.mpop { display: flex; flex-direction: column; gap: 4px; min-width: 180px; font: 14px/1.4 var(--f-body, system-ui); }
+.mpop b { font-size: 15px; }
+.mpop .row { display: flex; gap: 6px; margin-top: 4px; }
+.mpop .btn { min-height: 36px; padding: 0 10px; font-size: 13px; }
 .cere textarea { font: inherit; line-height: 1.5; }
 .cere-sec h2 { font-size: var(--t-md); margin: 0 0 var(--s-2); }
 .cere-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; color: var(--ink-2); }
@@ -575,7 +610,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.15 · 10-nov-2026';
+var VERSION = 'nAIhual 3.16 · 10-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -651,6 +686,7 @@ var P = {}, PIDS = [];
     estado: estado, patro: r.patrocinado === true, pendiente: String(r.pendiente || '').trim(), foto: String(r.foto || '').trim(), fotoCredito: String(r.foto_credito || '').trim(),
     horario: r.fuente_horario ? String(r.horario || '').trim() : '', precio: r.fuente_precio ? String(r.precio || '').trim() : '',
     pos: m && isFinite(m.avenida) && isFinite(m.calle) ? { av: +m.avenida, ca: +m.calle, aprox: !!m.aprox } : null,
+    geo: r.coords && isFinite(r.coords.lat) && isFinite(r.coords.lng) && Math.abs(r.coords.lat - 14.557) < 0.05 && Math.abs(r.coords.lng + 90.733) < 0.05 ? { lat: +r.coords.lat, lng: +r.coords.lng, aprox: !!r.coords.aprox } : null,
     tipo: String(r.tipo || '').trim(), para: (Array.isArray(r.para) ? r.para : []).filter(function (q) { return !!PERFIL[q]; }), origen: r.origen === 'ia' ? 'ia' : r.origen === 'diego' ? 'diego' : '', web: /^https:\/\//.test(String(r.web || '')) ? String(r.web).trim() : '', aviso: String(r.aviso || '').trim(),
     why: { es: f.es || '', en: f.en || f.es || '' }, fraseDe: String(r.frase_de || '').trim() };
   if (P[r.id].name) PIDS.push(r.id); else delete P[r.id];
@@ -939,7 +975,7 @@ var STR = {
     hiMorning: 'Buenos días', hiAfternoon: 'Buenas tardes', hiNight: 'Buenas noches',
     localCta: '¿Das un tour, un taller o hacés artesanía? Contalo y nAIhual se lo recomienda a quien le sirva.', offerIt: 'Ofrecé una experiencia',
     perfilOff: function (n) { return 'Se apagó «' + n + '»: hasta 2 a la vez'; },
-    ideaTitle: function (n) { return 'Hoy te sugiere ' + n; }, otherIdea: 'Otra idea', seeIt: 'Ver', askHint: function (n) { return 'Preguntale a ' + n + ' lo que buscás'; }, moreTitle: 'Más de nAIhual',
+    ideaTitle: function (n) { return 'Hoy te sugiere ' + n; }, otherIdea: 'Otra idea', seeIt: 'Ver', homeFeed: '¿Qué hay?', homeMap: 'Mapa', feedAll: 'Todo', feedPlaylist: 'Playlist', feedCommunity: 'De la comunidad', feedSeePlaylist: 'Ver la playlist', feedEmpty: 'Todavía no hay nada de esto cargado. Si conocés un lugar, publicalo.', mapAprox: 'ubicación aproximada', realMapNote: 'Mapa: © colaboradores de OpenStreetMap. Tocá un punto.', mapOffline: 'El mapa necesita internet. Mientras, el plano del centro:', askHint: function (n) { return 'Preguntale a ' + n + ' lo que buscás'; }, moreTitle: 'Más de nAIhual',
     by: 'De ', free: 'Gratis', spend: 'Con algo que comprar', forYou: 'Para vos',
     perfilQ: '¿Cómo venís a Antigua?', perfilBody: 'Encendé hasta 2. Cambian qué te mostramos primero y cómo te recomiendan; el trato es el mismo para todos.', perfilOn: 'Primero va lo pensado para vos. Podés tener 2 encendidos.',
     outside: 'Tocá un ícono para ver qué es; los del borde están afuera del centro',
@@ -989,7 +1025,7 @@ var STR = {
     hiMorning: 'Good morning', hiAfternoon: 'Good afternoon', hiNight: 'Good evening',
     localCta: 'Do you give tours, workshops or make crafts? Share it and nAIhual recommends it to whoever it suits.', offerIt: 'Offer an experience',
     perfilOff: function (n) { return '«' + n + '» switched off: up to 2 at once'; },
-    ideaTitle: function (n) { return n + '’s idea for today'; }, otherIdea: 'Another idea', seeIt: 'See', askHint: function (n) { return 'Ask ' + n + ' what you’re looking for'; }, moreTitle: 'More from nAIhual',
+    ideaTitle: function (n) { return n + '’s idea for today'; }, otherIdea: 'Another idea', seeIt: 'See', homeFeed: 'What’s on?', homeMap: 'Map', feedAll: 'All', feedPlaylist: 'Playlist', feedCommunity: 'From the community', feedSeePlaylist: 'See the playlist', feedEmpty: 'Nothing loaded here yet. If you know a place, post it.', mapAprox: 'approximate location', realMapNote: 'Map: © OpenStreetMap contributors. Tap a pin.', mapOffline: 'The map needs internet. Meanwhile, the downtown plan:', askHint: function (n) { return 'Ask ' + n + ' what you’re looking for'; }, moreTitle: 'More from nAIhual',
     by: 'By ', free: 'Free', spend: 'Something to buy', forYou: 'For you',
     perfilQ: 'How are you visiting Antigua?', perfilBody: 'Switch on up to 2. They change what comes first and how we recommend; everyone gets the same treatment.', perfilOn: 'What suits you comes first. You can have 2 on.',
     outside: 'Tap an icon to see what it is; the ones on the edge are outside the centre',
@@ -2365,22 +2401,101 @@ function routeTags(r) {
   return '<span class="tags"><span class="tag" data-autor>' + esc(t.by + r.autor) + '</span>' + (r.gasto ? '<span class="tag' + (r.gasto === 'gratis' ? ' ok' : '') + '" data-gasto="' + r.gasto + '">' + esc(r.gasto === 'gratis' ? t.free : t.spend) + '</span>' : '') +
     (forMe(r) ? '<span class="tag like" data-para-vos>' + esc(t.forYou) + '</span>' : '') + '</span>';
 }
+// ===================== INICIO · «¿Qué hay?» (B17, FIJA 10-nov) =====================
+// Feed tipo Instagram (playlists, lugares con su porqué, lo que publica la gente) y un mapa real con la misma importancia.
+var HOME = { modo: 'feed', cat: 'all', centro: null, zoom: 16 };
+try { var hm0 = JSON.parse(localStorage.getItem('naihual.home') || 'null'); if (hm0 && (hm0.modo === 'feed' || hm0.modo === 'mapa')) HOME.modo = hm0.modo; } catch (e) {}
+function homeSave() { try { localStorage.setItem('naihual.home', JSON.stringify({ modo: HOME.modo })); } catch (e) {} }
+function placeScore(p) { var s = 0; S.perfiles.forEach(function (q) { if (p.para.indexOf(q) >= 0) s += 4; }); if (p.why[L()]) s += 2; if (p.foto || (BETA_ON && galFind('lugar:' + p.id))) s += 2; if (p.fraseDe) s += 1; if (p.aviso) s -= 5; return s; }
+function feedPlace(p) {
+  var t = T(), x = X(), f = p.foto || (BETA_ON ? galFind('lugar:' + p.id) : ''), reco = recoLine(p), why = p.why[L()];
+  return '<article class="fcard" data-feed="p:' + esc(p.id) + '" data-place="' + esc(p.id) + '"><button type="button" class="fmedia" data-open="p:' + esc(p.id) + '" aria-label="' + esc(p.name) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : photoArt(p.cat, p.g[0] || 'kej')) + '</button>' +
+    '<div class="fbody"><div class="fhead"><span class="eyebrow">' + esc(p.tipo || catName(p.cat)) + (p.aviso ? ' · ' + esc(x.closedTag) : '') + '</span>' + heartBtn('p:' + p.id) + '</div><h3>' + esc(p.name) + '</h3>' +
+    (why ? '<p class="fquote">«' + esc(why) + '»' + (p.fraseDe ? ' <span class="fwho">— ' + esc(p.fraseDe) + '</span>' : '') + '</p>' : '') + (reco ? '<p class="reco" data-reco>' + esc(reco) + '</p>' : '') +
+    '<div class="row">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(p.id) + '">' + esc(t.info) + '</button></div></div></article>';
+}
+function feedRoute(rid) {
+  var t = T(), lang = L(), r = ROUTES[rid], f = BETA_ON ? galFind('playlist:' + rid) : '';
+  var first = P[r.stops[0]] || {};
+  return '<article class="fcard fplay" data-feed="r:' + rid + '"><button type="button" class="fmedia route-card" data-route="' + rid + '" aria-label="' + esc(r.title[lang]) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : photoArt(first.cat || 'cultura', (first.g && first.g[0]) || 'noj')) + '</button>' +
+    '<div class="fbody"><span class="eyebrow">' + esc(t.feedPlaylist) + ' · ' + routeMeta(r) + '</span><h3>' + esc(r.title[lang]) + '</h3>' + routeTags(r) + '<p class="muted">' + esc(r.intro[lang]) + '</p>' +
+    '<ol class="fstops">' + r.stops.map(function (id, k) { return P[id] ? '<li>' + (k + 1) + ' · ' + esc(P[id].name) + '</li>' : ''; }).join('') + '</ol>' +
+    '<div class="row"><button type="button" class="btn primary" data-route="' + rid + '">' + icon('map', 'sm') + esc(t.feedSeePlaylist) + '</button></div></div></article>';
+}
+function feedPost(it) {
+  var t = T(), x = X(), o = postClean(it.orden) || {}, foto = safeHttps(it.foto), lugar = o.lugar && P[o.lugar] ? o.lugar : '';
+  return '<article class="fcard fpost" data-feed="post"' + (foto ? '' : ' data-sin-foto') + '>' + (foto ? '<div class="fmedia"><img src="' + esc(foto) + '" alt="" loading="lazy"></div>' : '') +
+    '<div class="fbody"><span class="eyebrow">' + esc(t.feedCommunity) + ' · ' + esc(String(it.fecha || '').slice(0, 10)) + '</span>' + (o.titulo ? '<h3>' + esc(o.titulo) + '</h3>' : '') + '<p>' + esc(String(it.texto || '').slice(0, 300)) + '</p>' +
+    (lugar ? '<div class="row"><button type="button" class="btn" data-open="p:' + esc(lugar) + '">' + esc(P[lugar].name) + '</button></div>' : '') + '</div></article>';
+}
+function feedHTML() {
+  var t = T(), cat = HOME.cat;
+  var places = PIDS.filter(function (id) { return visible(P[id]) && (cat === 'all' || P[id].cat === cat); }).map(function (id, k) { return [placeScore(P[id]), k, id]; })
+    .sort(function (a, b) { return b[0] - a[0] || a[1] - b[1]; }).map(function (z) { return P[z[2]]; });
+  var routes = cat === 'all' ? routeIds() : [];
+  var posts = BETA_ON && cat === 'all' ? BETA.items.filter(function (x) { return x.tipo === 'post' && x.estado === 'confirmado'; }).sort(byDate).slice(0, 12) : [];
+  var out = [], pi = 0, ri = 0, po = 0;
+  while (pi < places.length || ri < routes.length || po < posts.length) {
+    if (ri < routes.length) out.push(feedRoute(routes[ri++]));
+    for (var k = 0; k < 2 && pi < places.length; k++) out.push(feedPlace(places[pi++]));
+    if (po < posts.length) out.push(feedPost(posts[po++]));
+  }
+  var cats = [['all', t.feedAll]].concat(CATEGORIAS.map(function (c) { return [c[0], c[2][L()]]; }));
+  return '<div class="chips fcats" role="group" aria-label="' + esc(t.filtersLabel) + '">' + cats.map(function (c) { return '<button type="button" class="chip" data-feedcat="' + c[0] + '" aria-pressed="' + (HOME.cat === c[0]) + '">' + esc(c[1]) + '</button>'; }).join('') + '</div>' +
+    '<div class="feed" data-feed-list>' + (out.length ? out.join('') : BETA_ON ? empty(t.feedEmpty, '') : empty(t.routesSoon, t.routesSoonBody)) + '</div>';
+}
+// Mapa real: Leaflet + OpenStreetMap (gratis, sin llave; B15). Se carga solo al abrir «Mapa». Sin internet, el plano del centro.
+var LEAF = { state: '', map: null };
+var CAT_COLOR = { cafe: '#8a5a2b', comida: '#b3472d', postres: '#c27b98', noche: '#3c3f8f', parque: '#3d7a4b', hospedaje: '#2f6f7a', cultura: '#6b5a3e' };
+function mapHTML() {
+  var t = T(), ids = PIDS.filter(function (id) { return visible(P[id]) && P[id].geo; });
+  return '<div class="realmap-wrap"><div id="realmap" class="realmap" data-realmap="' + ids.length + '" role="region" aria-label="' + esc(t.homeMap) + '"></div><p class="note" data-realmap-note>' + esc(t.realMapNote) + '</p></div>';
+}
+function leafLoad() {
+  if (LEAF.state) return LEAF.state === 'ok' ? Promise.resolve() : LEAF.state === 'error' ? Promise.reject() : LEAF.wait;
+  LEAF.state = 'cargando';
+  LEAF.wait = new Promise(function (res, rej) {
+    var css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; document.head.appendChild(css);
+    var js = document.createElement('script'); js.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+    var to = setTimeout(function () { LEAF.state = 'error'; rej(); }, 8000);
+    js.onload = function () { clearTimeout(to); if (window.L && window.L.map) { LEAF.state = 'ok'; res(); } else { LEAF.state = 'error'; rej(); } };
+    js.onerror = function () { clearTimeout(to); LEAF.state = 'error'; rej(); };
+    document.head.appendChild(js);
+  });
+  return LEAF.wait;
+}
+function mountMap() {
+  var el = document.getElementById('realmap'); if (!el || el.getAttribute('data-ok')) return;
+  var t = T();
+  leafLoad().then(function () {
+    el = document.getElementById('realmap'); if (!el || el.getAttribute('data-ok')) return;
+    el.setAttribute('data-ok', '1');
+    if (LEAF.map) { try { LEAF.map.remove(); } catch (e) {} }
+    var m = LEAF.map = window.L.map(el, { zoomControl: true, attributionControl: true }).setView(HOME.centro || [14.5575, -90.7330], HOME.zoom || 16);
+    window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(m);
+    m.on('moveend', function () { var c = m.getCenter(); HOME.centro = [c.lat, c.lng]; HOME.zoom = m.getZoom(); });
+    PIDS.filter(function (id) { return visible(P[id]) && P[id].geo; }).forEach(function (id) {
+      var p = P[id], c = CAT_COLOR[p.cat] || '#444';
+      window.L.circleMarker([p.geo.lat, p.geo.lng], { radius: 9, color: '#fff', weight: 2, fillColor: c, fillOpacity: 0.95 }).addTo(m)
+        .bindPopup('<div class="mpop" data-mpop="' + esc(id) + '"><b>' + esc(p.name) + '</b><span>' + esc(p.tipo || catName(p.cat)) + (p.geo.aprox ? ' · ' + esc(t.mapAprox) : '') + '</span><span class="row">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(id) + '">' + esc(t.info) + '</button></span></div>');
+    });
+  }, function () {
+    el = document.getElementById('realmap'); if (!el) return;
+    el.setAttribute('data-ok', 'plano'); el.classList.add('offline');
+    el.innerHTML = '<p class="note">' + esc(t.mapOffline) + '</p>' + resultsMap(PIDS.filter(function (id) { return visible(P[id]) && P[id].pos; }));
+  });
+}
 function inicioHTML() {
-  var t = T(), x = X(), lang = L(), rids = routeIds();
-  var routes = rids.length ? '<div class="rail">' + rids.map(function (rid) {
-    var r = ROUTES[rid];
-    return '<button type="button" class="route-card" data-route="' + rid + '"><span class="map">' + mapSVG({ routes: [{ ids: r.stops }], stops: r.stops, crop: cropFor(r.stops, 40), label: r.title[lang] }) + '</span>' +
-      '<span class="rc-body"><span class="eyebrow">' + routeMeta(r) + '</span><span class="rc-title">' + esc(r.title[lang]) + '</span>' + routeTags(r) + '</span></button>';
-  }).join('') + '</div>' : empty(t.routesSoon, t.routesSoonBody);
+  var t = T(), x = X();
   var tiles = [['explorar', 'lugares'], ['cultura', 'cultura'], ['costumbres', 'costumbres'], ['guardianes', 'guardianes']];
-  var portada = BETA_ON ? galFind('portada') : '';
-  return '<section class="hero"><div class="hero-art">' + (portada ? '<img class="hero-photo" src="' + esc(portada) + '" alt=""><span class="hero-shade"></span>' : heroArt()) + '<div class="hero-copy"><span class="hello" data-saludo>' + esc(saludo()) + '</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
+  var seg = '<div class="hseg" role="tablist" aria-label="' + esc(t.homeFeed) + '">' + [['feed', t.homeFeed, 'grid'], ['mapa', t.homeMap, 'map']].map(function (o) {
+    return '<button type="button" role="tab" data-home="' + o[0] + '" aria-selected="' + (HOME.modo === o[0]) + '">' + icon(o[2], 'sm') + esc(o[1]) + '</button>'; }).join('') + '</div>';
+  return '<section class="home-top"><p class="hello-line"><span data-saludo>' + esc(saludo()) + '</span> · Antigua</p>' +
     '<button type="button" class="askbar" data-guide="' + S.guide + '">' + icon('chat') + '<span>' + esc(t.askHint(G[S.guide].name)) + '</span></button>' +
-    '<div class="cta-row"><button type="button" class="btn anil big" data-ask="cafe" id="cta-cafe">' + icon('coffee') + esc(t.coffee) + '</button><button type="button" class="btn big" data-ask="empezar">' + esc(t.arrived) + '</button></div></section>' +
-    widget('idea', t.ideaTitle(G[S.guide].name), 'spark', '<div class="wpad" id="idea-body" data-sugerencia>' + ideaHTML() + '</div>', '', S.guide) +
-    widget('playlists', t.routes, 'map', '<div class="wpad">' + routes + '</div>', rids.length ? '<button type="button" class="linkish" data-go="rutas">' + esc(t.seeAll) + '</button>' : '') +
-    (BETA_ON ? widget('beta', x.betaTitle, 'plus', betaCard()) : '') +
+    '<div class="quick"><button type="button" class="chip" data-ask="cafe" id="cta-cafe">' + icon('coffee', 'sm') + esc(t.coffee) + '</button><button type="button" class="chip" data-ask="empezar">' + esc(t.arrived) + '</button></div>' + seg + '</section>' +
+    (HOME.modo === 'mapa' ? mapHTML() : '<div class="fcard idea-card" id="idea-body" data-sugerencia>' + ideaHTML() + '</div>' + feedHTML()) +
     '<div class="more-group" data-more><h2 class="group-h">' + esc(t.moreTitle) + '</h2>' +
+    (BETA_ON ? widget('beta', x.betaTitle, 'plus', betaCard()) : '') +
     widget('perfil', t.perfilQ, 'user', perfilHTML()) +
     widget('que', x.introKicker, 'info', '<div class="wpad intro-in" data-intro><h3>' + esc(x.introTitle) + '</h3><p class="muted">' + esc(x.introBody) + '</p></div>') +
     widget('brujula', x.compass, 'compass', brujulaHTML(), infoHTML('guard')) +
@@ -2657,6 +2772,7 @@ function render(opts) {
   }).join('');
   var hadFocus = document.activeElement && document.activeElement.id === 'fq', caret = hadFocus ? document.activeElement.selectionStart : 0;
   main.innerHTML = (VIEWS[v] || inicioHTML)(opts.scroll);
+  if (v === 'inicio' && HOME.modo === 'mapa') mountMap();
   if (onGuia && opts.scroll) { var msgs = main.querySelectorAll('.msg'); var target = msgs[Math.max(0, msgs.length - 2)]; if (target) target.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
   fuiBar();
   if (hadFocus) { var fi = document.getElementById('fq'); if (fi) { fi.focus(); try { fi.setSelectionRange(caret, caret); } catch (e) {} } }
@@ -2733,6 +2849,8 @@ var ACTIONS = [
   ['data-demo-fb', function (v) { S.demoFb = v; render({ keep: true }); }],
   ['data-perfil', function (v) { togglePerfil(v); }],
   ['data-cere-reset', function () { cerebroSave(null); }],
+  ['data-home', function (v) { if (v !== 'feed' && v !== 'mapa') return; HOME.modo = v; homeSave(); tick(); render({ keep: true }); }],
+  ['data-feedcat', function (v) { HOME.cat = v === 'all' || CATS[v] ? v : 'all'; tick(); render({ keep: true }); }],
   ['data-wtoggle', function (v, e, el) { CLOSED[v] = !isClosed(v); saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
   ['data-idea', function () { S.ideaN++; tick(); var b = document.getElementById('idea-body'); if (b) b.innerHTML = ideaHTML(); }],
   ['data-publish', function (v) { tick(); openDialog(postForm(v)); }],
