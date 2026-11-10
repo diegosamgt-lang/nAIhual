@@ -184,6 +184,11 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .more-group .wtoggle { min-height: 50px; }
 .askbar { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; border-radius: 999px; background: var(--papel); border: 1px solid var(--line); color: var(--ink-2); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
 .askbar .ico { color: var(--anil); }
+.cere textarea { font: inherit; line-height: 1.5; }
+.cere-sec h2 { font-size: var(--t-md); margin: 0 0 var(--s-2); }
+.cere-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; color: var(--ink-2); }
+.cere-full summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+.cere-full pre { white-space: pre-wrap; word-wrap: break-word; font: 12.5px/1.5 var(--f-data); background: var(--papel); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 12px; max-height: 420px; overflow: auto; }
 .askbar:focus-visible { outline: 3px solid var(--anil); outline-offset: 2px; }
 .hello { font-family: var(--f-data); font-size: var(--t-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.9); text-shadow: 0 1px 8px rgba(0,0,0,.35); }
 /* La idea del guía: su color, su voz, otra idea con un toque. */
@@ -563,13 +568,14 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script src="data/lugares.js"></script>
 <script src="data/fuentes.js"></script>
 <script src="data/libretas.js"></script>
+<script src="data/cerebro.js"></script>
 <script src="data/playlists.js"></script>
 <script src="data/referencias.js"></script>
 <script src="data/guias.js"></script>
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.14 · 10-nov-2026';
+var VERSION = 'nAIhual 3.15 · 10-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -840,6 +846,15 @@ var X3 = {
     comment: 'Tu comentario', photo: 'Foto (opcional)', photoNote: 'Si sale una persona, solo con su permiso.', saveVisit: 'Guardar mi visita', uploading: 'Subiendo la foto…',
     find: 'Buscá un lugar para anotar', findPh: 'Nombre o tipo: pizza, panadería, café…', quick: 'Anotar rápido', addNew: 'Agregar un lugar que no está', del: 'Borrar',
     galTitle: 'Galería', galBody: 'Subí aquí tus fotos y gráficos y decí para qué son: la portada, el ícono, cada guía, cada lugar o la línea gráfica. La app las usa sola.', galUse: '¿Para qué es?', galNote: 'Nota (opcional)', galAdd: 'Subir a la galería', galSaved: 'Subida a la galería', galNone: 'Todavía no hay fotos.', galNoVisor: 'Las fotos se suben desde el visor de Claude.',
+    cereTitle: 'Cerebro de nAIhual', cereKicker: 'Centro de control', cereBtn: 'Cerebro',
+    cereBody: 'Aquí ves exactamente cómo habla nAIhual y qué recibe Gemini en cada pregunta. El tono lo cambiás vos: se aplica desde la siguiente pregunta, para todos.',
+    cereFab: 'Tono de fábrica (todavía no lo has cambiado).', cereMine: function (f) { return 'Tono tuyo, guardado el ' + f + '.'; },
+    cereVoz: 'Cómo habla (una instrucción por línea)', cerePro: 'Palabras y frases prohibidas (separadas por coma)', cereLargo: 'Máximo de palabras por respuesta',
+    cereSave: 'Guardar el tono', cereReset: 'Volver a lo de fábrica', cereSaved: 'Tono guardado. Probalo en la Guía.', cereTry: 'Probar en la Guía',
+    cereFixed: 'Reglas de base (no se editan aquí)', cereFixedList: ['Cero inventos: no nombra lugares que no estén verificados; si no está, lo dice y pone la búsqueda en Google Maps.', 'Nunca afirma horarios, precios ni si abre hoy.', 'Es guía, no juez: sin estrellas, sin «el mejor», un pago no cambia lo que recomienda.', 'Lo maya lleva * hasta que lo valide un tata. Nunca dice «tu nawal».', 'Emergencias y salud: sugiere preguntar en el hospedaje.', 'El número privado de 0 a 10 nunca se dice.'],
+    cereShape: 'Cómo arma cada respuesta', cereShapeList: function (n) { return ['Un texto corto (máximo ' + n + ' palabras), con la voz de arriba.', 'Hasta 3 tarjetas de tu catálogo, con «Vamos» e «Info».', 'Si no hay nada cargado: la búsqueda en Google Maps, sin nombres inventados.', 'Hasta 3 preguntas sugeridas para seguir.', 'Lo que aprendió de la plática queda «por confirmar» en tu beta.']; },
+    cereFrom: 'De dónde saca lo que dice', cereFromList: function (c) { return ['Tu catálogo: ' + c.lugares + ' lugares.', 'Tus libretas: ' + c.libretas + '.', 'Lo publicado por los agentes: ' + c.posts + '.', 'Lo aprendido que confirmaste: ' + c.learn + '.', 'Tu memoria (textos largos): ' + c.mem + '.']; },
+    cereFull: 'Ver el mensaje completo que recibe Gemini', cereFullNote: 'Así sale para una pregunta de ejemplo. Abajo de esto van los datos (catálogo, libretas y lo publicado).',
     useCover: 'Portada', useIcon: 'Ícono de la app', useGraphic: 'Línea gráfica / ideas', useGuide: 'Guía:', usePlace: 'Lugar:',
     regTitle: 'Registro', regBody: 'Todos los lugares cargados, con quién los trajo: Diego o la IA (hasta 20 por categoría).', regSort: 'Orden', regByCat: 'Por categoría', regWho: 'Quién lo trajo', fromDiego: 'Diego', fromAI: 'IA · 20', noAddr: 'Sin dirección', regCount: function (n) { return n === 1 ? '1 lugar' : n + ' lugares'; },
     memCat: 'Categoría', memExtra: [['historia', 'Historia y cultura'], ['consejos', 'Consejos'], ['transporte', 'Transporte'], ['eventos', 'Fiestas y eventos'], ['otros', 'Otros']],
@@ -883,6 +898,15 @@ var X3 = {
     comment: 'Your comment', photo: 'Photo (optional)', photoNote: 'If a person is in it, only with their permission.', saveVisit: 'Save my visit', uploading: 'Uploading the photo…',
     find: 'Find a place to note', findPh: 'Name or type: pizza, bakery, coffee…', quick: 'Quick note', addNew: 'Add a place that is not here', del: 'Delete',
     galTitle: 'Gallery', galBody: 'Upload your photos and graphics here and say what each is for: the cover, the icon, each guide, each place or the visual identity. The app uses them on its own.', galUse: 'What is it for?', galNote: 'Note (optional)', galAdd: 'Upload to the gallery', galSaved: 'Uploaded to the gallery', galNone: 'No photos yet.', galNoVisor: 'Photos are uploaded from the Claude viewer.',
+    cereTitle: 'nAIhual’s brain', cereKicker: 'Control center', cereBtn: 'Brain',
+    cereBody: 'See exactly how nAIhual talks and what Gemini receives with each question. You change the voice: it applies from the next question, for everyone.',
+    cereFab: 'Factory voice (not changed yet).', cereMine: function (f) { return 'Your voice, saved on ' + f + '.'; },
+    cereVoz: 'How it talks (one instruction per line)', cerePro: 'Banned words and phrases (comma separated)', cereLargo: 'Maximum words per answer',
+    cereSave: 'Save voice', cereReset: 'Back to factory', cereSaved: 'Voice saved. Try it in the Guide.', cereTry: 'Try it in the Guide',
+    cereFixed: 'Base rules (not editable here)', cereFixedList: ['Zero inventions: never names unverified places; if missing, it says so and offers a Google Maps search.', 'Never states hours, prices or whether it is open today.', 'A guide, not a judge: no stars, no “the best”, payment never changes recommendations.', 'Maya content carries * until a tata validates it.', 'Emergencies and health: ask at your lodging.', 'The private 0–10 score is never said.'],
+    cereShape: 'How each answer is built', cereShapeList: function (n) { return ['A short text (max ' + n + ' words), in the voice above.', 'Up to 3 cards from your catalog.', 'If nothing is loaded: a Google Maps search, no invented names.', 'Up to 3 suggested follow-ups.', 'What it learned stays “to confirm” in your beta.']; },
+    cereFrom: 'Where it gets what it says', cereFromList: function (c) { return ['Your catalog: ' + c.lugares + ' places.', 'Your notebooks: ' + c.libretas + '.', 'Agents’ posts: ' + c.posts + '.', 'Confirmed learnings: ' + c.learn + '.', 'Your memory (long texts): ' + c.mem + '.']; },
+    cereFull: 'See the full message Gemini receives', cereFullNote: 'This is it for a sample question. Below it go the data (catalog, notebooks and posts).',
     useCover: 'Cover', useIcon: 'App icon', useGraphic: 'Visual identity / ideas', useGuide: 'Guide:', usePlace: 'Place:',
     regTitle: 'Register', regBody: 'Every place loaded, with who brought it: Diego or the AI (up to 20 per category).', regSort: 'Order', regByCat: 'By category', regWho: 'Who brought it', fromDiego: 'Diego', fromAI: 'AI · 20', noAddr: 'No address', regCount: function (n) { return n === 1 ? '1 place' : n + ' places'; },
     memCat: 'Category', memExtra: [['historia', 'History and culture'], ['consejos', 'Tips'], ['transporte', 'Transport'], ['eventos', 'Festivities and events'], ['otros', 'Other']],
@@ -1616,6 +1640,13 @@ function shownBefore() {
   });
   return ids.filter(function (x, i) { return P[x] && ids.indexOf(x) === i; }).map(function (x) { return P[x].name; });
 }
+// La voz sale del centro de control (Cerebro). Lo demás de las reglas no se edita desde la app.
+function vozRules() {
+  var pro = CEREBRO.prohibidas.split(',').map(function (w) { return w.trim(); }).filter(Boolean);
+  return 'VOZ (la escribe Diego en el centro de control; obedecela al pie de la letra):\n' + CEREBRO.voz.split('\n').filter(function (l) { return l.trim(); }).map(function (l) { return '- ' + l.trim(); }).join('\n') + '\n' +
+    (pro.length ? '- Palabras y frases prohibidas (nunca las uses): ' + pro.map(function (w) { return '«' + w + '»'; }).join(', ') + '.\n' : '') +
+    '- Máximo ' + CEREBRO.largo + ' palabras en «texto». Si te escriben en inglés, respondé en inglés con la misma voz.\n';
+}
 function aiRules(gid, q) {
   var g = G[gid];
   return 'Sos nAIhual, un agente turístico-cultural de Antigua Guatemala, en una prueba privada. ' +
@@ -1625,7 +1656,7 @@ function aiRules(gid, q) {
     'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
     'Orden para buscar (obligatorio):\n' +
     '1. Primero lo que nAIhual ya sabe: «catalogo», «publicaciones_confirmadas» (lo que contó y confirmó quien usa la beta: contalo como dicho por esa persona, con su fecha; un evento con fecha pasada no se ofrece), «lugares_agregados_en_la_beta», «visitas_fuera_del_catalogo», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
-    '2. Si ahí no está o no alcanza: CERO INVENTOS (FIJA de Diego). No nombrés ningún lugar que no esté en los DATOS. Decí en una frase, con naturalidad, que los investigadores y agentes de nAIhual todavía no han cargado eso; si sirve, da contexto general sin nombres (qué tipo de lugar buscar, en qué zona). Poné en «buscar» de 2 a 5 palabras para buscarlo en Google Maps (por ejemplo «comedor de comida típica»): la app arma el botón. Mejor decir que no está que inventar.\n' +
+    '2. Si ahí no está o no alcanza: CERO INVENTOS (FIJA de Diego). No nombrés ningún lugar que no esté en los DATOS. Decí en una frase, con naturalidad, que los investigadores y agentes de nAIhual todavía no han cargado eso; si sirve, di qué tipo de lugar buscar, sin nombres ni zonas que no estén en los DATOS. Poné en «buscar» de 2 a 5 palabras para buscarlo en Google Maps (por ejemplo «comedor de comida típica»): la app arma el botón. Mejor decir que no está que inventar.\n' +
     '- Si la persona repite o insiste en una pregunta, no repitas tu respuesta: proponé otros del catálogo, cambiá de enfoque o preguntá algo concreto.\n' +
     'Reglas:\n' +
     '- Sos guía, no juez. Resumí lo que dijeron las personas (la beta, agentes) y las fuentes públicas del catálogo y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
@@ -1642,8 +1673,7 @@ function aiRules(gid, q) {
     '- No repitas un consejo que ya diste en esta plática. «consejos» solo si de verdad suma.\n' +
     '- No repitas lugares de «ya_mostrados» salvo que te los pidan: proponé otros del catálogo; si no hay más, decilo (paso 2). Variá; que cada respuesta traiga algo nuevo.\n' +
     '- Si la pregunta es ambigua, una pregunta breve. Las «opciones» suenan a persona, no a menú (por ejemplo «¿Algo dulce cerca?»), sin palabras como «pendiente de validación».\n' +
-    '- Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si te escriben en inglés, respondé en inglés.\n' +
-    '- Voz (Diego, 10-nov): hablá como alguien de Antigua que conoce bien la ciudad, no como folleto turístico. Sin saludo al empezar (nada de «¡Hola!», «Hola, vos», «Qué gusto»): andá directo a la respuesta. El voseo va en los verbos (buscá, andá, probá); no uses «vos» como palabra suelta. Prohibido: «fonda», «sazón», «de generación en generación», «el corazón de», «joya», «mágico», «encantador», «rincón», «auténtico», «experiencia única», «no te lo podés perder». Para comida de aquí decí «comida típica» o «comedor».\n' +
+    vozRules() +
     '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección de quien pregunta). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
     '- «no_se»: true si no tenías información suficiente para responder bien. Entonces «falta»: en pocas palabras, qué información faltaba (por ejemplo «horario de mercados de artesanías»), sin datos personales. Claude lo investiga y lo carga con su fuente.\n' +
     'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "buscar": string, "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos], "no_se": boolean, "falta": string}\n\n' +
@@ -1683,10 +1713,10 @@ function recoLine(p) {
 }
 function thumbHTML(p) { var f = p.foto || (BETA_ON ? galFind('lugar:' + p.id) : ''); return '<span class="thumb">' + (f ? '<img src="' + esc(f) + '" alt="">' : photoArt(p.cat, p.g[0] || 'kej')) + '</span>'; }
 function compactCard(p) {
-  var t = T(), x = X(), reco = recoLine(p), q = encodeURIComponent([p.name, p.addr || '', 'Antigua Guatemala'].filter(Boolean).join(', '));
+  var t = T(), x = X(), reco = recoLine(p);
   return '<article class="lcard" data-place="' + esc(p.id) + '" data-pub="' + isPub(p) + '">' + thumbHTML(p) +
     '<span><b>' + esc(p.name) + '</b><span class="sub">' + esc(p.tipo || catName(p.cat)) + (p.aviso ? ' · ' + esc(x.closedTag) : '') + '</span>' + (p.patro ? '<span class="tag sp">' + esc(t.bizTag) + '</span>' : '') + (reco ? '<span class="reco" data-reco>' + esc(reco) + '</span>' : '') +
-    '<span class="more"><a class="linkish" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(x.hoursMaps) + '</a>' + sealHTML(p) + '</span></span>' +
+    '<span class="more">' + sealHTML(p) + '</span></span>' +
     '<span class="go">' + mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(p.id) + '">' + esc(t.info) + '</button></span></article>';
 }
 // Mapa de arriba: los lugares de la respuesta que están en el mapa del centro, con su ícono y su nombre.
@@ -1742,6 +1772,15 @@ function termsHTML(rows) { return '<dl class="terms">' + rows.map(function (r) {
 // Lo que se anota en la beta: «me gustó», «dato mal», notas y lugares nuevos. Nada se publica solo:
 // Claude lo lee (base de datos del visor, colección «beta»), lo verifica con fuente y lo pasa al catálogo.
 // q = búsqueda de «Anotar rápido» · newOpen = «Agregar un lugar» abierto · dirty = llegó algo nuevo mientras escribías · delAsk = qué se está por borrar.
+// Cerebro (centro de control): el tono editable. Lo de fábrica viene de data/cerebro.js; lo que Diego guarda (doc «beta/cerebro») manda.
+var CEREBRO_BASE = window.NAIHUAL_CEREBRO && typeof window.NAIHUAL_CEREBRO.voz === 'string' ? window.NAIHUAL_CEREBRO : { voz: '', prohibidas: '', largo: 90 };
+var CEREBRO = { voz: CEREBRO_BASE.voz, prohibidas: CEREBRO_BASE.prohibidas || '', largo: CEREBRO_BASE.largo || 90, fecha: '', propio: false };
+function cerebroApply(doc) {
+  if (doc && typeof doc.voz === 'string' && doc.voz.trim()) { CEREBRO.voz = doc.voz.slice(0, 4000); CEREBRO.prohibidas = String(doc.prohibidas || '').slice(0, 1000); CEREBRO.largo = Math.min(200, Math.max(30, parseInt(doc.largo, 10) || 90)); CEREBRO.fecha = String(doc.fecha || ''); CEREBRO.propio = true; }
+  else { CEREBRO.voz = CEREBRO_BASE.voz; CEREBRO.prohibidas = CEREBRO_BASE.prohibidas || ''; CEREBRO.largo = CEREBRO_BASE.largo || 90; CEREBRO.fecha = ''; CEREBRO.propio = false; }
+}
+// Lo del cerebro viaja en la beta (doc «cerebro»), pero no es una anotación: se separa aquí.
+function betaTake(list) { var c = list.filter(function (x) { return x.tipo === 'cerebro'; })[0]; cerebroApply(c); return list.filter(function (x) { return x.tipo !== 'cerebro'; }); }
 var BETA = { items: [], db: null, where: 'local', msg: '', q: '', newOpen: false, dirty: false, delAsk: '' };
 // Libretas de conocimiento (Google Docs de Diego). Claude las lee del Drive y las carga en data/libretas.js; la libreta es la fuente.
 var LIBRETAS = (Array.isArray(window.NAIHUAL_LIBRETAS) ? window.NAIHUAL_LIBRETAS : []).filter(function (l) { return l && typeof l.titulo === 'string'; });
@@ -1757,7 +1796,7 @@ function galFind(uso) { var f = GAL.items.filter(function (g) { return g.uso ===
 var MEM = { items: [] };
 var LEARN_LS = 'naihual.aprendido';
 var BETA_LS = 'naihual.beta';
-function betaLoadLocal() { try { var a = JSON.parse(localStorage.getItem(BETA_LS) || '[]'); BETA.items = Array.isArray(a) ? a.filter(function (x) { return x && typeof x.tipo === 'string'; }) : []; } catch (e) { BETA.items = []; } }
+function betaLoadLocal() { try { var a = JSON.parse(localStorage.getItem(BETA_LS) || '[]'); BETA.items = betaTake(Array.isArray(a) ? a.filter(function (x) { return x && typeof x.tipo === 'string'; }) : []); } catch (e) { BETA.items = []; } }
 function betaSaveLocal() { try { localStorage.setItem(BETA_LS, JSON.stringify(BETA.items)); } catch (e) {} }
 function betaTyping() { var a = document.activeElement; return !!(a && a.closest && a.closest('.bform')); }
 function betaRefresh() { if (betaTyping()) { BETA.dirty = true; return; } render({ keep: true }); }
@@ -1768,7 +1807,7 @@ if (BETA_ON) {
   var attachDb = function (db, visor) {
       BETA.db = db; BETA.where = visor ? 'db' : 'buzon';
       db.collection('beta').onSnapshot(function (snap) {
-        BETA.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; });
+        BETA.items = betaTake(snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; }));
         betaRefresh();
       }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
       if (visor) googleProbe();
@@ -2016,7 +2055,7 @@ function betaFichaHTML(p) {
 function betaCard() {
   var x = X(), n = BETA.items.length;
   return '<div class="wpad" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><p>' + esc(x.betaBody) + '</p>' +
-    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button></div></div>';
+    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn ghost" data-go="cerebro">' + icon('spark', 'sm') + esc(x.cereBtn) + '</button></div></div>';
 }
 function byDate(a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }
 function bqRows(q) {
@@ -2069,6 +2108,34 @@ function betaListHTML() {
   var x = X(), items = BETA.items.filter(function (it) { return it.tipo !== 'post'; }).sort(byDate);
   return '<section class="sec" data-beta-list><h2>' + esc(x.list) + ' · ' + items.length + '</h2>' + (items.length ? '<div class="list">' + items.map(betaItemHTML).join('') + '</div>' : '<p class="note">' + esc(x.none) + '</p>') + '</section>';
 }
+// ===================== CEREBRO (centro de control) =====================
+var CERE_LS = 'naihual.cerebro';
+if (BETA_ON) { try { var c0 = JSON.parse(localStorage.getItem(CERE_LS) || 'null'); if (c0) cerebroApply(c0); } catch (e) {} }
+function cerebroHTML() {
+  var x = X(), fecha = CEREBRO.fecha ? CEREBRO.fecha.slice(0, 10) : '';
+  var cnt = { lugares: PIDS.filter(function (id) { return visible(P[id]); }).length, libretas: LIBRETAS.length, posts: BETA.items.filter(function (it) { return it.tipo === 'post'; }).length, learn: LEARN.items.filter(function (it) { return it.estado === 'confirmado'; }).length, mem: MEM.items.length };
+  var full = aiRules(S.guide, '¿Dónde hay una panadería?').split('DATOS:')[0];
+  var li = function (list) { return '<ul class="cere-list">' + list.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>'; };
+  return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.cereKicker) + '</span><h1>' + esc(x.cereTitle) + '</h1><p>' + esc(x.cereBody) + '</p></div>' +
+    '<div class="status plain" data-cere-estado="' + (CEREBRO.propio ? 'propio' : 'fabrica') + '"><span>' + esc(CEREBRO.propio ? x.cereMine(fecha) : x.cereFab) + ' ' + esc(BETA.where === 'db' ? x.whereDb : BETA.where === 'buzon' ? x.whereBuzon : x.whereLocal) + '</span></div>' +
+    '<form class="bform cere" data-bform="cerebro"><label>' + esc(x.cereVoz) + '<textarea name="voz" rows="9">' + esc(CEREBRO.voz) + '</textarea></label>' +
+    '<label>' + esc(x.cerePro) + '<textarea name="prohibidas" rows="3">' + esc(CEREBRO.prohibidas) + '</textarea></label>' +
+    '<label>' + esc(x.cereLargo) + '<input name="largo" type="number" min="30" max="200" value="' + CEREBRO.largo + '"></label>' +
+    '<div class="row"><button type="submit" class="btn primary">' + esc(x.cereSave) + '</button><button type="button" class="btn" data-cere-reset>' + esc(x.cereReset) + '</button><button type="button" class="btn ghost" data-guide="' + S.guide + '">' + esc(x.cereTry) + '</button></div></form>' +
+    '<section class="cere-sec"><h2>' + esc(x.cereFixed) + '</h2>' + li(x.cereFixedList) + '</section>' +
+    '<section class="cere-sec"><h2>' + esc(x.cereShape) + '</h2>' + li(x.cereShapeList(CEREBRO.largo)) + '</section>' +
+    '<section class="cere-sec"><h2>' + esc(x.cereFrom) + '</h2>' + li(x.cereFromList(cnt)) + '</section>' +
+    '<details class="cere-full"><summary>' + esc(x.cereFull) + '</summary><p class="note">' + esc(x.cereFullNote) + '</p><pre data-cere-full>' + esc(full) + '</pre></details>';
+}
+function cerebroSave(doc) {
+  var x = X();
+  if (doc) { doc.tipo = 'cerebro'; doc.fecha = new Date().toISOString(); }
+  cerebroApply(doc);
+  try { if (doc) localStorage.setItem(CERE_LS, JSON.stringify(doc)); else localStorage.removeItem(CERE_LS); } catch (e) {}
+  var done = function () { toast(true, doc ? x.cereSaved : ''); render({ keep: true }); };
+  if (BETA.db) { var ref = BETA.db.doc('beta/cerebro'); (doc ? ref.set(doc) : ref.delete()).then(done, function () { toast(false); render({ keep: true }); }); return; }
+  done();
+}
 function betaHTML() {
   var x = X();
   return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
@@ -2098,6 +2165,11 @@ function betaSubmit(form) {
     var gdoc = { uso: f.uso.value, nota: String(f.nota.value || '').trim().slice(0, 200), fecha: new Date().toISOString() };
     shrinkPhoto(gf).then(function (blob) { return ASSETS.upload(blob); }).then(function (a) { gdoc.url = a.url; gdoc.foto_id = a.id;
       if (BETA.db) return BETA.db.collection('galeria').add(gdoc); gdoc._id = 'local-' + Date.now(); GAL.items = GAL.items.concat([gdoc]); }).then(function () { toast(true, x.galSaved); render({ keep: true }); }, function () { toast(false, x.photoFail); render({ keep: true }); });
+    return;
+  }
+  if (kind === 'cerebro') {
+    var cv = String(f.voz.value || '').trim();
+    cerebroSave(cv ? { voz: cv.slice(0, 4000), prohibidas: String(f.prohibidas.value || '').trim().slice(0, 1000), largo: Math.min(200, Math.max(30, parseInt(f.largo.value, 10) || 90)) } : null);
     return;
   }
   if (kind === 'memoria') {
@@ -2215,7 +2287,7 @@ function msgHTML(m, isNew) {
     before.forEach(function (x) { if (x.kind === 'ai') x.ai.consejos.forEach(function (id) { seen[id] = 1; }); });
     var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.filter(function (id) { return !seen[id]; }).map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
     if (m.ai.cultural) paras.push('<span class="note" data-cult>* ' + esc(t.infoCultBody) + '</span>');
-    var otros = m.ai.buscar ? searchCard(m.ai.buscar) : '';
+    var otros = m.ai.buscar && !m.ai.lugares.length ? searchCard(m.ai.buscar) : ''; // si hay lugares del catálogo, no se dice «no está»
     var plist = list.filter(function (c) { return c.key.charAt(0) === 'p'; }).map(function (c) { return c.key.slice(2); }), rest = list.filter(function (c) { return c.key.charAt(0) !== 'p'; });
     if (plist.length || otros || rest.length) cards = resultsHTML(plist, '', otros + cardsFor(rest));
     if (m.ai.opciones.length) after = '<div class="chips" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';
@@ -2556,8 +2628,8 @@ function tallerHTML() {
 // ===================== DIBUJAR Y NAVEGAR =====================
 // En la beta, «+ Publicar» va al centro de la barra, como en una red social.
 var TABS = [['inicio', 'home'], ['rutas', 'map']].concat(BETA_ON ? [['publicar', 'plus']] : [], [['guia', 'chat'], ['guardados', 'heart']]);
-var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, galeria: galeriaHTML, registro: registroHTML, taller: tallerHTML };
-var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', galeria: 'inicio', registro: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
+var VIEWS = { inicio: inicioHTML, rutas: rutasHTML, guia: guiaHTML, guardados: guardadosHTML, explorar: explorarHTML, cultura: culturaHTML, costumbres: costumbresHTML, nawales: nawalesHTML, nawal: nawalHTML, guardianes: guardianesHTML, ficha: fichaHTML, beta: betaHTML, galeria: galeriaHTML, registro: registroHTML, cerebro: cerebroHTML, taller: tallerHTML };
+var TAB_OF = { inicio: 'inicio', explorar: 'inicio', cultura: 'inicio', costumbres: 'inicio', nawales: 'inicio', nawal: 'inicio', guardianes: 'inicio', beta: 'inicio', galeria: 'inicio', registro: 'inicio', cerebro: 'inicio', taller: 'inicio', rutas: 'rutas', guia: 'guia', guardados: 'guardados', ficha: null };
 var main = document.getElementById('main');
 document.addEventListener('visibilitychange', function () { if (!document.hidden) fuiBar(); });
 function render(opts) {
@@ -2592,7 +2664,7 @@ function render(opts) {
 function nav(view, o) {
   o = o || {};
   if (view === 'taller' && !PREVIEW) view = 'inicio';
-  if ((view === 'beta' || view === 'galeria' || view === 'registro') && !BETA_ON) view = 'inicio';
+  if ((view === 'beta' || view === 'galeria' || view === 'registro' || view === 'cerebro') && !BETA_ON) view = 'inicio';
   if (!o.tab && view !== S.view) S.stack.push({ view: S.view, detail: S.detail, nawal: S.nawal, route: S.route });
   if (o.tab) S.stack = [];
   S.view = view;
@@ -2660,6 +2732,7 @@ var ACTIONS = [
   ['data-sec', function (v) { S.sec = v; render({ keep: true }); window.scrollTo(0, 0); }],
   ['data-demo-fb', function (v) { S.demoFb = v; render({ keep: true }); }],
   ['data-perfil', function (v) { togglePerfil(v); }],
+  ['data-cere-reset', function () { cerebroSave(null); }],
   ['data-wtoggle', function (v, e, el) { CLOSED[v] = !isClosed(v); saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
   ['data-idea', function () { S.ideaN++; tick(); var b = document.getElementById('idea-body'); if (b) b.innerHTML = ideaHTML(); }],
   ['data-publish', function (v) { tick(); openDialog(postForm(v)); }],
@@ -2697,7 +2770,7 @@ document.addEventListener('input', function (e) {
 // y, en vista previa, #beta, #taller o una sección interna (#revision, #textos, #modelo, #aprendizaje, #arquitectura, #sistema).
 (function () {
   var h = String(location.hash || '').slice(1);
-  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'galeria' || h === 'registro') && !BETA_ON)) S.view = h;
+  if (Object.prototype.hasOwnProperty.call(VIEWS, h) && h !== 'ficha' && h !== 'nawal' && !(h === 'taller' && !PREVIEW) && !((h === 'beta' || h === 'galeria' || h === 'registro' || h === 'cerebro') && !BETA_ON)) S.view = h;
   else if (PREVIEW && SECS.some(function (s) { return s[0] === h; })) { S.view = 'taller'; S.sec = h; }
   if (S.view !== 'inicio') S.stack = [{ view: 'inicio' }];
 })();

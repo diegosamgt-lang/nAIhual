@@ -749,7 +749,7 @@ def main():
         check('[Claude] Paso 1: muestra la ficha del catálogo con «Vamos» e «Info»', last.locator('[data-place="doce"]').count() == 1 and last.locator('[data-place="doce"] a.btn').inner_text().strip() == 'Vamos' and last.locator('[data-place="doce"] button.btn[data-open="p:doce"]').count() == 1)
         srch = last.locator('[data-search]')
         shref = srch.locator('a').get_attribute('href') if srch.count() else ''
-        check('[Claude] Paso 2 (cero inventos): no muestra lugares inventados; pone la búsqueda en Google Maps', last.locator('[data-ia-place]').count() == 0 and 'Lugar que conoce la IA' not in last.inner_text() and srch.count() == 1 and shref.startswith('https://www.google.com/maps/search/?api=1&query=') and 'caf%C3%A9%20tranquilo' in shref, shref)
+        check('[Claude] Cero inventos: no muestra lugares inventados; con lugares del catálogo no dice «no está»', last.locator('[data-ia-place]').count() == 0 and 'Lugar que conoce la IA' not in last.inner_text() and srch.count() == 0)
         check('[Claude] Ofrece sus opciones', last.locator('[data-say="Contame más"]').count() == 1)
         calls = page.evaluate('window.__calls')
         first = calls[0][0]['content'] if calls else ''
@@ -805,12 +805,14 @@ def main():
         page.wait_for_function('n => window.__calls.length > n', arg=len(calls) + 1, timeout=5000)
         check('[Claude] Lo publicado y confirmado ya lo usa el chat (paso 1)', 'catación los jueves' in page.evaluate('window.__calls')[-1][0]['content'])
         page.wait_for_function("(() => { const m = document.querySelectorAll('.msg'); return m[m.length - 1].dataset.kind === 'ai'; })()", timeout=5000)
-        page.evaluate("window.__reply = {texto: 'No tengo eso todavía.', lugares: [], otros: [], consejos: [], cultural: false, suficiente: false, opciones: [], aprendido: [], no_se: true, falta: 'galerías de pintores de Comalapa'}")
+        page.evaluate("window.__reply = {texto: 'No tengo eso todavía.', lugares: [], otros: [], buscar: 'galerías de pintura', consejos: [], cultural: false, suficiente: false, opciones: [], aprendido: [], no_se: true, falta: 'galerías de pintores de Comalapa'}")
         page.fill('#q', '¿Dónde venden cuadros de mi tío Juan, pintor de Comalapa?')
         page.press('#q', 'Enter')
         page.wait_for_function('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]").some(x => x.estado === "por_investigar")', timeout=5000)
         apr = page.evaluate('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]")')
         check('[Claude] Si no sabe, queda «para investigar» qué faltaba', any(x['estado'] == 'por_investigar' and 'galerías de pintores de Comalapa' in x['texto'] for x in apr), apr)
+        sh = page.locator('.msg').last.locator('[data-search] a')
+        check('[Claude] Cero inventos: si no hay nada cargado, pone «Buscalo en Google Maps» con lo que se pidió', sh.count() == 1 and sh.get_attribute('href').startswith('https://www.google.com/maps/search/?api=1&query=') and 'pintura' in sh.get_attribute('href'))
         check('[Claude] La pregunta tal cual no se guarda', not any('pregunta' in x or 'tío Juan' in x['texto'] for x in apr), apr)
         page.evaluate("window.__reply = {texto: '<img src=x onerror=\"window.__xss=3\">Hola', lugares: [], otros: [{nombre: '<b onmouseover=x>Raro</b>', porque: '<script>window.__xss=4</script>'}], buscar: '<b onmouseover=x>Raro</b>', consejos: [], cultural: false, suficiente: true, opciones: ['<i>uno</i>'], aprendido: []}")
         page.fill('#q', 'algo raro para probar')
@@ -878,6 +880,32 @@ def main():
         p2.click('[data-beta-card] [data-go="beta"]')
         p2.wait_for_timeout(500)
         check('[Buzón] Otro agente, en otro teléfono, lo ve en el muro y la beta dice que es el buzón', 'Hay mercado de artesanos el domingo' in p2.inner_text('main') and p2.locator('[data-beta-where="buzon"]').count() == 1, p2.inner_text('main')[:300])
+        # Cerebro (centro de control): Diego cambia el tono y Gemini lo recibe en la siguiente pregunta
+        p2.click('[data-back]') if p2.locator('[data-back]').count() else None
+        p2.click('[data-tab="inicio"]')
+        p2.click('[data-beta-card] [data-go="cerebro"]')
+        check('[Cerebro] Se ve el tono de fábrica, las reglas de base, cómo arma la respuesta y el mensaje completo', p2.locator('[data-cere-estado="fabrica"]').count() == 1 and 'Cero inventos' in p2.inner_text('main') and 'VOZ (la escribe Diego' in (p2.locator('[data-cere-full]').text_content() or ''))
+        p2.fill('[data-bform="cerebro"] textarea[name="voz"]', 'Hablá como prueba-de-voz-123.')
+        p2.fill('[data-bform="cerebro"] textarea[name="prohibidas"]', 'palabrota')
+        p2.click('[data-bform="cerebro"] button[type="submit"]')
+        p2.wait_for_selector('[data-cere-estado="propio"]', timeout=5000)
+        cdoc = [x for x in buz.get('beta', []) if x.get('_id') == 'cerebro']
+        check('[Cerebro] Guardar el tono lo deja en el buzón (para todos) y no aparece como anotación', len(cdoc) == 1 and cdoc[0].get('voz') == 'Hablá como prueba-de-voz-123.' and p2.locator('[data-beta-item="cerebro"]').count() == 0, cdoc)
+        n0 = len(sent)
+        p2.click('[data-tab="guia"]')
+        p2.fill('#q', '¿Dónde hay pan?')
+        p2.press('#q', 'Enter')
+        p2.wait_for_function('n => window.__x || true', arg=n0)
+        p2.wait_for_timeout(800)
+        rules = json.loads(sent[-1]).get('input', [{}])[0].get('content', '') if len(sent) > n0 else ''
+        check('[Cerebro] La siguiente pregunta lleva la voz nueva y las palabras prohibidas', 'prueba-de-voz-123' in rules and '«palabrota»' in rules, rules[:200])
+        p3 = ctx.new_page()
+        p3.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', dict(PREV, servidor_ia='https://ia.example.test/'))))
+        p3.route('https://ia.example.test/**', gem)
+        p3.goto(url + '#cerebro')
+        p3.wait_for_selector('main > *')
+        p3.wait_for_timeout(800)
+        check('[Cerebro] Otro teléfono recibe el mismo tono', p3.locator('[data-cere-estado="propio"]').count() == 1 and 'prueba-de-voz-123' in p3.locator('[data-bform="cerebro"] textarea[name="voz"]').input_value())
         ctx.close()
 
         # =============== E. Beta con la base de datos del visor (simulada) ===============
