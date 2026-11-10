@@ -76,14 +76,27 @@ nombre | categoria | tipo | zona | direccion | maps_url | contexto | redes_o_web
 La exactitud y la fuente valen más que la cantidad.</pre><button type="button" data-copy="instr">Copiar instrucciones</button></div></details>
 <div id="list"></div>
 <h2>2 · Libretas (NotebookLM)</h2>
-<details><summary><span><span class="n">★</span>Prompt para el informe de NotebookLM</span><small>una categoría por vez</small></summary><div class="body"><ol><li>En NotebookLM, abrí el cuaderno de la categoría y pegá este prompt (cambiá [categoría]).</li><li>Copiá el informe y pegalo en un Google Doc llamado <code>nAIhual · [categoría]</code>, dentro de la carpeta de Drive <code>nAIhual libretas</code>.</li><li>Decime «cargá las libretas».</li></ol><pre id="nb">Con las fuentes de este cuaderno, armá un informe de [categoría] para nAIhual (Antigua Guatemala).
-- Solo lo que dicen las fuentes; al final de cada párrafo, entre paréntesis, la fuente.
-- Párrafos cortos, uno por tema o por lugar, separados por una línea en blanco.
-- Sin opiniones como verdad, sin calificaciones, sin precios ni horarios.
-- El * va solo en significados mayas, ceremonias o cosmovisión (falta que lo valide un tata). Nunca en nombres de negocios: Maya Papaya, Tzunun o Matiox son nombres y van sin *.
-- Si el informe trae lugares: por cada uno, nombre exacto, dirección y enlace de Google Maps tal como están en las fuentes. Si una fuente no es Google Maps (Booking, blogs), decilo al lado.
+<p class="how">Dos tipos. Los lugares (nombre, dirección y enlace) siguen entrando por tu Sheet; NotebookLM pone el contexto.</p>
+<details><summary><span><span class="n">A</span>Contexto por lugar</span><small>por categoría</small></summary><div class="body"><p class="how">Lo que hiciste con los directorios sirve aquí: cada lugar con su porqué. Yo lo pego en la ficha del lugar cuando tenga enlace de Maps.</p><ol><li>En NotebookLM, pegá el prompt (cambiá lo que está entre corchetes).</li><li>Copiá el resultado y pegalo en un Google Doc llamado <code>nAIhual · [categoría o tema]</code>, dentro de la carpeta de Drive <code>nAIhual libretas</code>.</li><li>Decime «cargá las libretas».</li></ol><pre id="nb">Con las fuentes de este cuaderno, armá las fichas de contexto de [categoría] para nAIhual (Antigua Guatemala). Sirven para que el guía cuente el porqué de cada lugar.
+Por cada lugar, un bloque así:
+Nombre exacto: …
+De quién es: familiar, local, nacional, cadena o extranjero.
+Desde cuándo: año o época, si la fuente lo dice.
+Qué lo hace distinto: 1 o 2 frases con datos, no opiniones (por ejemplo: tuesta café de su propia finca, hornea en horno de leña, receta de la familia).
+Fuente: nombre y enlace de donde sale cada dato. Si es Google Maps, poné el enlace de la ficha.
+Reglas:
+- Solo lo que dicen las fuentes. Si un dato no está, escribí «sin dato».
+- Sin estrellas, reseñas, precios ni horarios.
+- El * va solo en significados mayas, ceremonias o cosmovisión. Nunca en nombres de negocios (Maya Papaya o Tzunun van sin *).
+- Lenguaje sencillo, como para contárselo a alguien de Antigua.
+Al principio, una línea: «Contexto por lugar: [categoría] · fecha: [hoy]».</pre><button type="button" data-copy="nb">Copiar prompt</button></div></details>
+<details><summary><span><span class="n">B</span>Contexto cultural</span><small>por tema</small></summary><div class="body"><p class="how">Para que el guía cuente historia y cultura. Aquí entra tu Deep Research de gastronomía.</p><ol><li>En NotebookLM, pegá el prompt (cambiá lo que está entre corchetes).</li><li>Copiá el resultado y pegalo en un Google Doc llamado <code>nAIhual · [categoría o tema]</code>, dentro de la carpeta de Drive <code>nAIhual libretas</code>.</li><li>Decime «cargá las libretas».</li></ol><pre id="nc">Con las fuentes de este cuaderno, armá un informe cultural sobre [tema] en Antigua Guatemala para nAIhual. Ejemplos de tema: comida típica y de dónde viene, el café en Antigua, dulces típicos, mercados, Semana Santa, las cofradías.
+- Párrafos cortos, uno por idea, separados por una línea en blanco. Al final de cada párrafo, entre paréntesis, la fuente.
+- Solo lo que dicen las fuentes. Sin opiniones como verdad, sin precios ni horarios.
+- Historia sin fuente oficial, marcada con †.
+- Significados mayas, ceremonias o cosmovisión, marcados con * (falta que lo valide un tata). Nunca en nombres de negocios.
 - Lenguaje sencillo, como para contárselo a alguien de Antigua. Sin palabras técnicas.
-- Al principio, una línea: «Categoría: [categoría] · fecha: [hoy]».</pre><button type="button" data-copy="nb">Copiar prompt</button></div></details>
+Al principio, una línea: «Cultura: [tema] · fecha: [hoy]».</pre><button type="button" data-copy="nc">Copiar prompt</button></div></details>
 <h2>3 · Servidor de Gemini (ya está hecho)</h2>
 <details><summary><span><span class="n">⚙</span>Código del servidor</span><small>solo si te lo pido</small></summary><div class="body"><p class="how">Tu servidor <code>naihual-ia.diegosamgt.workers.dev</code> ya funciona y la llave ya está guardada. Esto es solo por si te pido volver a pegar el código:</p><ol><li>En Cloudflare, abrí <b>naihual-ia</b> → «Edit code».</li><li>Borrá todo, pegá el código y tocá «Deploy». No toqués <code>PEGÁ_AQUÍ_TU_LLAVE</code>: tu llave ya está en «Settings».</li></ol><p class="how">Nunca me mandés la llave.</p><pre id="code">/* nAIhual · servidor de la IA (Cloudflare Worker). Guarda la llave de Gemini: nunca va en el teléfono (B15).
    La app le manda la plática (las reglas y los datos van en el primer mensaje) y recibe la respuesta en JSON.
