@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gemini y prompts de nAIhual</title>
+<style>
+:root { --bg: #f3f1ec; --card: #ffffff; --ink: #1d2125; --ink2: #62676d; --line: rgba(29,33,37,.12); --acc: #2f4b7c; --on: #ffffff; --ok: #2f6b4f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #121518; --card: #1b1f23; --ink: #eceae4; --ink2: #9c9a93; --line: rgba(236,234,228,.13); --acc: #93acdb; --on: #121518; --ok: #8fcaa9; } }
+:root[data-theme="dark"] { --bg: #121518; --card: #1b1f23; --ink: #eceae4; --ink2: #9c9a93; --line: rgba(236,234,228,.13); --acc: #93acdb; --on: #121518; --ok: #8fcaa9; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 640px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.02em; }
+.how { color: var(--ink2); margin: 0 0 18px; }
+.how b { color: var(--ink); }
+details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; margin: 0 0 10px; }
+summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; min-height: 52px; font-weight: 700; font-size: 17px; }
+summary::-webkit-details-marker { display: none; }
+summary small { color: var(--ink2); font-weight: 500; font-size: 13px; }
+.body { padding: 0 16px 16px; }
+pre { white-space: pre-wrap; word-wrap: break-word; background: var(--bg); border-radius: 12px; padding: 12px; font: 13.5px/1.5 ui-monospace, Menlo, monospace; margin: 0 0 10px; max-height: 280px; overflow: auto; }
+button { font: inherit; font-weight: 700; border: 0; border-radius: 12px; min-height: 48px; width: 100%; background: var(--acc); color: var(--on); cursor: pointer; }
+button.done { background: var(--ok); }
+.n { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--bg); font-size: 13px; margin-right: 8px; }
+
+h2 { font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink2); margin: 26px 0 10px; }
+ol { margin: 0 0 10px; padding-left: 20px; }
+li { margin: 0 0 6px; }
+code { font: 14px ui-monospace, Menlo, monospace; background: var(--bg); padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+</style></head><body><main>
+<h1>Gemini y prompts de nAIhual</h1>
+<p class="how">El único lugar para todo lo de Gemini y los prompts. Actualizado: 10-nov-2026. Si cambia algo, cambia aquí y en ningún otro lado.</p>
+<h2>1 · Inventario de lugares (Gemini)</h2>
+<p class="how"><b>Cómo:</b> las instrucciones fijas van una sola vez en tu chat o Gem de Gemini. Después, un chat por categoría, en este orden: tocá «Copiar», pegá y enviá. Lo que te devuelva va a tu Sheet; ahí llenás <b>para</b>, <b>confirmo</b> y <b>estado</b>. Después me decís «cargá el directorio».</p>
+<details open><summary><span><span class="n">★</span>Instrucciones fijas de Gemini</span><small>una sola vez</small></summary><div class="body"><p class="how">Pegalas en las instrucciones de tu chat o Gem, reemplazando todo lo viejo.</p><pre id="instr">Actuá como un equipo de investigación local para nAIhual, una guía de turismo consciente y comunitario de Antigua Guatemala: investigador de Google Maps, verificador de datos y editor de español guatemalteco. Tu trabajo es armar un inventario comprobable. No inventés, no completés datos de memoria y no presentés suposiciones como hechos.
+
+LÍMITES
+- Solo lugares con ficha propia y vigente en Google Maps. Sin ficha, no entra.
+- Municipio de Antigua Guatemala. Antes de buscar, delimitalo con una fuente oficial vigente y separá el casco urbano de las aldeas y sectores. No metás Jocotenango, Ciudad Vieja ni otros municipios vecinos por cercanía; si la ubicación es dudosa, va a «Casos aparte».
+- Una categoría por vez: la que te pida en cada mensaje. Máximo 20 lugares, empezando por los de tradición, familiares y locales. Las cadenas entran, marcadas como cadena.
+- Sucursales con ficha y dirección distintas: registros separados.
+
+LO QUE NO VA (reglas de nAIhual)
+- Ni calificaciones, ni estrellas, ni número de reseñas, ni resúmenes de reseñas, ni reseñas copiadas. nAIhual no hace rankings.
+- Ni horarios ni precios.
+- Ni datos de personas (nombres de empleados, teléfonos personales).
+- Ni significados mayas, ni ceremonias, ni historia sin fuente oficial.
+- TripAdvisor, directorios y agregadores no son fuente de datos: solo sirven para encontrar la web o las redes oficiales; después confirmás en Google Maps.
+
+MÉTODO
+1. Recorré cada área del municipio con búsquedas de Google Maps por categoría, en español y en inglés (por ejemplo: restaurante, comedor, café, bakery, panadería, postres, helados, bar). No te quedés con una sola búsqueda general. Revisá «ver más» y las fichas individuales.
+2. Quitá duplicados por enlace de la ficha y dirección.
+3. Cerrados permanente o temporalmente: van en «Casos aparte», nunca como abiertos.
+4. Si Google Maps muestra «vista limitada», pide iniciar sesión o no carga, detenete y decí qué quedó sin revisar. No afirmés que no hay más lugares.
+5. Llegar a 20 no es haber revisado todo: decí qué áreas o búsquedas faltaron.
+
+QUÉ VERIFICAR
+- En Google Maps: que la ficha exista, el nombre exacto, la dirección tal como aparece, la categoría que muestra y su estado. Guardá el enlace directo de la ficha (Compartir → Copiar enlace), nunca uno de búsqueda. Anotá la fecha en que la abriste.
+- Qué ofrece: del menú publicado, la web oficial o la ficha de Maps, en una frase y sin lista de platos. Si no hay menú, «menú no localizado».
+- Contexto (datos, no opiniones, con fuente que podás citar): de quién es (familiar, nacional, cadena, extranjero), desde cuándo y qué lo hace distinto. Sin fuente, vacío.
+- No llamés «nuevo» a un lugar si ninguna fuente confirma que abrió hace poco.
+- Redes: solo las que enlaza la web oficial o la ficha de Maps; no adivinés por el nombre. Anotá la fecha de la última publicación que viste: «activa» si publicó en los últimos 90 días; si no podés verlo, «no comprobada».
+- Si un dato no está en la fuente, dejalo vacío.
+
+FORMATO (sin introducción larga)
+1. Fecha de corte y alcance: categoría, áreas revisadas y límites.
+2. Tabla del inventario, con estas columnas en este orden:
+nombre | categoria | tipo | zona | direccion | maps_url | contexto | redes_o_web | redes_actividad | fuente | fuente_url | fecha_consulta (AAAA-MM-DD) | origen | para | confirmo | estado
+   - categoria: hospedaje, comida, cafe, postres, noche, transporte, mercado, artesania, mirador o evento.
+   - tipo: la categoría que muestra Maps; agregá «cadena» si lo es.
+   - zona: casco urbano, o el nombre de la aldea o sector.
+   - contexto: qué ofrece + de quién es y desde cuándo, con su fuente.
+   - origen: siempre «ia». Dejá vacías para, confirmo y estado (las llena Diego).
+3. Bitácora de búsqueda: área | categoría | frases usadas | resultados revisados | fecha | lo que faltó.
+4. Casos aparte: duplicados, ubicación dudosa, cerrados (permanente o temporal), enlaces rotos o datos que chocan. No los mezclés con la tabla.
+5. Cobertura, exactamente una de estas: «Revisión completa según el método» o «Revisión parcial: [lo que falta]». No usés la palabra «exhaustivo».
+
+La exactitud y la fuente valen más que la cantidad.</pre><button type="button" data-copy="instr">Copiar instrucciones</button></div></details>
+<div id="list"></div>
+<h2>2 · Libretas (NotebookLM)</h2>
+<p class="how">Dos tipos. Los lugares (nombre, dirección y enlace) siguen entrando por tu Sheet; NotebookLM pone el contexto.</p>
+<details><summary><span><span class="n">A</span>Contexto por lugar</span><small>por categoría</small></summary><div class="body"><p class="how">Lo que hiciste con los directorios sirve aquí: cada lugar con su porqué. Yo lo pego en la ficha del lugar cuando tenga enlace de Maps.</p><ol><li>En NotebookLM, pegá el prompt (cambiá lo que está entre corchetes).</li><li>Copiá el resultado y pegalo en un Google Doc llamado <code>nAIhual · [categoría o tema]</code>, dentro de la carpeta de Drive <code>nAIhual libretas</code>.</li><li>Decime «cargá las libretas».</li></ol><pre id="nb">Con las fuentes de este cuaderno, armá las fichas de contexto de [categoría] para nAIhual (Antigua Guatemala). Sirven para que el guía cuente el porqué de cada lugar.
+Por cada lugar, un bloque así:
+Nombre exacto: …
+De quién es: familiar, local, nacional, cadena o extranjero.
+Desde cuándo: año o época, si la fuente lo dice.
+Qué lo hace distinto: 1 o 2 frases con datos, no opiniones (por ejemplo: tuesta café de su propia finca, hornea en horno de leña, receta de la familia).
+Fuente: nombre y enlace de donde sale cada dato. Si es Google Maps, poné el enlace de la ficha.
+Reglas:
+- Solo lo que dicen las fuentes. Si un dato no está, escribí «sin dato».
+- Sin estrellas, reseñas, precios ni horarios.
+- El * va solo en significados mayas, ceremonias o cosmovisión. Nunca en nombres de negocios (Maya Papaya o Tzunun van sin *).
+- Lenguaje sencillo, como para contárselo a alguien de Antigua.
+Al principio, una línea: «Contexto por lugar: [categoría] · fecha: [hoy]».</pre><button type="button" data-copy="nb">Copiar prompt</button></div></details>
+<details><summary><span><span class="n">B</span>Contexto cultural</span><small>por tema</small></summary><div class="body"><p class="how">Para que el guía cuente historia y cultura. Aquí entra tu Deep Research de gastronomía.</p><ol><li>En NotebookLM, pegá el prompt (cambiá lo que está entre corchetes).</li><li>Copiá el resultado y pegalo en un Google Doc llamado <code>nAIhual · [categoría o tema]</code>, dentro de la carpeta de Drive <code>nAIhual libretas</code>.</li><li>Decime «cargá las libretas».</li></ol><pre id="nc">Con las fuentes de este cuaderno, armá un informe cultural sobre [tema] en Antigua Guatemala para nAIhual. Ejemplos de tema: comida típica y de dónde viene, el café en Antigua, dulces típicos, mercados, Semana Santa, las cofradías.
+- Párrafos cortos, uno por idea, separados por una línea en blanco. Al final de cada párrafo, entre paréntesis, la fuente.
+- Solo lo que dicen las fuentes. Sin opiniones como verdad, sin precios ni horarios.
+- Historia sin fuente oficial, marcada con †.
+- Significados mayas, ceremonias o cosmovisión, marcados con * (falta que lo valide un tata). Nunca en nombres de negocios.
+- Lenguaje sencillo, como para contárselo a alguien de Antigua. Sin palabras técnicas.
+Al principio, una línea: «Cultura: [tema] · fecha: [hoy]».</pre><button type="button" data-copy="nc">Copiar prompt</button></div></details>
+<h2>3 · Servidor de Gemini y buzón de agentes</h2>
+<details><summary><span><span class="n">⚙</span>Código del servidor</span><small>pegalo de nuevo</small></summary><div class="body"><p class="how"><b>Pendiente (10-nov):</b> crear el buzón donde se guarda lo que publican los agentes. Una sola vez:</p><ol><li>En Cloudflare, abrí <b>naihual-ia</b> → pestaña «Bindings» (o «Settings» → «Bindings») → «+ Add binding».</li><li>Elegí <b>KV namespace</b> → «Create new» (o «Create a namespace») y ponele de nombre <code>naihual-buzon</code>.</li><li>Donde dice «Variable name», escribí <code>BUZON</code> (así, en mayúsculas) → «Add binding» o «Deploy».</li><li>Después: «Edit code», borrá todo, pegá este código y «Deploy». No toqués <code>PEGÁ_AQUÍ_TU_LLAVE</code>: tu llave ya está guardada.</li><li>Decime «listo» y lo pruebo.</li></ol><p class="how">❓ Cloudflare cambia los nombres de los botones; si no los ves, mandame una captura. Nunca me mandés la llave.</p><pre id="code">/* nAIhual · servidor de la IA (Cloudflare Worker). Guarda la llave de Gemini: nunca va en el teléfono (B15).
+   La app le manda la plática (las reglas y los datos van en el primer mensaje) y recibe la respuesta en JSON.
+
+   La forma fácil: pegá tu llave entre las comillas de LLAVE, solo en el editor de Cloudflare (nunca en GitHub).
+   Si preferís, las variables de Cloudflare mandan sobre lo de abajo: GEMINI_KEY, ORIGENES y MODELO
+   (uno o varios separados por coma). Sin MODELO, prueba MODELOS en orden y usa el primero que responda.
+   Buzón de agentes (FIJA de Diego, 10-nov): lo que publican los agentes desde la app se guarda en un KV de
+   Cloudflare enlazado con el nombre BUZON (Settings → Bindings → KV namespace). Sin BUZON, la app guarda en el teléfono. */
+const LLAVE = 'PEGÁ_AQUÍ_TU_LLAVE';
+const MODELOS = ['gemini-flash-latest', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash'];
+const ORIGENES_BASE = 'https://diegosamgt-lang.github.io,https://www.disartstudio.com,https://disartstudio.com';
+const API = 'https://generativelanguage.googleapis.com/v1beta/models';
+const MAX_MENSAJES = 12;       // el primero (las reglas) siempre se queda
+const MAX_TEXTO = 120000;      // letras en total
+const ESPERA_MODELO = 20000;   // ms por modelo
+const ESPERA_TOTAL = 45000;    // ms entre todos los modelos
+
+const COLECCIONES = ['beta', 'galeria', 'memoria', 'aprendido'];
+const MAX_DOC = 30000;          // letras por anotación (la memoria va en partes de 20,000)
+const MAX_DOCS = 3000;          // anotaciones por colección
+const MAX_FOTO = 2000000;       // bytes por foto (la app las achica antes)
+const nuevoId = () =&gt; Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+// Buzón: una lista por colección (pocos agentes; leer y escribir la lista completa es simple y barato).
+async function buzon(req, env, url, reply) {
+  const partes = url.pathname.split('/').filter(Boolean); // ['buzon', col, id?] o ['buzon-foto', id?]
+  if (!env.BUZON) return reply({ error: 'sin_buzon' }, 501);
+  if (partes[0] === 'buzon-foto') {
+    if (req.method === 'POST') {
+      const tipo = req.headers.get('Content-Type') || '';
+      if (!/^image\/(jpeg|png|webp|gif)$/.test(tipo)) return reply({ error: 'invalid_request' }, 400);
+      const buf = await req.arrayBuffer();
+      if (!buf.byteLength || buf.byteLength &gt; MAX_FOTO) return reply({ error: 'invalid_request' }, 413);
+      const id = nuevoId();
+      await env.BUZON.put('foto:' + id, buf, { metadata: { tipo } });
+      return reply({ id, url: url.origin + '/buzon-foto/' + id });
+    }
+    if (req.method === 'DELETE' &amp;&amp; partes[1]) { await env.BUZON.delete('foto:' + partes[1]); return reply({ ok: true }); }
+    return reply({ error: 'metodo' }, 405);
+  }
+  const col = partes[1];
+  if (!COLECCIONES.includes(col)) return reply({ error: 'invalid_request' }, 400);
+  const leer = async () =&gt; { try { const v = await env.BUZON.get('col:' + col, 'json'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+  if (req.method === 'GET') return reply({ docs: await leer() });
+  let body = {};
+  if (req.method === 'POST' || req.method === 'PUT') {
+    try { body = JSON.parse(await req.text()); } catch (e) { return reply({ error: 'invalid_request' }, 400); }
+    if (!body || typeof body.doc !== 'object' || Array.isArray(body.doc) || JSON.stringify(body.doc).length &gt; MAX_DOC) return reply({ error: 'invalid_request' }, 400);
+    delete body.doc._id;
+  }
+  const docs = await leer();
+  const id = req.method === 'POST' ? nuevoId() : String(partes[2] || '').slice(0, 80);
+  if (!id) return reply({ error: 'invalid_request' }, 400);
+  const i = docs.findIndex(d =&gt; d._id === id);
+  if (req.method === 'POST' || req.method === 'PUT') {
+    const doc = Object.assign(body.merge &amp;&amp; i &gt;= 0 ? docs[i] : {}, body.doc, { _id: id });
+    if (i &gt;= 0) docs[i] = doc; else docs.push(doc);
+    if (docs.length &gt; MAX_DOCS) return reply({ error: 'lleno' }, 507);
+  } else if (req.method === 'DELETE') {
+    if (i &gt;= 0) docs.splice(i, 1);
+  } else return reply({ error: 'metodo' }, 405);
+  await env.BUZON.put('col:' + col, JSON.stringify(docs));
+  return reply({ id });
+}
+
+const lista = (v) =&gt; String(v || '').split(',').map(s =&gt; s.trim()).filter(Boolean);
+
+export default {
+  async fetch(req, env) {
+    const origin = req.headers.get('Origin') || '';
+    const ok = origin !== '' &amp;&amp; lista(env.ORIGENES || ORIGENES_BASE).includes(origin);
+    const cors = ok
+      ? { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '86400', 'Vary': 'Origin' }
+      : { 'Vary': 'Origin' };
+    const reply = (obj, status) =&gt; new Response(JSON.stringify(obj), { status: status || 200, headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }, cors) });
+
+    const url = new URL(req.url);
+    // Las fotos del buzón se ven desde cualquier lado (una etiqueta &lt;img&gt; no manda origen).
+    if (req.method === 'GET' &amp;&amp; url.pathname.startsWith('/buzon-foto/') &amp;&amp; env.BUZON) {
+      const f = await env.BUZON.getWithMetadata('foto:' + url.pathname.split('/')[2], 'arrayBuffer');
+      if (!f || !f.value) return new Response('', { status: 404 });
+      return new Response(f.value, { headers: { 'Content-Type': (f.metadata &amp;&amp; f.metadata.tipo) || 'image/jpeg', 'Cache-Control': 'public, max-age=31536000, immutable' } });
+    }
+    if (req.method === 'OPTIONS') return new Response(null, { status: ok ? 204 : 403, headers: cors });
+    if (!ok) return reply({ error: 'not_granted' }, 403);
+    if (url.pathname.startsWith('/buzon')) { try { return await buzon(req, env, url, reply); } catch (e) { return reply({ error: 'buzon' }, 502); } }
+    const key = env.GEMINI_KEY || (LLAVE !== 'PEGÁ_AQUÍ_TU_LLAVE' ? LLAVE : '');
+    if (!key) return reply({ error: 'sin_llave' }, 500);
+
+    try {
+      // Revisión: qué modelos ofrece Google a esta llave (solo nombres, nunca la llave).
+      if (req.method === 'GET') {
+        const l = await fetch(API + '?pageSize=200', { headers: { 'x-goog-api-key': key }, signal: AbortSignal.timeout(ESPERA_MODELO) });
+        if (!l.ok) return reply({ error: 'proveedor', status: l.status }, 502);
+        const d = await l.json();
+        return reply({ modelos: (d.models || []).filter(m =&gt; (m.supportedGenerationMethods || []).includes('generateContent')).map(m =&gt; String(m.name).replace('models/', '')) });
+      }
+      if (req.method !== 'POST') return reply({ error: 'metodo' }, 405);
+
+      if (Number(req.headers.get('Content-Length') || 0) &gt; MAX_TEXTO * 4) return reply({ error: 'invalid_request' }, 413);
+      let body;
+      try { body = await req.json(); } catch (e) { return reply({ error: 'invalid_request' }, 400); }
+      let input = Array.isArray(body &amp;&amp; body.input) ? body.input.filter(m =&gt; m &amp;&amp; typeof m === 'object') : [];
+      if (input.length &gt; MAX_MENSAJES) input = [input[0]].concat(input.slice(-(MAX_MENSAJES - 1)));
+      const size = input.reduce((n, m) =&gt; n + String(m.content || '').length, 0);
+      if (!input.length || size &gt; MAX_TEXTO) return reply({ error: 'invalid_request' }, 400);
+
+      // Gemini pide turnos que se alternen y que empiecen con «user»: se juntan los seguidos del mismo lado.
+      const contents = [];
+      for (const m of input) {
+        const role = m.role === 'assistant' ? 'model' : 'user';
+        const text = String(m.content || '');
+        if (!text) continue;
+        const last = contents[contents.length - 1];
+        if (last &amp;&amp; last.role === role) last.parts[0].text += '\n\n' + text;
+        else contents.push({ role, parts: [{ text }] });
+      }
+      if (!contents.length) return reply({ error: 'invalid_request' }, 400);
+      if (contents[0].role !== 'user') contents.unshift({ role: 'user', parts: [{ text: '(sigue la plática)' }] });
+
+      const payload = JSON.stringify({ contents, generationConfig: { responseMimeType: 'application/json', temperature: 0.6 } });
+      const fin = Date.now() + ESPERA_TOTAL;
+      const intentos = [];
+      let r = null;
+      for (const model of (env.MODELO ? lista(env.MODELO) : MODELOS)) {
+        const queda = fin - Date.now();
+        if (queda &lt; 1000) { intentos.push('sin tiempo'); break; }
+        try {
+          r = await fetch(API + '/' + encodeURIComponent(model) + ':generateContent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+            body: payload,
+            signal: AbortSignal.timeout(Math.min(ESPERA_MODELO, queda))
+          });
+        } catch (e) { r = null; intentos.push(model + ': sin respuesta'); continue; }
+        if (r.ok) break;
+        intentos.push(model + ': ' + r.status);
+        // 404 = ese modelo no existe · 429 = ese modelo llegó a su límite · 5xx = Google saturado: se prueba el siguiente.
+        if (r.status === 404 || r.status === 429 || r.status &gt;= 500) { r = null; continue; }
+        return reply({ error: 'proveedor', status: r.status, intentos }, 502); // 400, 401, 402, 403: probar otro no lo arregla
+      }
+      if (!r) return reply({ error: intentos.some(t =&gt; / 429$/.test(t)) ? 'rate_limited' : 'proveedor', intentos }, 502);
+
+      const data = await r.json();
+      const parts = ((((data &amp;&amp; data.candidates) || [])[0] || {}).content || {}).parts || [];
+      const text = parts.filter(p =&gt; !p.thought).map(p =&gt; p.text || '').join('').trim()
+        .replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+      try { return reply({ result: JSON.parse(text) }); } catch (e) { return reply({ error: 'invalid_response' }, 502); }
+    } catch (e) {
+      return reply({ error: 'proveedor' }, 502);
+    }
+  }
+};
+</pre><button type="button" data-copy="code">Copiar código</button></div></details>
+</main><script>
+var CATS = [
+  ['hospedaje', 'Hospedaje', 'hostales, hoteles y casas de huéspedes locales (familiares primero; las cadenas, marcadas como cadena)'],
+  ['comida', 'Comida', 'restaurantes y comida típica guatemalteca, de tradición y familiares'],
+  ['cafe', 'Cafés', 'cafés y cafeterías, sobre todo los que tuestan café de Guatemala'],
+  ['postres', 'Pan y postres', 'panaderías tradicionales, dulcerías y pastelerías'],
+  ['noche', 'De noche', 'bares, cervecerías artesanales y lugares con música en vivo'],
+  ['transporte', 'Transporte', 'formas de moverse: shuttles, buses («camionetas»), tuk-tuks y taxis; dónde se toman. Con fuente y fecha; sin precios'],
+  ['mercado', 'Mercados y comedores', 'mercados y comedores populares dentro de los mercados'],
+  ['artesania', 'Artesanos y talleres', 'tiendas y talleres donde la artesanía la hace quien la vende (tejido, cerámica, jade, madera)'],
+  ['mirador', 'Miradores y naturaleza', 'miradores, cerros, fincas y caminatas cerca de Antigua (incluí el Cerro de la Cruz y la zona de Panorama)'],
+  ['evento', 'Fiestas y eventos', 'fiestas, ferias, procesiones y eventos de los próximos meses, siempre con su fecha y la fuente que la publica']
+];
+var list = document.getElementById('list');
+CATS.forEach(function (c, i) {
+  var text = 'Inventario de ' + c[2] + ' en Antigua Guatemala. Categoría: ' + c[0] + '.\nSeguí tus instrucciones fijas de nAIhual: máximo 20 lugares, la tabla con las columnas de siempre, la bitácora, los casos aparte y la cobertura.';
+  var d = document.createElement('details');
+  var s = document.createElement('summary'); s.innerHTML = '<span><span class="n">' + (i + 1) + '</span>' + c[1] + '</span><small>máx. 20</small>';
+  var b = document.createElement('div'); b.className = 'body';
+  var pre = document.createElement('pre'); pre.id = 'c' + i; pre.textContent = text;
+  var btn = document.createElement('button'); btn.type = 'button'; btn.textContent = 'Copiar'; btn.setAttribute('data-copy', pre.id);
+  b.appendChild(pre); b.appendChild(btn); d.appendChild(s); d.appendChild(b); list.appendChild(d);
+});
+function sel(el) { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('[data-copy]'); if (!btn) return;
+  var pre = document.getElementById(btn.getAttribute('data-copy')), label = btn.getAttribute('data-l') || btn.textContent;
+  btn.setAttribute('data-l', label);
+  var ok = function () { btn.textContent = 'Copiado ✓'; btn.classList.add('done'); setTimeout(function () { btn.textContent = label; btn.classList.remove('done'); }, 2500); };
+  try { navigator.clipboard.writeText(pre.textContent).then(ok, function () { sel(pre); }); } catch (x) { sel(pre); }
+});
+</script></body></html>

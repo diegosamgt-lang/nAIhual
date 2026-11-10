@@ -68,5 +68,38 @@ t('nunca espera más de ~45 s en total (' + Math.round(ms / 1000) + ' s)', ms < 
 mock(() => new Response(JSON.stringify({ models: [{ name: 'models/gemini-x', supportedGenerationMethods: ['generateContent'] }, { name: 'models/emb', supportedGenerationMethods: ['embedContent'] }] })));
 r = await run(new Request('https://x.dev', { headers: { Origin: O } })); t('GET lista solo modelos de texto', JSON.stringify(r.j) === '{"modelos":["gemini-x"]}', r.j);
 r = await run(new Request('https://x.dev', { method: 'PUT', headers: { Origin: O } })); t('otro método → 405', r.s === 405, r);
+
+// Buzón de agentes (KV simulado)
+const kvStore = new Map();
+const KV = {
+  get: async (k, t) => { const v = kvStore.get(k); if (v === undefined) return null; return t === 'json' ? JSON.parse(v.value) : v.value; },
+  getWithMetadata: async (k) => { const v = kvStore.get(k); return v ? { value: v.value, metadata: v.metadata } : { value: null, metadata: null }; },
+  put: async (k, v, o) => { kvStore.set(k, { value: v, metadata: o && o.metadata }); },
+  delete: async (k) => { kvStore.delete(k); }
+};
+const EB = { GEMINI_KEY: 'K', BUZON: KV };
+const breq = (method, path, body, headers) => new Request('https://x.dev' + path, { method, headers: Object.assign({ Origin: O }, headers || {}), body });
+r = await run(breq('GET', '/buzon/beta'), E); t('sin KV enlazado → sin_buzon (la app guarda en el teléfono)', r.j.error === 'sin_buzon', r.j);
+r = await run(breq('GET', '/buzon/beta'), EB); t('buzón vacío → lista vacía', Array.isArray(r.j.docs) && r.j.docs.length === 0, r.j);
+r = await run(breq('POST', '/buzon/beta', JSON.stringify({ doc: { tipo: 'post', texto: 'Hola', _id: 'trampa' } }), { 'Content-Type': 'text/plain' }), EB);
+const pid = r.j.id; t('un agente publica → recibe su id (el _id lo pone el servidor)', typeof pid === 'string' && pid !== 'trampa', r.j);
+r = await run(breq('GET', '/buzon/beta'), EB); t('otro agente lo ve', r.j.docs.length === 1 && r.j.docs[0].texto === 'Hola' && r.j.docs[0]._id === pid, r.j);
+await run(breq('PUT', '/buzon/beta/' + pid, JSON.stringify({ doc: { estado: 'confirmado' }, merge: true })), EB);
+r = await run(breq('GET', '/buzon/beta'), EB); t('actualizar mezcla los datos', r.j.docs[0].texto === 'Hola' && r.j.docs[0].estado === 'confirmado', r.j);
+await run(breq('PUT', '/buzon/beta/gusta-x', JSON.stringify({ doc: { tipo: 'gusta', lugar: 'x' } })), EB);
+r = await run(breq('GET', '/buzon/beta'), EB); t('guardar con id fijo (me gustó)', r.j.docs.some(d => d._id === 'gusta-x'), r.j);
+await run(breq('DELETE', '/buzon/beta/gusta-x'), EB);
+r = await run(breq('GET', '/buzon/beta'), EB); t('borrar', !r.j.docs.some(d => d._id === 'gusta-x') && r.j.docs.length === 1, r.j);
+r = await run(breq('GET', '/buzon/secreto'), EB); t('colección que no existe → rechazo', r.s === 400, r);
+r = await run(breq('POST', '/buzon/memoria', JSON.stringify({ doc: { texto: 'x'.repeat(31000) } })), EB); t('anotación demasiado grande → rechazo', r.s === 400, r);
+r = await run(new Request('https://x.dev/buzon/beta', { headers: { Origin: 'https://malo.com' } }), EB); t('buzón desde otra página → 403', r.s === 403, r);
+const img = new Uint8Array([255, 216, 255, 0, 1, 2]);
+r = await run(breq('POST', '/buzon-foto', img, { 'Content-Type': 'image/jpeg' }), EB);
+const fid = r.j.id; t('sube una foto y devuelve su dirección', fid && r.j.url === 'https://x.dev/buzon-foto/' + fid, r.j);
+let fr = await W.fetch(new Request('https://x.dev/buzon-foto/' + fid), EB); t('la foto se ve sin origen (etiqueta img)', fr.status === 200 && fr.headers.get('content-type') === 'image/jpeg' && (await fr.arrayBuffer()).byteLength === 6);
+r = await run(breq('POST', '/buzon-foto', 'hola', { 'Content-Type': 'text/html' }), EB); t('un archivo que no es imagen → rechazo', r.s === 400, r);
+await run(breq('DELETE', '/buzon-foto/' + fid), EB);
+fr = await W.fetch(new Request('https://x.dev/buzon-foto/' + fid), EB); t('borrar la foto', fr.status === 404);
+mock(() => okResp('{"a":1}')); r = await run(post(one), EB); t('con buzón, la IA sigue respondiendo en la dirección principal', r.j.result && r.j.result.a === 1, r.j);
 console.log('\n' + pass + ' de ' + (pass + fail));
 clearInterval(keep);

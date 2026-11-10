@@ -6,5 +6,7 @@
 - **Todo el proyecto en un solo documento:** `docs/nAIhual.md`. Ahí están el concepto, los guardianes, los circuitos, las fuentes, las decisiones y el historial.
 - **Método de trabajo:** `0_PROMPT_MAESTRO.md` a `4_LECCIONES.md`.
 - **Fuentes:** `docs/fuentes/` (los dos PDF de cosmovisión, la guía de orientación y NotebookLM).
-- **Lo viejo:** `docs/historial/` (no se edita). Copias de la app hasta la 3.3: `versiones/`; desde la 3.5, el historial de GitHub.
+- **Gemini y prompts (único lugar):** `docs/gemini.html`. **Cómo piensa nAIhual:** `docs/cerebro-naihual.html`.
+- **Servidor de Gemini:** `servidor/gemini-worker.js` (Cloudflare). **Pruebas:** `pruebas/`.
+- **Lo viejo:** el historial de GitHub y `docs/historial/` (no se edita).
 - **Habilidades de Claude:** `.claude/skills/` (thermos, app-architecture, mobile-app-architecture).

@@ -118,7 +118,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .seg button { border: 0; cursor: pointer; min-width: 44px; min-height: 44px; padding: 0 10px; border-radius: var(--r-pill); font-size: 12.5px; font-weight: 700; background: transparent; color: var(--ink-2); }
 .seg button[aria-pressed="true"] { background: var(--papel); color: var(--basalto); box-shadow: var(--shadow-1); }
 .sos { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border-radius: var(--r-pill); border: 1.5px solid var(--heart); color: var(--heart); background: transparent; font-weight: 700; font-size: 13px; cursor: pointer; }
-main { flex: 1; display: flex; flex-direction: column; gap: var(--s-6); padding-block: var(--s-2) 120px; min-width: 0; }
+main { flex: 1; display: flex; flex-direction: column; gap: var(--s-5); padding-block: var(--s-2) 120px; min-width: 0; }
 main.chat { padding-bottom: 230px; gap: var(--s-4); }
 @media (prefers-reduced-motion: no-preference) { main.enter > * { animation: rise var(--dur-2) var(--ease) both; } main.enter > *:nth-child(2) { animation-delay: .04s; } main.enter > *:nth-child(3) { animation-delay: .08s; } main.enter > *:nth-child(n+4) { animation-delay: .12s; } }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
@@ -174,6 +174,17 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .winner > .wpad { padding: 0 var(--s-4) var(--s-4); display: flex; flex-direction: column; gap: var(--s-3); }
 .widget.closed .winner { visibility: hidden; transition: visibility 0s var(--dur-2); }
 .widget .rail { margin: 0 -16px; padding: 2px 16px 6px; }
+/* 3.14 · jerarquía: lo secundario, en una sola lista agrupada (como los ajustes del teléfono). */
+.more-group { display: flex; flex-direction: column; gap: 0; }
+.group-h { font-family: var(--f-data); font-size: var(--t-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin: 0 4px var(--s-2); }
+.more-group .widget { border-radius: 0; border-top-width: 0; }
+.more-group .widget:first-of-type { border-top-width: 1px; border-radius: var(--r-xl) var(--r-xl) 0 0; }
+.more-group .widget:last-of-type { border-radius: 0 0 var(--r-xl) var(--r-xl); }
+.more-group .whead { padding-block: 0; }
+.more-group .wtoggle { min-height: 50px; }
+.askbar { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; border-radius: 999px; background: var(--papel); border: 1px solid var(--line); color: var(--ink-2); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.askbar .ico { color: var(--anil); }
+.askbar:focus-visible { outline: 3px solid var(--anil); outline-offset: 2px; }
 .hello { font-family: var(--f-data); font-size: var(--t-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.9); text-shadow: 0 1px 8px rgba(0,0,0,.35); }
 /* La idea del guía: su color, su voz, otra idea con un toque. */
 .idea { display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 12px; align-items: start; }
@@ -210,6 +221,9 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .lcard .more .linkish, .lcard .more summary { font-size: 12.5px; }
 .lcard .go { display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
 .lcard .go .btn { min-height: 44px; padding: 0 12px; font-size: 13px; }
+.lcard.search { background: var(--cal); border-style: dashed; }
+.lcard.search .thumb { display: grid; place-items: center; background: var(--papel); color: var(--ink-2); }
+.lcard.search .thumb svg { width: 28px; height: 28px; }
 .gal { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
 .gal figure { margin: 0; display: flex; flex-direction: column; gap: 4px; }
 .gal img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; background: var(--piedra); }
@@ -246,7 +260,7 @@ details.info[open] { flex-basis: 100%; }
 
 /* ---------- inicio ---------- */
 .hero { position: relative; margin: 0 -16px; padding: 0 16px; display: flex; flex-direction: column; gap: var(--s-4); }
-.hero-art { position: relative; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 4 / 3; max-width: 100%; background: var(--cielo-2); }
+.hero-art { position: relative; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 10; max-width: 100%; background: var(--cielo-2); }
 .hero-art svg { width: 100%; height: 100%; }
 .hero-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--s-5); display: flex; flex-direction: column; gap: 6px; }
 .hero-copy h1 { font-size: clamp(26px, 8vw, var(--t-2xl)); color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); max-width: 15ch; }
@@ -555,7 +569,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.12 · 10-nov-2026';
+var VERSION = 'nAIhual 3.14 · 10-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -813,10 +827,10 @@ var X3 = {
     betaFicha: 'Beta · ¿qué sabés de este lugar?', kind: 'Tipo', text: 'Qué querés anotar', save: 'Guardar anotación',
     name: 'Nombre del lugar', mapsLink: 'Enlace de Google Maps (Compartir → Copiar enlace)', moment: 'Momento del viaje', didLike: 'Me gustó', addNote: 'Nota corta, en tus palabras', addBtn: 'Agregar',
     moments: [['llegue', 'Llegué'], ['transporte', 'Transporte'], ['hotel', 'Hotel'], ['comida', 'Comida'], ['cerca', 'Qué hay cerca'], ['otro', 'Otro']],
-    list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
+    list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereBuzon: 'Se guarda en el buzón de los agentes: lo ven todos y Claude lo lee.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
     savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
     kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo', brujula: 'Prueba de la brújula', visita: 'Visita', post: 'Publicación' },
-    iaTag: 'Según la IA · confirmá en Google', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
+    iaTag: 'Según la IA · confirmá en Google', searchTitle: 'Buscalo en Google Maps', searchSub: 'todavía no está en nAIhual', searchBtn: 'Buscar', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
     confirm: 'Confirmar', confirmed: 'Confirmado', toConfirm: 'Por confirmar', toResearch: 'Claude lo va a investigar',
     rev: { entro: 'Claude: entró al catálogo', no_entro: 'Claude: no entró', revisado: 'Claude: revisado', sin: 'Sin revisar todavía' },
     toastSaved: 'Guardado en tu beta', toastSee: 'Ver', toastFail: 'No se pudo guardar', toastDeleted: 'Borrado',
@@ -856,10 +870,10 @@ var X3 = {
     betaFicha: 'Beta · what do you know about this place?', kind: 'Type', text: 'What do you want to note', save: 'Save note',
     name: 'Place name', mapsLink: 'Google Maps link (Share → Copy link)', moment: 'Moment of the trip', didLike: 'I liked it', addNote: 'Short note, in your words', addBtn: 'Add',
     moments: [['llegue', 'Just arrived'], ['transporte', 'Getting around'], ['hotel', 'Hotel'], ['comida', 'Food'], ['cerca', 'Nearby'], ['otro', 'Other']],
-    list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
+    list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereBuzon: 'Saved in the agents’ inbox: everyone sees it and Claude reads it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
     savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
     kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place', brujula: 'Compass test', visita: 'Visit', post: 'Post' },
-    iaTag: 'From the AI · check on Google', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
+    iaTag: 'From the AI · check on Google', searchTitle: 'Look it up on Google Maps', searchSub: 'not in nAIhual yet', searchBtn: 'Search', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
     confirm: 'Confirm', confirmed: 'Confirmed', toConfirm: 'To confirm', toResearch: 'Claude will research it',
     rev: { entro: 'Claude: added to the catalog', no_entro: 'Claude: not added', revisado: 'Claude: reviewed', sin: 'Not reviewed yet' },
     toastSaved: 'Saved in your beta', toastSee: 'See', toastFail: 'Could not save', toastDeleted: 'Deleted',
@@ -901,7 +915,7 @@ var STR = {
     hiMorning: 'Buenos días', hiAfternoon: 'Buenas tardes', hiNight: 'Buenas noches',
     localCta: '¿Das un tour, un taller o hacés artesanía? Contalo y nAIhual se lo recomienda a quien le sirva.', offerIt: 'Ofrecé una experiencia',
     perfilOff: function (n) { return 'Se apagó «' + n + '»: hasta 2 a la vez'; },
-    ideaTitle: function (n) { return 'Hoy te sugiere ' + n; }, otherIdea: 'Otra idea', seeIt: 'Ver',
+    ideaTitle: function (n) { return 'Hoy te sugiere ' + n; }, otherIdea: 'Otra idea', seeIt: 'Ver', askHint: function (n) { return 'Preguntale a ' + n + ' lo que buscás'; }, moreTitle: 'Más de nAIhual',
     by: 'De ', free: 'Gratis', spend: 'Con algo que comprar', forYou: 'Para vos',
     perfilQ: '¿Cómo venís a Antigua?', perfilBody: 'Encendé hasta 2. Cambian qué te mostramos primero y cómo te recomiendan; el trato es el mismo para todos.', perfilOn: 'Primero va lo pensado para vos. Podés tener 2 encendidos.',
     outside: 'Tocá un ícono para ver qué es; los del borde están afuera del centro',
@@ -951,7 +965,7 @@ var STR = {
     hiMorning: 'Good morning', hiAfternoon: 'Good afternoon', hiNight: 'Good evening',
     localCta: 'Do you give tours, workshops or make crafts? Share it and nAIhual recommends it to whoever it suits.', offerIt: 'Offer an experience',
     perfilOff: function (n) { return '«' + n + '» switched off: up to 2 at once'; },
-    ideaTitle: function (n) { return n + '’s idea for today'; }, otherIdea: 'Another idea', seeIt: 'See',
+    ideaTitle: function (n) { return n + '’s idea for today'; }, otherIdea: 'Another idea', seeIt: 'See', askHint: function (n) { return 'Ask ' + n + ' what you’re looking for'; }, moreTitle: 'More from nAIhual',
     by: 'By ', free: 'Free', spend: 'Something to buy', forYou: 'For you',
     perfilQ: 'How are you visiting Antigua?', perfilBody: 'Switch on up to 2. They change what comes first and how we recommend; everyone gets the same treatment.', perfilOn: 'What suits you comes first. You can have 2 on.',
     outside: 'Tap an icon to see what it is; the ones on the edge are outside the centre',
@@ -1498,6 +1512,40 @@ function serverAI(url) {
   } };
 }
 var SERVER_AI = /^https:\/\//.test(String(CFG.servidor_ia || '')) ? String(CFG.servidor_ia) : '';
+var SERVER_BASE = SERVER_AI.replace(/\/?$/, '/');
+// Buzón compartido de los agentes (mismo servidor). Imita lo que usa la app de la base del visor: collection().add/onSnapshot y doc().set/update/delete.
+// Cada colección se vuelve a leer después de escribir y cada 30 segundos mientras la app está a la vista.
+function remoteDb(base) {
+  var subs = {};
+  function req(method, path, body) {
+    return fetch(base + path, { method: method, headers: body ? { 'Content-Type': 'text/plain;charset=utf-8' } : {}, body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) { return r.json(); }).then(function (d) { return d && !d.error ? d : Promise.reject(d || {}); });
+  }
+  function pull(col) {
+    return req('GET', 'buzon/' + col).then(function (d) {
+      var snap = { docs: (Array.isArray(d.docs) ? d.docs : []).filter(function (x) { return x && typeof x === 'object'; }).map(function (x) {
+        return { id: String(x._id), data: function () { var c = {}; Object.keys(x).forEach(function (k) { if (k !== '_id') c[k] = x[k]; }); return c; } }; }) };
+      (subs[col] || []).forEach(function (s) { s.ok(snap); });
+    }, function (e) { var l = subs[col] || []; subs[col] = []; l.forEach(function (s) { if (s.err) s.err(e); }); });
+  }
+  setInterval(function () { if (document.visibilityState !== 'hidden') Object.keys(subs).forEach(function (c) { if (subs[c].length) pull(c); }); }, 30000);
+  function path(p) { var a = String(p).split('/'); return { col: a[0], id: encodeURIComponent(a.slice(1).join('/')) }; }
+  return {
+    collection: function (col) { return {
+      add: function (doc) { return req('POST', 'buzon/' + col, { doc: doc }).then(function (d) { pull(col); return { id: d.id }; }); },
+      onSnapshot: function (ok, err) { (subs[col] = subs[col] || []).push({ ok: ok, err: err }); pull(col); }
+    }; },
+    doc: function (p) { var x = path(p), put = function (d, merge) { return req('PUT', 'buzon/' + x.col + '/' + x.id, { doc: d, merge: merge }).then(function () { pull(x.col); }); };
+      return { set: function (d) { return put(d, false); }, update: function (d) { return put(d, true); }, delete: function () { return req('DELETE', 'buzon/' + x.col + '/' + x.id).then(function () { pull(x.col); }); } }; }
+  };
+}
+// Fotos del buzón: se suben al mismo servidor (ya achicadas por la app).
+function remoteAssets(base) {
+  return {
+    upload: function (blob) { return fetch(base + 'buzon-foto', { method: 'POST', headers: { 'Content-Type': blob.type || 'image/jpeg' }, body: blob }).then(function (r) { return r.json(); }).then(function (d) { return d && d.url ? d : Promise.reject(d); }); },
+    delete: function (id) { return fetch(base + 'buzon-foto/' + encodeURIComponent(id), { method: 'DELETE' }); }
+  };
+}
 if (AI_ON && !(window.claude && typeof window.claude.use === 'function') && SERVER_AI) { AI.fn = serverAI(SERVER_AI); AI.state = 'listo'; AI.name = 'Gemini'; }
 else if (AI_ON && window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then(function (fn) { AI.fn = fn || null; AI.state = fn ? 'listo' : 'no-disponible'; render({ keep: true }); }, function () { AI.state = 'no-disponible'; render({ keep: true }); });
@@ -1577,8 +1625,8 @@ function aiRules(gid, q) {
     'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
     'Orden para buscar (obligatorio):\n' +
     '1. Primero lo que nAIhual ya sabe: «catalogo», «publicaciones_confirmadas» (lo que contó y confirmó quien usa la beta: contalo como dicho por esa persona, con su fecha; un evento con fecha pasada no se ofrece), «lugares_agregados_en_la_beta», «visitas_fuera_del_catalogo», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
-    '2. Si ahí no está o no alcanza, SIEMPRE proponé 2 o 3 lugares reales que conozcás de Antigua, como un agente de verdad, en «otros» (nombre exacto y por qué). La app les pone «Según la IA · confirmá en Google». Decir «no tengo información» sin proponer nada es el último recurso: solo si de verdad no conocés ningún lugar real. No inventes.\n' +
-    '- Si la persona repite o insiste en una pregunta, no repitas tu respuesta: proponé otros lugares, cambiá de enfoque o preguntá algo concreto.\n' +
+    '2. Si ahí no está o no alcanza: CERO INVENTOS (FIJA de Diego). No nombrés ningún lugar que no esté en los DATOS. Decí en una frase, con naturalidad, que los investigadores y agentes de nAIhual todavía no han cargado eso; si sirve, da contexto general sin nombres (qué tipo de lugar buscar, en qué zona). Poné en «buscar» de 2 a 5 palabras para buscarlo en Google Maps (por ejemplo «comedor de comida típica»): la app arma el botón. Mejor decir que no está que inventar.\n' +
+    '- Si la persona repite o insiste en una pregunta, no repitas tu respuesta: proponé otros del catálogo, cambiá de enfoque o preguntá algo concreto.\n' +
     'Reglas:\n' +
     '- Sos guía, no juez. Resumí lo que dijeron las personas (la beta, agentes) y las fuentes públicas del catálogo y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
     '- Nunca afirmes horarios, precios, si abre hoy ni qué platos tiene el menú: decí «confirmalo en Google Maps» o «en su menú», una sola vez.\n' +
@@ -1592,12 +1640,13 @@ function aiRules(gid, q) {
     '- Las «notas_de_la_beta» son lo que escribió quien prueba la app: resumilas como lo que dijo una persona, no como un hecho.\n' +
     '- Si un lugar tiene «aviso» (por ejemplo, temporalmente cerrado), decilo.\n' +
     '- No repitas un consejo que ya diste en esta plática. «consejos» solo si de verdad suma.\n' +
-    '- No repitas lugares de «ya_mostrados» salvo que te los pidan: proponé otros, del catálogo o de lo que sabés (paso 2). Variá; que cada respuesta traiga algo nuevo.\n' +
+    '- No repitas lugares de «ya_mostrados» salvo que te los pidan: proponé otros del catálogo; si no hay más, decilo (paso 2). Variá; que cada respuesta traiga algo nuevo.\n' +
     '- Si la pregunta es ambigua, una pregunta breve. Las «opciones» suenan a persona, no a menú (por ejemplo «¿Algo dulce cerca?»), sin palabras como «pendiente de validación».\n' +
     '- Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si te escriben en inglés, respondé en inglés.\n' +
+    '- Voz (Diego, 10-nov): hablá como alguien de Antigua que conoce bien la ciudad, no como folleto turístico. Sin saludo al empezar (nada de «¡Hola!», «Hola, vos», «Qué gusto»): andá directo a la respuesta. El voseo va en los verbos (buscá, andá, probá); no uses «vos» como palabra suelta. Prohibido: «fonda», «sazón», «de generación en generación», «el corazón de», «joya», «mágico», «encantador», «rincón», «auténtico», «experiencia única», «no te lo podés perder». Para comida de aquí decí «comida típica» o «comedor».\n' +
     '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección de quien pregunta). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
     '- «no_se»: true si no tenías información suficiente para responder bien. Entonces «falta»: en pocas palabras, qué información faltaba (por ejemplo «horario de mercados de artesanías»), sin datos personales. Claude lo investiga y lo carga con su fuente.\n' +
-    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "otros": [{"nombre": string, "porque": string}], "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos], "no_se": boolean, "falta": string}\n\n' +
+    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "buscar": string, "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos], "no_se": boolean, "falta": string}\n\n' +
     'DATOS:\n' + JSON.stringify(aiData(q, gid));
 }
 // Revisión de lo que devuelve Claude antes de mostrarlo.
@@ -1613,9 +1662,10 @@ function aiClean(r) {
     // Si es un lugar del catálogo, se muestra su ficha.
     var cat = PIDS.filter(function (id) { return visible(P[id]) && norm(P[id].name) === n; })[0];
     if (cat) { if (lugares.indexOf(cat) < 0 && lugares.length < 3) lugares.push(cat); return; }
-    if (otros.length < 3 && !otros.some(function (x) { return norm(x.nombre) === n; })) otros.push({ nombre: nombre, porque: typeof o.porque === 'string' ? o.porque.trim().slice(0, 200) : '' });
+    // Fuera del catálogo no se muestra (B6 paso 2, cero inventos): en su lugar va la búsqueda en Google Maps.
   });
-  return { texto: texto, lugares: lugares, otros: otros, consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 1),
+  var buscar = typeof r.buscar === 'string' ? r.buscar.replace(/[<>]/g, '').trim().slice(0, 60) : '';
+  return { texto: texto, lugares: lugares, otros: otros, buscar: buscar, consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 1),
     cultural: r.cultural === true, suficiente: r.suficiente === true,
     opciones: (Array.isArray(r.opciones) ? r.opciones : []).map(function (o) { return String(o).trim().slice(0, 60); }).filter(Boolean).slice(0, 3),
     no_se: r.no_se === true, falta: typeof r.falta === 'string' ? r.falta.trim().slice(0, 120) : '',
@@ -1657,6 +1707,12 @@ function iaPlaceCard(o) {
   return '<article class="lcard ia" data-ia-place="' + esc(o.nombre) + '"><span class="thumb">' + photoArt('cultura', 'kej') + '</span><span><b>' + esc(o.nombre) + '</b><span class="sub">' + esc(x.iaTag) + '</span>' + (o.porque ? '<span class="sub">' + esc(o.porque) + '</span>' : '') + '</span>' +
     '<span class="go"><a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener" data-vamos-name="' + esc(o.nombre) + '" aria-label="' + esc(t.mapsAria(o.nombre)) + '">' + icon('pin', 'sm') + esc(t.maps) + '</a>' +
     '<a class="btn" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(t.info) + '</a></span></article>';
+}
+// Cero inventos (B6 paso 2): lo que no está cargado se busca en Google Maps, sin nombres puestos por la IA.
+function searchCard(q) {
+  var x = X(), url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q + ', Antigua Guatemala');
+  return '<article class="lcard search" data-search="' + esc(q) + '"><span class="thumb">' + icon('pin') + '</span><span><b>' + esc(x.searchTitle) + '</b><span class="sub">«' + esc(q) + '» · ' + esc(x.searchSub) + '</span></span>' +
+    '<span class="go"><a class="btn primary" href="' + url + '" target="_blank" rel="noopener">' + esc(x.searchBtn) + '</a></span></article>';
 }
 function askClaude(text, rulesMsg, pend) {
   AI.busy = true; AI.ctl = new AbortController();
@@ -1709,15 +1765,13 @@ function learnLoadLocal() { try { var a = JSON.parse(localStorage.getItem(LEARN_
 function learnSaveLocal() { try { localStorage.setItem(LEARN_LS, JSON.stringify(LEARN.items)); } catch (e) {} }
 if (BETA_ON) {
   betaLoadLocal(); learnLoadLocal();
-  if (window.claude && typeof window.claude.use === 'function') {
-    window.claude.use('db').then(function (db) {
-      if (!db) return;
-      BETA.db = db; BETA.where = 'db';
+  var attachDb = function (db, visor) {
+      BETA.db = db; BETA.where = visor ? 'db' : 'buzon';
       db.collection('beta').onSnapshot(function (snap) {
         BETA.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.tipo === 'string'; });
         betaRefresh();
       }, function () { BETA.db = null; BETA.where = 'local'; betaLoadLocal(); betaRefresh(); });
-      googleProbe();
+      if (visor) googleProbe();
       db.collection('galeria').onSnapshot(function (snap) { GAL.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }); betaRefresh(); }, function () {});
       db.collection('memoria').onSnapshot(function (snap) { MEM.items = snap.docs.map(function (d) { var x = d.data() || {}; x._id = d.id; return x; }).filter(function (x) { return typeof x.texto === 'string'; }); betaRefresh(); }, function () {});
       db.collection('aprendido').onSnapshot(function (snap) {
@@ -1725,8 +1779,11 @@ if (BETA_ON) {
         betaRefresh();
       }, function () { learnLoadLocal(); betaRefresh(); });
       betaRefresh();
-    }, function () {});
-  }
+  };
+  if (window.claude && typeof window.claude.use === 'function') window.claude.use('db').then(function (db) { if (db) attachDb(db, true); }, function () {});
+  // Afuera del visor: el buzón de agentes en el servidor de Diego (FIJA 10-nov). Si el buzón no está listo, todo sigue en el teléfono.
+  // Solo si el servidor ya tiene el buzón (responde con su lista); si no, todo sigue en el teléfono.
+  else if (SERVER_AI) fetch(SERVER_BASE + 'buzon/beta').then(function (r) { return r.json(); }).then(function (d) { if (d && Array.isArray(d.docs)) attachDb(remoteDb(SERVER_BASE), false); }, function () {});
 }
 function betaLiked(pid) { return BETA_ON && BETA.items.some(function (x) { return x.tipo === 'gusta' && x.lugar === pid; }); }
 function betaToggleLike(pid) {
@@ -1800,6 +1857,8 @@ function fuiBar() {
 // Archivos del visor (fotos). Sin visor no hay fotos.
 var ASSETS = null;
 if (BETA_ON && window.claude && typeof window.claude.use === 'function') window.claude.use('assets').then(function (a) { ASSETS = a || null; }, function () {});
+// Afuera del visor, las fotos van al buzón solo si el buzón responde (si no, el formulario no pide foto).
+else if (BETA_ON && SERVER_AI) fetch(SERVER_BASE + 'buzon/galeria').then(function (r) { return r.json(); }).then(function (d) { if (d && Array.isArray(d.docs)) { ASSETS = remoteAssets(SERVER_BASE); render({ keep: true }); } }, function () {});
 // Achica la foto y la vuelve a dibujar: así sale sin la ubicación ni los datos ocultos de la cámara.
 // Si el teléfono no la puede abrir (por ejemplo, HEIC), no se sube.
 function shrinkPhoto(file) {
@@ -1957,7 +2016,7 @@ function betaFichaHTML(p) {
 function betaCard() {
   var x = X(), n = BETA.items.length;
   return '<div class="wpad" data-beta-card><span class="eyebrow">' + esc(x.betaKicker) + ' · ' + esc(x.betaCount(n)) + '</span><p>' + esc(x.betaBody) + '</p>' +
-    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button><button type="button" class="btn" data-go="registro">' + esc(x.regTitle) + '</button></div></div>';
+    '<div class="row"><button type="button" class="btn primary" data-publish>' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-go="beta">' + esc(x.betaOpen) + '</button></div></div>';
 }
 function byDate(a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); }
 function bqRows(q) {
@@ -2013,7 +2072,7 @@ function betaListHTML() {
 function betaHTML() {
   var x = X();
   return backBtn() + '<div class="pagehead"><span class="eyebrow">' + esc(x.betaKicker) + '</span><h1>' + esc(x.betaTitle) + '</h1><p>' + esc(x.betaBody) + '</p></div>' +
-    '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : x.whereLocal) + '</span></div>' +
+    '<div class="status plain" data-beta-where="' + BETA.where + '"><span>' + esc(BETA.where === 'db' ? x.whereDb : BETA.where === 'buzon' ? x.whereBuzon : x.whereLocal) + '</span></div>' +
     '<details class="panel" data-beta-how><summary><b>' + esc(x.howTitle) + '</b></summary><ol>' + x.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></details>' +
     wallHTML() + '<div class="row"><button type="button" class="btn" data-go="registro">' + esc(x.regTitle) + '</button><button type="button" class="btn" data-go="galeria">' + esc(x.galTitle) + '</button></div>' + memoriaHTML() + betaQuickHTML() + betaNewHTML() + learnedHTML() + libretasHTML() + betaListHTML();
 }
@@ -2056,7 +2115,7 @@ function betaSubmit(form) {
     if (!pt) { if (bm) bm.textContent = x.postEmpty; return; }
     if (pm && !MAPS_RE.test(pm)) { if (bm) bm.textContent = x.badMaps; return; }
     var tema = (form.querySelector('input[name="tema"]:checked') || {}).value || 'lugar';
-    var post = { tipo: 'post', tema: tema, texto: pt.slice(0, 800), maps: pm.slice(0, 500), estado: 'por_confirmar' };
+    var post = { tipo: 'post', tema: tema, texto: pt.slice(0, 800), maps: pm.slice(0, 500), estado: 'confirmado' }; // sin restricciones para publicar (FIJA de Diego, 10-nov): sale al momento
     // La ventana se cierra solo cuando quedó guardado: si falla, lo escrito sigue ahí.
     withPhoto(form, post, function (id) { var dp = document.getElementById('dlg'); if (dp.open) dp.close(); postClassify(id, post); });
     return;
@@ -2156,7 +2215,7 @@ function msgHTML(m, isNew) {
     before.forEach(function (x) { if (x.kind === 'ai') x.ai.consejos.forEach(function (id) { seen[id] = 1; }); });
     var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.filter(function (id) { return !seen[id]; }).map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
     if (m.ai.cultural) paras.push('<span class="note" data-cult>* ' + esc(t.infoCultBody) + '</span>');
-    var otros = (m.ai.otros || []).map(iaPlaceCard).join('');
+    var otros = m.ai.buscar ? searchCard(m.ai.buscar) : '';
     var plist = list.filter(function (c) { return c.key.charAt(0) === 'p'; }).map(function (c) { return c.key.slice(2); }), rest = list.filter(function (c) { return c.key.charAt(0) !== 'p'; });
     if (plist.length || otros || rest.length) cards = resultsHTML(plist, '', otros + cardsFor(rest));
     if (m.ai.opciones.length) after = '<div class="chips" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';
@@ -2194,8 +2253,11 @@ var CLOSED = S.closed;
 function saveClosed() { persist(); }
 // Un toque corto en el teléfono (si lo permite) cuando algo cambia.
 function tick() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {} }
+// Jerarquía (3.14): lo de todos los días va abierto; lo demás, cerrado hasta que la persona lo abra.
+var SECONDARY = ['que', 'perfil', 'brujula', 'guias', 'explorar'];
+function isClosed(id) { return Object.prototype.hasOwnProperty.call(CLOSED, id) ? !!CLOSED[id] : SECONDARY.indexOf(id) >= 0; }
 function widget(id, title, ico, body, extra, color) {
-  var closed = !!CLOSED[id];
+  var closed = isClosed(id);
   return '<section class="widget' + (closed ? ' closed' : '') + '" data-widget="' + id + '"' + (color ? ' style="--wc:var(--g-' + color + ')"' : '') + '><div class="whead"><h2 class="wh"><button type="button" class="wtoggle" data-wtoggle="' + id + '" aria-expanded="' + !closed + '">' +
     (ico ? icon(ico) : '') + '<span class="wt">' + esc(title) + '</span>' + icon('chev', 'sm chev') + '</button></h2>' + (extra || '') + '</div><div class="wbody"><div class="winner">' + body + '</div></div></section>';
 }
@@ -2215,7 +2277,7 @@ function ideaHTML() {
   else { body = TIPS[id].body[lang]; star = !!TIPS[id].star; }
   return '<div class="idea g-' + g + '" data-idea-key="' + esc(key) + '">' + portrait(g, 44) + '<div><div class="bubble"><p class="muted" style="font-size:13px">' + esc(RAMA[g].voz[lang]) + '</p>' + (head ? '<b>' + esc(head) + '</b>' : '') + '<p>' + esc(body) + (star ? ' *' : '') + '</p>' + (star ? infoHTML('cult') : '') + '</div>' +
     (S.perfiles.indexOf('local') >= 0 && BETA_ON ? '<p class="note" data-local-cta>' + esc(t.localCta) + ' <button type="button" class="linkish" data-publish="ofrezco">' + esc(t.offerIt) + '</button></p>' : '') +
-    '<div class="row">' + go + '<button type="button" class="btn" data-idea>' + icon('shuffle', 'sm') + esc(t.otherIdea) + '</button><button type="button" class="btn ghost" data-guide="' + g + '">' + icon('chat', 'sm') + esc(t.talk + ' ' + G[g].name) + '</button></div></div></div>';
+    '<div class="row">' + go + '<button type="button" class="btn" data-idea>' + icon('shuffle', 'sm') + esc(t.otherIdea) + '</button></div></div></div>';
 }
 function perfilHTML() {
   var t = T(), lang = L();
@@ -2241,17 +2303,19 @@ function inicioHTML() {
   var tiles = [['explorar', 'lugares'], ['cultura', 'cultura'], ['costumbres', 'costumbres'], ['guardianes', 'guardianes']];
   var portada = BETA_ON ? galFind('portada') : '';
   return '<section class="hero"><div class="hero-art">' + (portada ? '<img class="hero-photo" src="' + esc(portada) + '" alt=""><span class="hero-shade"></span>' : heroArt()) + '<div class="hero-copy"><span class="hello" data-saludo>' + esc(saludo()) + '</span><h1>' + esc(t.heroTitle) + '</h1><p>' + esc(t.tagline) + '</p></div></div>' +
+    '<button type="button" class="askbar" data-guide="' + S.guide + '">' + icon('chat') + '<span>' + esc(t.askHint(G[S.guide].name)) + '</span></button>' +
     '<div class="cta-row"><button type="button" class="btn anil big" data-ask="cafe" id="cta-cafe">' + icon('coffee') + esc(t.coffee) + '</button><button type="button" class="btn big" data-ask="empezar">' + esc(t.arrived) + '</button></div></section>' +
     widget('idea', t.ideaTitle(G[S.guide].name), 'spark', '<div class="wpad" id="idea-body" data-sugerencia>' + ideaHTML() + '</div>', '', S.guide) +
-    widget('que', x.introKicker, 'info', '<div class="wpad intro-in" data-intro><h3>' + esc(x.introTitle) + '</h3><p class="muted">' + esc(x.introBody) + '</p></div>') +
-    widget('perfil', t.perfilQ, 'user', perfilHTML()) +
     widget('playlists', t.routes, 'map', '<div class="wpad">' + routes + '</div>', rids.length ? '<button type="button" class="linkish" data-go="rutas">' + esc(t.seeAll) + '</button>' : '') +
     (BETA_ON ? widget('beta', x.betaTitle, 'plus', betaCard()) : '') +
+    '<div class="more-group" data-more><h2 class="group-h">' + esc(t.moreTitle) + '</h2>' +
+    widget('perfil', t.perfilQ, 'user', perfilHTML()) +
+    widget('que', x.introKicker, 'info', '<div class="wpad intro-in" data-intro><h3>' + esc(x.introTitle) + '</h3><p class="muted">' + esc(x.introBody) + '</p></div>') +
     widget('brujula', x.compass, 'compass', brujulaHTML(), infoHTML('guard')) +
     widget('guias', t.todayGuide, 'chat', '<div class="wpad">' + guardStrip(S.guide) + '</div>', infoHTML('guard')) +
     widget('explorar', t.explore, 'grid', '<div class="wpad"><div class="tiles">' + tiles.map(function (z) {
       return '<button type="button" class="tile" data-go="' + z[0] + '"><span><b>' + esc(t.tiles[z[1]][0]) + '</b><small>' + esc(t.tiles[z[1]][1]) + '</small></span>' + icon('arrow', 'sm') + '</button>'; }).join('') + '</div></div>') +
-    footHTML();
+    '</div>' + footHTML();
 }
 // Mapas de Diego hechos en Google My Maps (data/config.js → mapas: [{ titulo, url }]). Sin llave: se incrustan tal cual.
 function myMapEmbed(u) { var m = /^https:\/\/www\.google\.com\/maps\/d\/(?:u\/\d+\/)?(?:edit|viewer|embed)\?mid=([A-Za-z0-9_-]+)/.exec(String(u || '')); return m ? 'https://www.google.com/maps/d/embed?mid=' + m[1] : ''; }
@@ -2596,7 +2660,7 @@ var ACTIONS = [
   ['data-sec', function (v) { S.sec = v; render({ keep: true }); window.scrollTo(0, 0); }],
   ['data-demo-fb', function (v) { S.demoFb = v; render({ keep: true }); }],
   ['data-perfil', function (v) { togglePerfil(v); }],
-  ['data-wtoggle', function (v, e, el) { CLOSED[v] = !CLOSED[v]; saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
+  ['data-wtoggle', function (v, e, el) { CLOSED[v] = !isClosed(v); saveClosed(); tick(); var wd = el.closest('.widget'); wd.classList.toggle('closed', !!CLOSED[v]); el.setAttribute('aria-expanded', String(!CLOSED[v])); }],
   ['data-idea', function () { S.ideaN++; tick(); var b = document.getElementById('idea-body'); if (b) b.innerHTML = ideaHTML(); }],
   ['data-publish', function (v) { tick(); openDialog(postForm(v)); }],
   ['data-rorden', function (v) { RQ.orden = v; render({ keep: true }); }],

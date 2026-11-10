@@ -23,7 +23,7 @@
    Otros campos: tipo (lo que dice Google Maps), web, aviso (por ejemplo, temporalmente cerrado: no entra a rutas ni recomendaciones),
    consulta_web (fecha de la búsqueda), frase_de (quién dijo la frase: va firmada, nunca como verdad, B7).
    Los campos vacíos y los «false» no se escriben. maps_url solo si es el enlace propio del lugar; si no, la app arma la búsqueda.
-   Un lugar repetido no se borra: queda «retirado» con su id. Lo que no está activo vive en data/reserva.js (la app no lo carga).
+   Un lugar repetido no se borra: queda «retirado» con su id. Lo que no está activo vive en el Sheet de Diego (curaduría).
    El historial de cambios del catálogo está en docs/nAIhual.md (Parte 4, registro, y Parte 5, historial). */
 window.NAIHUAL_LUGARES = [
   {"id": "parque", "mapa": {"avenida": 4.5, "calle": 4.5, "aprox": false}, "nombre": "Parque Central", "categoria": "cultura", "historico": true, "direccion": "Entre 4a y 5a Calle, 4a y 5a Avenida", "fuente": "Thoroughly Travel · iglesias, conventos y ruinas de Antigua", "fuente_url": "https://www.thoroughlytravel.com/convents-churches-antigua-ruins/", "estado": "borrador", "guardianes": ["iq", "noj"], "frase": {"es": "La plaza principal. A su alrededor están la Catedral, el Palacio de los Capitanes Generales y el Ayuntamiento.", "en": "The main square, framed by the Cathedral, the Palace of the Captains General and City Hall."}, "consulta_web": "2026-10-25", "pendiente": "Referencia web general del 25-oct-2026: confirmar que la página trate este lugar.", "origen": "diego"},
