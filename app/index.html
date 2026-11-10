@@ -1782,7 +1782,8 @@ if (BETA_ON) {
   };
   if (window.claude && typeof window.claude.use === 'function') window.claude.use('db').then(function (db) { if (db) attachDb(db, true); }, function () {});
   // Afuera del visor: el buzón de agentes en el servidor de Diego (FIJA 10-nov). Si el buzón no está listo, todo sigue en el teléfono.
-  else if (SERVER_AI) setTimeout(function () { attachDb(remoteDb(SERVER_BASE), false); }, 0); // después de que la pantalla exista
+  // Solo si el servidor ya tiene el buzón (responde con su lista); si no, todo sigue en el teléfono.
+  else if (SERVER_AI) fetch(SERVER_BASE + 'buzon/beta').then(function (r) { return r.json(); }).then(function (d) { if (d && Array.isArray(d.docs)) attachDb(remoteDb(SERVER_BASE), false); }, function () {});
 }
 function betaLiked(pid) { return BETA_ON && BETA.items.some(function (x) { return x.tipo === 'gusta' && x.lugar === pid; }); }
 function betaToggleLike(pid) {
