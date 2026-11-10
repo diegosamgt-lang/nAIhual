@@ -13,5 +13,5 @@ window.NAIHUAL_CONFIG = {
   mapas: [],
   // Dirección del servidor de la IA (Gemini) para cuando la app vive afuera del visor de Claude (servidor/gemini-worker.js).
   // Vacío = sin IA afuera del visor (contestan las reglas fijas).
-  servidor_ia: ''
+  servidor_ia: 'https://naihual-ia.diegosamgt.workers.dev'
 };

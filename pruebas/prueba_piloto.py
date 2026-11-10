@@ -105,6 +105,18 @@ def serve():
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self, *a):
             pass
+
+        def do_GET(self):
+            # Las pruebas no tocan el servidor real de Gemini: se sirve config.js sin servidor_ia (D2 lo simula).
+            if self.path.split('?')[0].endswith('/data/config.js'):
+                body = re.sub(r"servidor_ia:\s*'[^']*'", "servidor_ia: ''", open(os.path.join(APP, 'data', 'config.js'), encoding='utf-8').read()).encode('utf-8')
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/javascript; charset=utf-8')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            return super().do_GET()
     handler = functools.partial(Quiet, directory=APP)
     httpd = socketserver.TCPServer(('127.0.0.1', 0), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()

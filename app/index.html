@@ -555,7 +555,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.11 · 8-nov-2026';
+var VERSION = 'nAIhual 3.12 · 10-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -1603,7 +1603,8 @@ function aiRules(gid, q) {
 // Revisión de lo que devuelve Claude antes de mostrarlo.
 function aiClean(r) {
   if (!r || typeof r !== 'object' || typeof r.texto !== 'string' || !r.texto.trim()) return null;
-  var texto = r.texto.trim().slice(0, 1500);
+  // Gemini a veces marca negritas con **: se quitan (el * solo marca lo maya pendiente de validar).
+  var texto = r.texto.replace(/\*\*([^*]+)\*\*/g, '$1').trim().slice(0, 1500);
   function ids(list, ok, max) { return (Array.isArray(list) ? list : []).map(String).filter(function (x, i, a) { return ok(x) && a.indexOf(x) === i; }).slice(0, max); }
   var lugares = ids(r.lugares, function (id) { return visible(P[id]); }, 3), otros = [];
   (Array.isArray(r.otros) ? r.otros : []).forEach(function (o) {
