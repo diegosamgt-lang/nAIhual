@@ -468,6 +468,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 
 **nAIhual 3.11 — 8-nov-2026:** publicación en GitHub Pages (`.github/workflows/pages.yml`, pedido diegosamgt-lang/nAIhual#2) y Gemini afuera del visor: servidor propio en Cloudflare (`servidor/gemini-worker.js`) que guarda la llave; la app lo usa si `servidor_ia` está en `config.js`. Guía paso a paso: `docs/conectar-gemini.html`. ✅ 266/266 pruebas.
 
+**3.11 arreglo — 10-nov-2026:** Diego no encontró «Variables and Secrets» en Cloudflare. El servidor ahora trae los dominios permitidos adentro y la llave se pega en el código, solo en el editor de Cloudflare (nunca en GitHub). Si después se usan las variables, mandan ellas. Guía simplificada a 5 pasos.
+
 **nAIhual 3.10 — 7-nov-2026:** 3 perfiles para empezar (Local, Turista, Mochilero; después nacional, internacional y visita regular); «Registro» con todos los lugares, A–Z, Z–A, por categoría y por quién lo trajo (Diego o «IA · 20»); cada lugar con su `origen`; Memoria ordenada por categoría; prompts nuevos (`docs/prompts/prompt-directorio.md`): inventario de Gemini con máximo 20 y libretas de NotebookLM por categoría. My Maps: gratis, con íconos propios. ✅ 264/264 pruebas.
 
 **nAIhual 3.9.1 — 7-nov-2026:** se quitó «Curar» de la app: la curaduría vive en la hoja de Diego (columnas para, confirmo, estado) y llega con «cargá el directorio». ✅ 261/261 pruebas.

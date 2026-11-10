@@ -1,21 +1,23 @@
 /* nAIhual · servidor de la IA (Cloudflare Worker). Guarda la llave de Gemini: nunca va en el teléfono (B15).
    La app le manda la plática (las reglas y los datos van en el primer mensaje) y recibe la respuesta en JSON.
 
-   Variables en Cloudflare (Settings → Variables):
-   - GEMINI_KEY (secreta): la llave de Google AI Studio.
-   - ORIGENES: dominios que pueden usarlo, separados por coma. Ej.: https://diegosamgt-lang.github.io,https://www.disartstudio.com
-   - MODELO (opcional): por defecto gemini-2.5-flash. ❓ Confirmar el nombre vigente en AI Studio. */
+   La forma fácil: pegá tu llave entre las comillas de LLAVE, solo en el editor de Cloudflare (nunca en GitHub).
+   Si preferís, las variables de Cloudflare (GEMINI_KEY, ORIGENES, MODELO) mandan sobre lo de abajo.
+   MODELO: por defecto gemini-2.5-flash. ❓ Confirmar el nombre vigente en AI Studio. */
+const LLAVE = 'PEGÁ_AQUÍ_TU_LLAVE';
+const ORIGENES_BASE = 'https://diegosamgt-lang.github.io,https://www.disartstudio.com,https://disartstudio.com';
 export default {
   async fetch(req, env) {
     const origin = req.headers.get('Origin') || '';
-    const allowed = String(env.ORIGENES || '').split(',').map(s => s.trim()).filter(Boolean);
+    const allowed = String(env.ORIGENES || ORIGENES_BASE).split(',').map(s => s.trim()).filter(Boolean);
     const ok = allowed.includes(origin);
     const cors = { 'Access-Control-Allow-Origin': ok ? origin : 'null', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
     const reply = (obj, status) => new Response(JSON.stringify(obj), { status: status || 200, headers: Object.assign({ 'Content-Type': 'application/json' }, cors) });
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (req.method !== 'POST') return reply({ error: 'metodo' }, 405);
     if (!ok) return reply({ error: 'not_granted' }, 403);
-    if (!env.GEMINI_KEY) return reply({ error: 'sin_llave' }, 500);
+    const key = env.GEMINI_KEY || (LLAVE && LLAVE !== 'PEGÁ_AQUÍ_TU_LLAVE' ? LLAVE : '');
+    if (!key) return reply({ error: 'sin_llave' }, 500);
     let body;
     try { body = await req.json(); } catch (e) { return reply({ error: 'invalid_request' }, 400); }
     const input = Array.isArray(body && body.input) ? body.input.slice(-12) : [];
@@ -25,7 +27,7 @@ export default {
     const model = env.MODELO || 'gemini-2.5-flash';
     const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_KEY },
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({ contents, generationConfig: { responseMimeType: 'application/json', temperature: 0.6 } })
     });
     if (r.status === 429) return reply({ error: 'rate_limited' }, 429);

@@ -18,48 +18,49 @@ code{font:14px ui-monospace,Menlo,monospace;background:var(--bg);padding:1px 6px
 <li><b>Sacá la llave de Gemini.</b><p>Entrá a <code>aistudio.google.com</code> con tu cuenta de Google → «Get API key» → «Create API key». Copiala y guardala; no se la pasés a nadie.</p></li>
 <li><b>Creá tu cuenta en Cloudflare.</b><p>Entrá a <code>dash.cloudflare.com</code> y registrate (gratis).</p></li>
 <li><b>Creá el servidor.</b><p>Menú «Workers & Pages» → «Create» → «Create Worker». Ponele de nombre <code>naihual-ia</code> → «Deploy».</p></li>
-<li><b>Pegá el código.</b><p>Tocá «Edit code», borrá todo lo que hay, pegá esto y tocá «Deploy».</p><pre id="code">/* nAIhual · servidor de la IA (Cloudflare Worker). Guarda la llave de Gemini: nunca va en el teléfono (B15).
+<li><b>Pegá el código y tu llave.</b><p>Tocá «Edit code», borrá todo lo que hay y pegá esto. Después buscá, casi arriba, <code>PEGÁ_AQUÍ_TU_LLAVE</code>: borrá solo esas palabras (dejá las comillas) y pegá ahí tu llave del paso 1. Tocá «Deploy». Este código solo lo ves vos en Cloudflare.</p><pre id="code">/* nAIhual · servidor de la IA (Cloudflare Worker). Guarda la llave de Gemini: nunca va en el teléfono (B15).
    La app le manda la plática (las reglas y los datos van en el primer mensaje) y recibe la respuesta en JSON.
 
-   Variables en Cloudflare (Settings → Variables):
-   - GEMINI_KEY (secreta): la llave de Google AI Studio.
-   - ORIGENES: dominios que pueden usarlo, separados por coma. Ej.: https://diegosamgt-lang.github.io,https://www.disartstudio.com
-   - MODELO (opcional): por defecto gemini-2.5-flash. ❓ Confirmar el nombre vigente en AI Studio. */
+   La forma fácil: pegá tu llave entre las comillas de LLAVE, solo en el editor de Cloudflare (nunca en GitHub).
+   Si preferís, las variables de Cloudflare (GEMINI_KEY, ORIGENES, MODELO) mandan sobre lo de abajo.
+   MODELO: por defecto gemini-2.5-flash. ❓ Confirmar el nombre vigente en AI Studio. */
+const LLAVE = 'PEGÁ_AQUÍ_TU_LLAVE';
+const ORIGENES_BASE = 'https://diegosamgt-lang.github.io,https://www.disartstudio.com,https://disartstudio.com';
 export default {
   async fetch(req, env) {
-    const origin = req.headers.get(&#x27;Origin&#x27;) || &#x27;&#x27;;
-    const allowed = String(env.ORIGENES || &#x27;&#x27;).split(&#x27;,&#x27;).map(s =&gt; s.trim()).filter(Boolean);
+    const origin = req.headers.get('Origin') || '';
+    const allowed = String(env.ORIGENES || ORIGENES_BASE).split(',').map(s =&gt; s.trim()).filter(Boolean);
     const ok = allowed.includes(origin);
-    const cors = { &#x27;Access-Control-Allow-Origin&#x27;: ok ? origin : &#x27;null&#x27;, &#x27;Access-Control-Allow-Methods&#x27;: &#x27;POST, OPTIONS&#x27;, &#x27;Access-Control-Allow-Headers&#x27;: &#x27;Content-Type&#x27;, &#x27;Vary&#x27;: &#x27;Origin&#x27; };
-    const reply = (obj, status) =&gt; new Response(JSON.stringify(obj), { status: status || 200, headers: Object.assign({ &#x27;Content-Type&#x27;: &#x27;application/json&#x27; }, cors) });
-    if (req.method === &#x27;OPTIONS&#x27;) return new Response(null, { status: 204, headers: cors });
-    if (req.method !== &#x27;POST&#x27;) return reply({ error: &#x27;metodo&#x27; }, 405);
-    if (!ok) return reply({ error: &#x27;not_granted&#x27; }, 403);
-    if (!env.GEMINI_KEY) return reply({ error: &#x27;sin_llave&#x27; }, 500);
+    const cors = { 'Access-Control-Allow-Origin': ok ? origin : 'null', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
+    const reply = (obj, status) =&gt; new Response(JSON.stringify(obj), { status: status || 200, headers: Object.assign({ 'Content-Type': 'application/json' }, cors) });
+    if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+    if (req.method !== 'POST') return reply({ error: 'metodo' }, 405);
+    if (!ok) return reply({ error: 'not_granted' }, 403);
+    const key = env.GEMINI_KEY || (LLAVE &amp;&amp; LLAVE !== 'PEGÁ_AQUÍ_TU_LLAVE' ? LLAVE : '');
+    if (!key) return reply({ error: 'sin_llave' }, 500);
     let body;
-    try { body = await req.json(); } catch (e) { return reply({ error: &#x27;invalid_request&#x27; }, 400); }
+    try { body = await req.json(); } catch (e) { return reply({ error: 'invalid_request' }, 400); }
     const input = Array.isArray(body &amp;&amp; body.input) ? body.input.slice(-12) : [];
-    const size = input.reduce((n, m) =&gt; n + String((m &amp;&amp; m.content) || &#x27;&#x27;).length, 0);
-    if (!input.length || size &gt; 120000) return reply({ error: &#x27;invalid_request&#x27; }, 400);
-    const contents = input.map(m =&gt; ({ role: m.role === &#x27;assistant&#x27; ? &#x27;model&#x27; : &#x27;user&#x27;, parts: [{ text: String(m.content || &#x27;&#x27;) }] }));
-    const model = env.MODELO || &#x27;gemini-2.5-flash&#x27;;
-    const r = await fetch(&#x27;https://generativelanguage.googleapis.com/v1beta/models/&#x27; + encodeURIComponent(model) + &#x27;:generateContent&#x27;, {
-      method: &#x27;POST&#x27;,
-      headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27;, &#x27;x-goog-api-key&#x27;: env.GEMINI_KEY },
-      body: JSON.stringify({ contents, generationConfig: { responseMimeType: &#x27;application/json&#x27;, temperature: 0.6 } })
+    const size = input.reduce((n, m) =&gt; n + String((m &amp;&amp; m.content) || '').length, 0);
+    if (!input.length || size &gt; 120000) return reply({ error: 'invalid_request' }, 400);
+    const contents = input.map(m =&gt; ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: String(m.content || '') }] }));
+    const model = env.MODELO || 'gemini-2.5-flash';
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+      body: JSON.stringify({ contents, generationConfig: { responseMimeType: 'application/json', temperature: 0.6 } })
     });
-    if (r.status === 429) return reply({ error: &#x27;rate_limited&#x27; }, 429);
-    if (!r.ok) return reply({ error: &#x27;proveedor&#x27;, status: r.status }, 502);
+    if (r.status === 429) return reply({ error: 'rate_limited' }, 429);
+    if (!r.ok) return reply({ error: 'proveedor', status: r.status }, 502);
     const data = await r.json();
-    const text = (((data.candidates || [])[0] || {}).content || {}).parts ? data.candidates[0].content.parts.map(p =&gt; p.text || &#x27;&#x27;).join(&#x27;&#x27;) : &#x27;&#x27;;
-    try { return reply({ result: JSON.parse(text) }); } catch (e) { return reply({ error: &#x27;invalid_response&#x27; }, 502); }
+    const text = (((data.candidates || [])[0] || {}).content || {}).parts ? data.candidates[0].content.parts.map(p =&gt; p.text || '').join('') : '';
+    try { return reply({ result: JSON.parse(text) }); } catch (e) { return reply({ error: 'invalid_response' }, 502); }
   }
 };
 </pre><button type="button" id="copy">Copiar el código</button></li>
-<li><b>Guardá la llave en el servidor.</b><p>En el worker: «Settings» → «Variables and Secrets» → «Add»:</p><p>• Tipo <b>Secret</b>, nombre <code>GEMINI_KEY</code>, valor: tu llave del paso 1.</p><p>• Tipo <b>Text</b>, nombre <code>ORIGENES</code>, valor:</p><pre id="orig">https://diegosamgt-lang.github.io,https://www.disartstudio.com,https://disartstudio.com</pre><button type="button" id="copy2">Copiar ORIGENES</button><p>Tocá «Deploy».</p></li>
 <li><b>Mandale a Claude la dirección del worker.</b><p>Arriba dice algo como <code>naihual-ia.tu-nombre.workers.dev</code>. Pasámela y la conecto a la app. Nunca me mandés la llave.</p></li>
 </ol>
 </main><script>
 function cp(btn,id){var t=document.getElementById(id).textContent,ok=function(){btn.textContent='Copiado ✓';btn.classList.add('done');setTimeout(function(){btn.textContent=btn.dataset.l;btn.classList.remove('done')},2500)};btn.dataset.l=btn.textContent;btn.addEventListener('click',function(){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){})})}
-cp(document.getElementById('copy'),'code');cp(document.getElementById('copy2'),'orig');
+cp(document.getElementById('copy'),'code');
 </script></body></html>
