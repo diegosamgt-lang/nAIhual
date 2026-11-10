@@ -147,7 +147,7 @@ def new_page(browser, url, fixture=None, scheme='light', config=None, hash_='', 
         page.route('**/data/config.js', ok(js('NAIHUAL_CONFIG', config)))
     if abiertos:
         # Desde la 3.14 lo secundario del Inicio empieza cerrado; las pruebas viejas lo abren como lo haría una persona que ya lo usó.
-        page.add_init_script("if (!localStorage.getItem('naihual.app1')) localStorage.setItem('naihual.app1', JSON.stringify({ closed: { perfil: false, que: false, brujula: false, guias: false, explorar: false } }));")
+        page.add_init_script("if (!localStorage.getItem('naihual.app1')) localStorage.setItem('naihual.app1', JSON.stringify({ closed: { perfil: false, que: false, brujula: false, guias: false, explorar: false, idea: false } }));")
     if claude is not None:
         # Simula la función del visor de Claude (window.claude.use('sample')). Nunca llama a Claude de verdad.
         page.add_init_script('''(() => { window.__calls = []; window.__reply = %s;
@@ -239,7 +239,17 @@ def main():
         check(M + ' Carga el catálogo (%d), la configuración y las fuentes (%d)' % (TOTAL, N_FUENTES), page.evaluate("n => window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length === n[0] && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === n[1]", [TOTAL, N_FUENTES]))
         check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in ' '.join((r.get('frase') or {}).values()).lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
         check(M + ' Inicio «¿Qué hay?» (3.16): sin portada grande; preguntar, «Quiero un café» y «Recién llegué» arriba', page.locator('.hero-art').count() == 0 and page.locator('.home-top .askbar[data-guide]').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
-        check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-sugerencia] .idea').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 10 and page.locator('[data-more] .widget.closed').count() == 5)
+        check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 10 and page.locator('[data-more] .widget.closed').count() == 6 and page.locator('[data-feed^="p:"] [data-bmark="Diego"]').count() >= 5)
+        page.click('[data-feedcat="none"]')
+        check(M + ' Filtro «Nada»: sin feed, solo la app', page.locator('[data-feed]').count() == 0)
+        page.click('[data-wedit-toggle]')
+        page.click('[data-wsize="que:M"]')
+        page.click('[data-wmove="que:-1"]')
+        check(M + ' Widgets: tamaño S/M/L y se mueven', page.locator('[data-widget="que"][data-size="M"]').count() == 1 and page.evaluate("JSON.parse(localStorage.getItem('naihual.widgets')).size.que") == 'M')
+        page.click('[data-wsize="que:S"]')
+        page.click('[data-wedit-toggle]')
+        page.click('[data-feedcat="all"]')
+        page.click('[data-wtoggle="idea"]')
         fq = page.locator('[data-feed^="p:"] .fquote').first.inner_text() if page.locator('[data-feed^="p:"] .fquote').count() else ''
         check(M + ' Feed: los lugares traen el porqué en palabras de quien recomienda', '«' in fq and '— Diego' in fq, fq)
         page.click('[data-feedcat="postres"]')
