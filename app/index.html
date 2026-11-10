@@ -210,6 +210,9 @@ nav.tabs .count { font-family: var(--f-data); font-size: 10px; }
 .lcard .more .linkish, .lcard .more summary { font-size: 12.5px; }
 .lcard .go { display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
 .lcard .go .btn { min-height: 44px; padding: 0 12px; font-size: 13px; }
+.lcard.search { background: var(--cal); border-style: dashed; }
+.lcard.search .thumb { display: grid; place-items: center; background: var(--papel); color: var(--ink-2); }
+.lcard.search .thumb svg { width: 28px; height: 28px; }
 .gal { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
 .gal figure { margin: 0; display: flex; flex-direction: column; gap: 4px; }
 .gal img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; background: var(--piedra); }
@@ -816,7 +819,7 @@ var X3 = {
     list: 'Lo que anotaste', none: 'Todavía no hay anotaciones.', whereDb: 'Se guarda en la base de datos del visor: Claude la puede leer.', whereLocal: 'Se guarda solo en este teléfono. Para que Claude la lea, abrí nAIhual en el visor de Claude.',
     savedOk: 'Guardado.', saveFail: 'No se pudo guardar. Probá otra vez.', badLink: 'El enlace tiene que empezar con https://',
     kinds: { gusta: 'Me gustó', dato: 'Dato mal', nota: 'Nota', nuevo: 'Lugar nuevo', brujula: 'Prueba de la brújula', visita: 'Visita', post: 'Publicación' },
-    iaTag: 'Según la IA · confirmá en Google', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
+    iaTag: 'Según la IA · confirmá en Google', searchTitle: 'Buscalo en Google Maps', searchSub: 'todavía no está en nAIhual', searchBtn: 'Buscar', learned: 'Lo que nAIhual aprendió', learnedBody: 'Sale de tus pláticas. Queda «por confirmar» hasta que lo confirmés; solo lo confirmado se usa para responder.',
     confirm: 'Confirmar', confirmed: 'Confirmado', toConfirm: 'Por confirmar', toResearch: 'Claude lo va a investigar',
     rev: { entro: 'Claude: entró al catálogo', no_entro: 'Claude: no entró', revisado: 'Claude: revisado', sin: 'Sin revisar todavía' },
     toastSaved: 'Guardado en tu beta', toastSee: 'Ver', toastFail: 'No se pudo guardar', toastDeleted: 'Borrado',
@@ -859,7 +862,7 @@ var X3 = {
     list: 'Your notes', none: 'No notes yet.', whereDb: 'Saved in the viewer’s database: Claude can read it.', whereLocal: 'Saved only on this phone. For Claude to read it, open nAIhual in Claude’s viewer.',
     savedOk: 'Saved.', saveFail: 'Could not save. Try again.', badLink: 'The link must start with https://',
     kinds: { gusta: 'Liked', dato: 'Wrong data', nota: 'Note', nuevo: 'New place', brujula: 'Compass test', visita: 'Visit', post: 'Post' },
-    iaTag: 'From the AI · check on Google', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
+    iaTag: 'From the AI · check on Google', searchTitle: 'Look it up on Google Maps', searchSub: 'not in nAIhual yet', searchBtn: 'Search', learned: 'What nAIhual learned', learnedBody: 'It comes from your chats. It stays «to confirm» until you confirm it; only confirmed notes are used to answer.',
     confirm: 'Confirm', confirmed: 'Confirmed', toConfirm: 'To confirm', toResearch: 'Claude will research it',
     rev: { entro: 'Claude: added to the catalog', no_entro: 'Claude: not added', revisado: 'Claude: reviewed', sin: 'Not reviewed yet' },
     toastSaved: 'Saved in your beta', toastSee: 'See', toastFail: 'Could not save', toastDeleted: 'Deleted',
@@ -1577,8 +1580,8 @@ function aiRules(gid, q) {
     'Corazón de nAIhual: la riqueza de Guatemala está en sus paisajes y es gracias a su gente. Das contexto (de quién es, desde cuándo, si es cadena, familiar o de tradición) y no impones. Nadie tiene la razón absoluta.\n' +
     'Orden para buscar (obligatorio):\n' +
     '1. Primero lo que nAIhual ya sabe: «catalogo», «publicaciones_confirmadas» (lo que contó y confirmó quien usa la beta: contalo como dicho por esa persona, con su fecha; un evento con fecha pasada no se ofrece), «lugares_agregados_en_la_beta», «visitas_fuera_del_catalogo», «libretas» y «aprendido_confirmado». Si algo de ahí sirve, usalo primero y ponelo en «lugares» (ids del catálogo).\n' +
-    '2. Si ahí no está o no alcanza, SIEMPRE proponé 2 o 3 lugares reales que conozcás de Antigua, como un agente de verdad, en «otros» (nombre exacto y por qué). La app les pone «Según la IA · confirmá en Google». Decir «no tengo información» sin proponer nada es el último recurso: solo si de verdad no conocés ningún lugar real. No inventes.\n' +
-    '- Si la persona repite o insiste en una pregunta, no repitas tu respuesta: proponé otros lugares, cambiá de enfoque o preguntá algo concreto.\n' +
+    '2. Si ahí no está o no alcanza: CERO INVENTOS (FIJA de Diego). No nombrés ningún lugar que no esté en los DATOS. Decí en una frase, con naturalidad, que los investigadores y agentes de nAIhual todavía no han cargado eso; si sirve, da contexto general sin nombres (qué tipo de lugar buscar, en qué zona). Poné en «buscar» de 2 a 5 palabras para buscarlo en Google Maps (por ejemplo «comedor de comida típica»): la app arma el botón. Mejor decir que no está que inventar.\n' +
+    '- Si la persona repite o insiste en una pregunta, no repitas tu respuesta: proponé otros del catálogo, cambiá de enfoque o preguntá algo concreto.\n' +
     'Reglas:\n' +
     '- Sos guía, no juez. Resumí lo que dijeron las personas (la beta, agentes) y las fuentes públicas del catálogo y lo que se sabe del lugar. Nunca digas que probaste algo ni «a mí me encanta». No pongas a un lugar por encima de otro: mostrá opciones con contexto.\n' +
     '- Nunca afirmes horarios, precios, si abre hoy ni qué platos tiene el menú: decí «confirmalo en Google Maps» o «en su menú», una sola vez.\n' +
@@ -1592,13 +1595,13 @@ function aiRules(gid, q) {
     '- Las «notas_de_la_beta» son lo que escribió quien prueba la app: resumilas como lo que dijo una persona, no como un hecho.\n' +
     '- Si un lugar tiene «aviso» (por ejemplo, temporalmente cerrado), decilo.\n' +
     '- No repitas un consejo que ya diste en esta plática. «consejos» solo si de verdad suma.\n' +
-    '- No repitas lugares de «ya_mostrados» salvo que te los pidan: proponé otros, del catálogo o de lo que sabés (paso 2). Variá; que cada respuesta traiga algo nuevo.\n' +
+    '- No repitas lugares de «ya_mostrados» salvo que te los pidan: proponé otros del catálogo; si no hay más, decilo (paso 2). Variá; que cada respuesta traiga algo nuevo.\n' +
     '- Si la pregunta es ambigua, una pregunta breve. Las «opciones» suenan a persona, no a menú (por ejemplo «¿Algo dulce cerca?»), sin palabras como «pendiente de validación».\n' +
     '- Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si te escriben en inglés, respondé en inglés.\n' +
     '- Voz (Diego, 10-nov): hablá como alguien de Antigua que conoce bien la ciudad, no como folleto turístico. Sin saludo al empezar (nada de «¡Hola!», «Hola, vos», «Qué gusto»): andá directo a la respuesta. El voseo va en los verbos (buscá, andá, probá); no uses «vos» como palabra suelta. Prohibido: «fonda», «sazón», «de generación en generación», «el corazón de», «joya», «mágico», «encantador», «rincón», «auténtico», «experiencia única», «no te lo podés perder». Para comida de aquí decí «comida típica» o «comedor».\n' +
     '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección de quien pregunta). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
     '- «no_se»: true si no tenías información suficiente para responder bien. Entonces «falta»: en pocas palabras, qué información faltaba (por ejemplo «horario de mercados de artesanías»), sin datos personales. Claude lo investiga y lo carga con su fuente.\n' +
-    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "otros": [{"nombre": string, "porque": string}], "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos], "no_se": boolean, "falta": string}\n\n' +
+    'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "buscar": string, "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos], "no_se": boolean, "falta": string}\n\n' +
     'DATOS:\n' + JSON.stringify(aiData(q, gid));
 }
 // Revisión de lo que devuelve Claude antes de mostrarlo.
@@ -1614,9 +1617,10 @@ function aiClean(r) {
     // Si es un lugar del catálogo, se muestra su ficha.
     var cat = PIDS.filter(function (id) { return visible(P[id]) && norm(P[id].name) === n; })[0];
     if (cat) { if (lugares.indexOf(cat) < 0 && lugares.length < 3) lugares.push(cat); return; }
-    if (otros.length < 3 && !otros.some(function (x) { return norm(x.nombre) === n; })) otros.push({ nombre: nombre, porque: typeof o.porque === 'string' ? o.porque.trim().slice(0, 200) : '' });
+    // Fuera del catálogo no se muestra (B6 paso 2, cero inventos): en su lugar va la búsqueda en Google Maps.
   });
-  return { texto: texto, lugares: lugares, otros: otros, consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 1),
+  var buscar = typeof r.buscar === 'string' ? r.buscar.replace(/[<>]/g, '').trim().slice(0, 60) : '';
+  return { texto: texto, lugares: lugares, otros: otros, buscar: buscar, consejos: ids(r.consejos, function (id) { return !!TIPS[id]; }, 1),
     cultural: r.cultural === true, suficiente: r.suficiente === true,
     opciones: (Array.isArray(r.opciones) ? r.opciones : []).map(function (o) { return String(o).trim().slice(0, 60); }).filter(Boolean).slice(0, 3),
     no_se: r.no_se === true, falta: typeof r.falta === 'string' ? r.falta.trim().slice(0, 120) : '',
@@ -1658,6 +1662,12 @@ function iaPlaceCard(o) {
   return '<article class="lcard ia" data-ia-place="' + esc(o.nombre) + '"><span class="thumb">' + photoArt('cultura', 'kej') + '</span><span><b>' + esc(o.nombre) + '</b><span class="sub">' + esc(x.iaTag) + '</span>' + (o.porque ? '<span class="sub">' + esc(o.porque) + '</span>' : '') + '</span>' +
     '<span class="go"><a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=' + q + '" target="_blank" rel="noopener" data-vamos-name="' + esc(o.nombre) + '" aria-label="' + esc(t.mapsAria(o.nombre)) + '">' + icon('pin', 'sm') + esc(t.maps) + '</a>' +
     '<a class="btn" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">' + esc(t.info) + '</a></span></article>';
+}
+// Cero inventos (B6 paso 2): lo que no está cargado se busca en Google Maps, sin nombres puestos por la IA.
+function searchCard(q) {
+  var x = X(), url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q + ', Antigua Guatemala');
+  return '<article class="lcard search" data-search="' + esc(q) + '"><span class="thumb">' + icon('pin') + '</span><span><b>' + esc(x.searchTitle) + '</b><span class="sub">«' + esc(q) + '» · ' + esc(x.searchSub) + '</span></span>' +
+    '<span class="go"><a class="btn primary" href="' + url + '" target="_blank" rel="noopener">' + esc(x.searchBtn) + '</a></span></article>';
 }
 function askClaude(text, rulesMsg, pend) {
   AI.busy = true; AI.ctl = new AbortController();
@@ -2157,7 +2167,7 @@ function msgHTML(m, isNew) {
     before.forEach(function (x) { if (x.kind === 'ai') x.ai.consejos.forEach(function (id) { seen[id] = 1; }); });
     var list = m.ai.lugares.map(function (id) { return { key: 'p:' + id }; }).concat(m.ai.consejos.filter(function (id) { return !seen[id]; }).map(function (id) { return { key: 't:' + id }; })).filter(function (c) { return shown(c.key); });
     if (m.ai.cultural) paras.push('<span class="note" data-cult>* ' + esc(t.infoCultBody) + '</span>');
-    var otros = (m.ai.otros || []).map(iaPlaceCard).join('');
+    var otros = m.ai.buscar ? searchCard(m.ai.buscar) : '';
     var plist = list.filter(function (c) { return c.key.charAt(0) === 'p'; }).map(function (c) { return c.key.slice(2); }), rest = list.filter(function (c) { return c.key.charAt(0) !== 'p'; });
     if (plist.length || otros || rest.length) cards = resultsHTML(plist, '', otros + cardsFor(rest));
     if (m.ai.opciones.length) after = '<div class="chips" role="group" aria-label="' + esc(t.clarifyLabel) + '">' + m.ai.opciones.map(function (o) { return '<button type="button" class="chip" data-say="' + esc(o) + '">' + esc(o) + '</button>'; }).join('') + '</div>';

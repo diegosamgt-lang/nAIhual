@@ -719,7 +719,7 @@ def main():
 
         # =============== D. Claude responde (vista previa, simulado) · orden de búsqueda en 3 pasos ===============
         ok_reply = {'texto': 'Te cuento algo para empezar con calma.', 'consejos': ['foto', 'inventado'], 'lugares': ['doce', 'inventado'],
-                    'otros': [{'nombre': 'Lugar que conoce la IA', 'porque': 'Lo que se sabe de él.'}], 'cultural': False, 'suficiente': True,
+                    'otros': [{'nombre': 'Lugar que conoce la IA', 'porque': 'Lo que se sabe de él.'}], 'buscar': 'café tranquilo', 'cultural': False, 'suficiente': True,
                     'opciones': ['Contame más'], 'aprendido': ['La gente quiere empezar con calma.']}
         ctx, page, errors = new_page(browser, url, None, 'light', None, '', ok_reply)
         page.wait_for_selector('[data-ai="listo"]')
@@ -733,9 +733,9 @@ def main():
         check('[Claude] Responde el guardián de turno, marcado «con Claude»', 'Te cuento algo para empezar con calma.' in last.inner_text() and 'con Claude' in last.inner_text())
         check('[Claude] Muestra un solo consejo y descarta ids inventados', last.locator('.tipcard').count() == 1)
         check('[Claude] Paso 1: muestra la ficha del catálogo con «Vamos» e «Info»', last.locator('[data-place="doce"]').count() == 1 and last.locator('[data-place="doce"] a.btn').inner_text().strip() == 'Vamos' and last.locator('[data-place="doce"] button.btn[data-open="p:doce"]').count() == 1)
-        ia = last.locator('[data-ia-place]')
-        hrefs = [ia.locator('a').nth(k).get_attribute('href') for k in range(ia.locator('a').count())] if ia.count() else []
-        check('[Claude] Paso 2: lugar que sabe la IA, marcado «Según la IA · confirmá en Google», con «Vamos» (ruta) e «Info» (Google Maps)', ia.count() == 1 and 'Según la IA · confirmá en Google' in ia.inner_text() and len(hrefs) == 2 and hrefs[0].startswith('https://www.google.com/maps/dir/?api=1&destination=') and hrefs[1].startswith('https://www.google.com/maps/search/?api=1&query='), hrefs)
+        srch = last.locator('[data-search]')
+        shref = srch.locator('a').get_attribute('href') if srch.count() else ''
+        check('[Claude] Paso 2 (cero inventos): no muestra lugares inventados; pone la búsqueda en Google Maps', last.locator('[data-ia-place]').count() == 0 and 'Lugar que conoce la IA' not in last.inner_text() and srch.count() == 1 and shref.startswith('https://www.google.com/maps/search/?api=1&query=') and 'caf%C3%A9%20tranquilo' in shref, shref)
         check('[Claude] Ofrece sus opciones', last.locator('[data-say="Contame más"]').count() == 1)
         calls = page.evaluate('window.__calls')
         first = calls[0][0]['content'] if calls else ''
@@ -799,12 +799,12 @@ def main():
         apr = page.evaluate('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]")')
         check('[Claude] Si no sabe, queda «para investigar» qué faltaba', any(x['estado'] == 'por_investigar' and 'galerías de pintores de Comalapa' in x['texto'] for x in apr), apr)
         check('[Claude] La pregunta tal cual no se guarda', not any('pregunta' in x or 'tío Juan' in x['texto'] for x in apr), apr)
-        page.evaluate("window.__reply = {texto: '<img src=x onerror=\"window.__xss=3\">Hola', lugares: [], otros: [{nombre: '<b onmouseover=x>Raro</b>', porque: '<script>window.__xss=4</script>'}], consejos: [], cultural: false, suficiente: true, opciones: ['<i>uno</i>'], aprendido: []}")
+        page.evaluate("window.__reply = {texto: '<img src=x onerror=\"window.__xss=3\">Hola', lugares: [], otros: [{nombre: '<b onmouseover=x>Raro</b>', porque: '<script>window.__xss=4</script>'}], buscar: '<b onmouseover=x>Raro</b>', consejos: [], cultural: false, suficiente: true, opciones: ['<i>uno</i>'], aprendido: []}")
         page.fill('#q', 'algo raro para probar')
         page.press('#q', 'Enter')
         page.wait_for_function("document.querySelectorAll('[data-kind=\"ai\"]').length >= 7", timeout=5000)
         last = page.locator('.msg').last
-        check('[Claude] Seguridad: lo que responde Claude se muestra como texto, no como código', page.evaluate('window.__xss === undefined') and last.locator('script, [onerror], [onmouseover]').count() == 0 and '<b onmouseover' in last.inner_text() and '<img src=x' in last.inner_text())
+        check('[Claude] Seguridad: lo que responde Claude se muestra como texto, no como código', page.evaluate('window.__xss === undefined') and last.locator('script, [onerror], [onmouseover]').count() == 0 and last.locator('[data-search]').count() == 1 and '<img src=x' in last.inner_text())
         page.evaluate("window.__reply = {__error: 'not_granted'}")
         page.fill('#q', 'hola de nuevo, contame algo')
         page.press('#q', 'Enter')
