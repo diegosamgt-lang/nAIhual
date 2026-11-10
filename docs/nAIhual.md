@@ -472,6 +472,8 @@ Prompt listo: `docs/prompts/prompt-directorio.md`. Cada lugar, una línea JSON c
 
 **Instrucciones de Gemini — 10-nov-2026:** Diego trajo las instrucciones de su chat de Gemini (directorio gastronómico). Se adaptaron a las Bases: fuera calificaciones, orden por estrellas y resumen de reseñas (chocan con «sin estrellas ni reseñas»); máximo 20 por categoría en vez de directorio completo; se quedan la ficha de Maps obligatoria, el límite del municipio, la bitácora, los «Casos aparte» y la actividad de redes. Dos columnas nuevas: `zona` y `redes_actividad`. Texto: `docs/prompts/instrucciones-gemini.txt`. ✅ FIJA (10-nov-2026).
 
+**Servidor de Gemini — 10-nov-2026:** primera prueba real: la llave llega a Google. Google respondió «falta pago» (proyecto con cobro y saldo en cero); Diego apagó el cobro del proyecto. Después respondió «modelo no existe»: gemini-2.5-flash ya no se ofrece a proyectos nuevos (Google lo retira el 1-dic-2026, según notas de terceros ❓). El servidor ahora prueba una lista de modelos y usa el primero disponible.
+
 **nAIhual 3.10 — 7-nov-2026:** 3 perfiles para empezar (Local, Turista, Mochilero; después nacional, internacional y visita regular); «Registro» con todos los lugares, A–Z, Z–A, por categoría y por quién lo trajo (Diego o «IA · 20»); cada lugar con su `origen`; Memoria ordenada por categoría; prompts nuevos (`docs/prompts/prompt-directorio.md`): inventario de Gemini con máximo 20 y libretas de NotebookLM por categoría. My Maps: gratis, con íconos propios. ✅ 264/264 pruebas.
 
 **nAIhual 3.9.1 — 7-nov-2026:** se quitó «Curar» de la app: la curaduría vive en la hoja de Diego (columnas para, confirmo, estado) y llega con «cargá el directorio». ✅ 261/261 pruebas.

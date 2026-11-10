@@ -3,8 +3,9 @@
 
    La forma fácil: pegá tu llave entre las comillas de LLAVE, solo en el editor de Cloudflare (nunca en GitHub).
    Si preferís, las variables de Cloudflare (GEMINI_KEY, ORIGENES, MODELO) mandan sobre lo de abajo.
-   MODELO: por defecto gemini-2.5-flash. ❓ Confirmar el nombre vigente en AI Studio. */
+   MODELO: si no se pone, prueba la lista MODELOS en orden y usa el primero que Google tenga (los viejos se retiran). */
 const LLAVE = 'PEGÁ_AQUÍ_TU_LLAVE';
+const MODELOS = ['gemini-flash-latest', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash'];
 const ORIGENES_BASE = 'https://diegosamgt-lang.github.io,https://www.disartstudio.com,https://disartstudio.com';
 export default {
   async fetch(req, env) {
@@ -24,12 +25,16 @@ export default {
     const size = input.reduce((n, m) => n + String((m && m.content) || '').length, 0);
     if (!input.length || size > 120000) return reply({ error: 'invalid_request' }, 400);
     const contents = input.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: String(m.content || '') }] }));
-    const model = env.MODELO || 'gemini-2.5-flash';
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ contents, generationConfig: { responseMimeType: 'application/json', temperature: 0.6 } })
-    });
+    const models = env.MODELO ? [env.MODELO] : MODELOS;
+    let r;
+    for (const model of models) {
+      r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+        body: JSON.stringify({ contents, generationConfig: { responseMimeType: 'application/json', temperature: 0.6 } })
+      });
+      if (r.status !== 404) break;
+    }
     if (r.status === 429) return reply({ error: 'rate_limited' }, 429);
     if (!r.ok) return reply({ error: 'proveedor', status: r.status }, 502);
     const data = await r.json();
