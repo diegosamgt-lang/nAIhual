@@ -9,3 +9,7 @@ Para volver a una de estas versiones: copiar su contenido sobre `app/` (y, si ha
 - `app-3.1/`: nAIhual 3.1 (24-oct-2026), antes de la brújula que gira (3.2).
 - `app-3.2/`: nAIhual 3.2 (24-oct-2026), antes de la 3.3.
 - `app-3.3/`: nAIhual 3.3 (25-oct-2026), antes del directorio y la 3.4.
+
+**Desde la 3.5 (28-oct-2026) ya no se copian versiones aquí.** Cada versión queda en el historial de GitHub
+(cada «commit» guarda la app entera). Para volver a una versión vieja, pedíselo a Claude: la saca del historial.
+Estas copias se quedan como referencia y no se editan.

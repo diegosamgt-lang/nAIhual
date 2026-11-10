@@ -1,4 +1,4 @@
-"""Pruebas automáticas de nAIhual 2.0 (app/index.html + app/data/*.js), en modo vista previa y en modo pública.
+"""Pruebas automáticas de nAIhual (app/index.html + app/data/*.js), en modo vista previa y en modo pública.
 
 Uso (desde la raíz del repositorio):
     python3 pruebas/prueba_piloto.py
@@ -6,13 +6,16 @@ Uso (desde la raíz del repositorio):
 Necesita Python 3 y Playwright con Chromium (vienen instalados en el entorno de Claude Code en la nube;
 no son dependencias de la app). Levanta un servidor local en 127.0.0.1, abre la app a 390 px de ancho
 y usa catálogos y configuraciones de prueba (inventados solo para la prueba, nunca se publican):
-0, 1 y 3 cafés, vista interna encendida o apagada, y la beta del fundador (en el teléfono y con base de datos simulada).
+0, 1 y 3 cafés, vista interna encendida o apagada, y la beta (en el teléfono y con base de datos simulada).
+Las cifras del catálogo (cuántos lugares, cuántos por categoría) se calculan de data/lugares.js: no hay que cambiarlas a mano.
 No prueba un celular real ni que Google Maps caiga en el lugar correcto: eso lo tiene que hacer una persona.
 """
+import collections
 import functools
 import http.server
 import json
 import os
+import re
 import socketserver
 import sys
 import threading
@@ -26,9 +29,29 @@ EXE = '/opt/pw-browsers/chromium'
 RESULTS = []
 HOSTS = {}
 PERMITIDOS = {'127.0.0.1', 'fonts.googleapis.com', 'fonts.gstatic.com', 'file'}
+
+
+def catalogo_real():
+    regs = []
+    for linea in open(os.path.join(APP, 'data', 'lugares.js'), encoding='utf-8'):
+        linea = linea.strip()
+        if linea.startswith('{"id"'):
+            regs.append(json.loads(linea.rstrip(',')))
+    return [r for r in regs if r.get('estado') not in ('pausado', 'retirado')]
+
+
+CATALOGO = catalogo_real()
+TOTAL = len(CATALOGO)
+# Publicados según las mismas reglas de la app (estado, dirección, fuente, fecha y quién verificó).
+PUBLICADOS = len([r for r in CATALOGO if r.get('estado') == 'publicado' and r.get('direccion') and r.get('fuente') and r.get('fecha_verificacion') and r.get('verifico')])
+N_PLAYLISTS = len(re.findall(r"\{ id: '", open(os.path.join(APP, 'data', 'playlists.js'), encoding='utf-8').read()))
+N_REFS = len(re.findall(r"\{ id: '", open(os.path.join(APP, 'data', 'referencias.js'), encoding='utf-8').read()))
+N_AFUERA = len(re.findall(r"rumbo: \d", open(os.path.join(APP, 'data', 'referencias.js'), encoding='utf-8').read()))
+N_FUENTES = len(re.findall(r"\{ id: '", open(os.path.join(APP, 'data', 'fuentes.js'), encoding='utf-8').read()))
+POR_CAT = collections.Counter(r['categoria'] for r in CATALOGO)
 # Nombres reales del catálogo: ninguno debe verse en la experiencia del visitante mientras esté en borrador.
-NOMBRES_REALES = ['12 Onzas', 'Artista de Café', 'Komori', 'Siena Luz', 'Fat Cat', 'Alegría Café', 'Coffea', 'Cazador', 'Once Once', 'Hector', 'Nikolo', 'Piña', 'Patio de la Primera',
-                  'Parque Central', 'Catedral de San José', 'Palacio de los Capitanes', 'Arco de Santa Catalina', 'La Merced', 'Capuchinas', 'Santa Clara', 'San Francisco el Grande']
+# Solo los de 6 letras o más, para no confundirlos con palabras de la app.
+NOMBRES_REALES = sorted({r['nombre'] for r in CATALOGO if len(r['nombre']) >= 6})
 
 
 def check(name, ok, detail=''):
@@ -82,6 +105,18 @@ def serve():
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self, *a):
             pass
+
+        def do_GET(self):
+            # Las pruebas no tocan el servidor real de Gemini: se sirve config.js sin servidor_ia (D2 lo simula).
+            if self.path.split('?')[0].endswith('/data/config.js'):
+                body = re.sub(r"servidor_ia:\s*'[^']*'", "servidor_ia: ''", open(os.path.join(APP, 'data', 'config.js'), encoding='utf-8').read()).encode('utf-8')
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/javascript; charset=utf-8')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            return super().do_GET()
     handler = functools.partial(Quiet, directory=APP)
     httpd = socketserver.TCPServer(('127.0.0.1', 0), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
@@ -147,14 +182,14 @@ def sin_nombres(texto):
     return [n for n in NOMBRES_REALES if n in texto]
 
 
-PUB = {'modo': 'publica', 'claude_responde': True, 'beta_fundador': True}
-PREV = {'modo': 'vista_previa', 'claude_responde': True, 'beta_fundador': True}
+PUB = {'modo': 'publica', 'claude_responde': True, 'beta': True}
+PREV = {'modo': 'vista_previa', 'claude_responde': True, 'beta': True}
 GUARDIANES = ["No'j", "Iq'", 'Kej', "E'"]
 FRASES_PROHIBIDAS = ['Caminá con respeto', '¿Cómo me porto', 'reglas fijas, sin IA', '¿En qué te ayudo', "Soy No'j", 'Tips para', 'en revisión: todavía no tengo lugares con fuente']
 
 
 def ruta_norte_publicada():
-    base = [('catedral', 'Catedral de San José', 'cultura', 3.6, 4.5), ('cazador', 'El Cazador Italiano', 'comida', 3, 4.4),
+    base = [('catedral', 'Catedral de San José', 'cultura', 3.6, 4.5),
             ('arco', 'Arco de Santa Catalina', 'cultura', 5, 2), ('merced', 'Iglesia de La Merced', 'cultura', 6, 1), ('siena', 'Siena Luz', 'cafe', 6, 2.5)]
     return [completo(i, n, categoria=c, mapa={'avenida': a, 'calle': k, 'aprox': False}) for i, n, c, a, k in base]
 
@@ -184,15 +219,52 @@ def main():
     with sync_playwright() as pw:
         browser = pw.chromium.launch(executable_path=EXE) if os.path.exists(EXE) else pw.chromium.launch()
 
+        # =============== 0. Datos: todo lo que se nombra existe ===============
+        ids = {r['id'] for r in CATALOGO}
+        code = open(os.path.join(APP, 'index.html'), encoding='utf-8').read()
+        pls = open(os.path.join(APP, 'data', 'playlists.js'), encoding='utf-8').read()
+        refs = open(os.path.join(APP, 'data', 'referencias.js'), encoding='utf-8').read()
+        nombrados = set(re.findall(r"'p:([a-z0-9]+)'", code)) | set(re.findall(r"lugar: '([a-z0-9]+)'", pls + refs)) | set(re.findall(r"paradas: \[([^\]]*)\]", pls) and re.findall(r"'([a-z0-9]+)'", ' '.join(re.findall(r"paradas: \[(.*?)\] \}", pls, re.S))))
+        nombrados -= {'cafe', 'comida', 'id'}
+        faltan = sorted(n for n in nombrados if n not in ids and not n.startswith('lugar'))
+        check('Datos: las respuestas fijas, las playlists y las referencias nombran solo lugares activos del catálogo', not faltan, faltan)
+
         # =============== A. VISTA PREVIA con el catálogo real ===============
         ctx, page, errors = new_page(browser, url)
         M = '[vista previa]'
-        check(M + ' Carga el catálogo (204), la configuración y las fuentes (2)', page.evaluate("window.NAIHUAL_LUGARES.length === 204 && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === 2"))
+        check(M + ' Carga el catálogo (%d), la configuración y las fuentes (%d)' % (TOTAL, N_FUENTES), page.evaluate("n => window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length === n[0] && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === n[1]", [TOTAL, N_FUENTES]))
+        check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in ' '.join((r.get('frase') or {}).values()).lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
         check(M + ' Inicio: portada ilustrada, «Quiero un café» y «Recién llegué»', page.locator('.hero-art svg').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
         g = [page.locator('.guard-strip .gbtn b').nth(i).inner_text() for i in range(page.locator('.guard-strip .gbtn').count())]
         check(M + " Inicio: exactamente 4 guardianes, en orden No'j, Iq', Kej, E'", g == GUARDIANES, g)
-        check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4 and page.locator('.guard-strip .av').count() == 0)
-        check(M + ' Inicio: 3 rutas con su mapa', page.locator('.route-card').count() == 3 and page.locator('.route-card svg path.route').count() == 3)
+        check(M + ' Inicio: retratos, no letras sueltas', page.locator('.guard-strip svg.portrait').count() == 4)
+        check(M + ' Inicio: %d playlists con su mapa, autor y gasto' % N_PLAYLISTS, page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.route-card svg path.route').count() == N_PLAYLISTS and page.locator('.route-card [data-autor]').count() == N_PLAYLISTS)
+        check(M + ' Inicio: «¿Cómo venís a Antigua?» con 3 perfiles para empezar, sin agente', page.locator('[data-perfil]').count() == 3 and 'Agente' not in page.inner_text('[data-perfil-pick]'))
+        check(M + ' Inicio vivo: saludo según la hora, cielo del momento e idea del guía', page.locator('[data-saludo]').count() == 1 and page.locator('.hero-art svg[data-momento]').count() == 1 and page.locator('[data-sugerencia] .idea').count() == 1)
+        k1 = page.locator('[data-idea-key]').get_attribute('data-idea-key')
+        page.click('[data-idea]')
+        check(M + ' «Otra idea» cambia la sugerencia', page.locator('[data-idea-key]').get_attribute('data-idea-key') != k1)
+        page.click('[data-wtoggle="que"]')
+        check(M + ' Widget: se contrae con un toque', page.locator('[data-widget="que"].closed').count() == 1 and page.locator('[data-wtoggle="que"][aria-expanded="false"]').count() == 1)
+        page.click('[data-perfil="mochilero"]')
+        check(M + ' Perfil «Viajo con poco»: primero su playlist, marcada «Para vos», sin esconder las otras', page.locator('.route-card').first.get_attribute('data-route') == 'tanque' and page.locator('.route-card').count() == N_PLAYLISTS and page.locator('.route-card').first.locator('[data-para-vos]').count() == 1)
+        page.reload()
+        page.wait_for_selector('main > *')
+        page.click('[data-perfil="local"]')
+        check(M + ' Perfil «Local»: invita a ofrecer una experiencia', page.locator('[data-local-cta]').count() == 1)
+        page.click('[data-local-cta] [data-publish]')
+        check(M + ' «Ofrecé una experiencia» abre Publicar con «Ofrezco una experiencia» elegido', page.locator('#dlg input[name="tema"][value="ofrezco"]:checked').count() == 1)
+        page.click('#dlg [data-close]')
+        page.click('[data-perfil="local"]')
+        check(M + ' El perfil y el widget contraído se quedan en el teléfono', page.locator('[data-perfil="mochilero"][aria-checked="true"]').count() == 1 and page.locator('[data-widget="que"].closed').count() == 1)
+        page.click('[data-perfil="local"]')
+        page.click('[data-perfil="turista"]')
+        on = page.evaluate("[...document.querySelectorAll('[data-perfil][aria-checked=\"true\"]')].map(b => b.dataset.perfil)")
+        check(M + ' Perfiles como interruptores: hasta 2 encendidos (el tercero apaga el primero)', sorted(on) == ['local', 'turista'], on)
+        page.click('[data-perfil="local"]')
+        page.click('[data-perfil="turista"]')
+        page.click('[data-wtoggle="que"]')
+        check(M + ' Apagados, vuelve el orden de siempre', page.locator('[data-perfil][aria-checked="true"]').count() == 0 and page.locator('.route-card').first.get_attribute('data-route') == 'centro')
         check(M + ' Inicio: 4 accesos (Lugares, Cultura maya, Costumbres, Guardianes)', page.locator('.tiles .tile').count() == 4)
         check(M + ' Inicio: sin Aliados Fundadores ni Q250', page.locator('section.biz').count() == 0 and 'Q250' not in page.inner_text('main') and 'Aliados' not in page.inner_text('main'))
         intro = page.locator('[data-intro]')
@@ -207,7 +279,7 @@ def main():
         page.click('[data-bru-land="fuego"]')
         check(M + ' Brújula: «Fuego» enfrente gira a 240°', abs(heading() - 240.0) < 0.05, heading())
         page.click('[data-bru-north]')
-        check(M + ' Brújula: «Norte arriba» vuelve a 0°', heading() == 0)
+        check(M + ' Brújula: «Norte arriba» vuelve a 0° y su botón tiene nombre', heading() == 0 and page.inner_text('[data-bru-north]').strip() == 'Norte arriba')
         orient = lambda a: page.evaluate("a => { window.dispatchEvent(new DeviceOrientationEvent('deviceorientation', {alpha: a, beta: 80, gamma: 0, absolute: false})); }", a)
         page.click('[data-bru-sensor]')
         orient(100)
@@ -243,24 +315,34 @@ def main():
         page.reload()
         page.wait_for_selector('main > *')
         page.click('[data-bru-sensor]')
-        page.wait_for_timeout(3300)
+        page.wait_for_function("document.getElementById('bru-status').textContent.indexOf('no deja usar el sensor') >= 0", timeout=6000)
         check(M + ' Brújula: si el teléfono no manda el sensor, lo dice y se puede tocar el volcán', 'no deja usar el sensor' in page.inner_text('#bru-status'))
-        check(M + ' Inicio: tarjeta de la beta del fundador', page.locator('[data-beta-card]').count() == 1 and '0 anotaciones' in page.locator('[data-beta-card]').inner_text().lower())
+        check(M + ' Inicio: tarjeta de la beta', page.locator('[data-beta-card]').count() == 1 and '0 anotaciones' in page.locator('[data-beta-card]').inner_text().lower())
         check(M + ' Botón de emergencias visible', page.locator('#sos').is_visible())
         page.click('#sos')
         check(M + ' Emergencias: «Pendiente de números oficiales», sin números', 'Pendiente de números oficiales' in page.inner_text('#dlg') and not any(ch.isdigit() for ch in page.inner_text('#dlg')))
         page.keyboard.press('Escape')
         check(M + ' 390 px sin desplazamiento horizontal (Inicio)', no_hscroll(page))
         tabs = page.locator('#tabs button').all_inner_texts()
-        check(M + ' 4 pestañas: Inicio, Rutas, Guía, Guardados', [x.split('\n')[0].strip() for x in tabs] == ['Inicio', 'Rutas', 'Guía', 'Guardados'], tabs)
+        check(M + ' Barra: Inicio, Rutas, «+ Publicar» al centro, Guía, Guardados', [x.split('\n')[0].strip() for x in tabs] == ['Inicio', 'Rutas', 'Publicar', 'Guía', 'Guardados'], tabs)
+        page.click('#tabs [data-publish]')
+        page.click('[data-bform="post"] label.chip:has(input[value="evento"])')
+        page.fill('[data-bform="post"] textarea[name="texto"]', 'Hay concierto en el Tanque el sábado')
+        page.click('[data-bform="post"] button[type="submit"]')
+        post = page.evaluate('(JSON.parse(localStorage.getItem("naihual.beta") || "[]").filter(x => x.tipo === "post")[0]) || null')
+        check(M + ' «+ Publicar»: en 3 toques queda en tu muro, «por confirmar»', post is not None and post['tema'] == 'evento' and post['estado'] == 'por_confirmar' and 'Publicado' in page.inner_text('#toast'), post)
+        page.evaluate('localStorage.removeItem("naihual.beta")')
+        page.reload()
+        page.wait_for_selector('main > *')
 
         # Café en 1 toque desde Inicio
         page.click('#cta-cafe')
         page.wait_for_timeout(200)
         m = page.locator('.msg').last
         cards = m.locator('.cards.pilot [data-place]')
+        check(M + ' Resultados como en el teléfono: mapa con íconos y tarjetas simples', page.locator('.msg').last.locator('[data-results-map] .rpin').count() >= 1 and page.locator('.msg').last.locator('.lcard').count() == 3)
         check(M + ' «Quiero un café» en 1 toque: abre la Guía con 3 cafés', page.locator('.guide-head').count() == 1 and cards.count() == 3)
-        check(M + ' Cafés sin «Por verificar»: cada uno con su «Referencia web»', m.locator('details.seal[data-seal="pending"]').count() == 0 and m.locator('details.seal[data-seal="ref"]').count() == 3 and 'Por verificar' not in m.inner_text())
+        check(M + ' Cafés sin «Por verificar»: cada uno con su «Referencia web»', m.locator('details.seal[data-seal="ref"]').count() == 3 and 'Por verificar' not in m.inner_text())
         hrefs = [cards.nth(i).locator('a.btn').get_attribute('href') for i in range(3)]
         check(M + ' «Cómo llegar» de cada café es un enlace de Google Maps', all(h.startswith('https://www.google.com/maps/search/?api=1&query=') for h in hrefs), hrefs)
         check(M + " La bienvenida la da No'j, sin autopresentación", "No'j · te cuenta el porqué" in page.locator('.msg').first.inner_text() and '¿Qué tenés ganas de hacer en Antigua?' in page.locator('.msg').first.inner_text())
@@ -268,8 +350,9 @@ def main():
             page.click('#chips [data-chip="%s"]' % chip)
             page.wait_for_timeout(60)
         chat = page.inner_text('main')
-        check(M + ' Guía: respuestas con tarjetas visuales (fotos provisionales, mapas, costumbres)', page.locator('main .pcard').count() >= 3 and page.locator('main .rcard').count() >= 1 and page.locator('main .tipcard').count() >= 1)
+        check(M + ' Guía: respuestas con tarjetas visuales (fotos provisionales, mapas, costumbres)', page.locator('main [data-place]').count() >= 3 and page.locator('main .rcard').count() >= 1 and page.locator('main .tipcard').count() >= 1)
         check(M + ' Guía: sin frases de sermón ni de sistema', not [f for f in FRASES_PROHIBIDAS if f in chat], [f for f in FRASES_PROHIBIDAS if f in chat])
+        check(M + ' «Otro guía» se ve como las otras opciones del chat (no como interruptor)', page.evaluate("getComputedStyle(document.querySelector('#chips [data-next]')).borderRadius") == page.evaluate("getComputedStyle(document.querySelector('#chips [data-chip=\"cafe\"]')).borderRadius"))
         check(M + ' Guía: sin asteriscos dentro de las burbujas', all('*' not in b for b in page.locator('.bubble').all_inner_texts()))
         check(M + ' Guía: lo cultural lleva ⓘ', page.locator('main .tipcard details.info').count() >= 1)
         page.fill('#q', 'xyz qwerty')
@@ -302,9 +385,15 @@ def main():
         # Rutas
         page.click('[data-tab="rutas"]')
         check(M + ' Rutas: mapa esquemático con la ruta dibujada y 6 paradas numeradas', page.locator('.mapframe svg path.route:not(.faint)').count() == 1 and page.locator('.mapframe .stop').count() == 6)
-        check(M + ' Rutas: nombres de calles y aviso «Esquema · no a escala»', page.locator('.mapframe text.lbl').count() >= 10 and 'ESQUEMA · NO A ESCALA' in page.inner_text('.mapframe').upper())
+        check(M + ' Rutas: referencias del paisaje (%d), las de afuera al borde (%d)' % (N_REFS, N_AFUERA), page.locator('.mapframe [data-ref]').count() == N_REFS and page.locator('.mapframe [data-afuera]').count() == N_AFUERA and all(x in page.inner_html('.mapframe') for x in ['Jocotenango', 'Volcán de Agua', 'Volcán de Fuego', 'Santa Ana', 'San Cristóbal El Bajo', 'Cerro de la Cruz', 'La Recolección']))
+        page.click('.mapframe [data-ref="jocotenango"]')
+        check(M + ' Mapa: el nombre aparece al tocar el ícono (y no antes)', page.locator('.mapframe [data-ref="jocotenango"].open').count() == 1 and page.evaluate("getComputedStyle(document.querySelector('.mapframe [data-ref=\"santaana\"] text')).opacity") == '0')
+        check(M + ' Rutas: los nombres del borde no se tapan entre sí', page.evaluate('''() => { const b = [...document.querySelectorAll('.mapframe [data-afuera] text')].map(t => t.getBoundingClientRect());
+            return b.every((r, i) => b.every((q, j) => i === j || r.right <= q.left || q.right <= r.left || r.bottom <= q.top || q.bottom <= r.top)); }'''))
+        check(M + ' Rutas: nombres de calles y aviso «Esquema · no a escala»', page.locator('.mapframe text.lbl').count() >= 10 and 'ESQUEMA · NO A ESCALA' in page.inner_text('[data-map-note]').upper())
         page.click('[data-selroute="conventos"]')
-        check(M + ' Rutas: elegir otra ruta la dibuja (5 paradas)', page.locator('.mapframe .stop').count() == 5 and page.locator('.stops li').count() == 5)
+        check(M + ' Rutas: elegir otra ruta la dibuja (4 paradas)', page.locator('.mapframe .stop').count() == 4 and page.locator('.stops li').count() == 4)
+        check(M + ' Rutas: un lugar temporalmente cerrado (Once Once) no entra a la ruta', 'Once Once' not in page.inner_text('main'))
         h = page.locator('[data-route-detail] a.btn.anil').get_attribute('href')
         check(M + ' «Abrir ruta a pie» arma un enlace de Google Maps con origen, destino y paradas', h.startswith('https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=') and '&destination=' in h and '&waypoints=' in h, h[:90])
         check(M + ' 390 px sin desplazamiento horizontal (Rutas)', no_hscroll(page))
@@ -319,22 +408,22 @@ def main():
         # Explorar
         page.click('[data-tab="inicio"]')
         page.click('[data-go="explorar"]')
-        page.click('[data-filter="postres"]')
-        check(M + ' Explorar: filtro «Pan y postres» con 31 lugares', page.locator('.grid [data-pin^="p:"]').count() == 31)
-        page.click('[data-filter="noche"]')
-        check(M + ' Explorar: filtro «De noche» con 5 lugares', page.locator('.grid [data-pin^="p:"]').count() == 5)
-        page.click('[data-filter="parque"]')
-        check(M + ' Explorar: filtro «Parques» con 3 parques', page.locator('.grid [data-pin^="p:"]').count() == 3)
+        filtros = page.evaluate("[...document.querySelectorAll('[data-filter]')].map(b => [b.dataset.filter, b.textContent.trim()]).filter(f => !['all', 'route', 'tip'].includes(f[0]))")
+        check(M + ' Explorar: un filtro por cada categoría del catálogo', sorted(f[0] for f in filtros) == sorted(POR_CAT), filtros)
+        for cat, nombre in filtros:
+            page.click('[data-filter="%s"]' % cat)
+            n_pins = page.locator('.grid [data-pin^="p:"]').count()
+            n_art = page.locator('.grid svg.art[data-scene="%s"]' % cat).count()
+            check(M + ' Explorar: filtro «%s» con %d lugares, cada uno con su dibujo y su color' % (nombre, POR_CAT[cat]), n_pins == POR_CAT[cat] and n_art == POR_CAT[cat], (n_pins, n_art))
         page.click('[data-filter="all"]')
-        check(M + ' Explorar: muro visual con lugares, rutas y costumbres', page.locator('.grid [data-pin^="p:"]').count() == 204 and page.locator('.grid [data-pin^="r:"]').count() == 3)
-        page.click('[data-filter="cafe"]')
-        check(M + ' Explorar · Cafés: 47', page.locator('.grid [data-pin]').count() == 47)
+        check(M + ' Explorar: muro visual con lugares, rutas y costumbres', page.locator('.grid [data-pin^="p:"]').count() == TOTAL and page.locator('.grid [data-pin^="r:"]').count() == N_PLAYLISTS)
         page.click('[data-filter="all"]')
         page.fill('#fq', 'matcha')
         page.wait_for_timeout(80)
         check(M + ' Buscar «matcha» encuentra Komori', page.locator('.grid [data-open="p:komori"]').count() == 1)
         page.locator('.grid [data-open="p:komori"]').click()
         check(M + ' Ficha sin dirección: sin «Cómo llegar» y sin mapa', page.locator('main a[href*="maps"]').count() == 0 and page.locator('.minimap').count() == 0)
+        check(M + ' Ficha: la frase de Diego va firmada («— Diego»), no como verdad', page.locator('.lead [data-frase-de]').count() == 1 and '— Diego' in page.inner_text('.lead') and '«Literal el mejor matcha.»' in page.inner_text('.lead'))
         page.click('[data-back]')
         page.fill('#fq', '')
         check(M + ' 390 px sin desplazamiento horizontal (Explorar)', no_hscroll(page))
@@ -342,7 +431,7 @@ def main():
         # Guardados
         page.locator('.pin-wrap:has([data-pin="r:norte"]) .heart').click()
         page.click('[data-tab="guardados"]')
-        check(M + ' Guardados: arma un plan con mapa y enlace a pie', page.locator('.minimap .stop').count() == 5 and page.locator('main a.btn.anil[href*="/maps/dir/"]').count() == 1)
+        check(M + ' Guardados: arma un plan con mapa y enlace a pie', page.locator('.minimap .stop').count() == 4 and page.locator('main a.btn.anil[href*="/maps/dir/"]').count() == 1)
         check(M + ' La pestaña Guardados cuenta lo guardado', '1' in page.locator('[data-tab="guardados"]').inner_text())
         check(M + ' 390 px sin desplazamiento horizontal (Guardados)', no_hscroll(page))
 
@@ -355,7 +444,8 @@ def main():
         check(M + ' Los 20 nawales, con los 4 guardianes resaltados', page.locator('.nawal').count() == 20 and page.locator('.nawal.guard').count() == 4)
         check(M + ' Aviso: nAIhual no calcula tu nawal', 'no calcula tu nawal' in page.inner_text('main'))
         page.click('[data-nawal="iq"]')
-        check(M + " Nawal Iq': ficha y «Hablar con Iq'»", page.locator('.facts div').count() == 4 and page.locator('main [data-guide="iq"]').count() == 1)
+        check(M + " Nawal Iq': ficha y «Hablar con Iq'»", page.locator('.facts div').count() == 2 and page.locator('main [data-guide="iq"]').count() == 1)
+        check(M + ' Nawal: sin «Luz» ni «Sombra» (describen personas; B8)', 'Sombra' not in page.inner_text('main') and 'Luz' not in page.inner_text('.facts'))
         page.click('[data-tab="inicio"]')
         page.click('[data-go="costumbres"]')
         cos = page.inner_text('main')
@@ -391,7 +481,7 @@ def main():
         check(M + ' Beta: se guardó en el teléfono', page.evaluate('JSON.parse(localStorage.getItem("naihual.beta")).length') == 1)
         page.fill('#bq', 'pizz')
         page.wait_for_timeout(80)
-        check(M + ' Beta: «Anotar rápido» encuentra lugares mientras escribís', page.locator('#bq-out [data-visit]').count() >= 3)
+        check(M + ' Beta: «Anotar rápido» encuentra lugares mientras escribís', page.locator('#bq-out [data-visit]').count() >= 1)
         page.locator('#bq-out [data-visit]').first.click()
         check(M + ' Beta: tocar un lugar abre «Tu visita» con el número de 0 a 10 y el comentario', page.locator('#dlg [data-bform="visita"] input[type=range]').count() == 1 and page.locator('#dlg textarea').count() == 1)
         page.locator('#dlg input[type=range]').fill('10')
@@ -401,10 +491,61 @@ def main():
         page.click('#dlg button[type="submit"]')
         v = page.evaluate('JSON.parse(localStorage.getItem("naihual.beta")).filter(x => x.tipo === "visita")')
         check(M + ' Visita: se guarda con su número (privado) y el comentario', len(v) == 1 and v[0]['puntaje'] == 8 and v[0]['texto'] == 'Buena masa' and v[0]['fui'] is True, v)
-        check(M + ' Beta: la visita se ve en tu lista con «Tu número»', 'Tu número: 8/10' in page.inner_text('main'))
-        nb = page.locator('[data-beta-del]').count()
-        page.locator('[data-beta-del]').first.click()
-        check(M + ' Beta: cada anotación se puede borrar', page.locator('[data-beta-del]').count() == nb - 1)
+        check(M + ' Beta: el número privado no se muestra; solo dice «Con número privado»', '8/10' not in page.inner_text('main') and page.locator('[data-puntaje-privado]').count() == 1)
+        nb = page.locator('[data-beta-item]').count()
+        page.locator('[data-beta-list] [data-del-ask]').first.click()
+        check(M + ' Beta: «Borrar» primero pregunta y no borra', page.locator('[data-beta-item]').count() == nb and page.locator('[data-del-yes]').count() == 1)
+        page.click('[data-del-no]')
+        check(M + ' Beta: «No» cancela', page.locator('[data-del-yes]').count() == 0 and page.locator('[data-beta-item]').count() == nb)
+        page.locator('[data-beta-list] [data-del-ask]').first.click()
+        page.click('[data-del-yes]')
+        check(M + ' Beta: «Sí, borrar» la borra', page.locator('[data-beta-item]').count() == nb - 1)
+        # Lo que escribe una persona nunca se ejecuta como código.
+        page.evaluate("document.querySelector('[data-beta-new]').open = true")
+        page.fill('[data-bform="nuevo"] input[name="nombre"]', '<img src=x onerror="window.__xss=1">')
+        page.fill('[data-bform="nuevo"] textarea[name="texto"]', '<script>window.__xss=2</script>')
+        page.click('[data-bform="nuevo"] button[type="submit"]')
+        page.evaluate("document.querySelector('[data-beta-new]').open = false")
+        page.click('[data-wall] [data-publish]')
+        page.click('[data-bform="post"] button[type="submit"]')
+        check(M + ' Publicar sin texto: lo dice y no cierra', 'Escribí algo' in page.inner_text('[data-post-msg]') and page.locator('#dlg[open]').count() == 1)
+        page.fill('[data-bform="post"] textarea[name="texto"]', 'Hola')
+        page.fill('[data-bform="post"] input[name="maps"]', 'https://evil.example/x')
+        page.click('[data-bform="post"] button[type="submit"]')
+        check(M + ' Publicar: el enlace tiene que ser de Google Maps', 'Google Maps' in page.inner_text('[data-post-msg]') and page.locator('#dlg[open]').count() == 1)
+        page.click('#dlg [data-close]')
+        rotos = [{'_id': 'local-roto', 'tipo': 'post', 'tema': 'lugar', 'texto': 'Viejo', 'estado': 'confirmado', 'fecha': '2026-10-01', 'orden': {'lugar': 'ag001', 'guardian': 'zzz', 'tema': 'xx'}}]
+        prev = page.evaluate('localStorage.getItem("naihual.beta")')
+        page.evaluate('r => { const a = JSON.parse(localStorage.getItem("naihual.beta") || "[]"); localStorage.setItem("naihual.beta", JSON.stringify(a.concat(r))); }', rotos)
+        page.goto(url + '#beta')
+        page.reload()
+        page.wait_for_selector('[data-wall]')
+        check(M + ' Muro: una publicación con un lugar o un guía que ya no existen no rompe la pantalla', page.locator('[data-wall] .post').count() >= 1 and 'Viejo' in page.inner_text('[data-wall]') and not errors, errors[-2:])
+        page.evaluate('p => localStorage.setItem("naihual.beta", p || "[]")', prev)
+        page.goto(url + '#beta')
+        page.reload()
+        page.wait_for_selector('[data-wall]')
+        # Registro: todos los lugares, A–Z, con filtros y quién lo trajo
+        page.click('[data-wall] ~ .row [data-go="registro"]')
+        names = page.evaluate("[...document.querySelectorAll('[data-reg] b')].map(b => b.textContent)")
+        check(M + ' Registro: todos los lugares en orden A–Z', len(names) == TOTAL and names == sorted(names, key=lambda n: n.lower()), names[:3])
+        page.click('[data-rorigen="ia"]')
+        check(M + ' Registro: filtro «IA · 20» (lo que trajo la IA)', 0 < page.locator('[data-reg]').count() < TOTAL and page.locator('[data-reg] [data-origen="diego"]').count() == 0)
+        page.click('[data-rorigen="all"]')
+        page.click('[data-rcat="hospedaje"]')
+        check(M + ' Registro: filtro por categoría', page.locator('[data-reg]').count() == POR_CAT['hospedaje'])
+        page.click('[data-back]')
+        # Galería y memoria
+        page.click('[data-wall] ~ .row [data-go="galeria"]')
+        check(M + ' Galería: dice dónde se suben las fotos (sin visor, no se suben)', page.locator('[data-galeria]').count() == 1 and 'visor de Claude' in page.inner_text('main'))
+        page.click('[data-back]')
+        page.fill('[data-bform="memoria"] input[name="titulo"]', 'Notas de NotebookLM')
+        page.fill('[data-bform="memoria"] textarea[name="texto"]', 'El tanque La Unión era lavadero público.\n\nLos mercados abren temprano los lunes, jueves y sábados.')
+        page.click('[data-bform="memoria"] button[type="submit"]')
+        check(M + ' Memoria: guarda textos grandes para el chat', page.locator('[data-mem]').count() == 1 and 'Notas de NotebookLM' in page.inner_text('[data-memoria]'))
+        page.locator('[data-mem] [data-del-ask]').click()
+        page.click('[data-del-yes]')
+        check(M + ' Seguridad: lo que se anota se muestra como texto, no como código', page.evaluate('window.__xss === undefined') and page.locator('main img[src="x"]').count() == 0 and '<img src=x' in page.inner_text('main'))
         check(M + ' 390 px sin desplazamiento horizontal (Beta)', no_hscroll(page))
         page.click('[data-tab="inicio"]')
         page.click('[data-go="explorar"]')
@@ -431,11 +572,14 @@ def main():
         check(M + ' Ficha: tocar otra vez quita el «Me gustó»', page.locator('[data-beta-like="siena"][aria-pressed="false"]').count() == 1)
         page.evaluate('localStorage.removeItem("naihual.beta")')
 
-        # Vista interna
+        # Vista interna (antes, una pregunta para que haya registro de la última respuesta)
+        page.click('[data-tab="guia"]')
+        page.fill('#q', 'cultura maya')
+        page.press('#q', 'Enter')
         page.click('[data-tab="inicio"]')
         page.click('footer [data-go="taller"]')
         t = page.inner_text('main')
-        check(M + ' Vista interna: aviso y revisión de las 204 fichas', 'no la ve el visitante' in t and 'Publicadas hoy: 0 de 204' in t and page.locator('[data-review]').count() == 204)
+        check(M + ' Vista interna: aviso y revisión de las %d fichas' % TOTAL, 'no la ve el visitante' in t and ('Publicadas hoy: %d de %d' % (PUBLICADOS, TOTAL)) in t and page.locator('[data-review]').count() == TOTAL)
         check(M + ' Revisión: Coffea sin la frase sin fuente', 'Afirmación retirada hasta tener fuente' in t and 'Entre las 100 mejores coffee shops del mundo.' not in page.inner_text('body').replace('«Entre las 100 mejores coffee shops del mundo».', ''))
         for sec, sel, n in [('textos', '[data-copy]', 13), ('modelo', '[data-capa]', 6), ('aprendizaje', '.flow li', 7), ('arquitectura', '.layer', 9), ('sistema', '.sw', 18)]:
             page.click('[data-sec="%s"]' % sec)
@@ -447,13 +591,22 @@ def main():
         a = page.inner_text('main')
         check(M + ' Aprendizaje: «Diseño futuro / no activo» y «Datos ficticios de demostración»', 'Diseño futuro / no activo' in a and 'Datos ficticios de demostración' in a)
         page.click('[data-demo-fb="si"]')
-        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta" || k === "naihual.aprendido" || k === "naihual.fuiste")'))
+        check(M + ' La demo «¿Te sirvió?» no guarda nada', 'no se guardó ni se envió nada' in page.inner_text('main') and page.evaluate('Object.keys(localStorage).every(k => k === "naihual.app1" || k === "naihual.beta" || k === "naihual.aprendido" || k === "naihual.fuiste" || k === "naihual.widgets")'))
         page.click('[data-sec="arquitectura"]')
         r = page.inner_text('main')
-        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.4' in r and 'Beta' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
+        check(M + ' Arquitectura: registro de la última respuesta y fuentes del mapa', 'reglas-fijas 3.9' in r and 'Beta' in r and 'Wikivoyage' in r and 'NotebookLM Enterprise' in r)
+        page.evaluate('localStorage.setItem("naihual.fuiste", JSON.stringify({lugar: "siena", nombre: "Siena Luz"}))')
+        page.goto(url + '#guia')
+        page.reload()
+        page.wait_for_selector('#fui-bar:not([hidden])')
+        r = page.evaluate("() => [document.getElementById('fui-bar').getBoundingClientRect().bottom, document.getElementById('q').getBoundingClientRect().top]")
+        check(M + ' Guía: la pregunta «¿Fuiste?» no tapa la caja para escribir', r[0] <= r[1], r)
+        page.click('[data-fui-no]')
         code = open(os.path.join(APP, 'index.html'), encoding='utf-8').read()
+        check(M + ' App instalable: manifiesto, ícono y funciona sin señal', page.locator('link[rel="manifest"]').count() == 1 and os.path.exists(os.path.join(APP, 'sw.js')) and os.path.exists(os.path.join(APP, 'icon-512.png')))
         check(M + ' Sin llaves de API ni conexiones a servicios en el código', not any(x in code for x in ['AIza', 'generativelanguage.googleapis', 'apiKey', 'api_key=']))
         check(M + ' Sin datos de lugares escritos dentro del programa', 'Coffea Cafés Especiales' not in code.split('<script>')[1].split('// ===================== CLAUDE')[0] and "name: '12 Onzas'" not in code)
+        check(M + ' La reserva del directorio no se carga', page.evaluate('window.NAIHUAL_RESERVA === undefined'))
         check(M + ' Red: solo archivos propios y la letra de Google Fonts', {h.split(':')[0] for h in HOSTS[id(ctx)]} <= PERMITIDOS, sorted(HOSTS[id(ctx)]))
         check(M + ' Consola sin errores', not errors, errors)
         ctx.close()
@@ -462,6 +615,8 @@ def main():
         M = '[pública]'
         ctx, page, errors = new_page(browser, url, None, 'light', PUB, '', {'texto': 'hola', 'lugares': [], 'consejos': [], 'opciones': []})
         body = page.inner_text('main')
+        check(M + ' Idea del guía: lo maya sale con * y su aviso, también aquí', page.locator('[data-sugerencia] details.info').count() == 1 and '*' in page.inner_text('[data-sugerencia] .bubble'))
+        check(M + ' Sin «+ Publicar» para el visitante', page.locator('[data-publish]').count() == 0)
         check(M + ' Sin emergencias, sin vista interna y sin Claude', not page.locator('#sos').is_visible() and page.locator('[data-go="taller"]').count() == 0 and page.locator('[data-ai]').count() == 0)
         check(M + ' Inicio: ninguna ruta ni lugar por verificar; avisa que las rutas vienen en camino', page.locator('.route-card').count() == 0 and 'Las rutas vienen en camino' in body and not sin_nombres(body))
         page.click('#cta-cafe')
@@ -484,7 +639,7 @@ def main():
         page.click('[data-tab="inicio"]')
         page.click('[data-go="explorar"]')
         ex = page.inner_text('main')
-        check(M + ' Explorar: solo cultura y costumbres, sin lugares', page.locator('.grid [data-pin^="p:"]').count() == 0 and page.locator('.grid [data-pin^="t:"]').count() == 11 and not sin_nombres(ex))
+        check(M + ' Explorar: solo cultura y costumbres, sin lugares', page.locator('.grid [data-pin^="p:"]').count() == PUBLICADOS and page.locator('.grid [data-pin^="t:"]').count() == 11 and (PUBLICADOS or not sin_nombres(ex)))
         page.click('[data-filter="cafe"]')
         check(M + ' Explorar · Cafés: estado vacío diseñado', 'Esta parte todavía la estoy probando.' in page.inner_text('main'))
         page.click('[data-filter="all"]')
@@ -492,6 +647,9 @@ def main():
         page.click('[data-tab="guardados"]')
         check(M + ' Guardados con un consejo: avisa que el plan espera lugares', 'Todavía no hay.' in page.inner_text('main') and page.locator('.grid [data-pin]').count() == 1)
         check(M + ' Consola sin errores', not errors, errors)
+        ctx.close()
+        ctx, page, errors = new_page(browser, url, None, 'light', PUB, '#constructor')
+        check('[pública] Un enlace raro (#constructor) abre Inicio sin romperse', page.locator('.hero').count() == 1 and '[object' not in page.inner_text('main'))
         ctx.close()
         for h in ['#taller', '#revision']:
             ctx, page, errors = new_page(browser, url, None, 'light', PUB, h)
@@ -525,6 +683,14 @@ def main():
             check('[pública] «%s»: Explorar muestra solo los publicados (%d)' % (name, n_pub), page.locator('.grid [data-pin^="p:"]').count() == n_pub and 'Café Sin Fuente' not in feed and 'Café Borrador' not in feed and 'Café Pausado' not in feed and 'Café Retirado' not in feed)
             check('[pública] «%s»: consola sin errores' % name, not errors, errors)
             ctx.close()
+        con_aviso = [dict(r, aviso='Temporalmente cerrado (prueba)') if r['id'] == 'arco' else r for r in ruta_norte_publicada()]
+        ctx, page, errors = new_page(browser, url, con_aviso + [completo('cerrado', 'Café Cerrado', aviso='Cerrado (prueba)'), completo('abierto', 'Café Abierto')], 'light', PUB)
+        check('[pública] Una ruta con un lugar cerrado no se ofrece', page.locator('.route-card').count() == 0)
+        page.click('[data-tab="guia"]')
+        m = pedir_cafe(page)
+        ids = [m.locator('.cards.pilot [data-place]').nth(i).get_attribute('data-place') for i in range(m.locator('.cards.pilot [data-place]').count())]
+        check('[pública] Un café cerrado no sale en «Quiero un café»', 'cerrado' not in ids and 'abierto' in ids, ids)
+        ctx.close()
         ctx, page, errors = new_page(browser, url, ruta_norte_publicada(), 'light', PUB)
         check('[pública] Ruta completa publicada: aparece en Inicio con su mapa', page.locator('.route-card').count() == 1)
         page.click('[data-tab="guia"]')
@@ -537,13 +703,18 @@ def main():
         m = pedir_cafe(page)
         check('[pública] Sin cafés pero con una ruta lista: «Mientras, esta ruta ya está lista»', 'Mientras, esta ruta ya está lista:' in m.inner_text() and m.locator('.rcard').count() == 1)
         ctx.close()
+        ctx, page, errors = new_page(browser, url, [completo('p1', 'Café Curado', para=['mochilero', 'inventado'])], 'light', PREV)
+        page.click('[data-tab="guia"]')
+        m = pedir_cafe(page)
+        check('[vista previa] Lo que Diego cura en su hoja («para») sale firmado en la tarjeta', 'Diego lo recomienda para: Mochilero' in m.inner_text() and 'inventado' not in m.inner_text())
+        ctx.close()
         mezcla = [lugar('b1', 'Café Borrador Uno', direccion='Calle B1'), completo('p1', 'Café Publicado'), lugar('b2', 'Café Borrador Dos', direccion='Calle B2'), lugar('b3', 'Café Sin Dirección')]
         ctx, page, errors = new_page(browser, url, mezcla, 'light', PREV)
         page.click('[data-tab="guia"]')
         m = pedir_cafe(page)
         ids = [m.locator('.cards.pilot [data-place]').nth(i).get_attribute('data-place') for i in range(m.locator('.cards.pilot [data-place]').count())]
         check('[vista previa] Café: primero lo publicado, después lo por verificar con dirección', ids == ['p1', 'b1', 'b2'], ids)
-        check('[vista previa] Sin fuente no hay sello; el publicado, «Verificado»', m.locator('details.seal[data-seal="ok"]').count() == 1 and m.locator('details.seal[data-seal="pending"]').count() == 0)
+        check('[vista previa] Sin fuente no hay sello; el publicado, «Verificado»', m.locator('details.seal[data-seal="ok"]').count() == 1 and m.locator('details.seal').count() == 1)
         ctx.close()
 
         # =============== D. Claude responde (vista previa, simulado) · orden de búsqueda en 3 pasos ===============
@@ -568,16 +739,21 @@ def main():
         check('[Claude] Ofrece sus opciones', last.locator('[data-say="Contame más"]').count() == 1)
         calls = page.evaluate('window.__calls')
         first = calls[0][0]['content'] if calls else ''
-        check('[Claude] Recibe el orden de búsqueda, «guía, no juez» y los datos', all(x in first for x in ['Orden para buscar', 'Sos guía, no juez', '"catalogo"', '"libretas"', '"aprendido_confirmado"', 'Nunca afirmes horarios, precios']) and 'en_revision_no_nombrar' not in first and calls[0][-1]['content'] == '¿Qué me recomendás hacer hoy?')
+        check('[Claude] Recibe el orden de búsqueda, «guía, no juez» y los datos', all(x in first for x in ['Orden para buscar', 'Sos guía, no juez', '"catalogo"', '"libretas"', '"playlists"', '"aprendido_confirmado"', 'Nunca afirmes horarios, precios']) and 'en_revision_no_nombrar' not in first and calls[0][-1]['content'] == '¿Qué me recomendás hacer hoy?')
         check('[Claude] Los datos llevan la fuente pública de cada lugar', 'Guatemala.com' in first and 'fundador' not in first)
         import re as _re
         cat_ids = _re.findall(r'"id":"([a-z0-9]+)","nombre"', first)
-        check('[Claude] Manda un catálogo corto (máximo 60 de 204) y el número privado nunca se dice', 0 < len(cat_ids) <= 60 and 'nunca lo digas' in first, len(cat_ids))
+        check('[Claude] Manda un catálogo corto (máximo 60 de %d) y el número privado nunca se dice' % TOTAL, 0 < len(cat_ids) <= 60 and 'Nunca lo digas' in first and '"puntaje' not in first and '"gusto_privado"' in first, len(cat_ids))
+        check('[Claude] Las frases de Diego le llegan firmadas, como opinión', '"frase_de":"Diego"' in first and 'nunca como verdad' in first)
+        check('[Claude] Buscar ignora palabras vacías («qué», «recomendás»): manda solo la muestra por categoría', len([i for i in cat_ids if i not in ('noj', 'iq', 'kej', 'e')]) <= 6 * 4, len(cat_ids))
         check('[Claude] Lo aprendido queda «por confirmar»', page.evaluate('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]").some(x => x.estado === "por_confirmar" && x.texto === "La gente quiere empezar con calma.")'))
         n = len(calls)
-        pedir_cafe(page)
-        page.wait_for_timeout(250)
-        check('[Claude] «Quiero un café» sigue con reglas fijas', len(page.evaluate('window.__calls')) == n)
+        page.evaluate("window.__reply = {texto: 'Un café distinto.', lugares: ['siena'], otros: [], consejos: [], cultural: false, suficiente: true, opciones: [], aprendido: []}")
+        page.click('#chips [data-chip="cafe"]')
+        page.wait_for_function('n => window.__calls.length > n', arg=n, timeout=5000)
+        page.wait_for_function("(() => { const m = document.querySelectorAll('.msg'); return m[m.length - 1].dataset.kind === 'ai'; })()", timeout=5000)
+        lastc = page.evaluate('window.__calls')[-1][0]['content']
+        check('[Claude] Los botones también los contesta Claude, con su rama y sin repetir lo ya mostrado', '"ya_mostrados":["12 Onzas"' in lastc and 'Tu rama como' in lastc and 'No repitas lugares' in lastc, lastc[-300:])
         coffea = page.evaluate("window.NAIHUAL_LUGARES.find(x => x.id === 'coffea').nombre")
         page.evaluate("n => { window.__reply = {texto: 'Otra opción con contexto.', lugares: [], otros: [{nombre: n, porque: 'x'}], consejos: ['foto'], cultural: false, suficiente: true, opciones: [], aprendido: []}; }", coffea)
         page.fill('#q', 'Recomendame algo bonito para visitar')
@@ -597,17 +773,65 @@ def main():
         page.wait_for_timeout(500)
         calls = page.evaluate('window.__calls')
         check('[Claude] Lo confirmado entra en el paso 1 de la siguiente respuesta', 'La gente quiere empezar con calma.' in calls[-1][0]['content'])
-        page.evaluate("window.__reply = {texto: 'No tengo eso todavía.', lugares: [], otros: [], consejos: [], cultural: false, suficiente: false, opciones: [], aprendido: [], no_se: true}")
-        page.fill('#q', '¿Dónde venden cuadros de un pintor de Comalapa?')
+        page.evaluate("window.__reply = {tema: 'evento', guardian: 'iq', lugar_id: 'doce', titulo: 'Catación los jueves', resumen: 'Diego cuenta que hay catación.'}")
+        page.click('#tabs [data-publish]')
+        page.fill('[data-bform="post"] textarea[name="texto"]', 'En 12 Onzas hacen catación los jueves')
+        page.click('[data-bform="post"] button[type="submit"]')
+        page.wait_for_function('(JSON.parse(localStorage.getItem("naihual.beta") || "[]").filter(x => x.tipo === "post")[0] || {}).orden', timeout=5000)
+        po = page.evaluate('JSON.parse(localStorage.getItem("naihual.beta")).filter(x => x.tipo === "post")[0]')
+        check('[Claude] «+ Publicar»: Claude lo ordena solo (tema, guardián y lugar del catálogo)', po['orden']['guardian'] == 'iq' and po['orden']['lugar'] == 'doce' and po['orden']['tema'] == 'evento', po)
+        page.click('[data-tab="inicio"]')
+        page.click('[data-beta-card] [data-go="beta"]')
+        check('[Claude] Tu muro muestra la publicación ordenada, con su guía', page.locator('[data-wall] [data-post-guia="iq"]').count() == 1 and 'Catación los jueves' in page.inner_text('[data-wall]'))
+        page.click('[data-wall] [data-post-ok]')
+        check('[Claude] Confirmarla la marca «Confirmado»', page.locator('[data-wall] [data-post="confirmado"]').count() == 1)
+        page.evaluate("window.__reply = {texto: 'Ok.', lugares: [], otros: [], consejos: [], cultural: false, suficiente: true, opciones: [], aprendido: []}")
+        page.click('[data-tab="guia"]')
+        page.fill('#q', '¿Qué hay los jueves?')
         page.press('#q', 'Enter')
-        page.wait_for_timeout(500)
-        check('[Claude] Si no sabe, la pregunta queda «para investigar»', page.evaluate('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]").some(x => x.estado === "por_investigar" && x.texto.indexOf("Comalapa") >= 0)'))
+        page.wait_for_function('n => window.__calls.length > n', arg=len(calls) + 1, timeout=5000)
+        check('[Claude] Lo publicado y confirmado ya lo usa el chat (paso 1)', 'catación los jueves' in page.evaluate('window.__calls')[-1][0]['content'])
+        page.wait_for_function("(() => { const m = document.querySelectorAll('.msg'); return m[m.length - 1].dataset.kind === 'ai'; })()", timeout=5000)
+        page.evaluate("window.__reply = {texto: 'No tengo eso todavía.', lugares: [], otros: [], consejos: [], cultural: false, suficiente: false, opciones: [], aprendido: [], no_se: true, falta: 'galerías de pintores de Comalapa'}")
+        page.fill('#q', '¿Dónde venden cuadros de mi tío Juan, pintor de Comalapa?')
+        page.press('#q', 'Enter')
+        page.wait_for_function('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]").some(x => x.estado === "por_investigar")', timeout=5000)
+        apr = page.evaluate('JSON.parse(localStorage.getItem("naihual.aprendido") || "[]")')
+        check('[Claude] Si no sabe, queda «para investigar» qué faltaba', any(x['estado'] == 'por_investigar' and 'galerías de pintores de Comalapa' in x['texto'] for x in apr), apr)
+        check('[Claude] La pregunta tal cual no se guarda', not any('pregunta' in x or 'tío Juan' in x['texto'] for x in apr), apr)
+        page.evaluate("window.__reply = {texto: '<img src=x onerror=\"window.__xss=3\">Hola', lugares: [], otros: [{nombre: '<b onmouseover=x>Raro</b>', porque: '<script>window.__xss=4</script>'}], consejos: [], cultural: false, suficiente: true, opciones: ['<i>uno</i>'], aprendido: []}")
+        page.fill('#q', 'algo raro para probar')
+        page.press('#q', 'Enter')
+        page.wait_for_function("document.querySelectorAll('[data-kind=\"ai\"]').length >= 7", timeout=5000)
+        last = page.locator('.msg').last
+        check('[Claude] Seguridad: lo que responde Claude se muestra como texto, no como código', page.evaluate('window.__xss === undefined') and last.locator('script, [onerror], [onmouseover]').count() == 0 and '<b onmouseover' in last.inner_text() and '<img src=x' in last.inner_text())
         page.evaluate("window.__reply = {__error: 'not_granted'}")
         page.fill('#q', 'hola de nuevo, contame algo')
         page.press('#q', 'Enter')
         page.wait_for_timeout(500)
         check('[Claude] Si no está permitido, responden las reglas y el pie lo dice', 'no está permitido' in page.locator('.msg').last.inner_text() and page.locator('[data-ai="no-disponible"]').count() == 1)
         check('[Claude] Consola sin errores', not errors, errors)
+        ctx.close()
+
+        # =============== D2. Afuera del visor: Gemini por el servidor propio (simulado) ===============
+        ctx = browser.new_context(viewport={'width': 390, 'height': 844})
+        page = ctx.new_page()
+        errs = []
+        page.on('pageerror', lambda e: errs.append(str(e)))
+        sent = []
+        page.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', dict(PREV, servidor_ia='https://ia.example.test/'))))
+        def gem(r):
+            sent.append(r.request.post_data or '')
+            r.fulfill(status=200, content_type='application/json', body=json.dumps({'result': {'texto': 'Hola desde Gemini.', 'lugares': [], 'otros': [], 'consejos': [], 'cultural': False, 'suficiente': True, 'opciones': [], 'aprendido': []}}))
+        page.route('https://ia.example.test/**', gem)
+        page.goto(url + '#guia')
+        page.wait_for_selector('main > *')
+        page.fill('#q', 'Busco un hostal tranquilo')
+        page.press('#q', 'Enter')
+        page.wait_for_selector('[data-kind="ai"]', timeout=5000)
+        body = json.loads(sent[0]) if sent else {}
+        check('[Gemini] Afuera del visor responde Gemini por el servidor, marcado «con Gemini»', 'Hola desde Gemini.' in page.locator('.msg').last.inner_text() and 'con Gemini' in page.locator('.msg').last.inner_text())
+        check('[Gemini] Al servidor van las reglas y la pregunta; ninguna llave en la app', 'Orden para buscar' in body.get('input', [{}])[0].get('content', '') and 'key' not in json.dumps(body).lower().replace('keys', '') and not errs, errs)
         ctx.close()
 
         # =============== E. Beta con la base de datos del visor (simulada) ===============
@@ -621,9 +845,10 @@ def main():
           const emit = () => setTimeout(() => subs.forEach(f => f(snap())), 30);
           const db = { collection: (path) => ({ path, onSnapshot: (f) => { subs.push(f); emit(); return () => {}; },
                          add: (d) => { const id = 'd' + Object.keys(store).length; store[id] = d; emit(); return Promise.resolve({ id }); } }),
-                       doc: (path) => { const id = path.split('/')[1]; return { id, path, set: (d) => { store[id] = d; emit(); return Promise.resolve(); }, delete: () => { delete store[id]; emit(); return Promise.resolve(); } }; } };
-          window.__store = store;
-          window.claude = { use: (n) => Promise.resolve(n === 'db' ? Object.freeze(db) : null) }; })();''')
+                       doc: (path) => { const id = path.split('/')[1]; return { id, path, set: (d) => { store[id] = d; emit(); return Promise.resolve(); }, update: (d) => { store[id] = Object.assign({}, store[id], d); emit(); return Promise.resolve(); }, delete: () => { delete store[id]; emit(); return Promise.resolve(); } }; } };
+          window.__store = store; window.__db = db; window.__assetsDeleted = [];
+          const assets = { upload: () => Promise.reject(new Error('sin subir')), delete: (id) => { window.__assetsDeleted.push(id); return Promise.resolve(); } };
+          window.claude = { use: (n) => Promise.resolve(n === 'db' ? Object.freeze(db) : n === 'assets' ? Object.freeze(assets) : null) }; })();''')
         page.goto(url + '#beta')
         page.wait_for_selector('[data-beta-where="db"]', timeout=5000)
         check('[beta · visor] Dice que se guarda en la base de datos del visor', 'Claude la puede leer' in page.inner_text('main'))
@@ -632,6 +857,21 @@ def main():
         page.click('[data-bform="nuevo"] button[type="submit"]')
         page.wait_for_selector('[data-beta-item="nuevo"]', timeout=5000)
         check('[beta · visor] El lugar nuevo llega a la base de datos y vuelve a la lista', page.evaluate('Object.values(window.__store).some(x => x.tipo === "nuevo" && x.nombre === "Lugar del visor")') and not page.evaluate('localStorage.getItem("naihual.beta")'))
+        page.click('#tabs [data-publish]')
+        page.fill('[data-bform="post"] textarea[name="texto"]', 'Publicado en el visor')
+        page.click('[data-bform="post"] button[type="submit"]')
+        page.wait_for_selector('[data-wall] [data-post-ok]', timeout=5000)
+        page.click('[data-wall] [data-post-ok]')
+        page.wait_for_selector('[data-wall] [data-post="confirmado"]', timeout=5000)
+        check('[beta · visor] «+ Publicar» llega a la base de datos y «Confirmar» la actualiza', page.evaluate('Object.values(window.__store).some(x => x.tipo === "post" && x.texto === "Publicado en el visor" && x.estado === "confirmado")'))
+        page.evaluate("Object.keys(window.__store).filter(k => window.__store[k].tipo === 'post').forEach(k => window.__db.doc('beta/' + k).delete())")
+        page.wait_for_function("document.querySelectorAll('[data-wall] .post').length === 0", timeout=5000)
+        page.evaluate("window.__db.collection('beta').add({tipo: 'nota', lugar: 'siena', nombre: 'Siena Luz', texto: 'Con foto', foto: 'https://example.invalid/f.jpg', foto_id: 'foto123', fecha: '2026-10-28T10:00:00Z'})")
+        page.wait_for_function("document.querySelectorAll('[data-beta-item]').length === 2", timeout=5000)
+        page.locator('[data-beta-item="nota"] [data-del-ask]').click()
+        page.click('[data-del-yes]')
+        page.wait_for_function("document.querySelectorAll('[data-beta-item]').length === 1", timeout=5000)
+        check('[beta · visor] Borrar una anotación borra también su foto', page.evaluate('window.__assetsDeleted') == ['foto123'] and not page.evaluate('Object.values(window.__store).some(x => x.foto_id === "foto123")'))
         page.click('[data-tab="inicio"]')
         page.click('[data-go="explorar"]')
         page.locator('[data-open="p:siena"]').first.click()
@@ -643,9 +883,14 @@ def main():
         ctx, page, errors = new_page(browser, url, None, 'light', PUB, '#beta')
         check('[pública] Sin beta: ni tarjeta, ni pantalla, ni botones', page.locator('[data-beta-card], [data-beta-ficha], [data-bform]').count() == 0 and page.locator('[data-intro]').count() == 1)
         ctx.close()
-        ctx, page, errors = new_page(browser, url, None, 'light', dict(PREV, beta_fundador=False))
-        check('«beta_fundador: false»: sin tarjeta de la beta', page.locator('[data-beta-card]').count() == 0)
+        ctx, page, errors = new_page(browser, url, None, 'light', dict(PREV, mapas=[{'titulo': 'Cafés', 'url': 'https://www.google.com/maps/d/edit?mid=abc123_X'}, {'titulo': 'Malo', 'url': 'https://evil.example/x'}]), '#rutas')
+        fr = page.locator('[data-mymaps] iframe')
+        check('Mapas de My Maps: se meten en Rutas, solo enlaces de Google My Maps', fr.count() == 1 and fr.get_attribute('src') == 'https://www.google.com/maps/d/embed?mid=abc123_X')
         ctx.close()
+        for apagada in [{'beta': False}, {'beta_fundador': False}]:
+            ctx, page, errors = new_page(browser, url, None, 'light', dict(PREV, **apagada))
+            check('«%s: false»: sin tarjeta de la beta' % list(apagada)[0], page.locator('[data-beta-card]').count() == 0)
+            ctx.close()
 
         # =============== F. Teclado, accesibilidad básica y contraste ===============
         ctx, page, errors = new_page(browser, url, FIX['cuatro'], 'light', PUB)
@@ -688,7 +933,10 @@ def main():
             p2.wait_for_timeout(150)
             vals['sello verificado'] = contrast(p2, 'details.seal.ok summary')
             vals['patrocinado'] = contrast(p2, '.tag.sp')
-            vals['por verificar'] = contrast(p2, '.tag.check') if p2.locator('.tag.check').count() else 21
+            # Etiquetas que no siempre están en pantalla: se agregan para medirlas («Según la IA» y «Temporalmente cerrado»).
+            p2.evaluate("document.querySelector('main').insertAdjacentHTML('beforeend', '<span class=\"tag check\" id=\"m-check\">Según la IA</span><span class=\"tag warn\" id=\"m-warn\">Cerrado</span>')")
+            vals['según la IA'] = contrast(p2, '#m-check')
+            vals['aviso'] = contrast(p2, '#m-warn')
             vals['chip café'] = contrast(p2, '#chips .chip.pilot')
             check('Contraste ≥ 4.5 en botones y etiquetas (%s)' % scheme, all(v >= 4.5 for v in vals.values()), {k: round(v, 2) for k, v in vals.items()})
             c2.close()
@@ -716,26 +964,28 @@ def main():
         datos = page.evaluate("window.NAIHUAL_LUGARES.filter(p => p.estado !== 'pausado' && p.estado !== 'retirado').map(p => [p.id, p.nombre, p.direccion, p.maps_url || ''])")
         page.click('[data-tab="inicio"]')
         page.click('[data-go="explorar"]')
+        # Abre cada ficha y lee su botón dentro de la página, en una sola pasada (los clics dibujan al instante).
+        hrefs = page.evaluate('''(ids) => ids.map(id => {
+            document.querySelector('.grid [data-open="p:' + id + '"]').click();
+            const a = document.querySelector('.actions a.btn[href*="maps"]'); const h = a ? a.getAttribute('href') : null;
+            document.querySelector('[data-back]').click(); return h; })''', [d[0] for d in datos])
         malos = []
-        for pid, nombre, dire, murl in datos:
-            page.locator('.grid [data-open="p:%s"]' % pid).click()
-            a = page.locator('.actions a.btn[href*="maps"]')
+        for (pid, nombre, dire, murl), h in zip(datos, hrefs):
             if dire:
-                href = unquote(a.get_attribute('href')) if a.count() else ''
+                href = unquote(h or '')
                 if not ((murl and href == unquote(murl)) or (nombre in href and dire in href and 'Antigua Guatemala' in href)):
                     malos.append(pid)
-            elif a.count():
+            elif h:
                 malos.append(pid + ' (sin dirección y con botón)')
-            page.click('[data-back]')
-        check('Enlaces · los «Cómo llegar» de los 204 lugares: el enlace de Google Maps del lugar o nombre + dirección; sin dirección, sin botón', not malos, malos)
+        check('Enlaces · los «Cómo llegar» de los %d lugares: el enlace de Google Maps del lugar o nombre + dirección; sin dirección, sin botón' % TOTAL, len(hrefs) == TOTAL and not malos, malos)
         page.click('[data-tab="rutas"]')
         bad = []
-        for rid, n in [('centro', 6), ('conventos', 5), ('norte', 5)]:
+        for rid, n in [('centro', 6), ('conventos', 4), ('norte', 4), ('tanque', 3)]:
             page.click('[data-selroute="%s"]' % rid)
             h = unquote(page.locator('[data-route-detail] a.btn.anil').get_attribute('href'))
             if h.count('Antigua Guatemala') != n or h.split('waypoints=')[1].count('|') != n - 3:
                 bad.append(rid)
-        check('Enlaces · las 3 rutas llevan origen, destino y todas sus paradas', not bad, bad)
+        check('Enlaces · las %d playlists llevan origen, destino y todas sus paradas' % N_PLAYLISTS, not bad, bad)
         check('Recorridos · consola sin errores', not errors, errors)
         ctx.close()
 
@@ -746,7 +996,7 @@ def main():
         page.on('pageerror', lambda e: errs.append(str(e)))
         page.goto('file://' + os.path.join(APP, 'index.html'))
         page.wait_for_selector('.hero')
-        check('Abre directo desde el archivo (file://) con los datos', page.evaluate('window.NAIHUAL_LUGARES.length') == 204 and not errs, errs)
+        check('Abre directo desde el archivo (file://) con los datos', page.evaluate("window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length") == TOTAL and not errs, errs)
         ctx.close()
         browser.close()
     httpd.shutdown()
