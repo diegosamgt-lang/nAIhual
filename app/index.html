@@ -555,7 +555,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.12 · 10-nov-2026';
+var VERSION = 'nAIhual 3.13 · 10-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -1595,6 +1595,7 @@ function aiRules(gid, q) {
     '- No repitas lugares de «ya_mostrados» salvo que te los pidan: proponé otros, del catálogo o de lo que sabés (paso 2). Variá; que cada respuesta traiga algo nuevo.\n' +
     '- Si la pregunta es ambigua, una pregunta breve. Las «opciones» suenan a persona, no a menú (por ejemplo «¿Algo dulce cerca?»), sin palabras como «pendiente de validación».\n' +
     '- Español de Guatemala, de vos, cálido y directo, sin tono místico, máximo 90 palabras. Si te escriben en inglés, respondé en inglés.\n' +
+    '- Voz (Diego, 10-nov): hablá como alguien de Antigua que conoce bien la ciudad, no como folleto turístico. Sin saludo al empezar (nada de «¡Hola!», «Hola, vos», «Qué gusto»): andá directo a la respuesta. El voseo va en los verbos (buscá, andá, probá); no uses «vos» como palabra suelta. Prohibido: «fonda», «sazón», «de generación en generación», «el corazón de», «joya», «mágico», «encantador», «rincón», «auténtico», «experiencia única», «no te lo podés perder». Para comida de aquí decí «comida típica» o «comedor».\n' +
     '- «aprendido»: hasta 2 frases cortas con algo nuevo y útil que nAIhual aprendió en esta plática (qué busca la gente, qué faltó, una corrección de quien pregunta). Sin nombres ni datos personales. Si no aprendiste nada nuevo, lista vacía.\n' +
     '- «no_se»: true si no tenías información suficiente para responder bien. Entonces «falta»: en pocas palabras, qué información faltaba (por ejemplo «horario de mercados de artesanías»), sin datos personales. Claude lo investiga y lo carga con su fuente.\n' +
     'Respondé SOLO con un objeto JSON: {"texto": string, "lugares": [ids del catálogo], "otros": [{"nombre": string, "porque": string}], "consejos": [hasta 1 id], "cultural": boolean, "suficiente": boolean, "opciones": [hasta 3 textos cortos], "aprendido": [hasta 2 textos], "no_se": boolean, "falta": string}\n\n' +

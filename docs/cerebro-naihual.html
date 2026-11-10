@@ -1,0 +1,127 @@
+<title>Cerebro de nAIhual</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Instrument+Sans:wght@400;600;700&display=swap">
+<style>
+/* Layout: una columna de lectura, como una libreta de campo; el diagrama manda arriba. */
+:root {
+  --bg: #f4f2ee; --card: #ffffff; --ink: #1c2126; --ink2: #5a6168; --line: rgba(28,33,38,.12);
+  --acc: #2f4b7c; --acc-soft: #e3e9f3; --warn: #8a5a12; --warn-soft: #f6ead3; --ok: #2f6b4f;
+  --display: "Fraunces", Georgia, serif; --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121518; --card: #1a1f24; --ink: #ebe8e2; --ink2: #a19e97; --line: rgba(235,232,226,.13);
+  --acc: #9db4e0; --acc-soft: #1f2a3b; --warn: #e4b768; --warn-soft: #2e2516; --ok: #8fcaa9; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #121518; --card: #1a1f24; --ink: #ebe8e2; --ink2: #a19e97; --line: rgba(235,232,226,.13);
+  --acc: #9db4e0; --acc-soft: #1f2a3b; --warn: #e4b768; --warn-soft: #2e2516; --ok: #8fcaa9; color-scheme: dark; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); }
+main { max-width: 720px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+h1 { font: 600 clamp(30px, 6vw, 42px)/1.1 var(--display); margin: 0; letter-spacing: -.01em; }
+h2 { font: 600 22px/1.2 var(--display); margin: 0 0 10px; text-wrap: balance; }
+p { margin: 0 0 8px; max-width: 65ch; }
+.lead { color: var(--ink2); font-size: 17px; }
+section { min-width: 0; }
+.diagram { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; overflow-x: auto; }
+.three { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.part { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+.part b { display: block; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--acc); margin-bottom: 4px; }
+.part p { font-size: 15px; margin: 0; }
+.tbl { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 8px; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink2); }
+ol.steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; max-width: 65ch; }
+code { font: 14px ui-monospace, Menlo, monospace; background: var(--acc-soft); padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+.say { background: var(--acc-soft); border-radius: 12px; padding: 10px 14px; font-weight: 600; }
+.warn { background: var(--warn-soft); color: var(--warn); border-radius: 12px; padding: 12px 14px; }
+.warn p { color: var(--ink); }
+.prompt { white-space: pre-wrap; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font: 13.5px/1.5 ui-monospace, Menlo, monospace; margin: 8px 0; }
+button { font: inherit; font-weight: 700; border: 0; border-radius: 12px; min-height: 44px; padding: 0 18px; background: var(--acc); color: var(--bg); cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+</style>
+
+<main>
+<header>
+  <h1>Cerebro de nAIhual</h1>
+  <p class="lead">Cómo piensa, de dónde lee y dónde subís cada cosa. Versión 3.12 · 10-nov-2026.</p>
+</header>
+
+<section>
+  <h2>El mapa de todo</h2>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  V["Visitante en tu Wix<br/>o en el teléfono"] --> A["App nAIhual<br/>(GitHub Pages)"]
+  A -->|"pregunta + reglas + lo que sabe"| S["Tu servidor<br/>(Cloudflare, guarda la llave)"]
+  S --> G["Gemini piensa"]
+  G -->|respuesta| A
+  subgraph CEREBRO["Lo que lee el cerebro"]
+    R["1 · Cómo habla<br/>reglas y voz"]
+    C["2 · Catálogo<br/>lugares curados"]
+    L["3 · Libretas<br/>tus informes de NotebookLM"]
+  end
+  CEREBRO --> A
+  N["NotebookLM"] -->|"copiás el informe"| D["Google Doc en tu carpeta<br/>nAIhual libretas"]
+  D -->|"«Claude, cargá las libretas»"| L
+  GM["Gemini (inventario)"] --> SH["Tu Sheet<br/>vos curás"]
+  SH -->|"«Claude, cargá el directorio»"| C
+  T["Lo que no te gusta<br/>del tono"] -->|"me lo decís"| R
+</pre>
+  </div>
+</section>
+
+<section>
+  <h2>Las tres partes</h2>
+  <div class="three">
+    <div class="part"><b>Quién piensa</b><p>Afuera, en tu Wix y en tu teléfono, piensa Gemini. En tu visor privado de Claude, piensa Claude. Ninguno tiene memoria propia: cada vez lee lo de abajo.</p></div>
+    <div class="part"><b>Cómo habla</b><p>Las reglas y la voz. Ahí se prohíbe «fonda», «sazón» y los saludos de folleto. Vos me decís qué suena mal y yo lo cambio.</p></div>
+    <div class="part"><b>Qué sabe</b><p>Lo que lee, en este orden: tu catálogo, tus libretas y, si no alcanza, lo que Gemini sabe, marcado «Según la IA · confirmá en Google».</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Dónde subís cada cosa</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Qué</th><th>Dónde lo ponés</th><th>Qué me decís</th></tr></thead>
+    <tbody>
+      <tr><td>Informes de NotebookLM</td><td>Un Google Doc por categoría, en tu carpeta de Drive <code>nAIhual libretas</code></td><td>«cargá las libretas»</td></tr>
+      <tr><td>Lugares (inventario de Gemini)</td><td>Tu Sheet, con tus columnas para, confirmo y estado</td><td>«cargá el directorio»</td></tr>
+      <tr><td>Lo que no te gusta de cómo habla</td><td>Aquí en el chat, con un ejemplo</td><td>«cambiá la voz: …»</td></tr>
+      <tr><td>Fotos y gráficos</td><td>Galería, en tu visor privado</td><td>«leé la beta»</td></tr>
+      <tr><td>Mapas con tus íconos</td><td>Google My Maps; me pasás el enlace</td><td>«poné este mapa»</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>NotebookLM a nAIhual, paso a paso</h2>
+  <ol class="steps">
+    <li>En NotebookLM, abrí el cuaderno de una categoría (por ejemplo, comida).</li>
+    <li>Pedile el informe con este prompt (cambiá [categoría]):<pre id="nb" class="prompt">Con las fuentes de este cuaderno, armá un informe de [categoría] para nAIhual (Antigua Guatemala).
+- Solo lo que dicen las fuentes; al final de cada párrafo, entre paréntesis, la fuente.
+- Párrafos cortos, uno por tema o por lugar, separados por una línea en blanco.
+- Sin opiniones como verdad, sin calificaciones, sin precios ni horarios.
+- Lo maya o cultural, marcado con * (falta que lo valide un tata).
+- Al principio, una línea: «Categoría: [categoría] · fecha: [hoy]».</pre><button type="button" id="cpnb">Copiar prompt</button></li>
+    <li>Copiá lo que te devuelve y pegalo en un Google Doc nuevo llamado <code>nAIhual · comida</code>.</li>
+    <li>Guardalo en la carpeta de Drive <code>nAIhual libretas</code>. Un doc por categoría.</li>
+    <li>Escribime: <span class="say">«cargá las libretas»</span></li>
+  </ol>
+  <p style="margin-top:10px">Yo las leo desde tu Drive, reviso que cada dato tenga su fuente, marco lo maya con * y lo publico. Desde ese momento Gemini las usa en tu Wix.</p>
+</section>
+
+<section class="warn">
+  <h2>Ojo con dos cosas</h2>
+  <p><b>La «Memoria» de la app vive solo en tu teléfono.</b> Lo que pegués ahí no lo ven los visitantes. Para que lo use todo el mundo, va en la carpeta de Drive.</p>
+  <p><b>Gemini a veces se inventa nombres</b> cuando tu catálogo no alcanza (en la prueba propuso un «Comedor Doña María» que no pude confirmar). Por eso salen marcados «confirmá en Google». Mientras más libretas y lugares cargués, menos inventa.</p>
+</section>
+</main>
+<script>
+(function () { var b = document.getElementById('cpnb'), t = document.getElementById('nb').textContent;
+  b.addEventListener('click', function () {
+    var done = function () { b.textContent = 'Copiado ✓'; setTimeout(function () { b.textContent = 'Copiar prompt'; }, 2500); };
+    var pick = function () { var r = document.createRange(); r.selectNodeContents(document.getElementById('nb')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(t).then(done, pick); } catch (e) { pick(); }
+  });
+})();
+</script>
