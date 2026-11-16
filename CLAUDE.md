@@ -24,13 +24,15 @@
 - Con «Todavía no»: va a la Parte 2 (Abierto), con ❓.
 
 ## Cuando Diego dice «leé la beta»
-Seguí el proceso de `docs/nAIhual.md` (Parte 4): leer → verificar con fuente → cargar al catálogo → marcar cada anotación con su revisión en la base del visor → investigar lo «por investigar» → anotar en el registro → publicar y guardar → reportar.
+Seguí el proceso de `docs/nAIhual.md` (Parte 4): leer → verificar con fuente → cargar al catálogo → marcar cada anotación con su revisión en el buzón → investigar lo «por investigar» → anotar en el registro → publicar y guardar → reportar.
 
 ## Cuando Diego dice «cargá el directorio»
 Leé el archivo (Excel o Google Sheets), quitá duplicados contra `app/data/lugares.js`, no copiés calificaciones ni reseñas, guardá fuente y enlace, cargalo al catálogo, anotá en el registro, probá, publicá y guardá.
 
 ## Al empezar cada sesión
-Leé en la base del visor lo «por investigar» (colección «aprendido») y lo nuevo de «beta» y «curaduria». Investigalo y respondelo antes de construir otra cosa: si no, el chat «no mejora».
+Leé el **buzón de agentes** (servidor de Diego, `servidor_ia` en `app/data/config.js`): lo «por revisar» («entrada»), lo «por investigar» («aprendido») y lo nuevo de «beta». Investigalo y respondelo antes de construir otra cosa: si no, el chat «no mejora». La base del visor privado es archivo (no se usa desde la 3.14).
+- Lo público se lee sin nada. Para leer lo privado o escribir hace falta la **palabra de agentes**: pedila con el formulario seguro de credenciales (encabezado `X-Naihual-Key`), **nunca en el chat**. Tampoco se pide nunca la llave de Gemini.
+- Las pruebas no tocan el buzón de verdad: usan `pruebas/servidor_local.mjs`.
 
 ## Reglas que más se rompen
 - Nunca inventes lugares, horarios, precios ni significados culturales.
@@ -41,3 +43,5 @@ Leé en la base del visor lo «por investigar» (colección «aprendido») y lo 
 - Antes de construir: «¿qué circuito cierra esto?». Una capa a la vez (regla 4: terminar antes de abrir).
 - «Listo» solo con prueba de punta a punta.
 - Cada versión nueva de la app trae un cambio visual que se note (pedido de Diego, 28-oct), para que compruebe que se actualizó.
+- Dos personas en la app (3.18): **visitante** (solo ve lo público; propone) y **agente** (entra con «Soy agente»). Lo que un agente deja como privado (notas, visitas, número 0–10) nunca se muestra ni se manda al visitante.
+- Al subir de versión: `VERSION` en `app/index.html` y en `app/sw.js`, y correr `python3 pruebas/prueba_piloto.py` y `node pruebas/prueba_servidor.mjs`.

@@ -17,8 +17,11 @@ import json
 import os
 import re
 import socketserver
+import subprocess
 import sys
 import threading
+import urllib.request
+import urllib.error
 from urllib.parse import unquote
 
 from playwright.sync_api import sync_playwright
@@ -130,7 +133,7 @@ def js(name, value):
 
 def new_page(browser, url, fixture=None, scheme='light', config=None, hash_='', claude=None, abiertos=True):
     """config: dict = configuración de prueba · 'sin' = como si faltara data/config.js · None = la real."""
-    ctx = browser.new_context(viewport={'width': 390, 'height': 844}, color_scheme=scheme, has_touch=True)
+    ctx = browser.new_context(bypass_csp=True, viewport={'width': 390, 'height': 844}, color_scheme=scheme, has_touch=True)
     page = ctx.new_page()
     errors = []
     hosts = HOSTS.setdefault(id(ctx), set())
@@ -233,14 +236,22 @@ def main():
         faltan = sorted(n for n in nombrados if n not in ids and not n.startswith('lugar'))
         check('Datos: las respuestas fijas, las playlists y las referencias nombran solo lugares activos del catálogo', not faltan, faltan)
 
+        sw = open(os.path.join(APP, 'sw.js'), encoding='utf-8').read()
+        datos = re.findall(r'<script src="(data/[a-z]+\.js)"', code)
+        ver = re.search(r"var VERSION = 'nAIhual ([0-9.]+)", code).group(1)
+        check('Sin señal: sw.js guarda todos los archivos de datos de la app y lleva la versión de la app (%s)' % ver, datos and all("'./%s'" % d in sw for d in datos) and "'naihual-%s'" % ver in sw, [d for d in datos if "'./%s'" % d not in sw])
+
         # =============== A. VISTA PREVIA con el catálogo real ===============
         ctx, page, errors = new_page(browser, url, abiertos=False)
         M = '[vista previa]'
         check(M + ' Carga el catálogo (%d), la configuración y las fuentes (%d)' % (TOTAL, N_FUENTES), page.evaluate("n => window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length === n[0] && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === n[1]", [TOTAL, N_FUENTES]))
         check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in ' '.join((r.get('frase') or {}).values()).lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
         check(M + ' Inicio «¿Qué hay?» (3.16): sin portada grande; preguntar, «Quiero un café» y «Recién llegué» arriba', page.locator('.hero-art').count() == 0 and page.locator('.home-top .askbar[data-guide]').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
-        check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 10 and page.locator('[data-more] .widget.closed').count() == 6 and page.locator('[data-feed^="p:"] [data-bmark="Diego"]').count() >= 5)
+        check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 8 and page.locator('[data-more] .widget.closed').count() == 7 and page.locator('[data-widget="frases"]').count() == 1 and page.locator('[data-feed^="p:"] [data-bmark="Diego"]').count() >= 5)
         page.click('[data-feedcat="none"]')
+        a0 = page.locator('[data-ahora]').get_attribute('data-ahora'); page.click('[data-ahora-go="1"]'); a1 = page.locator('[data-ahora]').get_attribute('data-ahora')
+        orden = page.evaluate("(() => { const a = document.querySelector('[data-ahora]').getBoundingClientRect(), b = document.querySelector('.askbar').getBoundingClientRect(), c = document.querySelector('.fcats').getBoundingClientRect(); return a.top < b.top && b.top < c.top && a.height >= 380; })()")
+        check(M + ' Inicio (3.19): abre con «Ahorita en Antigua», una recomendación grande con botón; la flecha trae otra; preguntar y filtros van debajo', page.locator('[data-ahora] h2').count() == 1 and page.locator('[data-ahora] .btn').count() >= 1 and a0 != a1 and orden and 'Ahorita en Antigua'.lower() in page.locator('[data-ahora]').inner_text().lower(), [a0, a1, orden])
         check(M + ' Filtro «Nada»: sin feed, solo la app', page.locator('[data-feed]').count() == 0)
         page.click('[data-wedit-toggle]')
         page.click('[data-wsize="que:M"]')
@@ -355,11 +366,11 @@ def main():
         check(M + ' Inicio: tarjeta de la beta', page.locator('[data-beta-card]').count() == 1 and '0 anotaciones' in page.locator('[data-beta-card]').inner_text().lower())
         check(M + ' Botón de emergencias visible', page.locator('#sos').is_visible())
         page.click('#sos')
-        check(M + ' Emergencias: «Pendiente de números oficiales», sin números', 'Pendiente de números oficiales' in page.inner_text('#dlg') and not any(ch.isdigit() for ch in page.inner_text('#dlg')))
+        check(M + ' Emergencias (3.18): 110, 122, 123 y 1500, cada uno se puede marcar, con su fuente', [a.get_attribute('href') for a in page.locator('#dlg [data-sos-list] a').all()] == ['tel:110', 'tel:122', 'tel:123', 'tel:1500'] and 'INGUAT' in page.inner_text('#dlg [data-sos-src]'), page.inner_text('#dlg'))
         page.keyboard.press('Escape')
         check(M + ' 390 px sin desplazamiento horizontal (Inicio)', no_hscroll(page))
         tabs = page.locator('#tabs button').all_inner_texts()
-        check(M + ' Barra: Inicio, Rutas, «+ Publicar» al centro, Guía, Guardados', [x.split('\n')[0].strip() for x in tabs] == ['Inicio', 'Rutas', 'Publicar', 'Guía', 'Guardados'], tabs)
+        check(M + ' Barra (3.18): Inicio, Playlists, «+ Publicar» al centro, Guía, Guardados', [x.split('\n')[0].strip() for x in tabs] == ['Inicio', 'Playlists', 'Publicar', 'Guía', 'Guardados'], tabs)
         page.click('#tabs [data-publish]')
         page.click('[data-bform="post"] label.chip:has(input[value="evento"])')
         page.fill('[data-bform="post"] textarea[name="texto"]', 'Hay concierto en el Tanque el sábado')
@@ -762,7 +773,7 @@ def main():
                     'opciones': ['Contame más'], 'aprendido': ['La gente quiere empezar con calma.']}
         ctx, page, errors = new_page(browser, url, None, 'light', None, '', ok_reply)
         page.wait_for_selector('[data-ai="listo"]')
-        check('[Claude] Avisa la prueba privada y que solo guarda lo que aprende, por confirmar', 'solo guarda lo que aprende' in page.inner_text('main'))
+        check('[Claude] Avisa que responde una IA, que no pongan datos personales y que la pregunta no se guarda', 'Responde una IA' in page.inner_text('main') and 'no pongás datos personales' in page.inner_text('main') and 'no se guarda' in page.inner_text('main'))
         page.click('[data-tab="guia"]')
         page.fill('#q', '¿Qué me recomendás hacer hoy?')
         page.press('#q', 'Enter')
@@ -854,7 +865,8 @@ def main():
         ctx.close()
 
         # =============== D2. Afuera del visor: Gemini por el servidor propio (simulado) ===============
-        ctx = browser.new_context(viewport={'width': 390, 'height': 844})
+        ctx = browser.new_context(bypass_csp=True, viewport={'width': 390, 'height': 844})
+        ctx.add_init_script("if (!localStorage.getItem('naihual.agente')) localStorage.setItem('naihual.agente', JSON.stringify({ alias: 'Ana', agente: true }));")
         page = ctx.new_page()
         errs = []
         page.on('pageerror', lambda e: errs.append(str(e)))
@@ -865,7 +877,10 @@ def main():
             # Buzón de agentes simulado (mismo servidor): una lista por colección.
             path = r.request.url.split('ia.example.test/')[1]
             if path.startswith('buzon'):
-                parts = path.split('/'); col = parts[1]; docs = buz.setdefault(col, []); m = r.request.method
+                parts = path.split('/'); m = r.request.method
+                if len(parts) < 2:
+                    return r.fulfill(status=400, content_type='application/json', body=json.dumps({'error': 'invalid_request'}))
+                col = parts[1]; docs = buz.setdefault(col, [])
                 if m == 'GET':
                     return r.fulfill(status=200, content_type='application/json', body=json.dumps({'docs': docs}))
                 if m == 'OPTIONS':
@@ -895,7 +910,7 @@ def main():
         page.click('[data-bform="post"] button[type="submit"]')
         page.wait_for_function("() => true")
         page.wait_for_timeout(600)
-        check('[Buzón] Afuera del visor, «+ Publicar» va al buzón compartido, ya publicado, y no solo al teléfono', any(x.get('tipo') == 'post' and x.get('texto') == 'Hay mercado de artesanos el domingo' and x.get('estado') == 'confirmado' for x in buz.get('beta', [])) and 'mercado de artesanos' not in (page.evaluate('localStorage.getItem("naihual.beta")') or ''), buz.get('beta'))
+        check('[Buzón] Afuera del visor, «+ Publicar» va al buzón compartido, ya publicado, y no solo al teléfono', any(x.get('tipo') == 'post' and x.get('texto') == 'Hay mercado de artesanos el domingo' and x.get('estado') == 'confirmado' and x.get('de') == 'Ana' and x.get('pub') == 1 for x in buz.get('beta', [])) and 'mercado de artesanos' not in (page.evaluate('localStorage.getItem("naihual.beta")') or ''), buz.get('beta'))
         p2 = ctx.new_page()
         p2.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', dict(PREV, servidor_ia='https://ia.example.test/'))))
         p2.route('https://ia.example.test/**', gem)
@@ -933,8 +948,145 @@ def main():
         check('[Cerebro] Otro teléfono recibe el mismo tono', p3.locator('[data-cere-estado="propio"]').count() == 1 and 'prueba-de-voz-123' in p3.locator('[data-bform="cerebro"] textarea[name="voz"]').input_value())
         ctx.close()
 
+        # =============== D3. La app con el servidor REAL (candado, roles, propuestas, permiso) ===============
+        # Corre servidor/gemini-worker.js de verdad (buzón en memoria, Google simulado). Nada de esto toca el buzón de Diego.
+        origen = url.rsplit('/', 1)[0]
+        nodo = subprocess.Popen(['node', os.path.join(ROOT, 'pruebas', 'servidor_local.mjs'), origen], stdout=subprocess.PIPE, text=True)
+        puerto = int(nodo.stdout.readline().split()[1])
+        LOCAL = 'http://127.0.0.1:%d/' % puerto
+        vistos = collections.defaultdict(list)   # lo que el servidor le contestó a cada teléfono
+        def puente(quien):
+            def h(r):
+                q = r.request; path = q.url.split('ia.example.test/')[1]
+                hd = {k: v for k, v in q.headers.items() if k.lower() in ('content-type', 'x-naihual-key')}
+                hd['Origin'] = origen
+                req = urllib.request.Request(LOCAL + path, data=q.post_data_buffer if q.method not in ('GET', 'HEAD') else None, method=q.method, headers=hd)
+                try:
+                    resp = urllib.request.urlopen(req, timeout=20); st = resp.status
+                except urllib.error.HTTPError as e:
+                    resp = e; st = e.code
+                body = resp.read()
+                vistos[quien].append((q.method, path, st, body.decode('utf-8', 'replace')))
+                r.fulfill(status=st, headers={k: v for k, v in resp.headers.items() if k.lower() not in ('content-length', 'transfer-encoding', 'connection')}, body=body)
+            return h
+        def kv():
+            return json.loads(urllib.request.urlopen(LOCAL + '__kv', timeout=10).read().decode('utf-8'))
+        def telefono(quien, hash_='', ancho=390):
+            c = browser.new_context(bypass_csp=True, viewport={'width': ancho, 'height': 844}, has_touch=True)
+            pg = c.new_page(); er = []
+            pg.on('pageerror', lambda e: er.append(str(e)))
+            pg.route('**/data/config.js', lambda r: r.fulfill(status=200, content_type='application/javascript; charset=utf-8', body=js('NAIHUAL_CONFIG', dict(PREV, servidor_ia='https://ia.example.test/'))))
+            pg.route('https://ia.example.test/**', puente(quien))
+            pg.goto(url + hash_); pg.wait_for_selector('main > *'); pg.wait_for_timeout(500)
+            return c, pg, er
+        def barra(pg):
+            return [x.split('\n')[0].strip() for x in pg.locator('#tabs button').all_inner_texts()]
+        R = '[Roles]'
+        # --- Visitante: la app limpia ---
+        cv, pv, ev = telefono('visitante')
+        check(R + ' Visitante: barra con «Proponer» (sin «Publicar»), sin taller, sin «Vista interna», con «Soy agente» al pie', barra(pv) == ['Inicio', 'Playlists', 'Proponer', 'Guía', 'Guardados'] and pv.locator('[data-beta-card]').count() == 0 and pv.locator('[data-go="taller"]').count() == 0 and pv.locator('[data-soy-agente]').inner_text().strip() == 'Soy agente', barra(pv))
+        pv.goto(url + '#beta'); pv.reload(); pv.wait_for_selector('main > *')
+        check(R + ' Visitante: el enlace directo al taller (#beta) lo deja en Inicio', pv.locator('.home-top').count() == 1 and pv.locator('[data-beta-where]').count() == 0)
+        # --- El primer agente crea la palabra ---
+        ca, pa, ea = telefono('agente', '#agente')
+        check(R + ' «Soy agente»: sin palabra todavía, pide crearla y lo explica', pa.locator('[data-bform="agente"] [data-ag-crear]').count() == 1 and 'Creá la palabra' in pa.inner_text('main'))
+        pa.fill('[data-bform="agente"] input[name="alias"]', 'Ana'); pa.fill('[data-bform="agente"] input[name="clave"]', 'corta')
+        pa.evaluate("document.querySelector('[data-bform=\"agente\"]').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))")
+        pa.wait_for_selector('[data-ag-msg="claveCorta"]')
+        check(R + ' Una palabra de menos de 8 letras no se acepta, y el nombre escrito no se pierde', 'cfg:clave' not in kv() and pa.locator('[data-bform="agente"] input[name="alias"]').input_value() == 'Ana')
+        pa.fill('[data-bform="agente"] input[name="clave"]', 'palabra-secreta-1'); pa.click('[data-bform="agente"] button[type="submit"]')
+        pa.wait_for_selector('#tabs [data-publish]')
+        k = kv()
+        check(R + ' Agente adentro: «+ Publicar» en la barra, taller a la vista y el pie dice quién es', barra(pa) == ['Inicio', 'Playlists', 'Publicar', 'Guía', 'Guardados'] and pa.locator('[data-beta-card]').count() == 1 and pa.locator('[data-soy-agente]').inner_text().strip() == 'Agente: Ana', barra(pa))
+        check(R + ' El servidor guarda solo la huella de la palabra, nunca la palabra', 'cfg:clave' in k and len(k['cfg:clave'].get('hash', '')) == 64 and 'palabra-secreta-1' not in json.dumps(k), k.get('cfg:clave'))
+        # --- El agente publica, anota algo privado y marca «me gustó» ---
+        pa.click('#tabs [data-publish]')
+        pa.fill('[data-bform="post"] textarea[name="texto"]', 'Feria del libro en el parque, sábado')
+        pa.fill('[data-bform="post"] input[name="lugar"]', 'Parque Central'); pa.select_option('[data-bform="post"] select[name="playlist"]', index=1)
+        con_foto = pa.locator('[data-bform="post"] [data-fototile] input[name="foto"]').count()
+        pa.click('[data-bform="post"] button[type="submit"]'); pa.wait_for_timeout(700)
+        pa.locator('[data-feed^="p:"] [data-open]').first.click(); pa.wait_for_selector('[data-beta-ficha]')
+        pid = pa.locator('[data-beta-ficha]').get_attribute('data-beta-ficha')
+        pa.click('[data-beta-like]'); pa.wait_for_timeout(500)
+        pa.fill('[data-bform="ficha"] textarea[name="texto"]', 'nota-privada-del-agente')
+        pa.evaluate("(() => { const r = document.querySelector('[data-bform=\"ficha\"] input[name=\"puntaje\"]'); r.value = '9'; r.dispatchEvent(new Event('input', { bubbles: true })); })()")
+        pa.click('[data-bform="ficha"] button[type="submit"]'); pa.wait_for_timeout(700)
+        beta = kv().get('col:beta', [])
+        post = [x for x in beta if x.get('tipo') == 'post']; nota = [x for x in beta if x.get('tipo') == 'nota']; gusta = [x for x in beta if x.get('tipo') == 'gusta']
+        check(R + ' Lo que publica el agente queda firmado y marcado público; su nota y su número (0–10) quedan privados', len(post) == 1 and post[0].get('pub') == 1 and post[0].get('de') == 'Ana' and post[0].get('lugar') == 'parque' and post[0].get('playlist') and con_foto == 1 and len(nota) == 1 and nota[0].get('puntaje') == 9 and not nota[0].get('pub'), beta)
+        check(R + ' «Me gustó» es de cada agente: firmado y con su propio lugar en el buzón', len(gusta) == 1 and gusta[0].get('de') == 'Ana' and gusta[0].get('_id') == 'gusta-%s-ana' % pid and gusta[0].get('pub') == 1, gusta)
+        # --- El visitante ve lo público y nada de lo privado ---
+        vistos['visitante'].clear()
+        pv.goto(url); pv.reload(); pv.wait_for_selector('main > *'); pv.wait_for_timeout(600)
+        crudo = ' '.join(b for _, _, _, b in vistos['visitante'])
+        check(R + ' Al teléfono del visitante no viajan ni la nota privada ni el número', 'Feria del libro' in crudo and 'nota-privada-del-agente' not in crudo and 'puntaje' not in crudo, crudo[:300])
+        check(R + ' El visitante ve la publicación en «¿Qué hay?», con quién la comparte', pv.locator('[data-feed="post"]').count() == 1 and 'Feria del libro' in pv.locator('[data-feed="post"]').inner_text() and pv.locator('[data-feed="post"] [data-bmark="Ana"]').count() == 1)
+        pv.locator('[data-feed="p:%s"] [data-open]' % pid).first.click() if pv.locator('[data-feed="p:%s"]' % pid).count() else pv.goto(url)
+        check(R + ' El gusto del agente sale con su nombre («A Ana le gusta»), no como «Te gustó»', 'A Ana le gusta' in pv.inner_text('main') and 'Te gustó' not in pv.inner_text('main'), pv.inner_text('main')[:200])
+        # --- Palabra equivocada ---
+        pv.goto(url + '#agente'); pv.reload(); pv.wait_for_selector('[data-bform="agente"]'); pv.wait_for_timeout(400)
+        check(R + ' Con la palabra ya creada, «Soy agente» pide la palabra (no ofrece crear otra)', pv.locator('[data-ag-crear]').count() == 0 and 'Palabra de agentes' in pv.inner_text('main'))
+        pv.fill('[data-bform="agente"] input[name="alias"]', 'Intruso'); pv.fill('[data-bform="agente"] input[name="clave"]', 'no-es-la-palabra'); pv.click('[data-bform="agente"] button[type="submit"]')
+        pv.wait_for_selector('[data-ag-msg="claveMala"]')
+        check(R + ' Palabra equivocada: no entra y sigue como visitante', pv.locator('#tabs [data-publish]').count() == 0 and '"agente":true' not in (pv.evaluate('localStorage.getItem("naihual.agente")') or ''))
+        # --- El visitante propone ---
+        pv.click('[data-tab="inicio"]'); pv.click('#tabs [data-proponer]')
+        pv.fill('[data-bform="propuesta"] input[name="nombre"]', 'Comedor Doña Prueba'); pv.fill('[data-bform="propuesta"] textarea[name="texto"]', 'Caldo de gallina los domingos')
+        pv.fill('[data-bform="propuesta"] input[name="maps"]', 'https://malo.example/x'); pv.click('[data-bform="propuesta"] button[type="submit"]')
+        check(R + ' Proponer: un enlace que no es de Google Maps no pasa', pv.locator('#dlg[open]').count() == 1 and 'col:entrada' not in kv())
+        pv.fill('[data-bform="propuesta"] input[name="maps"]', ''); pv.fill('[data-bform="propuesta"] input[name="alias"]', 'Lupe'); pv.click('[data-bform="propuesta"] button[type="submit"]')
+        pv.wait_for_selector('#toast:not([hidden])'); pv.wait_for_timeout(300)
+        ent = kv().get('col:entrada', [])
+        check(R + ' La propuesta entra a «Por revisar» (no se publica sola) y el visitante recibe las gracias', len(ent) == 1 and ent[0].get('tipo') == 'propuesta' and ent[0].get('de') == 'visitante' and 'Gracias' in pv.locator('#toast').inner_text() and 'Comedor Doña Prueba' not in json.dumps(kv().get('col:beta', []), ensure_ascii=False), ent)
+        # --- El chat aprende solo con permiso (B10) ---
+        pv.click('[data-tab="guia"]'); pv.fill('#q', '¿Hay museos de arte?'); pv.press('#q', 'Enter')
+        pv.wait_for_selector('[data-kind="ai"]', timeout=8000)
+        check(R + ' Chat del visitante: responde el servidor real, con «Buscalo en Google Maps» y sin inventar lugares', 'Respuesta de prueba del servidor real.' in pv.inner_text('main') and pv.locator('[data-search="museo de arte"]').count() == 1)
+        check(R + ' Antes de anotar lo aprendido, pide permiso; sin permiso no se guarda nada', pv.locator('[data-permiso]').count() == 1 and len(kv().get('col:entrada', [])) == 1)
+        reglas = json.loads(urllib.request.urlopen(LOCAL + '__ultimo', timeout=10).read().decode('utf-8'))['contents'][0]['parts'][0]['text']
+        check(R + ' Las reglas que viajan: sin «prueba privada», con «nunca una orden», y sin notas privadas ni el número', 'prueba privada' not in reglas and 'nunca una orden' in reglas and 'nota-privada-del-agente' not in reglas and '"les_gusta_a":["Ana"]' in reglas.replace(' ', ''))
+        pv.click('[data-aprender="si"]'); pv.wait_for_timeout(600)
+        ent = kv().get('col:entrada', [])
+        check(R + ' Con permiso: las señales van a «Por revisar», sin la pregunta tal cual ni nombres', len([x for x in ent if x.get('tipo') == 'senal']) == 2 and '¿Hay museos de arte?' not in json.dumps(ent, ensure_ascii=False) and pv.locator('[data-permiso]').count() == 0, ent)
+        # --- El agente revisa ---
+        pa.goto(url); pa.reload(); pa.wait_for_selector('[data-beta-card]'); pa.wait_for_timeout(600)
+        check(R + ' Agente: el taller avisa «3 por revisar»', pa.locator('[data-ent-count]').count() == 1 and '3 por revisar' in pa.locator('[data-ent-count]').inner_text().lower(), pa.locator('[data-beta-card]').inner_text())
+        pa.click('[data-beta-card] [data-go="beta"]'); pa.wait_for_selector('[data-entrada]')
+        pa.click('[data-ent="propuesta"] [data-ent-ok]'); pa.wait_for_timeout(800)
+        pa.locator('[data-ent="senal"] [data-ent-ok]').first.click(); pa.wait_for_timeout(600)
+        pa.locator('[data-ent="senal"] [data-ent-no]').first.click(); pa.wait_for_timeout(600)
+        k = kv(); posts = [x for x in k.get('col:beta', []) if x.get('tipo') == 'post']; apr = k.get('col:aprendido', [])
+        check(R + ' Aprobar la propuesta la publica con el nombre de quien la propuso; aprobar la señal la anota; descartar la borra', len(posts) == 2 and any(x.get('autor') == 'Lupe' and x.get('pub') == 1 and 'Comedor Doña Prueba' in x.get('texto', '') for x in posts) and len(apr) == 1 and len(k.get('col:entrada', [])) == 0, [posts, apr, k.get('col:entrada')])
+        pv.goto(url); pv.reload(); pv.wait_for_selector('main > *'); pv.wait_for_timeout(600)
+        check(R + ' El visitante ya ve la propuesta aprobada, firmada por quien la propuso', pv.locator('[data-feed="post"] [data-bmark="Lupe"]').count() == 1)
+        # --- Cambian la palabra: el teléfono con la palabra vieja deja de poder escribir ---
+        urllib.request.urlopen(urllib.request.Request(LOCAL + 'buzon-clave', data=json.dumps({'nueva': 'otra-palabra-nueva', 'actual': 'palabra-secreta-1'}).encode('utf-8'), method='POST', headers={'Origin': origen, 'Content-Type': 'text/plain'}), timeout=10).read()
+        pa.goto(url); pa.reload(); pa.wait_for_selector('main > *'); pa.wait_for_timeout(700)
+        check(R + ' Si cambian la palabra, quien tenía la vieja sale del modo agente y se le pide entrar de nuevo', pa.locator('#tabs [data-publish]').count() == 0 and pa.locator('[data-beta-card]').count() == 0 and 'palabra-secreta-1' not in (pa.evaluate('localStorage.getItem("naihual.agente")') or ''), barra(pa))
+        check(R + ' Consola sin errores (visitante y agente)', not ev and not ea, [ev, ea])
+        cv.close(); ca.close()
+        # --- Pantalla ancha (compu o dentro de un sitio) ---
+        cw, pw_, ew = telefono('ancho', ancho=1280)
+        xs = sorted({round(b['x']) for b in pw_.evaluate("[...document.querySelectorAll('[data-feed-list] > .fcard')].map(e => e.getBoundingClientRect())")})
+        ancho_app = pw_.evaluate("document.querySelector('.app').getBoundingClientRect().width")
+        check('[Ancho] En una pantalla de 1280 la app usa el ancho (antes 560) y el feed va en 3 columnas o más, sin barra horizontal', ancho_app >= 1000 and len(xs) >= 3 and pw_.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), [ancho_app, xs])
+        n1 = pw_.locator('[data-feed-list] > .fcard').count(); total = int(pw_.locator('[data-feed-list]').get_attribute('data-feed-total'))
+        pw_.click('[data-feedmore]')
+        n2 = pw_.locator('[data-feed-list] > .fcard').count()
+        check('[Feed] Llega por partes: 12 tarjetas y «Ver más» trae las siguientes', n1 == 12 and n2 == min(24, total) and total > 12, [n1, n2, total])
+        cw.close()
+        nodo.terminate()
+        # --- La política de seguridad de la página (CSP) no rompe la app ---
+        cs = browser.new_context(viewport={'width': 390, 'height': 844}); ps = cs.new_page(); es = []
+        ps.on('console', lambda m: es.append(m.text) if m.type == 'error' else None); ps.on('pageerror', lambda e: es.append(str(e)))
+        ps.goto(url); ps.wait_for_selector('.home-top'); ps.click('[data-tab="guia"]'); ps.wait_for_selector('.guide-head')
+        csp = ps.locator('meta[http-equiv="Content-Security-Policy"]').get_attribute('content') or ''
+        servidor = re.search(r"servidor_ia:\s*'(https://[^'/]+)", open(os.path.join(APP, 'data', 'config.js'), encoding='utf-8').read())
+        check('[Seguridad] La página trae su política (CSP): solo habla con su servidor, sin complementos, y la app funciona con ella puesta', "object-src 'none'" in csp and "base-uri 'none'" in csp and servidor and servidor.group(1) in csp and not [e for e in es if 'Content Security' in e or 'Refused' in e], [csp[:80], es])
+        cs.close()
+
         # =============== E. Beta con la base de datos del visor (simulada) ===============
-        ctx = browser.new_context(viewport={'width': 390, 'height': 844}, has_touch=True)
+        ctx = browser.new_context(bypass_csp=True, viewport={'width': 390, 'height': 844}, has_touch=True)
         page = ctx.new_page()
         errors = []
         page.on('pageerror', lambda e: errors.append(str(e)))
@@ -1089,7 +1241,7 @@ def main():
         ctx.close()
 
         # =============== G. Abrir el archivo directo ===============
-        ctx = browser.new_context(viewport={'width': 390, 'height': 844})
+        ctx = browser.new_context(bypass_csp=True, viewport={'width': 390, 'height': 844})
         page = ctx.new_page()
         errs = []
         page.on('pageerror', lambda e: errs.append(str(e)))

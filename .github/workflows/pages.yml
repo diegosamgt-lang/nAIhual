@@ -20,6 +20,12 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # Antes de publicar: las pruebas del servidor y que el programa de la app no tenga errores de escritura. Si algo falla, no se publica.
+      - name: Pruebas rápidas
+        run: |
+          node pruebas/prueba_servidor.mjs
+          node --check app/sw.js
+          node -e "const s=require('fs').readFileSync('app/index.html','utf8');const a=s.indexOf('<script>\n(function');new Function(s.slice(a+8,s.lastIndexOf('</script>')));console.log('app: sin errores de escritura')"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
