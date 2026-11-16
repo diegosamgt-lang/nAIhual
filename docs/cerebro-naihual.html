@@ -43,7 +43,7 @@ button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 <main>
 <header>
   <h1>Cerebro de nAIhual</h1>
-  <p class="lead">Cómo piensa, de dónde lee y dónde subís cada cosa. Versión 3.15 · 10-nov-2026.</p>
+  <p class="lead">Cómo piensa, de dónde lee y dónde subís cada cosa. Versión 3.18 · 16-nov-2026.</p>
 </header>
 
 <section>
@@ -52,6 +52,10 @@ button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 <pre class="mermaid">
 flowchart TD
   V["Visitante en tu Wix<br/>o en el teléfono"] --> A["App nAIhual<br/>(GitHub Pages)"]
+  V -->|"«+ Proponer»"| PR["Por revisar"]
+  PR --> AG["Agentes<br/>(«Soy agente»)"]
+  AG -->|"aprueban y publican"| BZ["Buzón con candado"]
+  BZ --> A
   A -->|"pregunta + reglas + lo que sabe"| S["Tu servidor<br/>(Cloudflare, guarda la llave)"]
   S --> G["Gemini piensa"]
   G -->|respuesta| A
@@ -74,7 +78,7 @@ flowchart TD
   <h2>Las tres partes</h2>
   <div class="three">
     <div class="part"><b>Quién piensa</b><p>Afuera, en tu Wix y en tu teléfono, piensa Gemini. En tu visor privado de Claude, piensa Claude. Ninguno tiene memoria propia: cada vez lee lo de abajo.</p></div>
-    <div class="part"><b>Cómo habla</b><p>Lo editás vos en la app: Inicio → Alimentá nAIhual → <b>Cerebro</b>. Ahí leés el tono exacto, las palabras prohibidas y el mensaje completo que recibe Gemini.</p></div>
+    <div class="part"><b>Cómo habla</b><p>Lo editás vos en la app: entrá con <b>«Soy agente»</b> → Inicio → Alimentá nAIhual → <b>Cerebro</b>. Ahí leés el tono exacto, las palabras prohibidas y el mensaje completo que recibe Gemini.</p></div>
     <div class="part"><b>Qué sabe</b><p>Lo que lee, en este orden: tu catálogo, tus libretas y, si no alcanza, lo que Gemini sabe, marcado «Según la IA · confirmá en Google».</p></div>
   </div>
 </section>
@@ -86,8 +90,9 @@ flowchart TD
     <tbody>
       <tr><td>Informes de NotebookLM</td><td>Un Google Doc por categoría, en tu carpeta de Drive <code>nAIhual libretas</code></td><td>«cargá las libretas»</td></tr>
       <tr><td>Lugares (inventario de Gemini)</td><td>Tu Sheet, con tus columnas para, confirmo y estado</td><td>«cargá el directorio»</td></tr>
-      <tr><td>Lo que no te gusta de cómo habla</td><td>En la app: Inicio → Alimentá nAIhual → Cerebro</td><td>Nada: se aplica solo</td></tr>
-      <tr><td>Fotos y gráficos</td><td>Galería, en tu visor privado</td><td>«leé la beta»</td></tr>
+      <tr><td>Lo que no te gusta de cómo habla</td><td>En la app, como agente: Inicio → Alimentá nAIhual → Cerebro</td><td>Nada: se aplica solo</td></tr>
+      <tr><td>Fotos y gráficos</td><td>En la app, como agente: Alimentá nAIhual → Galería</td><td>Nada: salen al momento</td></tr>
+      <tr><td>Un lugar o un dato nuevo</td><td>«+ Publicar» (agentes) o «+ Proponer» (cualquier persona; un agente lo aprueba en «Por revisar»)</td><td>Nada</td></tr>
       <tr><td>Mapas con tus íconos</td><td>Google My Maps; me pasás el enlace</td><td>«poné este mapa»</td></tr>
     </tbody>
   </table></div>
@@ -107,7 +112,7 @@ flowchart TD
 
 <section class="warn">
   <h2>Ojo con dos cosas</h2>
-  <p><b>Lo que publican los agentes va al buzón compartido</b> (cuando lo creés en Cloudflare): sale al momento para todos. Los textos largos de NotebookLM, mejor en la carpeta de Drive.</p>
+  <p><b>Dos personas, una app (desde la 3.18).</b> El visitante ve la app limpia y puede proponer. El agente entra con «Soy agente» (su nombre y la palabra de agentes) y publica: sale al momento para todos. Las notas, las visitas y el número de 0 a 10 quedan solo para agentes.</p>
   <p><b>Cero inventos (desde la 3.14).</b> Si algo no está en tu catálogo ni en tus libretas, nAIhual lo dice y pone el botón «Buscalo en Google Maps». No nombra lugares que nadie verificó.</p>
 </section>
 </main>

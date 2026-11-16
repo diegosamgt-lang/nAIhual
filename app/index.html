@@ -602,6 +602,9 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 }
 .sosnum { text-decoration: none; flex-direction: row; align-items: baseline; gap: 12px; } .sosnum b { font-family: var(--f-data); font-size: 22px; min-width: 64px; }
 .frases { margin: 0; display: grid; gap: 10px; } .frases div { display: grid; gap: 2px; } .frases dt { font-weight: 700; } .frases dd { margin: 0; color: var(--ink-2); font-size: 14px; }
+.hello-line { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hello-ag { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 4px; font: inherit; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
+.hello-ag:focus-visible { outline: 3px solid var(--anil); outline-offset: 2px; border-radius: 8px; }
 </style>
 </head>
 <body>
@@ -2776,7 +2779,7 @@ function inicioHTML() {
       return '<button type="button" class="tile" data-go="' + z[0] + '"><span><b>' + esc(t.tiles[z[1]][0]) + '</b><small>' + esc(t.tiles[z[1]][1]) + '</small></span>' + icon('arrow', 'sm') + '</button>'; }).join('') + '</div></div>'); };
   var seg = '<div class="hseg" role="tablist" aria-label="' + esc(t.homeFeed) + '">' + [['feed', t.homeFeed, 'grid'], ['mapa', t.homeMap, 'map']].map(function (o) {
     return '<button type="button" role="tab" data-home="' + o[0] + '" aria-selected="' + (HOME.modo === o[0]) + '">' + icon(o[2], 'sm') + esc(o[1]) + '</button>'; }).join('') + '</div>';
-  return '<section class="home-top"><p class="hello-line"><span data-saludo>' + esc(saludo()) + '</span> · Antigua</p>' +
+  return '<section class="home-top"><p class="hello-line"><span><span data-saludo>' + esc(saludo()) + '</span> · Antigua</span>' + (DATA_ON && !LIBRE ? '<button type="button" class="hello-ag" data-go="agente" data-ag-top>' + icon('user', 'sm') + esc(BETA_ON ? AG.alias : Z().agSoy) + '</button>' : '') + '</p>' +
     '<button type="button" class="askbar" data-guide="' + S.guide + '">' + icon('chat') + '<span>' + esc(t.askHint(G[S.guide].name)) + '</span></button>' +
     '<div class="quick"><button type="button" class="chip" data-ask="cafe" id="cta-cafe">' + icon('coffee', 'sm') + esc(t.coffee) + '</button><button type="button" class="chip" data-ask="empezar">' + esc(t.arrived) + '</button></div>' + seg + '</section>' +
     (HOME.modo === 'mapa' ? mapHTML() : feedHTML()) +
