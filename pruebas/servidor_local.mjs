@@ -37,7 +37,7 @@ const srv = http.createServer(async (req, res) => {
     if (req.url === '/__kv') { const out = {}; for (const [k, v] of store) out[k] = typeof v === 'string' ? JSON.parse(v) : '(foto)'; res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(out)); }
     if (req.url === '/__ultimo') { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(ultimo)); }
     const headers = new Headers(); for (const [k, v] of Object.entries(req.headers)) if (typeof v === 'string' && k !== 'host' && k !== 'content-length' && k !== 'connection') headers.set(k, v);
-    const r = await W.fetch(new Request('http://servidor.prueba' + req.url, { method: req.method, headers, body: req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS' ? undefined : body }),
+    const r = await W.fetch(new Request('https://ia.example.test' + req.url, { method: req.method, headers, body: req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS' ? undefined : body }),
       { GEMINI_KEY: 'llave-de-prueba', BUZON: KV, ORIGENES: ORIGEN }, { waitUntil() {} });
     const h = {}; r.headers.forEach((v, k) => { h[k] = v; });
     res.writeHead(r.status, h); res.end(Buffer.from(await r.arrayBuffer()));

@@ -249,6 +249,9 @@ def main():
         check(M + ' Inicio «¿Qué hay?» (3.16): sin portada grande; preguntar, «Quiero un café» y «Recién llegué» arriba', page.locator('.hero-art').count() == 0 and page.locator('.home-top .askbar[data-guide]').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
         check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 8 and page.locator('[data-more] .widget.closed').count() == 7 and page.locator('[data-widget="frases"]').count() == 1 and page.locator('[data-feed^="p:"] [data-bmark="Diego"]').count() >= 5)
         page.click('[data-feedcat="none"]')
+        a0 = page.locator('[data-ahora]').get_attribute('data-ahora'); page.click('[data-ahora-go="1"]'); a1 = page.locator('[data-ahora]').get_attribute('data-ahora')
+        orden = page.evaluate("(() => { const a = document.querySelector('[data-ahora]').getBoundingClientRect(), b = document.querySelector('.askbar').getBoundingClientRect(), c = document.querySelector('.fcats').getBoundingClientRect(); return a.top < b.top && b.top < c.top && a.height >= 380; })()")
+        check(M + ' Inicio (3.19): abre con «Ahorita en Antigua», una recomendación grande con botón; la flecha trae otra; preguntar y filtros van debajo', page.locator('[data-ahora] h2').count() == 1 and page.locator('[data-ahora] .btn').count() >= 1 and a0 != a1 and orden and 'Ahorita en Antigua'.lower() in page.locator('[data-ahora]').inner_text().lower(), [a0, a1, orden])
         check(M + ' Filtro «Nada»: sin feed, solo la app', page.locator('[data-feed]').count() == 0)
         page.click('[data-wedit-toggle]')
         page.click('[data-wsize="que:M"]')
@@ -999,6 +1002,8 @@ def main():
         # --- El agente publica, anota algo privado y marca «me gustó» ---
         pa.click('#tabs [data-publish]')
         pa.fill('[data-bform="post"] textarea[name="texto"]', 'Feria del libro en el parque, sábado')
+        pa.fill('[data-bform="post"] input[name="lugar"]', 'Parque Central'); pa.select_option('[data-bform="post"] select[name="playlist"]', index=1)
+        con_foto = pa.locator('[data-bform="post"] [data-fototile] input[name="foto"]').count()
         pa.click('[data-bform="post"] button[type="submit"]'); pa.wait_for_timeout(700)
         pa.locator('[data-feed^="p:"] [data-open]').first.click(); pa.wait_for_selector('[data-beta-ficha]')
         pid = pa.locator('[data-beta-ficha]').get_attribute('data-beta-ficha')
@@ -1008,7 +1013,7 @@ def main():
         pa.click('[data-bform="ficha"] button[type="submit"]'); pa.wait_for_timeout(700)
         beta = kv().get('col:beta', [])
         post = [x for x in beta if x.get('tipo') == 'post']; nota = [x for x in beta if x.get('tipo') == 'nota']; gusta = [x for x in beta if x.get('tipo') == 'gusta']
-        check(R + ' Lo que publica el agente queda firmado y marcado público; su nota y su número (0–10) quedan privados', len(post) == 1 and post[0].get('pub') == 1 and post[0].get('de') == 'Ana' and len(nota) == 1 and nota[0].get('puntaje') == 9 and not nota[0].get('pub'), beta)
+        check(R + ' Lo que publica el agente queda firmado y marcado público; su nota y su número (0–10) quedan privados', len(post) == 1 and post[0].get('pub') == 1 and post[0].get('de') == 'Ana' and post[0].get('lugar') == 'parque' and post[0].get('playlist') and con_foto == 1 and len(nota) == 1 and nota[0].get('puntaje') == 9 and not nota[0].get('pub'), beta)
         check(R + ' «Me gustó» es de cada agente: firmado y con su propio lugar en el buzón', len(gusta) == 1 and gusta[0].get('de') == 'Ana' and gusta[0].get('_id') == 'gusta-%s-ana' % pid and gusta[0].get('pub') == 1, gusta)
         # --- El visitante ve lo público y nada de lo privado ---
         vistos['visitante'].clear()

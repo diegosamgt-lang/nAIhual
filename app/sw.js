@@ -1,6 +1,6 @@
 /* nAIhual · funciona sin señal: guarda la app y sus datos la primera vez y los usa si no hay conexión.
    Con conexión, siempre trae lo más nuevo (primero la red; si en 4 segundos no llega, lo guardado). Subí VERSION en cada versión. */
-var VERSION = 'naihual-3.18';
+var VERSION = 'naihual-3.19';
 var FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png',
   './data/config.js', './data/lugares.js', './data/fuentes.js', './data/libretas.js', './data/cerebro.js', './data/playlists.js', './data/referencias.js', './data/guias.js'];
 self.addEventListener('install', function (e) { e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); })); });

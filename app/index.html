@@ -605,6 +605,25 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 .hello-line { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .hello-ag { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 4px; font: inherit; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
 .hello-ag:focus-visible { outline: 3px solid var(--anil); outline-offset: 2px; border-radius: 8px; }
+.ahora { position: relative; margin: 0 -16px; overflow: hidden; background: var(--piedra); height: min(66vh, 560px); min-height: 400px; display: flex; flex-direction: column; justify-content: flex-end; border-radius: var(--r-xl); touch-action: pan-y; }
+.ahora-media { position: absolute; inset: 0; } .ahora-media img, .ahora-media > svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ahora::after { content: ""; position: absolute; inset: 30% 0 0; background: linear-gradient(to top, rgba(12,14,16,.9), rgba(12,14,16,.6) 50%, transparent); pointer-events: none; }
+.ahora-in { position: relative; z-index: 1; padding: 20px 20px 8px; color: #fff; display: flex; flex-direction: column; gap: 8px; }
+.ahora-in .eyebrow { color: rgba(255,255,255,.82); } .ahora-in h2 { margin: 0; font-size: clamp(28px, 7.5vw, 38px); line-height: 1.04; color: #fff; text-wrap: balance; }
+.ahora-in p { margin: 0; color: rgba(255,255,255,.94); font-size: 16px; max-width: 46ch; } .ahora-in .fwho { color: rgba(255,255,255,.75); }
+.ahora-in .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.ahora-in .btn { background: rgba(255,255,255,.16); color: #fff; border-color: rgba(255,255,255,.4); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); } .ahora-in .btn.primary { background: #fff; color: #15181b; border-color: #fff; }
+.ahora-nav { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 8px; }
+.ahora-b { all: unset; box-sizing: border-box; cursor: pointer; width: 44px; height: 44px; display: grid; place-items: center; color: #fff; border-radius: 50%; } .ahora-b:focus-visible { outline: 3px solid #fff; outline-offset: -3px; }
+.ahora .dots { display: flex; gap: 6px; align-items: center; } .ahora .dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.42); } .ahora .dots i.on { width: 18px; background: #fff; }
+.ahora > .heart { position: absolute; top: 12px; right: 12px; z-index: 2; }
+@media (prefers-reduced-motion: no-preference) { .ahora-in { animation: rise var(--dur-2) var(--ease) both; } .ahora .dots i { transition: width var(--dur-1) var(--ease); } }
+@media (min-width: 700px) { .ahora { margin: 0; height: min(58vh, 520px); } }
+.fototile { position: relative; display: block; cursor: pointer; border: 2px dashed var(--line-2); border-radius: var(--r-lg); background: var(--papel); overflow: hidden; }
+.fototile input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.fototile:focus-within { outline: 3px solid var(--anil); outline-offset: 2px; }
+.fototile-in { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 132px; padding: 16px; text-align: center; color: var(--ink-2); } .fototile-in b { color: var(--ink); font-size: 16px; } .fototile-in small { font-weight: 400; }
+.fototile.has { border-style: solid; } .fototile.has .fototile-in { padding: 0; } .fototile-in img { display: block; width: 100%; max-height: 260px; object-fit: cover; }
 </style>
 </head>
 <body>
@@ -645,7 +664,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 <script>
 (function () {
 'use strict';
-var VERSION = 'nAIhual 3.18 · 16-nov-2026';
+var VERSION = 'nAIhual 3.19 · 16-nov-2026';
 var INSTR_VERSION = 'reglas-fijas 3.9';
 var PILOT_MAX = 3;
 var CFG = window.NAIHUAL_CONFIG || {};
@@ -1121,6 +1140,7 @@ var Z3 = {
     entTitle: 'Por revisar', entBody: 'Lo que propone la gente y lo que el chat no supo. Nada de esto se ve hasta que lo aprobés.', entProp: 'Propuesta', entSenal: 'Del chat',
     entPublicar: 'Publicar', entAnotar: 'Anotar', entNo: 'Descartar', entCount: function (n) { return n + ' por revisar'; }, visitante: 'Visitante',
     musica: 'Música para esta caminata', frasesTitle: 'Frases para andar por aquí', frasesBody: 'Español como se habla en Antigua. Un saludo abre puertas.',
+    ahora: 'Ahorita en Antigua', otra: 'Otra recomendación', antes: 'La anterior', fotoAdd: 'Agregá una foto', postLugar: '¿De qué lugar es? (opcional)', postLugarPh: 'Escribí y elegí de la lista', postPlaylist: 'Sumarlo a una playlist (opcional)', postNoPlaylist: 'No, es una visita simple', plPosts: 'Lo que la gente sumó a esta playlist', postDeAqui: 'Publicar de aquí',
     verMas: function (n) { return 'Ver más (' + n + ')'; }, veces: function (n) { return 'lo pidieron ' + n + ' veces'; } },
   en: { agSoy: 'I’m an agent', agComo: function (n) { return 'Agent: ' + n; }, agKicker: 'nAIhual team', agTitle: 'I’m an agent',
     agBody: 'Agents post, upload photos and review what people suggest. Sign in with your name and the agents’ passphrase.',
@@ -1142,6 +1162,7 @@ var Z3 = {
     entTitle: 'To review', entBody: 'What people suggest and what the chat didn’t know. None of this shows until you approve it.', entProp: 'Suggestion', entSenal: 'From the chat',
     entPublicar: 'Post', entAnotar: 'Note it', entNo: 'Discard', entCount: function (n) { return n + ' to review'; }, visitante: 'Visitor',
     musica: 'Music for this walk', frasesTitle: 'Phrases to get around', frasesBody: 'Spanish as it’s spoken in Antigua. A greeting opens doors.',
+    ahora: 'Right now in Antigua', otra: 'Another pick', antes: 'Previous', fotoAdd: 'Add a photo', postLugar: 'Which place is it? (optional)', postLugarPh: 'Type and pick from the list', postPlaylist: 'Add it to a playlist (optional)', postNoPlaylist: 'No, just a visit', plPosts: 'What people added to this playlist', postDeAqui: 'Post from here',
     verMas: function (n) { return 'Show more (' + n + ')'; }, veces: function (n) { return 'asked ' + n + ' times'; } }
 };
 function Z() { return Z3[S.lang]; }
@@ -1400,7 +1421,7 @@ function photoArt(cat, gid) {
 }
 // noNote: en el muro de miniaturas no se repite «Foto pendiente».
 function phHTML(p, t, ratio, noNote) {
-  var g = p.g[0] || 'kej', foto = p.foto || (DATA_ON ? galFind('lugar:' + p.id) : '');
+  var g = p.g[0] || 'kej', foto = fotoLugar(p);
   if (foto) return '<div class="ph"' + (ratio ? ' style="aspect-ratio:' + ratio + '"' : '') + '><img src="' + esc(foto) + '" alt="' + esc(p.name) + '" style="width:100%;height:100%;object-fit:cover">' + (p.fotoCredito ? '<span class="ph-note">' + esc(p.fotoCredito) + '</span>' : '') + '</div>';
   return '<div class="ph"' + (ratio ? ' style="aspect-ratio:' + ratio + '"' : '') + '>' + photoArt(p.cat, g) + (noNote ? '' : '<span class="ph-note">' + esc(t.photoSoon) + '</span>') + '</div>';
 }
@@ -1906,7 +1927,7 @@ function recoLine(p) {
   if (p.fraseDe) return x.recoBy(p.fraseDe);
   return '';
 }
-function thumbHTML(p) { var f = p.foto || (DATA_ON ? galFind('lugar:' + p.id) : ''); return '<span class="thumb">' + (f ? '<img src="' + esc(f) + '" alt="">' : photoArt(p.cat, p.g[0] || 'kej')) + '</span>'; }
+function thumbHTML(p) { var f = fotoLugar(p); return '<span class="thumb">' + (f ? '<img src="' + esc(f) + '" alt="">' : photoArt(p.cat, p.g[0] || 'kej')) + '</span>'; }
 function compactCard(p) {
   var t = T(), x = X(), reco = recoLine(p);
   return '<article class="lcard" data-place="' + esc(p.id) + '" data-pub="' + isPub(p) + '">' + thumbHTML(p) +
@@ -2210,11 +2231,16 @@ function memoriaHTML() {
 }
 // «+ Publicar»: lo más simple posible, como en una red social. Temas: los de X3.temas (uno solo para todo).
 var TEMAS = X3.es.temas.map(function (t) { return t[0]; });
-function postForm(tema) {
-  var x = X(); tema = tema || 'lugar';
-  return '<form class="bform" data-bform="post"><h2>' + esc(x.postTitle) + '</h2>' +
+function postForm(tema, pre) {
+  var x = X(), z = Z(), lang = L(); tema = tema || 'lugar';
+  var rids = routeIds();
+  return '<form class="bform postform" data-bform="post"><h2>' + esc(x.postTitle) + '</h2>' +
+    (ASSETS ? '<label class="fototile" data-fototile><input type="file" name="foto" accept="image/*"><span class="fototile-in" data-foto-prev>' + icon('plus') + '<b>' + esc(z.fotoAdd) + '</b><small>' + esc(x.photoNote) + '</small></span></label>' : '') +
+    '<label><span class="sr-label">' + esc(x.postTitle) + '</span><textarea name="texto" maxlength="800" placeholder="' + esc(x.postPh) + '"></textarea></label>' +
     '<div class="temas" role="radiogroup" aria-label="' + esc(x.kind) + '">' + x.temas.map(function (tm, i) { return '<label class="chip"><input type="radio" name="tema" value="' + tm[0] + '"' + (tm[0] === tema ? ' checked' : '') + '>' + esc(tm[1]) + '</label>'; }).join('') + '</div>' +
-    '<label><span class="sr-label">' + esc(x.postTitle) + '</span><textarea name="texto" maxlength="800" placeholder="' + esc(x.postPh) + '"></textarea></label>' + photoHTML() +
+    '<label>' + esc(z.postLugar) + '<input type="text" name="lugar" list="dl-lugares" autocomplete="off" value="' + esc(pre && P[pre] ? P[pre].name : '') + '" placeholder="' + esc(z.postLugarPh) + '"></label>' +
+    '<datalist id="dl-lugares">' + PIDS.filter(function (id) { return visible(P[id]); }).map(function (id) { return '<option value="' + esc(P[id].name) + '">'; }).join('') + '</datalist>' +
+    (rids.length ? '<label>' + esc(z.postPlaylist) + '<select name="playlist"><option value="">' + esc(z.postNoPlaylist) + '</option>' + rids.map(function (r) { return '<option value="' + esc(r) + '">' + esc(ROUTES[r].title[lang]) + '</option>'; }).join('') + '</select></label>' : '') +
     '<label>' + esc(x.postMaps) + '<input type="url" name="maps" inputmode="url" autocomplete="off" placeholder="https://maps.app.goo.gl/…"></label><p class="note" role="status" data-post-msg></p>' +
     '<div class="row"><button type="submit" class="btn primary">' + icon('plus', 'sm') + esc(x.publish) + '</button><button type="button" class="btn" data-close>' + esc(T().close) + '</button></div></form>';
 }
@@ -2247,6 +2273,7 @@ function postUpdate(id, data) {
   BETA.items = BETA.items.map(function (x) { return x._id === id ? Object.assign({}, x, data) : x; }); betaSaveLocal(); render({ keep: true });
 }
 function postsAbout(pid) { return BETA.items.filter(function (x) { return x.tipo === 'post' && ((x.orden && x.orden.lugar === pid) || x.lugar === pid); }); }
+function postsOfPlaylist(rid) { return DATA_ON ? BETA.items.filter(function (x) { return x.tipo === 'post' && x.estado === 'confirmado' && x.playlist === rid; }).sort(byDate).slice(0, 12) : []; }
 function postHTML(it) {
   var x = X(), o = postClean(it.orden) || {}, foto = safeHttps(it.foto), maps = MAPS_RE.test(String(it.maps || '')) ? String(it.maps) : '', ok = it.estado === 'confirmado', tm = x.temas.filter(function (z) { return z[0] === (o.tema || it.tema); })[0];
   return '<article class="post" data-post="' + esc(it.estado || '') + '"' + (o.guardian ? ' data-post-guia="' + o.guardian + '"' : '') + '>' +
@@ -2270,7 +2297,7 @@ function betaMsg() { return BETA.msg ? '<p class="note" role="status" data-beta-
 function betaFichaHTML(p) {
   var x = X(), on = betaLiked(p.id);
   return '<section class="beta-card" data-beta-ficha="' + esc(p.id) + '"><span class="eyebrow">' + esc(x.betaFicha) + '</span>' +
-    '<div class="row"><button type="button" class="btn" data-beta-like="' + esc(p.id) + '" aria-pressed="' + on + '">' + icon('heart', 'sm' + (on ? ' fill' : '')) + esc(on ? x.liked : x.like) + '</button><button type="button" class="btn primary" data-visit="' + esc(p.id) + '">' + esc(x.tellVisit) + '</button></div>' +
+    '<div class="row"><button type="button" class="btn" data-beta-like="' + esc(p.id) + '" aria-pressed="' + on + '">' + icon('heart', 'sm' + (on ? ' fill' : '')) + esc(on ? x.liked : x.like) + '</button><button type="button" class="btn primary" data-publish-lugar="' + esc(p.id) + '">' + icon('plus', 'sm') + esc(Z().postDeAqui) + '</button><button type="button" class="btn" data-visit="' + esc(p.id) + '">' + esc(x.tellVisit) + '</button></div>' +
     '<form class="bform" data-bform="ficha" data-lugar="' + esc(p.id) + '"><label>' + esc(x.kind) + '<select name="tipo"><option value="nota">' + esc(x.note) + '</option><option value="dato">' + esc(x.wrong) + '</option></select></label>' +
     '<label>' + esc(x.text) + '<textarea name="texto" required maxlength="600"></textarea></label>' + scoreHTML() + photoHTML() + '<button type="submit" class="btn primary">' + esc(x.save) + '</button></form>' + betaMsg() + '</section>';
 }
@@ -2422,7 +2449,10 @@ function betaSubmit(form) {
     if (!pt) { if (bm) bm.textContent = x.postEmpty; return; }
     if (pm && !MAPS_RE.test(pm)) { if (bm) bm.textContent = x.badMaps; return; }
     var tema = (form.querySelector('input[name="tema"]:checked') || {}).value || 'lugar';
-    var post = { tipo: 'post', tema: tema, texto: pt.slice(0, 800), maps: pm.slice(0, 500), estado: 'confirmado' }; // sin restricciones para publicar (FIJA de Diego, 10-nov): sale al momento
+    var post = { tipo: 'post', tema: tema, texto: pt.slice(0, 800), maps: pm.slice(0, 500), estado: 'confirmado' };
+    var ln = norm(String(f.lugar ? f.lugar.value : '').trim()), lid = ln ? PIDS.filter(function (id) { return visible(P[id]) && norm(P[id].name) === ln; })[0] : '';
+    if (lid) post.lugar = lid; else if (ln) post.lugar_nombre = String(f.lugar.value).trim().slice(0, 80);
+    if (f.playlist && ROUTES[f.playlist.value]) post.playlist = f.playlist.value; // sin restricciones para publicar (FIJA de Diego, 10-nov): sale al momento
     // La ventana se cierra solo cuando quedó guardado: si falla, lo escrito sigue ahí.
     withPhoto(form, post, function (id) { var dp = document.getElementById('dlg'); if (dp.open) dp.close(); postClassify(id, post); });
     return;
@@ -2678,14 +2708,60 @@ function permisoSet(v) {
 
 // ===================== INICIO · «¿Qué hay?» (B17, FIJA 10-nov) =====================
 // Feed tipo Instagram (playlists, lugares con su porqué, lo que publica la gente) y un mapa real con la misma importancia.
-var HOME = { modo: 'feed', cat: 'all', centro: null, zoom: 16, n: 12 };
+var HOME = { modo: 'feed', cat: 'all', centro: null, zoom: 16, n: 12, h: Math.floor(Date.now() / 3600000) };
 try { var hm0 = JSON.parse(localStorage.getItem('naihual.home') || 'null'); if (hm0 && (hm0.modo === 'feed' || hm0.modo === 'mapa')) HOME.modo = hm0.modo; } catch (e) {}
 function homeSave() { try { localStorage.setItem('naihual.home', JSON.stringify({ modo: HOME.modo })); } catch (e) {} }
+function postLugar(it) { var o = it.orden || {}, id = P[it.lugar] ? it.lugar : P[o.lugar] ? o.lugar : ''; return id && visible(P[id]) ? id : ''; }
+// La foto de un lugar: la del catálogo, la de la galería o la última que un agente publicó de ese lugar. Así la app se llena sola al publicar.
+function fotoLugar(p) {
+  if (p.foto) return p.foto; if (!DATA_ON) return '';
+  var g = galFind('lugar:' + p.id); if (g) return g;
+  var ps = BETA.items.filter(function (x) { return x.tipo === 'post' && x.estado === 'confirmado' && safeHttps(x.foto) && postLugar(x) === p.id; }).sort(byDate)[0];
+  return ps ? ps.foto : '';
+}
+// ===================== «AHORITA EN ANTIGUA» (FIJA 16-nov): la app abre con una sola recomendación grande =====================
+// Cambia con la hora y se pasa a la siguiente con las flechas o deslizando. Primero lo que publicó la gente con foto; después lugares del momento y una playlist.
+var AHORA = { amanecer: ['cafe', 'postres', 'parque'], dia: ['cultura', 'comida', 'cafe', 'parque'], atardecer: ['parque', 'cultura', 'cafe', 'postres'], noche: ['noche', 'comida', 'postres'] };
+function ahoraList() {
+  var cats = AHORA[momento()] || AHORA.dia, out = [];
+  if (DATA_ON) BETA.items.filter(function (x) { return x.tipo === 'post' && x.estado === 'confirmado' && safeHttps(x.foto); }).sort(byDate).slice(0, 3).forEach(function (x) { out.push({ k: 'post', it: x }); });
+  var ps = PIDS.filter(function (id) { var p = P[id]; return visible(p) && !p.aviso && !!mapsUrl(p) && cats.indexOf(p.cat) >= 0; }).map(function (id, i) { var p = P[id];
+    return [(fotoLugar(p) ? 8 : 0) + (p.why[L()] ? 3 : 0) + (p.fraseDe ? 2 : 0) + (likers(id).length ? 1 : 0) + S.perfiles.filter(function (q) { return p.para.indexOf(q) >= 0; }).length * 2 - cats.indexOf(p.cat) * 0.5, i, id]; })
+    .sort(function (a, b) { return b[0] - a[0] || a[1] - b[1]; }).slice(0, 6).map(function (z) { return { k: 'p', id: z[2] }; });
+  out = out.concat(ps);
+  // Las playlists son caminatas de día: de noche no se ofrecen aquí.
+  var r = momento() === 'noche' ? '' : routeIds()[0]; if (r) out.splice(Math.min(2, out.length), 0, { k: 'r', id: r });
+  return out.slice(0, 8);
+}
+function ahoraHTML() {
+  var t = T(), z = Z(), lang = L(), list = ahoraList(); if (!list.length) return '';
+  var i = ((HOME.h % list.length) + list.length) % list.length, c = list[i], media = '', kind = '', title = '', body = '', acts = '', heart = '';
+  if (c.k === 'p') { var p = P[c.id], f = fotoLugar(p), why = p.why[lang], reco = recoLine(p);
+    media = f ? '<img src="' + esc(f) + '" alt="">' : photoArt(p.cat, p.g[0] || 'kej'); kind = p.tipo || catName(p.cat); title = p.name; heart = heartBtn('p:' + p.id);
+    body = (why ? '<p class="fquote">«' + esc(why) + '»' + (p.fraseDe ? ' <span class="fwho">— ' + esc(p.fraseDe) + '</span>' : '') + '</p>' : '') + (reco && !why ? '<p>' + esc(reco) + '</p>' : '');
+    acts = mapsBtn(p, 'primary') + '<button type="button" class="btn" data-open="p:' + esc(p.id) + '">' + esc(t.info) + '</button>'; }
+  else if (c.k === 'r') { var r = ROUTES[c.id], gf = DATA_ON ? galFind('playlist:' + c.id) : '', first = P[r.stops[0]] || {};
+    media = gf ? '<img src="' + esc(gf) + '" alt="">' : photoArt(first.cat || 'cultura', (first.g && first.g[0]) || 'noj'); kind = t.feedPlaylist + ' · ' + r.stops.length + ' ' + t.stops; title = r.title[lang];
+    body = '<p>' + esc(r.intro[lang]) + '</p>'; acts = '<button type="button" class="btn primary" data-route="' + esc(c.id) + '">' + icon('map', 'sm') + esc(t.feedSeePlaylist) + '</button>'; }
+  else { var it = c.it, o = postClean(it.orden) || {}, lug = postLugar(it), who = String(it.autor || it.de || t.agentSample).slice(0, 40), txt = String(it.texto || '');
+    media = '<img src="' + esc(safeHttps(it.foto)) + '" alt="">'; kind = t.byWho(who); title = o.titulo || (lug ? P[lug].name : txt.slice(0, 48) + (txt.length > 48 ? '…' : ''));
+    body = '<p>' + esc(txt.slice(0, 160)) + (txt.length > 160 ? '…' : '') + '</p>'; acts = lug ? mapsBtn(P[lug], 'primary') + '<button type="button" class="btn" data-open="p:' + esc(lug) + '">' + esc(P[lug].name) + '</button>' : ''; }
+  return '<section class="ahora" data-ahora="' + i + '" data-ahora-kind="' + c.k + '" data-ahora-n="' + list.length + '" aria-roledescription="carousel" aria-label="' + esc(z.ahora) + '">' +
+    '<div class="ahora-media">' + media + '</div>' + heart + '<div class="ahora-in"><span class="eyebrow">' + esc(z.ahora) + ' · ' + esc(kind) + '</span><h2>' + esc(title) + '</h2>' + body + (acts ? '<div class="row">' + acts + '</div>' : '') + '</div>' +
+    (list.length > 1 ? '<div class="ahora-nav"><button type="button" class="ahora-b" data-ahora-go="-1" aria-label="' + esc(z.antes) + '">' + icon('back', 'sm') + '</button><span class="dots" aria-hidden="true">' + list.map(function (_, k) { return '<i' + (k === i ? ' class="on"' : '') + '></i>'; }).join('') +
+      '</span><button type="button" class="ahora-b" data-ahora-go="1" aria-label="' + esc(z.otra) + '">' + icon('arrow', 'sm') + '</button></div>' : '') + '</section>';
+}
+function ahoraGo(d) {
+  HOME.h += d; tick();
+  var el = document.querySelector('[data-ahora]'); if (!el) return;
+  el.outerHTML = ahoraHTML();
+  var b = document.querySelector('[data-ahora-go="' + (d < 0 ? '-1' : '1') + '"]'); if (b) b.focus({ preventScroll: true });
+}
 function bmColor(n) { var h = 0; String(n).split('').forEach(function (c) { h = (h * 31 + c.charCodeAt(0)) % 360; }); return 'hsl(' + h + ' 55% 40%)'; }
 function bookmark(n) { var t = T(); return n ? '<span class="bmark" style="--bm:' + bmColor(n) + '" role="img" aria-label="' + esc(t.byWho(n)) + '" title="' + esc(t.byWho(n)) + '" data-bmark="' + esc(n) + '">' + icon('user') + '</span>' : ''; }
-function placeScore(p) { var s = 0; S.perfiles.forEach(function (q) { if (p.para.indexOf(q) >= 0) s += 4; }); if (p.why[L()]) s += 2; if (p.foto || (DATA_ON && galFind('lugar:' + p.id))) s += 2; if (p.fraseDe) s += 1; if (p.aviso) s -= 5; return s; }
+function placeScore(p) { var s = 0; S.perfiles.forEach(function (q) { if (p.para.indexOf(q) >= 0) s += 4; }); if (p.why[L()]) s += 2; if (fotoLugar(p)) s += 2; if (p.fraseDe) s += 1; if (p.aviso) s -= 5; return s; }
 function feedPlace(p) {
-  var t = T(), x = X(), f = p.foto || (DATA_ON ? galFind('lugar:' + p.id) : ''), reco = recoLine(p), why = p.why[L()];
+  var t = T(), x = X(), f = fotoLugar(p), reco = recoLine(p), why = p.why[L()];
   return '<article class="fcard" data-feed="p:' + esc(p.id) + '" data-place="' + esc(p.id) + '">' + bookmark(p.fraseDe) + '<button type="button" class="fmedia" data-open="p:' + esc(p.id) + '" aria-label="' + esc(p.name) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : photoArt(p.cat, p.g[0] || 'kej')) + '</button>' +
     '<div class="fbody"><div class="fhead"><span class="eyebrow">' + esc(p.tipo || catName(p.cat)) + (p.aviso ? ' · ' + esc(x.closedTag) : '') + '</span>' + heartBtn('p:' + p.id) + '</div><h3>' + esc(p.name) + '</h3>' +
     (why ? '<p class="fquote">«' + esc(why) + '»' + (p.fraseDe ? ' <span class="fwho">— ' + esc(p.fraseDe) + '</span>' : '') + '</p>' : '') + (reco ? '<p class="reco" data-reco>' + esc(reco) + '</p>' : '') +
@@ -2700,11 +2776,11 @@ function feedRoute(rid) {
     '<div class="row"><button type="button" class="btn primary" data-route="' + rid + '">' + icon('map', 'sm') + esc(t.feedSeePlaylist) + '</button></div></div></article>';
 }
 function feedPost(it) {
-  var t = T(), x = X(), o = postClean(it.orden) || {}, foto = safeHttps(it.foto), lugar = o.lugar && P[o.lugar] ? o.lugar : '';
+  var t = T(), x = X(), o = postClean(it.orden) || {}, foto = safeHttps(it.foto), lugar = postLugar(it), pl = ROUTES[it.playlist] ? it.playlist : '';
   var who = String(it.autor || it.de || t.agentSample).slice(0, 40);
   return '<article class="fcard fpost" data-feed="post"' + (foto ? '' : ' data-sin-foto') + '>' + bookmark(who) + (foto ? '<div class="fmedia"><img src="' + esc(foto) + '" alt="" loading="lazy"></div>' : '') +
     '<div class="fbody"' + (foto ? '' : ' style="padding-top:48px"') + '><span class="eyebrow">' + esc(t.feedCommunity) + ' · ' + esc(String(it.fecha || '').slice(0, 10)) + '</span><span class="bmark-who">' + esc(t.byWho(who)) + '</span>' + (o.titulo ? '<h3>' + esc(o.titulo) + '</h3>' : '') + '<p>' + esc(String(it.texto || '').slice(0, 300)) + '</p>' +
-    (lugar ? '<div class="row"><button type="button" class="btn" data-open="p:' + esc(lugar) + '">' + esc(P[lugar].name) + '</button></div>' : '') + '</div></article>';
+    (lugar || pl ? '<div class="row">' + (lugar ? '<button type="button" class="btn" data-open="p:' + esc(lugar) + '">' + icon('pin', 'sm') + esc(P[lugar].name) + '</button>' : '') + (pl ? '<button type="button" class="btn" data-route="' + esc(pl) + '" data-post-playlist>' + icon('map', 'sm') + esc(ROUTES[pl].title[L()]) + '</button>' : '') + '</div>' : (it.lugar_nombre ? '<p class="muted">' + icon('pin', 'sm') + ' ' + esc(it.lugar_nombre) + '</p>' : '')) + '</div></article>';
 }
 function feedHTML() {
   var t = T(), cat = HOME.cat;
@@ -2780,6 +2856,7 @@ function inicioHTML() {
   var seg = '<div class="hseg" role="tablist" aria-label="' + esc(t.homeFeed) + '">' + [['feed', t.homeFeed, 'grid'], ['mapa', t.homeMap, 'map']].map(function (o) {
     return '<button type="button" role="tab" data-home="' + o[0] + '" aria-selected="' + (HOME.modo === o[0]) + '">' + icon(o[2], 'sm') + esc(o[1]) + '</button>'; }).join('') + '</div>';
   return '<section class="home-top"><p class="hello-line"><span><span data-saludo>' + esc(saludo()) + '</span> · Antigua</span>' + (DATA_ON && !LIBRE ? '<button type="button" class="hello-ag" data-go="agente" data-ag-top>' + icon('user', 'sm') + esc(BETA_ON ? AG.alias : Z().agSoy) + '</button>' : '') + '</p>' +
+    ahoraHTML() +
     '<button type="button" class="askbar" data-guide="' + S.guide + '">' + icon('chat') + '<span>' + esc(t.askHint(G[S.guide].name)) + '</span></button>' +
     '<div class="quick"><button type="button" class="chip" data-ask="cafe" id="cta-cafe">' + icon('coffee', 'sm') + esc(t.coffee) + '</button><button type="button" class="chip" data-ask="empezar">' + esc(t.arrived) + '</button></div>' + seg + '</section>' +
     (HOME.modo === 'mapa' ? mapHTML() : feedHTML()) +
@@ -2804,7 +2881,8 @@ function rutasHTML() {
     '<section class="sec" data-route-detail="' + sel + '"><span class="eyebrow">' + routeMeta(r) + '</span><div class="sec-head"><h2>' + esc(r.title[lang]) + '</h2>' + infoHTML('hist') + '</div>' + routeTags(r) + '<p>' + esc(r.intro[lang]) + '</p>' +
       '<ol class="stops">' + r.stops.map(function (id, i) { var p = P[id]; return '<li><button type="button" data-open="p:' + id + '"><span class="n">' + (i + 1) + '</span><span><b>' + esc(p.name) + '</b>' + (r.hacer[id] && r.hacer[id][lang] ? '<small data-hacer>' + esc(r.hacer[id][lang]) + '</small><br>' : '') + '<small>' + esc(p.addr) + (p.pos && p.pos.aprox ? ' · ' + esc(t.aprox) : '') + '</small></span>' + icon('arrow', 'sm') + '</button></li>'; }).join('') + '</ol>' +
       '<div class="actions"><a class="btn anil" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(t.openRoute) + '</a>' + (r.musica ? '<a class="btn" href="' + esc(r.musica) + '" target="_blank" rel="noopener" data-musica>' + icon('spark', 'sm') + esc(Z().musica) + '</a>' : '') +
-      '<button type="button" class="btn" data-toggle="r:' + sel + '" aria-pressed="' + isSaved('r:' + sel) + '">' + icon('heart', 'sm fill') + esc(isSaved('r:' + sel) ? t.saved : t.save) + '</button></div></section>';
+      '<button type="button" class="btn" data-toggle="r:' + sel + '" aria-pressed="' + isSaved('r:' + sel) + '">' + icon('heart', 'sm fill') + esc(isSaved('r:' + sel) ? t.saved : t.save) + '</button></div></section>' +
+    (postsOfPlaylist(sel).length ? '<section class="sec" data-pl-posts><h2 style="font-size:17px">' + esc(Z().plPosts) + '</h2><div class="feed">' + postsOfPlaylist(sel).map(feedPost).join('') + '</div></section>' : '');
 }
 function guiaHTML(scrollNew) {
   var t = T(), g = G[S.guide], lang = L();
@@ -3153,6 +3231,8 @@ var ACTIONS = [
   ['data-aprender', function (v) { permisoSet(v); }],
   ['data-ent-ok', function (v) { entradaDo(v, true); }],
   ['data-ent-no', function (v) { entradaDo(v, false); }],
+  ['data-ahora-go', function (v) { ahoraGo(+v < 0 ? -1 : 1); }],
+  ['data-publish-lugar', function (v) { tick(); if (BETA_ON) openDialog(postForm('lugar', v)); }],
   ['data-feedmore', function () { HOME.n += 12; tick(); render({ keep: true }); }],
   ['data-rorden', function (v) { RQ.orden = v; render({ keep: true }); }],
   ['data-rcat', function (v) { RQ.cat = v; render({ keep: true }); }],
@@ -3173,6 +3253,15 @@ document.addEventListener('keydown', function (e) {
   if (e.key !== 'Enter' && e.key !== ' ') return;
   var el = e.target.closest && e.target.closest('.map [data-ref]'); if (!el) return;
   e.preventDefault(); el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+});
+var SWIPE = null;
+document.addEventListener('touchstart', function (e) { var a = e.target.closest && e.target.closest('[data-ahora]'); SWIPE = a && e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null; }, { passive: true });
+document.addEventListener('touchend', function (e) { if (!SWIPE) return; var c = e.changedTouches[0], dx = c.clientX - SWIPE.x, dy = c.clientY - SWIPE.y; SWIPE = null; if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) ahoraGo(dx < 0 ? 1 : -1); }, { passive: true });
+document.addEventListener('change', function (e) {
+  var tile = e.target.name === 'foto' && e.target.closest && e.target.closest('[data-fototile]'); if (!tile) return;
+  var file = e.target.files && e.target.files[0], prev = tile.querySelector('[data-foto-prev]'); if (!file || !prev) return;
+  var img = document.createElement('img'); img.alt = ''; img.src = URL.createObjectURL(file); img.onload = function () { URL.revokeObjectURL(img.src); };
+  prev.innerHTML = ''; prev.appendChild(img); tile.classList.add('has');
 });
 document.addEventListener('submit', function (e) { var f = e.target.closest && e.target.closest('[data-bform]'); if (!f) return; e.preventDefault(); betaSubmit(f); });
 document.addEventListener('toggle', function (e) { if (e.target && e.target.matches && e.target.matches('[data-bru-test]')) BRU.testOpen = e.target.open; if (e.target && e.target.matches && e.target.matches('[data-beta-new]')) BETA.newOpen = e.target.open; }, true);
