@@ -236,13 +236,18 @@ def main():
         faltan = sorted(n for n in nombrados if n not in ids and not n.startswith('lugar'))
         check('Datos: las respuestas fijas, las playlists y las referencias nombran solo lugares activos del catálogo', not faltan, faltan)
 
+        sw = open(os.path.join(APP, 'sw.js'), encoding='utf-8').read()
+        datos = re.findall(r'<script src="(data/[a-z]+\.js)"', code)
+        ver = re.search(r"var VERSION = 'nAIhual ([0-9.]+)", code).group(1)
+        check('Sin señal: sw.js guarda todos los archivos de datos de la app y lleva la versión de la app (%s)' % ver, datos and all("'./%s'" % d in sw for d in datos) and "'naihual-%s'" % ver in sw, [d for d in datos if "'./%s'" % d not in sw])
+
         # =============== A. VISTA PREVIA con el catálogo real ===============
         ctx, page, errors = new_page(browser, url, abiertos=False)
         M = '[vista previa]'
         check(M + ' Carga el catálogo (%d), la configuración y las fuentes (%d)' % (TOTAL, N_FUENTES), page.evaluate("n => window.NAIHUAL_LUGARES.filter(r => r.estado !== 'retirado' && r.estado !== 'pausado').length === n[0] && window.NAIHUAL_CONFIG.modo === 'vista_previa' && window.NAIHUAL_FUENTES.length === n[1]", [TOTAL, N_FUENTES]))
         check(M + ' Catálogo: ningún id repetido y ninguna frase con reseñas', len({r['id'] for r in CATALOGO}) == TOTAL and not [r['id'] for r in CATALOGO if any(x in ' '.join((r.get('frase') or {}).values()).lower() for x in ['reseña', 'comentarios de maps', 'calificaci', 'agregador'])])
         check(M + ' Inicio «¿Qué hay?» (3.16): sin portada grande; preguntar, «Quiero un café» y «Recién llegué» arriba', page.locator('.hero-art').count() == 0 and page.locator('.home-top .askbar[data-guide]').count() == 1 and page.locator('#cta-cafe').inner_text().strip() == 'Quiero un café' and page.locator('[data-ask="empezar"]').count() == 1)
-        check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 8 and page.locator('[data-more] .widget.closed').count() == 6 and page.locator('[data-feed^="p:"] [data-bmark="Diego"]').count() >= 5)
+        check(M + ' Inicio (3.16): «¿Qué hay?» y «Mapa» con la misma importancia; feed con la idea del guía, playlists y lugares; lo demás agrupado y cerrado', page.locator('.hseg [data-home="feed"][aria-selected="true"]').count() == 1 and page.locator('.hseg [data-home="mapa"]').count() == 1 and page.locator('[data-feed^="r:"]').count() == N_PLAYLISTS and page.locator('[data-feed^="p:"]').count() >= 8 and page.locator('[data-more] .widget.closed').count() == 7 and page.locator('[data-widget="frases"]').count() == 1 and page.locator('[data-feed^="p:"] [data-bmark="Diego"]').count() >= 5)
         page.click('[data-feedcat="none"]')
         check(M + ' Filtro «Nada»: sin feed, solo la app', page.locator('[data-feed]').count() == 0)
         page.click('[data-wedit-toggle]')
@@ -358,7 +363,7 @@ def main():
         check(M + ' Inicio: tarjeta de la beta', page.locator('[data-beta-card]').count() == 1 and '0 anotaciones' in page.locator('[data-beta-card]').inner_text().lower())
         check(M + ' Botón de emergencias visible', page.locator('#sos').is_visible())
         page.click('#sos')
-        check(M + ' Emergencias: «Pendiente de números oficiales», sin números', 'Pendiente de números oficiales' in page.inner_text('#dlg') and not any(ch.isdigit() for ch in page.inner_text('#dlg')))
+        check(M + ' Emergencias (3.18): 110, 122, 123 y 1500, cada uno se puede marcar, con su fuente', [a.get_attribute('href') for a in page.locator('#dlg [data-sos-list] a').all()] == ['tel:110', 'tel:122', 'tel:123', 'tel:1500'] and 'INGUAT' in page.inner_text('#dlg [data-sos-src]'), page.inner_text('#dlg'))
         page.keyboard.press('Escape')
         check(M + ' 390 px sin desplazamiento horizontal (Inicio)', no_hscroll(page))
         tabs = page.locator('#tabs button').all_inner_texts()

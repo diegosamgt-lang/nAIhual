@@ -354,7 +354,7 @@ details.info[open] { flex-basis: 100%; }
 .beta-card .row { display: flex; flex-wrap: wrap; gap: 8px; }
 .bform { display: flex; flex-direction: column; gap: 10px; }
 .bform label { display: flex; flex-direction: column; gap: 4px; font-size: var(--t-sm); font-weight: 600; color: var(--ink-2); }
-.bform input[type=text], .bform input[type=url], .bform select, .bform textarea { font: inherit; font-size: 16px; font-weight: 400; color: var(--basalto); background: var(--papel); border: 1px solid var(--line-2); border-radius: var(--r-md); padding: 10px 12px; min-height: 44px; width: 100%; }
+.bform input[type=text], .bform input[type=url], .bform input[type=password], .bform select, .bform textarea { font: inherit; font-size: 16px; font-weight: 400; color: var(--basalto); background: var(--papel); border: 1px solid var(--line-2); border-radius: var(--r-md); padding: 10px 12px; min-height: 44px; width: 100%; }
 .bform textarea { min-height: 76px; resize: vertical; }
 .bform .checkline { flex-direction: row; align-items: center; gap: 10px; min-height: 44px; }
 .bform .checkline input { width: 22px; height: 22px; }
@@ -600,6 +600,8 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
   main[data-view="inicio"] > .home-top, main[data-view="inicio"] > .fcats, main[data-view="inicio"] > .more-group, main[data-view="inicio"] > .foot { max-width: 760px; width: 100%; margin-inline: auto; }
   main[data-view="inicio"] > .fcats { justify-content: center; flex-wrap: wrap; }
 }
+.sosnum { text-decoration: none; flex-direction: row; align-items: baseline; gap: 12px; } .sosnum b { font-family: var(--f-data); font-size: 22px; min-width: 64px; }
+.frases { margin: 0; display: grid; gap: 10px; } .frases div { display: grid; gap: 2px; } .frases dt { font-weight: 700; } .frases dd { margin: 0; color: var(--ink-2); font-size: 14px; }
 </style>
 </head>
 <body>
@@ -766,7 +768,7 @@ var ROUTES = {};
   pl.paradas.forEach(function (x) { var id = typeof x === 'string' ? x : x && x.lugar; if (!id) return; stops.push(String(id)); if (x.hacer) hacer[id] = wl(x.hacer); });
   ROUTES[pl.id] = { g: (pl.guardianes || []).filter(function (g) { return ORDER.indexOf(g) >= 0; }), stops: stops, hacer: hacer,
     autor: String(pl.autor || 'nAIhual'), gasto: pl.gasto === 'gratis' || pl.gasto === 'con_gasto' ? pl.gasto : '',
-    perfiles: (pl.perfiles || []).filter(function (p) { return !!PERFIL[p]; }), kicker: wl(pl.momento), title: wl(pl.titulo), intro: wl(pl.intro) };
+    perfiles: (pl.perfiles || []).filter(function (p) { return !!PERFIL[p]; }), musica: /^https:\/\/(open\.spotify\.com|music\.youtube\.com|www\.youtube\.com|youtu\.be|music\.apple\.com)\//.test(String(pl.musica || '')) ? String(pl.musica) : '', kicker: wl(pl.momento), title: wl(pl.titulo), intro: wl(pl.intro) };
 });
 // A pie = se ve en este modo, tiene dirección, cae en el mapa del centro y no tiene aviso (por ejemplo, cerrado).
 function walkable(id) { return visible(P[id]) && !!P[id].addr && !!P[id].pos && !P[id].aviso; }
@@ -1032,7 +1034,7 @@ var STR = {
     savedTitle: 'Guardados', savedSub: 'Lo que guardás queda solo en este teléfono.', emptySaved: 'Todavía no guardaste nada', emptySavedBody: 'Tocá el corazón en un lugar, una ruta o una costumbre.',
     yourPlan: 'Tu plan a pie', planBody: function (n) { return n + ' paradas, en este orden.'; }, planSoon: 'Tu plan se arma con lugares que ya probé. Todavía no hay.',
     bizTag: 'Patrocinado',
-    sos: 'Emergencias', sosTitle: 'Emergencias', sosBody: 'Pendiente de números oficiales. Se activan cuando cada número esté confirmado con su fuente oficial.', close: 'Cerrar',
+    sos: 'Emergencias', sosTitle: 'Emergencias', sosBody: 'Llamá desde cualquier teléfono. Atienden en español.', sosSrc: 'Fuente: INGUAT y Agencia Guatemalteca de Noticias · consultado el 16-nov-2026.', close: 'Cerrar',
     internal: 'Vista interna', foot: VERSION, months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
     aiThinking: 'Pensando', aiStop: 'Detener', aiBy: 'con IA',
     aiReady: 'Vista previa: responde la IA (Claude en tu visor; Gemini en tu sitio). Lo que escribís se envía a la IA para responder. nAIhual solo guarda lo que aprende y lo que le faltó saber, en tu beta; la pregunta tal cual, no.',
@@ -1082,7 +1084,7 @@ var STR = {
     savedTitle: 'Saved', savedSub: 'What you save stays on this phone only.', emptySaved: 'Nothing saved yet', emptySavedBody: 'Tap the heart on a place, a route or a custom.',
     yourPlan: 'Your walking plan', planBody: function (n) { return n + ' stops, in this order.'; }, planSoon: 'Your plan is built from places I’ve tested. None yet.',
     bizTag: 'Sponsored',
-    sos: 'Emergency', sosTitle: 'Emergency', sosBody: 'Official numbers pending. They switch on once each number is confirmed with its official source.', close: 'Close',
+    sos: 'Emergency', sosTitle: 'Emergency', sosBody: 'Call from any phone. They usually answer in Spanish.', sosSrc: 'Source: INGUAT and Agencia Guatemalteca de Noticias · checked Nov 16, 2026.', close: 'Close',
     internal: 'Team view', foot: VERSION, months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     aiThinking: 'Thinking', aiStop: 'Stop', aiBy: 'with AI',
     aiReady: 'Preview: the AI answers (Claude in your viewer; Gemini on your site). What you type is sent to the AI to answer. nAIhual only keeps what it learns and what it was missing, in your beta; never your exact question.',
@@ -1115,6 +1117,7 @@ var Z3 = {
     propNombre: 'Nombre del lugar', propTexto: '¿Por qué lo recomendás?', propAlias: 'Tu nombre (opcional)', propEnviar: 'Enviar', propGracias: '¡Gracias! Un agente lo revisa antes de publicarlo.', propFail: 'No se pudo enviar ahora. Probá más tarde.',
     entTitle: 'Por revisar', entBody: 'Lo que propone la gente y lo que el chat no supo. Nada de esto se ve hasta que lo aprobés.', entProp: 'Propuesta', entSenal: 'Del chat',
     entPublicar: 'Publicar', entAnotar: 'Anotar', entNo: 'Descartar', entCount: function (n) { return n + ' por revisar'; }, visitante: 'Visitante',
+    musica: 'Música para esta caminata', frasesTitle: 'Frases para andar por aquí', frasesBody: 'Español como se habla en Antigua. Un saludo abre puertas.',
     verMas: function (n) { return 'Ver más (' + n + ')'; }, veces: function (n) { return 'lo pidieron ' + n + ' veces'; } },
   en: { agSoy: 'I’m an agent', agComo: function (n) { return 'Agent: ' + n; }, agKicker: 'nAIhual team', agTitle: 'I’m an agent',
     agBody: 'Agents post, upload photos and review what people suggest. Sign in with your name and the agents’ passphrase.',
@@ -1135,6 +1138,7 @@ var Z3 = {
     propNombre: 'Name of the place', propTexto: 'Why do you recommend it?', propAlias: 'Your name (optional)', propEnviar: 'Send', propGracias: 'Thanks! An agent reviews it before posting.', propFail: 'Couldn’t send it now. Try again later.',
     entTitle: 'To review', entBody: 'What people suggest and what the chat didn’t know. None of this shows until you approve it.', entProp: 'Suggestion', entSenal: 'From the chat',
     entPublicar: 'Post', entAnotar: 'Note it', entNo: 'Discard', entCount: function (n) { return n + ' to review'; }, visitante: 'Visitor',
+    musica: 'Music for this walk', frasesTitle: 'Phrases to get around', frasesBody: 'Spanish as it’s spoken in Antigua. A greeting opens doors.',
     verMas: function (n) { return 'Show more (' + n + ')'; }, veces: function (n) { return 'asked ' + n + ' times'; } }
 };
 function Z() { return Z3[S.lang]; }
@@ -2539,7 +2543,7 @@ function aiFoot() {
 function footHTML() {
   var t = T();
   return '<footer class="foot">' + aiFoot() + '<span>' + esc(t.foot) + (S.lang === 'en' && t.enNote ? ' · ' + esc(t.enNote) : '') + '</span>' +
-    (DATA_ON && !LIBRE ? '<button type="button" class="linkbtn" data-go="agente" data-soy-agente>' + esc(BETA_ON ? Z().agComo(AG.alias) : Z().agSoy) + '</button>' : '') +
+    (DATA_ON && !LIBRE && S.view !== 'agente' ? '<button type="button" class="linkbtn" data-go="agente" data-soy-agente>' + esc(BETA_ON ? Z().agComo(AG.alias) : Z().agSoy) + '</button>' : '') +
     (DATA_ON && !BETA_ON && AG.aprender !== null ? '<button type="button" class="linkbtn" data-aprender="otra">' + esc(Z().permisoCambiar) + '</button>' : '') +
     (PREVIEW && BETA_ON ? '<button type="button" class="linkbtn" data-go="taller">' + esc(t.internal) + '</button>' : '') + '</footer>';
 }
@@ -2556,7 +2560,7 @@ function saveClosed() { persist(); }
 // Un toque corto en el teléfono (si lo permite) cuando algo cambia.
 function tick() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {} }
 // Jerarquía (3.14): lo de todos los días va abierto; lo demás, cerrado hasta que la persona lo abra.
-var SECONDARY = ['que', 'perfil', 'brujula', 'guias', 'explorar', 'idea'];
+var SECONDARY = ['que', 'perfil', 'brujula', 'guias', 'explorar', 'idea', 'frases'];
 // Widgets del Inicio (3.17): tamaño S (tarjeta chica, cerrado), M (abierto a la mitad) o L (abierto completo), y orden propio. Se guardan en el teléfono.
 var WSTATE = { size: {}, order: [], edit: false };
 try { var ws0 = JSON.parse(localStorage.getItem('naihual.widgets') || 'null'); if (ws0) { WSTATE.size = ws0.size || {}; WSTATE.order = Array.isArray(ws0.order) ? ws0.order : []; } } catch (e) {}
@@ -2604,6 +2608,8 @@ function routeTags(r) {
   return '<span class="tags"><span class="tag" data-autor>' + esc(t.by + r.autor) + '</span>' + (r.gasto ? '<span class="tag' + (r.gasto === 'gratis' ? ' ok' : '') + '" data-gasto="' + r.gasto + '">' + esc(r.gasto === 'gratis' ? t.free : t.spend) + '</span>' : '') +
     (forMe(r) ? '<span class="tag like" data-para-vos>' + esc(t.forYou) + '</span>' : '') + '</span>';
 }
+// Frases de todos los días (B17). Español como se habla aquí, con su sentido en inglés. Las de idiomas mayas entran solo con fuente validada por un hablante: no se generan con IA.
+var FRASES = [['Buenos días · Buenas tardes · Buenas noches', 'Good morning · Good afternoon · Good evening'], ['Con permiso', 'Excuse me (to pass by)'], ['¿Me regala un café, por favor?', 'Could I have a coffee, please? (the polite local way to order)'], ['¿Cuánto cuesta?', 'How much is it?'], ['La cuenta, por favor', 'The bill, please'], ['¿Dónde queda…?', 'Where is…?'], ['¿Puedo tomarle una foto?', 'May I take your photo?'], ['Buen provecho', 'Enjoy your meal'], ['Muchas gracias', 'Thank you very much']];
 // ===================== SOY AGENTE · PROPONER · POR REVISAR · PERMISO =====================
 function agenteHTML() {
   var z = Z(), pw = function (name, label, auto) { return '<label>' + esc(label) + '<input type="password" name="' + name + '" minlength="8" maxlength="200" autocomplete="' + auto + '" required></label>'; };
@@ -2763,6 +2769,7 @@ function inicioHTML() {
   W.idea = function () { return widget('idea', t.ideaTitle(G[S.guide].name), 'spark', '<div class="wpad" id="idea-body" data-sugerencia>' + ideaHTML() + '</div>', '', S.guide); };
   if (BETA_ON) W.beta = function () { return widget('beta', x.betaTitle, 'plus', betaCard()); };
   W.perfil = function () { return widget('perfil', t.perfilQ, 'user', perfilHTML()); };
+  W.frases = function () { return widget('frases', Z().frasesTitle, 'chat', '<div class="wpad"><p class="muted">' + esc(Z().frasesBody) + '</p><dl class="frases" data-frases>' + FRASES.map(function (f) { return '<div><dt lang="es">' + esc(f[0]) + '</dt><dd lang="en">' + esc(f[1]) + '</dd></div>'; }).join('') + '</dl></div>'); };
   W.guias = function () { return widget('guias', t.todayGuide, 'chat', '<div class="wpad">' + guardStrip(S.guide) + '</div>', infoHTML('guard')); };
   W.que = function () { return widget('que', x.introKicker, 'info', '<div class="wpad intro-in" data-intro><h3>' + esc(x.introTitle) + '</h3><p class="muted">' + esc(x.introBody) + '</p></div>'); };
   W.explorar = function () { return widget('explorar', t.explore, 'grid', '<div class="wpad"><div class="tiles">' + tiles.map(function (z) {
@@ -2793,7 +2800,7 @@ function rutasHTML() {
     '<p class="note" data-map-note>' + esc(t.mapNote + ' · ' + t.outside) + '</p>' + myMapsHTML() +
     '<section class="sec" data-route-detail="' + sel + '"><span class="eyebrow">' + routeMeta(r) + '</span><div class="sec-head"><h2>' + esc(r.title[lang]) + '</h2>' + infoHTML('hist') + '</div>' + routeTags(r) + '<p>' + esc(r.intro[lang]) + '</p>' +
       '<ol class="stops">' + r.stops.map(function (id, i) { var p = P[id]; return '<li><button type="button" data-open="p:' + id + '"><span class="n">' + (i + 1) + '</span><span><b>' + esc(p.name) + '</b>' + (r.hacer[id] && r.hacer[id][lang] ? '<small data-hacer>' + esc(r.hacer[id][lang]) + '</small><br>' : '') + '<small>' + esc(p.addr) + (p.pos && p.pos.aprox ? ' · ' + esc(t.aprox) : '') + '</small></span>' + icon('arrow', 'sm') + '</button></li>'; }).join('') + '</ol>' +
-      '<div class="actions"><a class="btn anil" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(t.openRoute) + '</a>' +
+      '<div class="actions"><a class="btn anil" href="' + esc(routeUrl(r.stops)) + '" target="_blank" rel="noopener">' + icon('nav', 'sm') + esc(t.openRoute) + '</a>' + (r.musica ? '<a class="btn" href="' + esc(r.musica) + '" target="_blank" rel="noopener" data-musica>' + icon('spark', 'sm') + esc(Z().musica) + '</a>' : '') +
       '<button type="button" class="btn" data-toggle="r:' + sel + '" aria-pressed="' + isSaved('r:' + sel) + '">' + icon('heart', 'sm fill') + esc(isSaved('r:' + sel) ? t.saved : t.save) + '</button></div></section>';
 }
 function guiaHTML(scrollNew) {
@@ -3088,6 +3095,8 @@ function togglePerfil(v) {
 }
 // «Vamos»: en la beta queda pendiente la pregunta «¿Fuiste?».
 function goingTo(pid, nombre) { if (!BETA_ON) return; fuiSet({ lugar: pid || null, nombre: nombre }); setTimeout(fuiBar, 400); }
+// Emergencias: números nacionales de Guatemala (búsqueda del 16-nov-2026; fuente en el texto «sosSrc»). Si uno cambia, se cambia aquí con su fuente.
+var SOS = [['110', w('Policía Nacional Civil', 'National Civil Police')], ['122', w('Bomberos y ambulancia', 'Firefighters and ambulance')], ['123', w('Bomberos y ambulancia', 'Firefighters and ambulance')], ['1500', w('Asistencia al turista (INGUAT)', 'Tourist assistance (INGUAT)')]];
 // Cada atributo data-* que se puede tocar y lo que hace. Si un elemento tiene varios, gana el primero de la lista.
 var ACTIONS = [
   ['data-vamos', function (v) { goingTo(v, P[v] ? P[v].name : v); }],
@@ -3148,7 +3157,7 @@ var ACTIONS = [
   ['data-post-ok', function (v) { postUpdate(v, { estado: 'confirmado' }); tick(); }],
   ['data-post-retry', function (v) { var it = BETA.items.filter(function (x) { return x._id === v; })[0]; if (it) postClassify(v, it); }],
   ['data-ref', function (v) { S.refOpen = S.refOpen === v ? '' : v; [].forEach.call(document.querySelectorAll('.map [data-ref]'), function (g) { g.classList.toggle('open', g.getAttribute('data-ref') === S.refOpen); g.setAttribute('aria-expanded', String(g.getAttribute('data-ref') === S.refOpen)); }); }],
-  ['data-sos', function () { var t = T(); openDialog('<h2>' + esc(t.sosTitle) + '</h2><p>' + esc(t.sosBody) + '</p><button type="button" class="btn primary" data-close>' + esc(t.close) + '</button>'); }],
+  ['data-sos', function () { var t = T(); openDialog('<h2>' + esc(t.sosTitle) + '</h2><p>' + esc(t.sosBody) + '</p><div class="list" data-sos-list>' + SOS.map(function (n) { return '<a class="rowlink sosnum" href="tel:' + n[0] + '"><b>' + n[0] + '</b><small>' + esc(n[1][L()]) + '</small></a>'; }).join('') + '</div><p class="note" data-sos-src>' + esc(t.sosSrc) + '</p><button type="button" class="btn primary" data-close>' + esc(t.close) + '</button>'); }],
   ['data-close', function () { document.getElementById('dlg').close(); }]
 ];
 var ACTION_SEL = ACTIONS.map(function (x) { return '[' + x[0] + ']'; }).join(',');

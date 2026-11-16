@@ -6,6 +6,7 @@
    - id: fijo (los guardados dependen de él).
    - titulo, momento (cuánto dura o cuándo), intro: { es, en }.
    - autor: quién la armó. guardianes: quién la recomienda.
+   - musica (opcional): enlace a la lista de canciones para esa caminata (Spotify, YouTube o Apple Music). Sale como botón «Música para esta caminata».
    - paradas: en orden. Cada una es el id de un lugar del catálogo, o { lugar, hacer: { es, en } } con qué hacer ahí.
      Solo lugares con dirección y en el mapa del centro: si una parada no se puede mostrar, la playlist no aparece.
    - gasto: «gratis» solo si ninguna parada cobra (con fuente); «con_gasto» si hay algo que comprar; vacío = no se sabe.
